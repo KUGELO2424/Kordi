@@ -12,7 +12,7 @@
 	<artifactId>Kordi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Kordi</name>
-	<description>Rest Api for app that helps coordinating material assistance</description>
+	<description>Rest API for web app that helps to coordinate material support</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
