@@ -19,6 +19,7 @@ target/
 .idea
 *.iws
 *.iml
+../Kordi.iml
 *.ipr
 
 ### NetBeans ###
