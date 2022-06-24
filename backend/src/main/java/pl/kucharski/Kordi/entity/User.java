@@ -36,7 +36,7 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "verified")
-    private boolean verified;
+    @Column(name = "enabled")
+    private boolean enabled;
 
 }
