@@ -36,10 +36,19 @@ public class UserController {
     }
 
     @GetMapping("/verify")
-    public ResponseEntity<?> verifyUser(@RequestParam("token") String token) {
+    public ResponseEntity<?> verifyUser(@RequestParam("token") String token,
+                                        @RequestParam(value = "phone", required = false) String phone) {
         String result = "";
         try {
-            result = userService.verifyToken(token);
+            if (phone != null) {
+                User user = userService.getUserByPhone(phone);
+                if (user == null) {
+                    throw new IllegalStateException("User not found with given phone number");
+                }
+                result = userService.verifyToken(user, token);
+                return ResponseEntity.ok(result);
+            }
+            result = userService.verifyToken(null, token);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

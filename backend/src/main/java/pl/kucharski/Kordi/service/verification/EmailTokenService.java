@@ -1,4 +1,4 @@
-package pl.kucharski.Kordi.service.email;
+package pl.kucharski.Kordi.service.verification;
 
 import org.springframework.stereotype.Service;
 import pl.kucharski.Kordi.entity.EmailToken;

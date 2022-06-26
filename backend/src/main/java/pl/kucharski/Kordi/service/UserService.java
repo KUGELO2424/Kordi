@@ -13,5 +13,5 @@ public interface UserService {
     User getUserByEmail(String email);
     User getUserByPhone(String phone);
     List<User> getUsers();
-    String verifyToken(String token);
+    String verifyToken(User user, String token);
 }
