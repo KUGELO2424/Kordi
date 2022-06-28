@@ -1,11 +1,13 @@
 package pl.kucharski.Kordi.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
+import org.springframework.security.core.token.TokenService;
 import org.springframework.web.bind.annotation.*;
 import pl.kucharski.Kordi.dto.UserRegistrationDto;
+import pl.kucharski.Kordi.entity.EmailToken;
 import pl.kucharski.Kordi.entity.User;
 import pl.kucharski.Kordi.service.UserService;
+import pl.kucharski.Kordi.service.verification.EmailTokenService;
 
 import java.util.List;
 
@@ -13,9 +15,11 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final EmailTokenService tokenService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, EmailTokenService tokenService) {
         this.userService = userService;
+        this.tokenService = tokenService;
     }
 
     @GetMapping("/users")
@@ -25,10 +29,11 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> saveUser(@RequestBody UserRegistrationDto user) {
+    public ResponseEntity<?> saveUser(@RequestParam("phoneVerification") boolean phoneVerification,
+                                      @RequestBody UserRegistrationDto user) {
         String result = "";
         try {
-            result = userService.saveUser(user);
+            result = userService.saveUser(user, phoneVerification);
         } catch (Exception ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
@@ -45,10 +50,14 @@ public class UserController {
                 if (user == null) {
                     throw new IllegalStateException("User not found with given phone number");
                 }
-                result = userService.verifyToken(user, token);
+                result = userService.verifyToken(user, token, true);
                 return ResponseEntity.ok(result);
             }
-            result = userService.verifyToken(null, token);
+            EmailToken emailToken = tokenService.getToken(token).orElseThrow(() -> {
+                throw new IllegalStateException("User not found with given token");
+            });
+            User user = emailToken.getUser();
+            result = userService.verifyToken(user, token, false);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

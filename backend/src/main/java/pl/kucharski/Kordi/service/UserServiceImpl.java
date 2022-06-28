@@ -9,10 +9,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.kucharski.Kordi.dto.UserRegistrationDto;
-import pl.kucharski.Kordi.entity.EmailToken;
 import pl.kucharski.Kordi.entity.User;
 import pl.kucharski.Kordi.repository.UserRepository;
-import pl.kucharski.Kordi.service.verification.EmailTokenService;
 import pl.kucharski.Kordi.service.verification.VerificationService;
 import pl.kucharski.Kordi.validator.EmailValidator;
 
@@ -27,15 +25,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailValidator emailValidator;
-    private final VerificationService verificationService;
+    private final VerificationService emailVerificationService;
+    private final VerificationService phoneVerificationService;
 
     public UserServiceImpl(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder,
                            EmailValidator emailValidator,
-                           @Qualifier("phoneVerificationService") VerificationService verificationService) {
+                           @Qualifier("emailVerificationService") VerificationService emailVerificationService,
+                           @Qualifier("phoneVerificationService") VerificationService phoneVerificationService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailValidator = emailValidator;
-        this.verificationService = verificationService;
+        this.emailVerificationService = emailVerificationService;
+        this.phoneVerificationService = phoneVerificationService;
     }
 
     @Override
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public String saveUser(UserRegistrationDto user) {
+    public String saveUser(UserRegistrationDto user, boolean phoneVerification) {
         User foundUserByEmail = getUserByEmail(user.getEmail());
         User foundUserByUsername = getUserByUsername(user.getUsername());
         User foundUserByPhone = getUserByPhone(user.getPhone());
@@ -59,7 +60,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (foundUserByUsername != null && foundUserByEmail != null && foundUserByPhone != null) {
             if (foundUserByUsername.equals(foundUserByEmail) && foundUserByUsername.equals(foundUserByPhone)
                     && !foundUserByEmail.isEnabled()) {
-                return registerUser(foundUserByEmail);
+                if (phoneVerification) {
+                    return registerUserWithPhoneVerification(foundUserByEmail);
+                } else {
+                    return registerUserWithEmailVerification(foundUserByEmail);
+                }
             }
         }
 
@@ -76,17 +81,31 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User newUser = new User(user.getFirstName(), user.getLastName(), user.getUsername(),
                 passwordEncoder.encode(user.getPassword()), user.getEmail(), user.getPhone(), false);
         userRepository.save(newUser);
-        return registerUser(newUser);
+        if (phoneVerification) {
+            return registerUserWithPhoneVerification(newUser);
+        } else {
+            return registerUserWithEmailVerification(newUser);
+        }
     }
 
     @Transactional
-    public String registerUser(User user) {
-        return verificationService.send(user);
+    public String registerUserWithEmailVerification(User user) {
+        return emailVerificationService.send(user);
+    }
+
+    @Transactional
+    public String registerUserWithPhoneVerification(User user) {
+        return phoneVerificationService.send(user);
     }
 
     @Override
-    public String verifyToken(User user, String token) {
-       String response = verificationService.verify(user, token);
+    public String verifyToken(User user, String token, boolean phoneVerification) {
+        String response;
+        if (phoneVerification) {
+            response = phoneVerificationService.verify(user, token);
+        } else {
+            response = emailVerificationService.verify(user, token);
+        }
        if (response.equals("verified") || response.equals("approved")) {
            enableUser(user);
        }
