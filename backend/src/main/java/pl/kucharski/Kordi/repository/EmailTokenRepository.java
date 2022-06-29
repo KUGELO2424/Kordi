@@ -15,7 +15,7 @@ public interface EmailTokenRepository extends JpaRepository<EmailToken, Long> {
     Optional<EmailToken> findByToken(String token);
 
     @Transactional
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE EmailToken c " +
             "SET c.confirmedAt = ?2 " +
             "WHERE c.token = ?1")

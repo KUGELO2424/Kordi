@@ -14,8 +14,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findUserByEmail(String email);
     User findUserByPhone(String phone);
     @Transactional
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE User a " +
             "SET a.enabled = TRUE WHERE a.username = ?1")
-    int enableUser(String username);
+    void enableUser(String username);
 }

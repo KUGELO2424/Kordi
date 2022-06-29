@@ -3,6 +3,7 @@ package pl.kucharski.Kordi.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table(name = "user")
+@Table(name = "account")
 public class User {
 
     @Id
@@ -27,7 +28,7 @@ public class User {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "password", columnDefinition = "char")
+    @Column(name = "password")
     private String password;
 
     @Column(name = "email")
