@@ -5,11 +5,11 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.kucharski.Kordi.dto.UserRegistrationDto;
 import pl.kucharski.Kordi.entity.User;
+import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.repository.UserRepository;
 import pl.kucharski.Kordi.service.verification.VerificationService;
 import pl.kucharski.Kordi.validator.EmailValidator;
@@ -40,11 +40,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findUserByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found in the database with given username: " + username);
-        } else if (!user.isEnabled()) {
+    public UserDetails loadUserByUsername(String username) {
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User not found in database"));
+        if (!user.isEnabled()) {
             throw new DisabledException("User is not verified");
         }
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
@@ -53,9 +52,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public String saveUser(UserRegistrationDto user, boolean phoneVerification) {
-        User foundUserByEmail = getUserByEmail(user.getEmail());
-        User foundUserByUsername = getUserByUsername(user.getUsername());
-        User foundUserByPhone = getUserByPhone(user.getPhone());
+        User foundUserByEmail = userRepository.findUserByEmail(user.getEmail()).orElse(null);
+        User foundUserByUsername = userRepository.findUserByUsername(user.getUsername()).orElse(null);;
+        User foundUserByPhone = userRepository.findUserByPhone(user.getPhone()).orElse(null);;
+
         // If given user attributes are the same, send verification token again
         if (foundUserByUsername != null && foundUserByEmail != null && foundUserByPhone != null) {
             if (foundUserByUsername.equals(foundUserByEmail) && foundUserByUsername.equals(foundUserByPhone)
@@ -119,30 +119,30 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User getUserById(long id) {
         return userRepository.findById(id)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new UserNotFoundException("User not found in database"));
     }
 
     @Override
     public User getUserByUsername(String username) {
-        return userRepository.findUserByUsername(username);
+        return userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User not found in database"));
     }
 
     @Override
     public User getUserByEmail(String email) {
-        return userRepository.findUserByEmail(email);
+        return userRepository.findUserByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found in database"));
     }
 
     @Override
     public User getUserByPhone(String phone) {
-        return userRepository.findUserByPhone(phone);
+        return userRepository.findUserByPhone(phone)
+                .orElseThrow(() -> new UserNotFoundException("User not found in database"));
     }
 
     @Override
     public List<User> getUsers() {
         return userRepository.findAll();
     }
-
-
-
 
 }
