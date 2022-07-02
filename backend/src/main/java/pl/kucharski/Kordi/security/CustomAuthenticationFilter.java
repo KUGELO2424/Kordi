@@ -53,7 +53,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             Map<String, String> error = new HashMap<>();
             error.put("error", e.getMessage());
             response.setContentType(APPLICATION_JSON_VALUE);
-            response.setStatus(403);
+            response.setStatus(401);
             try {
                 new ObjectMapper().writeValue(response.getOutputStream(), error);
             } catch (IOException ex) {
@@ -66,7 +66,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain chain, Authentication authentication)
-            throws IOException, ServletException {
+            throws IOException {
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils
                 .commaSeparatedStringToAuthorityList("ROLE_USER");
         User user = (User) authentication.getPrincipal();
@@ -88,7 +88,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                               AuthenticationException failed)
-            throws IOException, ServletException {
+            throws IOException {
         Map<String, String> error = new HashMap<>();
         error.put("error", failed.getMessage());
         response.setContentType(APPLICATION_JSON_VALUE);

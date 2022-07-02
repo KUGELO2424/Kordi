@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
@@ -29,7 +28,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     private final Algorithm tokenAlgorithm;
 
-    public CustomAuthorizationFilter(Algorithm tokenAlgorithm) {
+    public CustomAuthorizationFilter(Algorithm tokenAlgorithm)   {
         this.tokenAlgorithm = tokenAlgorithm;
     }
 
@@ -54,7 +53,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 filterChain.doFilter(request, response);
             } catch(Exception ex) {
-                response.setHeader("error", ex.getMessage());
                 response.setStatus(UNAUTHORIZED.value());
                 Map<String, String> error = new HashMap<>();
                 error.put("error", ex.getMessage());
