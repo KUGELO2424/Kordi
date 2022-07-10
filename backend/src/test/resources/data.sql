@@ -196,7 +196,8 @@ VALUES ('Test', 'Test', 'test', '$2a$12$exSprWI2lA.TgHrkIQyfR.QAHfsOVaCPKBLBhMUO
 --
 -- Dane email_token
 --
-INSERT INTO email_token VALUES (1, 'qwerty123456', '2022-06-28 15:00:00', '2022-06-28 15:15:00', null, 1);
+INSERT INTO email_token (token, created_at, expires_at, confirmed_at, user_id)
+VALUES ('qwerty123456', '2022-06-28 15:00:00', '2022-06-28 15:15:00', null, 7);
 
 --
 -- Dane collection
