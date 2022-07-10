@@ -1,9 +1,11 @@
 package pl.kucharski.Kordi.service.verification;
 
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import pl.kucharski.Kordi.dto.UserDTO;
 import pl.kucharski.Kordi.entity.EmailToken;
 import pl.kucharski.Kordi.entity.User;
 
@@ -44,14 +46,16 @@ public class EmailVerificationService implements VerificationService{
             helper.setSubject("Zweryfikuj swój email");
             helper.setFrom("help@kordi.com");
             mailSender.send(mimeMessage);
+        } catch(MailSendException e) {
+            throw new IllegalStateException("Failed to send an email. Connection failed");
         } catch(MessagingException e) {
-            throw new IllegalStateException("Failed to send email");
+            throw new IllegalStateException("Failed to send an email");
         }
         return token;
     }
 
     @Override
-    public String verify(User user, String token) {
+    public String verify(UserDTO user, String token) {
         EmailToken emailToken = emailTokenService.getToken(token)
                 .orElseThrow(() -> new IllegalStateException("token not found"));
         if (emailToken.getConfirmedAt() != null) {

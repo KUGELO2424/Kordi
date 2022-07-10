@@ -1,15 +1,14 @@
 package pl.kucharski.Kordi.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.web.bind.annotation.*;
-import pl.kucharski.Kordi.dto.UserRegistrationDto;
+import pl.kucharski.Kordi.dto.UserDTO;
+import pl.kucharski.Kordi.dto.UserRegistrationDTO;
 import pl.kucharski.Kordi.entity.EmailToken;
 import pl.kucharski.Kordi.entity.User;
 import pl.kucharski.Kordi.service.UserService;
 import pl.kucharski.Kordi.service.verification.EmailTokenService;
 
-import java.util.List;
 
 @RestController
 public class UserController {
@@ -24,13 +23,12 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity<?> getUser() {
-        List<User> users = userService.getUsers();
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok(userService.getUsers());
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> saveUser(@RequestParam("phoneVerification") boolean phoneVerification,
-                                      @RequestBody UserRegistrationDto user) {
+                                      @RequestBody UserRegistrationDTO user) {
         String result = "";
         try {
             result = userService.saveUser(user, phoneVerification);
@@ -46,7 +44,7 @@ public class UserController {
         String result = "";
         try {
             if (phone != null) {
-                User user = userService.getUserByPhone(phone);
+                UserDTO user = userService.getUserByPhone(phone);
                 if (user == null) {
                     throw new IllegalStateException("User not found with given phone number");
                 }
@@ -57,7 +55,9 @@ public class UserController {
                 throw new IllegalStateException("User not found with given token");
             });
             User user = emailToken.getUser();
-            result = userService.verifyToken(user, token, false);
+            UserDTO userDTO = new UserDTO(user.getFirstName(), user.getLastName(),
+                    user.getUsername(), user.getEmail(), user.getPhone(), user.isEnabled());
+            result = userService.verifyToken(userDTO, token, false);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

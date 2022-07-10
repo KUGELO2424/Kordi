@@ -10,7 +10,8 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import pl.kucharski.Kordi.dto.UserRegistrationDto;
+import pl.kucharski.Kordi.dto.UserDTO;
+import pl.kucharski.Kordi.dto.UserRegistrationDTO;
 import pl.kucharski.Kordi.entity.User;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.repository.UserRepository;
@@ -38,6 +39,25 @@ class UserServiceImplTest {
     private EmailValidator emailValidator;
     private PasswordEncoder passwordEncoder;
     private UserServiceImpl underTest;
+
+    private static final User NOT_VERIFIED_USER = new User("Test", "test", "test123", "qwerty",
+            "test@mail.com", "110339332", false);
+    private static final User VERIFIED_USER = new User("Test", "test", "test123", "qwerty",
+            "test@mail.com", "110339332", true);
+
+    private static final UserDTO NOT_VERIFIED_USER_DTO= new UserDTO("Test", "test", "test123",
+            "test@mail.com", "110339332", false);
+    private static final UserDTO VERIFIED_USER_DTO= new UserDTO("Test", "test", "test123",
+            "test@mail.com", "110339332", true);
+
+    private static final UserRegistrationDTO USER_TO_REGISTER_1 = new UserRegistrationDTO("Test",
+            "test", "test123", "qwerty","test@mail.com", "110339332");
+    private static final UserRegistrationDTO USER_TO_REGISTER_2 = new UserRegistrationDTO("Test",
+            "test", "test1234", "qwerty","test@mail.com", "987142231");
+    private static final UserRegistrationDTO USER_TO_REGISTER_3 = new UserRegistrationDTO("Test",
+            "test", "test1234", "qwerty","test2@mail.com", "110339332");
+    private static final UserRegistrationDTO INVALID_USER_TO_REGISTER = new UserRegistrationDTO("Test",
+            "test", "test123", "qwerty","@mail.com", "110339332");
 
     @BeforeEach
     void setUp() {
@@ -68,13 +88,11 @@ class UserServiceImplTest {
     @Test
     void shouldThrowWhenUserNotVerified() {
         // given
-        User user = new User("Test", "test", "testuser", "qwerty",
-                "test@mail.com", "110339332", false);
-        given(userRepository.findUserByUsername("testuser")).willReturn(Optional.of(user));
+        given(userRepository.findUserByUsername("test123")).willReturn(Optional.of(NOT_VERIFIED_USER));
 
         // when + then
         DisabledException thrown = assertThrows(DisabledException.class, () -> {
-            underTest.loadUserByUsername("testuser");
+            underTest.loadUserByUsername("test123");
         });
         assertEquals("User is not verified", thrown.getMessage());
     }
@@ -82,25 +100,19 @@ class UserServiceImplTest {
     @Test
     void shouldLoadsUser() {
         // given
-        User user = new User("Test", "test", "testuser", "qwerty",
-                "test@mail.com", "110339332", true);
-        given(userRepository.findUserByUsername("testuser")).willReturn(Optional.of(user));
+        given(userRepository.findUserByUsername("test123")).willReturn(Optional.of(VERIFIED_USER));
 
         // when
-        UserDetails userDetails = underTest.loadUserByUsername("testuser");
+        UserDetails userDetails = underTest.loadUserByUsername("test123");
 
         // then
-        assertEquals("testuser", userDetails.getUsername());
+        assertEquals("test123", userDetails.getUsername());
     }
 
     @Test
     void shouldSaveUserWithEmailVerification() {
-        // given
-        UserRegistrationDto user = new UserRegistrationDto("Test", "test", "test123", "qwerty",
-                "test@mail.com", "110339332");
-
-        // when
-        underTest.saveUser(user, false);
+        // give + when
+        underTest.saveUser(USER_TO_REGISTER_1, false);
 
         // then
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -110,12 +122,8 @@ class UserServiceImplTest {
 
     @Test
     void shouldSaveUserWithPhoneVerification() {
-        // given
-        UserRegistrationDto user = new UserRegistrationDto("Test", "test", "test123", "qwerty",
-                "test@mail.com", "110339332");
-
-        // when
-        underTest.saveUser(user, true);
+        // given + when
+        underTest.saveUser(USER_TO_REGISTER_1, true);
 
         // then
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -126,16 +134,12 @@ class UserServiceImplTest {
     @Test
     void shouldSendEmailVerificationWhenUserExistsAndIsDisabled() {
         // given
-        UserRegistrationDto userDto = new UserRegistrationDto("Test", "test", "testuser", "qwerty",
-                "test@mail.com", "110339332");
-        User user = new User("Test", "test", "testuser", "qwerty",
-                "test@mail.com", "110339332", false);
-        given(userRepository.findUserByUsername("testuser")).willReturn(Optional.of(user));
-        given(userRepository.findUserByEmail("test@mail.com")).willReturn(Optional.of(user));
-        given(userRepository.findUserByPhone("110339332")).willReturn(Optional.of(user));
+        given(userRepository.findUserByUsername("test123")).willReturn(Optional.of(NOT_VERIFIED_USER));
+        given(userRepository.findUserByEmail("test@mail.com")).willReturn(Optional.of(NOT_VERIFIED_USER));
+        given(userRepository.findUserByPhone("110339332")).willReturn(Optional.of(NOT_VERIFIED_USER));
 
         // when
-        underTest.saveUser(userDto, false);
+        underTest.saveUser(USER_TO_REGISTER_1, false);
 
         // then
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -144,17 +148,13 @@ class UserServiceImplTest {
 
     @Test
     void shouldSendPhoneVerificationWhenUserExistsAndIsDisabled() {
-        // given
-        UserRegistrationDto userDto = new UserRegistrationDto("Test", "test", "testuser", "qwerty",
-                "test@mail.com", "110339332");
-        User user = new User("Test", "test", "testuser", "qwerty",
-                "test@mail.com", "110339332", false);
-        given(userRepository.findUserByUsername("testuser")).willReturn(Optional.of(user));
-        given(userRepository.findUserByEmail("test@mail.com")).willReturn(Optional.of(user));
-        given(userRepository.findUserByPhone("110339332")).willReturn(Optional.of(user));
+        //given
+        given(userRepository.findUserByUsername("test123")).willReturn(Optional.of(NOT_VERIFIED_USER));
+        given(userRepository.findUserByEmail("test@mail.com")).willReturn(Optional.of(NOT_VERIFIED_USER));
+        given(userRepository.findUserByPhone("110339332")).willReturn(Optional.of(NOT_VERIFIED_USER));
 
         // when
-        underTest.saveUser(userDto, true);
+        underTest.saveUser(USER_TO_REGISTER_1, true);
 
         // then
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -163,13 +163,9 @@ class UserServiceImplTest {
 
     @Test
     void shouldThrowWhenEmailIsInvalid() {
-        // given
-        UserRegistrationDto user = new UserRegistrationDto("Test", "test", "test123", "qwerty",
-                "@mail.com", "110339332");
-
         // when + then
         IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> {
-            underTest.saveUser(user, false);
+            underTest.saveUser(INVALID_USER_TO_REGISTER, false);
         });
 
         assertEquals("Email is not valid", thrown.getMessage());
@@ -179,15 +175,11 @@ class UserServiceImplTest {
     @Test
     void shouldThrowWhenUsernameIsAlreadyInUse() {
         // given
-        UserRegistrationDto userDto = new UserRegistrationDto("Test", "test", "testuser", "qwerty",
-                "test@mail.com", "110339332");
-        User user = new User("Test2", "test2", "testuser", "qwerty",
-                "test2@mail.com", "111339332", false);
-        given(userRepository.findUserByUsername("testuser")).willReturn(Optional.of(user));
+        given(userRepository.findUserByUsername("test123")).willReturn(Optional.of(NOT_VERIFIED_USER));
 
         // when + then
         IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> {
-            underTest.saveUser(userDto, false);
+            underTest.saveUser(USER_TO_REGISTER_1, false);
         });
 
         assertEquals("Username is already in use!", thrown.getMessage());
@@ -197,15 +189,11 @@ class UserServiceImplTest {
     @Test
     void shouldThrowWhenEmailIsAlreadyInUse() {
         // given
-        UserRegistrationDto userDto = new UserRegistrationDto("Test", "test", "testuser", "qwerty",
-                "test@mail.com", "110339332");
-        User user = new User("Test2", "test2", "testuser", "qwerty",
-                "test@mail.com", "111339332", false);
-        given(userRepository.findUserByEmail("test@mail.com")).willReturn(Optional.of(user));
+        given(userRepository.findUserByEmail("test@mail.com")).willReturn(Optional.of(NOT_VERIFIED_USER));
 
         // when + then
         IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> {
-            underTest.saveUser(userDto, false);
+            underTest.saveUser(USER_TO_REGISTER_2, false);
         });
 
         assertEquals("Email is already in use!", thrown.getMessage());
@@ -215,15 +203,11 @@ class UserServiceImplTest {
     @Test
     void shouldThrowWhenPhoneIsAlreadyInUse() {
         // given
-        UserRegistrationDto userDto = new UserRegistrationDto("Test", "test", "testuser", "qwerty",
-                "test@mail.com", "110339332");
-        User user = new User("Test2", "test2", "testuser", "qwerty",
-                "test@mail.com", "110339332", false);
-        given(userRepository.findUserByPhone("110339332")).willReturn(Optional.of(user));
+        given(userRepository.findUserByPhone("110339332")).willReturn(Optional.of(NOT_VERIFIED_USER));
 
         // when + then
         IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> {
-            underTest.saveUser(userDto, false);
+            underTest.saveUser(USER_TO_REGISTER_3, false);
         });
 
         assertEquals("Phone number is already in use!", thrown.getMessage());
@@ -232,32 +216,26 @@ class UserServiceImplTest {
 
     @Test
     void shouldEnableUsers() {
-        // given
-        User user = new User("Test", "test", "test123", "qwerty",
-                "test@mail.com", "110339332", false);
-
         // when
-        underTest.enableUser(user);
+        underTest.enableUser(NOT_VERIFIED_USER_DTO);
 
         // then
         ArgumentCaptor<String> userArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(userRepository).enableUser(userArgumentCaptor.capture());
         String capturedUsername = userArgumentCaptor.getValue();
-        assertEquals(user.getUsername(), capturedUsername);
+        assertEquals(NOT_VERIFIED_USER_DTO.getUsername(), capturedUsername);
     }
 
     @Test
     void shouldVerifyTokenOnEmailVerification() {
         // given
-        User user = new User("Test", "test", "test123", "qwerty",
-                "test@mail.com", "110339332", false);
-        given(emailVerificationService.verify(user, "token")).willReturn("verified");
+        given(emailVerificationService.verify(NOT_VERIFIED_USER_DTO, "token")).willReturn("verified");
 
         // when
-        String result = underTest.verifyToken(user, "token", false);
+        String result = underTest.verifyToken(NOT_VERIFIED_USER_DTO, "token", false);
 
         //then
-        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        ArgumentCaptor<UserDTO> userArgumentCaptor = ArgumentCaptor.forClass(UserDTO.class);
         ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(emailVerificationService).verify(userArgumentCaptor.capture(), stringArgumentCaptor.capture());
         verify(userRepository).enableUser(stringArgumentCaptor.capture());
@@ -267,15 +245,13 @@ class UserServiceImplTest {
     @Test
     void shouldVerifyTokenOnPhoneVerification() {
         // given
-        User user = new User("Test", "test", "test123", "qwerty",
-                "test@mail.com", "110339332", false);
-        given(phoneVerificationService.verify(user, "token")).willReturn("approved");
+        given(phoneVerificationService.verify(NOT_VERIFIED_USER_DTO, "token")).willReturn("approved");
 
         // when
-        String result = underTest.verifyToken(user, "token", true);
+        String result = underTest.verifyToken(NOT_VERIFIED_USER_DTO, "token", true);
 
         //then
-        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        ArgumentCaptor<UserDTO> userArgumentCaptor = ArgumentCaptor.forClass(UserDTO.class);
         ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(phoneVerificationService).verify(userArgumentCaptor.capture(), stringArgumentCaptor.capture());
         verify(userRepository).enableUser(stringArgumentCaptor.capture());
@@ -285,15 +261,13 @@ class UserServiceImplTest {
     @Test
     void shouldGetUserById() {
         // given
-        User user = new User("Test", "test", "testuser", "qwerty",
-                "test@mail.com", "110339332", true);
-        given(userRepository.findById(1L)).willReturn(Optional.of(user));
+        given(userRepository.findById(1L)).willReturn(Optional.of(NOT_VERIFIED_USER));
 
         // when
-        User foundUser = underTest.getUserById(1L);
+        UserDTO foundUser = underTest.getUserById(1L);
 
         // then
-        assertEquals(user, foundUser);
+        assertEquals(NOT_VERIFIED_USER_DTO, foundUser);
     }
 
     @Test
@@ -308,15 +282,13 @@ class UserServiceImplTest {
     @Test
     void shouldGetUserByUsername() {
         // given
-        User user = new User("Test", "test", "testuser", "qwerty",
-                "test@mail.com", "110339332", true);
-        given(userRepository.findUserByUsername("testuser")).willReturn(Optional.of(user));
+        given(userRepository.findUserByUsername("testuser")).willReturn(Optional.of(VERIFIED_USER));
 
         // when
-        User foundUser = underTest.getUserByUsername("testuser");
+        UserDTO foundUser = underTest.getUserByUsername("testuser");
 
         // then
-        assertEquals(user, foundUser);
+        assertEquals(VERIFIED_USER_DTO, foundUser);
     }
 
     @Test
@@ -331,15 +303,13 @@ class UserServiceImplTest {
     @Test
     void shouldGetUserByEmail() {
         // given
-        User user = new User("Test", "test", "testuser", "qwerty",
-                "test@mail.com", "110339332", true);
-        given(userRepository.findUserByEmail("test@mail.com")).willReturn(Optional.of(user));
+        given(userRepository.findUserByEmail("test@mail.com")).willReturn(Optional.of(VERIFIED_USER));
 
         // when
-        User foundUser = underTest.getUserByEmail("test@mail.com");
+        UserDTO foundUser = underTest.getUserByEmail("test@mail.com");
 
         // then
-        assertEquals(user, foundUser);
+        assertEquals(VERIFIED_USER_DTO, foundUser);
     }
 
     @Test
@@ -354,15 +324,13 @@ class UserServiceImplTest {
     @Test
     void shouldGetUserByPhone() {
         // given
-        User user = new User("Test", "test", "testuser", "qwerty",
-                "test@mail.com", "110339332", true);
-        given(userRepository.findUserByPhone("110339332")).willReturn(Optional.of(user));
+        given(userRepository.findUserByPhone("110339332")).willReturn(Optional.of(VERIFIED_USER));
 
         // when
-        User foundUser = underTest.getUserByPhone("110339332");
+        UserDTO foundUser = underTest.getUserByPhone("110339332");
 
         // then
-        assertEquals(user, foundUser);
+        assertEquals(VERIFIED_USER_DTO, foundUser);
     }
 
     @Test

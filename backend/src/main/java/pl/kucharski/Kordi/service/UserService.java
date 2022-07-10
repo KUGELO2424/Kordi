@@ -1,18 +1,18 @@
 package pl.kucharski.Kordi.service;
 
-import org.springframework.http.ResponseEntity;
-import pl.kucharski.Kordi.dto.UserRegistrationDto;
+import pl.kucharski.Kordi.dto.UserDTO;
+import pl.kucharski.Kordi.dto.UserRegistrationDTO;
 import pl.kucharski.Kordi.entity.User;
 
 import java.util.List;
 
 public interface UserService {
-    String saveUser(UserRegistrationDto user, boolean phoneVerification);
-    User getUserById(long id);
-    User getUserByUsername(String username);
-    User getUserByEmail(String email);
-    User getUserByPhone(String phone);
-    List<User> getUsers();
-    String verifyToken(User user, String token, boolean phoneVerification);
+    String saveUser(UserRegistrationDTO user, boolean phoneVerification);
+    UserDTO getUserById(long id);
+    UserDTO getUserByUsername(String username);
+    UserDTO getUserByEmail(String email);
+    UserDTO getUserByPhone(String phone);
+    List<UserDTO> getUsers();
+    String verifyToken(UserDTO user, String token, boolean phoneVerification);
 
 }

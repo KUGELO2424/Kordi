@@ -5,6 +5,7 @@ import com.twilio.rest.verify.v2.service.Verification;
 import com.twilio.rest.verify.v2.service.VerificationCheck;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import pl.kucharski.Kordi.dto.UserDTO;
 import pl.kucharski.Kordi.entity.User;
 
 @Service
@@ -35,7 +36,7 @@ public class PhoneVerificationService implements VerificationService{
     }
 
     @Override
-    public String verify(User user, String token) {
+    public String verify(UserDTO user, String token) {
         VerificationCheck verificationCheck = null;
         String phoneNumber = "+48" + user.getPhone();
 
