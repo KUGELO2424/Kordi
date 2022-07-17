@@ -216,18 +216,6 @@ class UserServiceImplTest {
     }
 
     @Test
-    void shouldEnableUsers() {
-        // when
-        underTest.enableUser(NOT_VERIFIED_USER_DTO);
-
-        // then
-        ArgumentCaptor<String> userArgumentCaptor = ArgumentCaptor.forClass(String.class);
-        verify(userRepository).enableUser(userArgumentCaptor.capture());
-        String capturedUsername = userArgumentCaptor.getValue();
-        assertEquals(NOT_VERIFIED_USER_DTO.getUsername(), capturedUsername);
-    }
-
-    @Test
     void shouldVerifyTokenOnEmailVerification() {
         // given
         given(emailVerificationService.verify(NOT_VERIFIED_USER_DTO, "token")).willReturn("verified");

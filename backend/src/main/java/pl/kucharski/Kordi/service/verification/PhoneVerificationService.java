@@ -9,6 +9,9 @@ import pl.kucharski.Kordi.dto.UserDTO;
 import pl.kucharski.Kordi.entity.User;
 import pl.kucharski.Kordi.exception.UserVerifyException;
 
+/**
+ * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ */
 @Service
 public class PhoneVerificationService implements VerificationService{
 
@@ -21,6 +24,9 @@ public class PhoneVerificationService implements VerificationService{
     @Value("${TWILIO_SERVICE_ID}")
     private String SERVICE_ID;
 
+    /**
+     * @see VerificationService#send(User)
+     */
     @Override
     public String send(User user) {
         Verification verification = null;
@@ -36,6 +42,9 @@ public class PhoneVerificationService implements VerificationService{
         return verification.getStatus();
     }
 
+    /**
+     * @see VerificationService#verify(UserDTO, String)
+     */
     @Override
     public String verify(UserDTO user, String token) {
         VerificationCheck verificationCheck = null;

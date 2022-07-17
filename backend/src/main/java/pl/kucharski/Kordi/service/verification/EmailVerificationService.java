@@ -16,6 +16,9 @@ import javax.mail.internet.MimeMessage;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ */
 @Service
 public class EmailVerificationService implements VerificationService{
 
@@ -27,6 +30,9 @@ public class EmailVerificationService implements VerificationService{
         this.emailTokenService = emailTokenService;
     }
 
+    /**
+     * @see VerificationService#send(User)
+     */
     @Override
     @Async
     public String send(User user) {
@@ -56,6 +62,9 @@ public class EmailVerificationService implements VerificationService{
         return token;
     }
 
+    /**
+     * @see VerificationService#verify(UserDTO, String)
+     */
     @Override
     public String verify(UserDTO user, String token) {
         EmailToken emailToken = emailTokenService.getToken(token)

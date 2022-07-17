@@ -21,6 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ */
+
 @Service
 @Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -42,6 +46,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.phoneVerificationService = phoneVerificationService;
     }
 
+    /**
+     * @see UserDetailsService#loadUserByUsername(String)
+     * @throws DisabledException when user found but is not enabled
+     */
     @Override
     public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findUserByUsername(username)
@@ -53,6 +61,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 new ArrayList<>());
     }
 
+    /**
+     * @see UserService#saveUser(UserRegistrationDTO, boolean)
+     */
     @Override
     @Transactional
     public String saveUser(UserRegistrationDTO user, boolean phoneVerification) {
@@ -92,14 +103,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
     }
 
-    private String registerUserWithEmailVerification(User user) {
-        return emailVerificationService.send(user);
-    }
 
-    private String registerUserWithPhoneVerification(User user) {
-        return phoneVerificationService.send(user);
-    }
 
+    /**
+     * @see UserService#verifyToken(UserDTO, String, boolean)
+     */
     @Override
     public String verifyToken(UserDTO user, String token, boolean phoneVerification) {
         String response;
@@ -114,10 +122,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
        return response;
     }
 
-    public void enableUser(UserDTO user) {
-        userRepository.enableUser(user.getUsername());
-    }
 
+    /**
+     * @see UserService#getUserById(long)
+     */
     @Override
     public UserDTO getUserById(long id) {
         User user = userRepository.findById(id)
@@ -130,6 +138,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 user.isEnabled());
     }
 
+    /**
+     * @see UserService#getUserByUsername(String) (long)
+     */
     @Override
     public UserDTO getUserByUsername(String username) {
         User user = userRepository.findUserByUsername(username)
@@ -142,6 +153,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 user.isEnabled());
     }
 
+    /**
+     * @see UserService#getUserByEmail(String)
+     */
     @Override
     public UserDTO getUserByEmail(String email) {
         User user = userRepository.findUserByEmail(email)
@@ -154,6 +168,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 user.isEnabled());
     }
 
+    /**
+     * @see UserService#getUserByPhone(String)
+     */
     @Override
     public UserDTO getUserByPhone(String phone) {
         User user = userRepository.findUserByPhone(phone)
@@ -166,6 +183,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 user.isEnabled());
     }
 
+    /**
+     * @see UserService#getUsers()
+     */
     @Override
     public List<UserDTO> getUsers() {
         return userRepository.findAll().stream().map(user -> new UserDTO(
@@ -176,6 +196,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 user.getPhone(),
                 user.isEnabled()
         )).collect(Collectors.toList());
+    }
+
+
+    private void enableUser(UserDTO user) {
+        userRepository.enableUser(user.getUsername());
+    }
+
+
+    private String registerUserWithEmailVerification(User user) {
+        return emailVerificationService.send(user);
+    }
+
+
+    private String registerUserWithPhoneVerification(User user) {
+        return phoneVerificationService.send(user);
     }
 
 }

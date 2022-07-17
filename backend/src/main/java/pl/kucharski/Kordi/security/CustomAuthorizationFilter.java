@@ -24,6 +24,11 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
+/**
+ * Filter responsible for authorization
+ *
+ * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ */
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     private final Algorithm tokenAlgorithm;
@@ -32,13 +37,12 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
         this.tokenAlgorithm = tokenAlgorithm;
     }
 
+    /**
+     * Authorize user request
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        if (request.getServletPath().equals("/login")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
