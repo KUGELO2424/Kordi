@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pl.kucharski.Kordi.dto.UserDTO;
 import pl.kucharski.Kordi.entity.User;
+import pl.kucharski.Kordi.exception.UserVerifyException;
 
 @Service
 public class PhoneVerificationService implements VerificationService{
@@ -49,7 +50,7 @@ public class PhoneVerificationService implements VerificationService{
         if (verificationCheck.getValid()) {
             return verificationCheck.getStatus();
         } else {
-            throw new IllegalStateException("Cannot verify your account");
+            throw new UserVerifyException("Cannot verify your account");
         }
     }
 }

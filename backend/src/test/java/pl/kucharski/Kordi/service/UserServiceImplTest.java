@@ -14,6 +14,7 @@ import pl.kucharski.Kordi.dto.UserDTO;
 import pl.kucharski.Kordi.dto.UserRegistrationDTO;
 import pl.kucharski.Kordi.entity.User;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
+import pl.kucharski.Kordi.exception.UserRegisterException;
 import pl.kucharski.Kordi.repository.UserRepository;
 import pl.kucharski.Kordi.service.verification.VerificationService;
 import pl.kucharski.Kordi.validator.EmailValidator;
@@ -164,7 +165,7 @@ class UserServiceImplTest {
     @Test
     void shouldThrowWhenEmailIsInvalid() {
         // when + then
-        IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> {
+        UserRegisterException thrown = assertThrows(UserRegisterException.class, () -> {
             underTest.saveUser(INVALID_USER_TO_REGISTER, false);
         });
 
@@ -178,7 +179,7 @@ class UserServiceImplTest {
         given(userRepository.findUserByUsername("test123")).willReturn(Optional.of(NOT_VERIFIED_USER));
 
         // when + then
-        IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> {
+        UserRegisterException thrown = assertThrows(UserRegisterException.class, () -> {
             underTest.saveUser(USER_TO_REGISTER_1, false);
         });
 
@@ -192,7 +193,7 @@ class UserServiceImplTest {
         given(userRepository.findUserByEmail("test@mail.com")).willReturn(Optional.of(NOT_VERIFIED_USER));
 
         // when + then
-        IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> {
+        UserRegisterException thrown = assertThrows(UserRegisterException.class, () -> {
             underTest.saveUser(USER_TO_REGISTER_2, false);
         });
 
@@ -206,7 +207,7 @@ class UserServiceImplTest {
         given(userRepository.findUserByPhone("110339332")).willReturn(Optional.of(NOT_VERIFIED_USER));
 
         // when + then
-        IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> {
+        UserRegisterException thrown = assertThrows(UserRegisterException.class, () -> {
             underTest.saveUser(USER_TO_REGISTER_3, false);
         });
 

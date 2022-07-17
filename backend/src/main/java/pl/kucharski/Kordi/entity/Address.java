@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ */
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -17,11 +21,7 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "city")
     private String city;
-
-    @Column(name = "street")
     private String street;
-
 
 }

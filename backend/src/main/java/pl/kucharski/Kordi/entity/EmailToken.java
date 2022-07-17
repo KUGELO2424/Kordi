@@ -6,6 +6,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * Entity that contains email verification token for specific user.
+ * @see User
+ *
+ * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ */
+
 @Data
 @NoArgsConstructor
 @Entity

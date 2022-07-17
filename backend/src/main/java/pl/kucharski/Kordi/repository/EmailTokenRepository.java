@@ -10,6 +10,10 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+/**
+ * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ */
+
 @Repository
 public interface EmailTokenRepository extends JpaRepository<EmailToken, Long> {
     Optional<EmailToken> findByToken(String token);

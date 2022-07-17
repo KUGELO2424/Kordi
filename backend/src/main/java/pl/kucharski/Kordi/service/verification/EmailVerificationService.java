@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import pl.kucharski.Kordi.dto.UserDTO;
 import pl.kucharski.Kordi.entity.EmailToken;
 import pl.kucharski.Kordi.entity.User;
+import pl.kucharski.Kordi.exception.UserRegisterException;
+import pl.kucharski.Kordi.exception.UserVerifyException;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -47,9 +49,9 @@ public class EmailVerificationService implements VerificationService{
             helper.setFrom("help@kordi.com");
             mailSender.send(mimeMessage);
         } catch(MailSendException e) {
-            throw new IllegalStateException("Failed to send an email. Connection failed");
+            throw new UserRegisterException("Failed to send an email. Connection failed");
         } catch(MessagingException e) {
-            throw new IllegalStateException("Failed to send an email");
+            throw new UserRegisterException("Failed to send an email");
         }
         return token;
     }
@@ -59,11 +61,11 @@ public class EmailVerificationService implements VerificationService{
         EmailToken emailToken = emailTokenService.getToken(token)
                 .orElseThrow(() -> new IllegalStateException("token not found"));
         if (emailToken.getConfirmedAt() != null) {
-            throw new IllegalStateException("Email already confirmed");
+            throw new UserVerifyException("Email already confirmed");
         }
         LocalDateTime expiredAt = emailToken.getExpiresAt();
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("Token expired");
+            throw new UserVerifyException("Token expired");
         }
         emailTokenService.setConfirmedAt(token);
 

@@ -7,6 +7,15 @@ import pl.kucharski.Kordi.enums.ItemType;
 
 import javax.persistence.*;
 
+/**
+ * Entity that represents collection item. User can choose type, which determine the amount of collected items.
+ * It can be some number or weight in kilograms. Also, user can choose UNLIMITED then currentAmount and maxAmount
+ * will be 0.
+ * @see Collection
+ *
+ * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ */
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -18,10 +27,9 @@ public class CollectionItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "type", columnDefinition="ENUM('AMOUNT', 'WEIGHT', 'UNLIMITED')")
+    @Column(columnDefinition="ENUM('AMOUNT', 'WEIGHT', 'UNLIMITED')")
     @Enumerated(EnumType.STRING)
     private ItemType type;
 

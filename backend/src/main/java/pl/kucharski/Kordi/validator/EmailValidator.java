@@ -4,6 +4,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.function.Predicate;
 
+/**
+ * Class responsible for email pattern validation.
+ *
+ * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ */
+
 @Service
 public class EmailValidator implements Predicate<String> {
 

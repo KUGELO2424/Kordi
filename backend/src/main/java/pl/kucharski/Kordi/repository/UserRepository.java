@@ -9,6 +9,10 @@ import pl.kucharski.Kordi.entity.User;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
+/**
+ * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ */
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findUserByUsername(String username);

@@ -1,8 +1,11 @@
+DROP SCHEMA IF EXISTS kordi;
+
+CREATE SCHEMA kordi;
 
 --
 -- Struktura tabeli user
 --
-CREATE TABLE account (
+CREATE TABLE IF NOT EXISTS account (
 	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
@@ -16,7 +19,7 @@ CREATE TABLE account (
 --
 -- Struktura tabeli email_token
 --
-CREATE TABLE email_token (
+CREATE TABLE IF NOT EXISTS email_token (
 	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     token VARCHAR(200) NOT NULL,
 	created_at DATETIME NOT NULL,
@@ -29,7 +32,7 @@ CREATE TABLE email_token (
 --
 -- Struktura tabeli collection
 --
-CREATE TABLE collection (
+CREATE TABLE IF NOT EXISTS collection (
 	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(100) NOT NULL,
     description VARCHAR(1000),
@@ -42,7 +45,7 @@ CREATE TABLE collection (
 --
 -- Struktura tabeli address
 --
-CREATE TABLE address (
+CREATE TABLE IF NOT EXISTS address (
 	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     city VARCHAR(100) NOT NULL,
     street VARCHAR(100),
@@ -53,7 +56,7 @@ CREATE TABLE address (
 --
 -- Struktura tabeli collection_item
 --
-CREATE TABLE collection_item (
+CREATE TABLE IF NOT EXISTS collection_item (
 	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     type ENUM('AMOUNT', 'WEIGHT', 'UNLIMITED'),
@@ -66,7 +69,7 @@ CREATE TABLE collection_item (
 --
 -- Struktura tabeli submitted_item
 --
-CREATE TABLE submitted_item (
+CREATE TABLE IF NOT EXISTS submitted_item (
 	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     collection_id BIGINT NOT NULL,
 	user_id BIGINT NOT NULL,
@@ -81,7 +84,7 @@ CREATE TABLE submitted_item (
 --
 -- Struktura tabeli collection_comment
 --
-CREATE TABLE collection_comment (
+CREATE TABLE IF NOT EXISTS collection_comment (
 	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     content VARCHAR(250) NOT NULL,
 	created_time DATETIME NOT NULL,
@@ -94,7 +97,7 @@ CREATE TABLE collection_comment (
 --
 -- Struktura tabeli collection_archive
 --
-CREATE TABLE collection_archive (
+CREATE TABLE IF NOT EXISTS collection_archive (
 	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(100) NOT NULL,
     description VARCHAR(1000),
@@ -109,7 +112,7 @@ CREATE TABLE collection_archive (
 --
 -- Struktura tabeli address_archive
 --
-CREATE TABLE address_archive (
+CREATE TABLE IF NOT EXISTS address_archive (
 	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     city VARCHAR(100) NOT NULL,
     street VARCHAR(100),
@@ -119,7 +122,7 @@ CREATE TABLE address_archive (
 --
 -- Struktura tabeli collection_item_archive
 --
-CREATE TABLE collection_item_archive (
+CREATE TABLE IF NOT EXISTS collection_item_archive (
 	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     type ENUM('amount', 'weight', 'unlimited'),
@@ -131,7 +134,7 @@ CREATE TABLE collection_item_archive (
 --
 -- Struktura tabeli submitted_item_archive
 --
-CREATE TABLE submitted_item_archive (
+CREATE TABLE IF NOT EXISTS submitted_item_archive (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     collection_id BIGINT NOT NULL,
 	user_id BIGINT NOT NULL,
@@ -202,25 +205,31 @@ VALUES ('qwerty123456', '2022-06-28 15:00:00', '2022-06-28 15:15:00', null, 7);
 --
 -- Dane collection
 --
-INSERT INTO collection VALUES (1, 'Zbiórka dla Bartka', 'Zbieramy ubrania dla chłopca', null, null, 4);
-INSERT INTO collection VALUES (2, 'Zbiórka dla Oliwi', 'Zbieramy ubrania dziewczęce', null, null,  4);
+INSERT INTO collection (title, description, start_time, end_time, user_id)
+VALUES ('Zbiórka dla Bartka', 'Zbieramy ubrania dla chłopca', null, null, 4);
+INSERT INTO collection (title, description, start_time, end_time, user_id)
+VALUES ('Zbiórka dla Oliwi', 'Zbieramy ubrania dziewczęce', null, null,  4);
 
 --
 -- Dane address
 --
-INSERT INTO address VALUES (1, 'Łódź', 'Piotrkowska 54, m. 4', 1);
-INSERT INTO address VALUES (2, 'Łódź', 'Piotrkowska 54, m. 4', 2);
+INSERT INTO address (city, street, collection_id)
+VALUES ('Łódź', 'Piotrkowska 54, m. 4', 1);
+INSERT INTO address (city, street, collection_id)
+VALUES ('Łódź', 'Piotrkowska 54, m. 4', 2);
 
 --
 -- Dane collection_item
 --
-INSERT INTO collection_item VALUES (1, 'Buty sportowe', 'amount', 0, 4, 1);
-INSERT INTO collection_item VALUES (2, 'Koszulki', 'amount', 1, 10, 1);
-
-INSERT INTO collection_item VALUES (3, 'Spodnie', 'amount', 0, 2, 2);
+INSERT INTO collection_item (name, type, current_amount, max_amount, collection_id)
+VALUES ('Buty sportowe', 'amount', 0, 4, 1);
+INSERT INTO collection_item (name, type, current_amount, max_amount, collection_id)
+VALUES ('Koszulki', 'amount', 1, 10, 1);
+INSERT INTO collection_item (name, type, current_amount, max_amount, collection_id)
+VALUES ('Spodnie', 'amount', 0, 2, 2);
 
 --
 -- Dane submitted_item
 --
-INSERT INTO submitted_item VALUES (1, 1, 2, 2, 1, '2022-06-21 10:00:00');
-
+INSERT INTO submitted_item (collection_id, user_id, item_id, amount, submit_time)
+VALUES (1, 2, 2, 1, '2022-06-21 10:00:00');

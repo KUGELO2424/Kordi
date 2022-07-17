@@ -10,6 +10,14 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Entity that represents collection created by User. Collection can be located in multiple addresses.
+ * It contains list of items and submitted items by Users.
+ * @see User
+ *
+ * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ */
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -21,10 +29,7 @@ public class Collection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "title")
     private String title;
-
-    @Column(name = "description")
     private String description;
 
     @CreationTimestamp

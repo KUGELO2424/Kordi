@@ -11,6 +11,7 @@ import pl.kucharski.Kordi.dto.UserDTO;
 import pl.kucharski.Kordi.dto.UserRegistrationDTO;
 import pl.kucharski.Kordi.entity.User;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
+import pl.kucharski.Kordi.exception.UserRegisterException;
 import pl.kucharski.Kordi.repository.UserRepository;
 import pl.kucharski.Kordi.service.verification.VerificationService;
 import pl.kucharski.Kordi.validator.EmailValidator;
@@ -72,13 +73,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
         if (!emailValidator.test(user.getEmail())) {
-            throw new IllegalStateException("Email is not valid");
+            throw new UserRegisterException("Email is not valid");
         } else if (foundUserByUsername != null) {
-            throw new IllegalStateException("Username is already in use!");
+            throw new UserRegisterException("Username is already in use!");
         } else if (foundUserByEmail != null) {
-            throw new IllegalStateException("Email is already in use!");
+            throw new UserRegisterException("Email is already in use!");
         } else if (foundUserByPhone != null) {
-            throw new IllegalStateException("Phone number is already in use!");
+            throw new UserRegisterException("Phone number is already in use!");
         }
 
         User newUser = new User(user.getFirstName(), user.getLastName(), user.getUsername(),

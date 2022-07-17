@@ -11,6 +11,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import pl.kucharski.Kordi.dto.UserDTO;
 import pl.kucharski.Kordi.entity.EmailToken;
 import pl.kucharski.Kordi.entity.User;
+import pl.kucharski.Kordi.exception.UserVerifyException;
 
 import javax.mail.internet.MimeMessage;
 import java.time.LocalDateTime;
@@ -34,13 +35,9 @@ class EmailVerificationServiceTest {
 
     private static final User NOT_VERIFIED_USER = new User("Test", "test", "test123", "qwerty",
             "test@mail.com", "110339332", false);
-    private static final User VERIFIED_USER = new User("Test", "test", "test123", "qwerty",
-            "test@mail.com", "110339332", true);
 
     private static final UserDTO NOT_VERIFIED_USER_DTO= new UserDTO("Test", "test", "test123",
             "test@mail.com", "110339332", false);
-    private static final UserDTO VERIFIED_USER_DTO= new UserDTO("Test", "test", "test123",
-            "test@mail.com", "110339332", true);
 
     @BeforeEach
     void setUp() {
@@ -97,7 +94,7 @@ class EmailVerificationServiceTest {
         given(tokenService.getToken("testToken")).willReturn(Optional.of(emailToken));
 
         // when + then
-        IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> {
+        UserVerifyException thrown = assertThrows(UserVerifyException.class, () -> {
             underTest.verify(NOT_VERIFIED_USER_DTO, token);
         });
         assertEquals("Email already confirmed", thrown.getMessage());
@@ -112,7 +109,7 @@ class EmailVerificationServiceTest {
         given(tokenService.getToken("testToken")).willReturn(Optional.of(emailToken));
 
         // when + then
-        IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> {
+        UserVerifyException thrown = assertThrows(UserVerifyException.class, () -> {
             underTest.verify(NOT_VERIFIED_USER_DTO, token);
         });
         assertEquals("Token expired", thrown.getMessage());
