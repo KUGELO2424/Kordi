@@ -208,7 +208,9 @@ VALUES ('qwerty123456', '2022-06-28 15:00:00', '2022-06-28 15:15:00', null, 7);
 INSERT INTO collection (title, description, start_time, end_time, user_id)
 VALUES ('Zbiórka dla Bartka', 'Zbieramy ubrania dla chłopca', null, null, 4);
 INSERT INTO collection (title, description, start_time, end_time, user_id)
-VALUES ('Zbiórka dla Oliwi', 'Zbieramy ubrania dziewczęce', null, null,  4);
+VALUES ('Zbiórka dla Oliwii', 'Zbieramy ubrania dziewczęce', null, null,  4);
+INSERT INTO collection (title, description, start_time, end_time, user_id)
+VALUES ('Dary dary dla Oliwii', 'zbieram dary', null, null,  3);
 
 --
 -- Dane address
@@ -217,6 +219,8 @@ INSERT INTO address (city, street, collection_id)
 VALUES ('Łódź', 'Piotrkowska 54, m. 4', 1);
 INSERT INTO address (city, street, collection_id)
 VALUES ('Łódź', 'Piotrkowska 54, m. 4', 2);
+INSERT INTO address (city, street, collection_id)
+VALUES ('Warszawa', 'Wolna 54, m. 4', 3);
 
 --
 -- Dane collection_item

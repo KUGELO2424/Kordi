@@ -15,11 +15,23 @@ import java.util.List;
 @Repository
 public interface CollectionRepository extends JpaRepository<Collection, Long> {
     List<Collection> findByUserUsername(String username, Pageable pageable);
-    List<Collection> findByTitleContaining(String title);
-    @Query(nativeQuery = true, value = "" +
-            "SELECT * FROM collection JOIN address ON collection.id = address.id" +
-            "WHERE collection.title LIKE '%:title%' " +
-            "AND address.city LIKE '%:city' " +
-            "AND address.street '%:street%'")
-    List<Collection> findByTitleAndAddress(String title, String city, String street);
+
+    List<Collection> findByTitleContaining(String title, Pageable pageable);
+
+    @Query(nativeQuery = true, value =
+            "SELECT * FROM collection LEFT JOIN address ON collection.id = address.collection_id " +
+                    "WHERE collection.title LIKE CONCAT('%',?1,'%') " +
+                    "AND address.city LIKE CONCAT('%',?2,'%') " +
+                    "AND address.street LIKE CONCAT('%',?3,'%') ")
+    List<Collection> findByTitleAndAddress(String title, String city, String street, Pageable pageable);
+
+    @Query(nativeQuery = true, value =
+            "SELECT * FROM collection LEFT JOIN address ON collection.id = address.collection_id " +
+                    "LEFT JOIN collection_item ON collection.id = collection_item.collection_id " +
+                    "WHERE collection.title LIKE CONCAT('%',?1,'%') " +
+                    "AND address.city LIKE CONCAT('%',?2,'%') " +
+                    "AND address.street LIKE CONCAT('%',?3,'%') " +
+                    "AND collection_item.name LIKE CONCAT('%', ?4, '%')")
+    List<Collection> findByTitleAndAddressAndItems(String title, String city, String street, String itemName,
+                                                   Pageable pageable);
 }

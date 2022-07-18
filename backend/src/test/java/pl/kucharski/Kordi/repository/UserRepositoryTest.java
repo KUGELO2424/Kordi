@@ -18,12 +18,6 @@ class UserRepositoryTest {
     @Autowired
     private UserRepository underTest;
 
-    @BeforeAll
-    public static void initTest() throws SQLException {
-        Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8082")
-                .start();
-    }
-
     @Test
     void shouldFindUserByUsername() {
         // given
