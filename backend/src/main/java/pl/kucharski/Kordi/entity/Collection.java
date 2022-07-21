@@ -23,11 +23,7 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "collection")
-public class Collection {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Collection extends BaseEntity{
 
     private String title;
     private String description;

@@ -21,11 +21,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "collection_item")
-public class CollectionItem {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class CollectionItem extends BaseEntity{
 
     private String name;
 

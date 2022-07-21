@@ -1,10 +1,11 @@
 package pl.kucharski.Kordi.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * Entity that represents account of app user.
@@ -12,17 +13,11 @@ import javax.persistence.*;
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
  */
 
-@Data
+@Getter
 @NoArgsConstructor
-@EqualsAndHashCode
 @Entity
 @Table(name = "account")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+public class User extends BaseEntity{
 
     @Column(name = "first_name")
     private String firstName;

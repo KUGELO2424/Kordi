@@ -15,11 +15,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "address")
-public class Address {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Address extends BaseEntity{
 
     private String city;
     private String street;

@@ -20,11 +20,7 @@ import java.util.Date;
 @Getter
 @Entity
 @Table(name = "submitted_item")
-public class SubmittedItem {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class SubmittedItem extends BaseEntity{
 
     @Column(name = "amount")
     private int amount;

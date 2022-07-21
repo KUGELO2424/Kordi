@@ -1,6 +1,6 @@
 package pl.kucharski.Kordi.entity;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -13,15 +13,11 @@ import java.time.LocalDateTime;
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
  */
 
-@Data
+@Getter
 @NoArgsConstructor
 @Entity
 @Table(name = "email_token")
-public class EmailToken {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class EmailToken extends BaseEntity{
 
     @Column(name = "token")
     private String token;
