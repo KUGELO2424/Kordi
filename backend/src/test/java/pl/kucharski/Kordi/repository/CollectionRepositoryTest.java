@@ -72,6 +72,20 @@ class CollectionRepositoryTest {
     }
 
     @Test
+    void shouldFindCollectionsByAddress() {
+        // given
+        String title = "";
+        String city = "Warszawa";
+        String street = "";
+
+        // when
+        List<Collection> collections = underTest.findByTitleAndAddress(title, city, street, paging);
+
+        // then
+        Assertions.assertEquals(2, collections.size());
+    }
+
+    @Test
     void shouldFindCollectionsByTitleAndAddressAndItemName() {
         // given
         String title = "Zbiórka";
@@ -80,7 +94,23 @@ class CollectionRepositoryTest {
         String itemName = "Buty";
 
         // when
-        List<Collection> collections = underTest.findByTitleAndAddressAndItems(title, city, street, itemName, paging);
+        List<Collection> collections = underTest.findByTitleAndAddressAndItem(title, city, street, itemName, paging);
+
+        // then
+        Assertions.assertEquals(1, collections.size());
+        Assertions.assertEquals("Zbiórka dla Bartka", collections.get(0).getTitle());
+    }
+
+    @Test
+    void shouldFindCollectionsByItemName() {
+        // given
+        String title = "";
+        String city = "";
+        String street = "";
+        String itemName = "Buty";
+
+        // when
+        List<Collection> collections = underTest.findByTitleAndAddressAndItem(title, city, street, itemName, paging);
 
         // then
         Assertions.assertEquals(1, collections.size());

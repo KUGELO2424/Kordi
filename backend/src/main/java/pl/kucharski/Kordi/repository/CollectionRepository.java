@@ -32,6 +32,6 @@ public interface CollectionRepository extends JpaRepository<Collection, Long> {
                     "AND address.city LIKE CONCAT('%',?2,'%') " +
                     "AND address.street LIKE CONCAT('%',?3,'%') " +
                     "AND collection_item.name LIKE CONCAT('%', ?4, '%')")
-    List<Collection> findByTitleAndAddressAndItems(String title, String city, String street, String itemName,
-                                                   Pageable pageable);
+    List<Collection> findByTitleAndAddressAndItem(String title, String city, String street, String itemName,
+                                                  Pageable pageable);
 }
