@@ -218,6 +218,8 @@ INSERT INTO collection (uuid, title, description, start_time, end_time, user_id)
 VALUES ('dc3d8821-a9d9-43d8-a5d8-695824bd0880', 'Zbiórka dla Oliwii', 'Zbieramy ubrania dziewczęce', null, null,  4);
 INSERT INTO collection (uuid, title, description, start_time, end_time, user_id)
 VALUES ('4c1e22e9-85c2-4cae-add3-0e82e206e9ac', 'Dary dary dla Oliwii', 'zbieram dary', null, null,  3);
+INSERT INTO collection (uuid, title, description, start_time, end_time, user_id)
+VALUES ('1603f612-fd7f-495d-9829-4b637d48c374', 'Pomoc dla Plamy', 'pomoc dla królika', null, null,  3);
 
 --
 -- Dane address
@@ -228,6 +230,8 @@ INSERT INTO address (uuid, city, street, collection_id)
 VALUES ('b6d80c9c-a532-459e-9807-e8a0d9c7ed02', 'Łódź', 'Piotrkowska 54, m. 4', 2);
 INSERT INTO address (uuid, city, street, collection_id)
 VALUES ('b1c4f59d-558e-4ad9-9e5e-7d5a60b50fd9', 'Warszawa', 'Wolna 54, m. 4', 3);
+INSERT INTO address (uuid, city, street, collection_id)
+VALUES ('306f5343-9fa9-4506-ad24-51ea97df06a8', 'Warszawa', 'Noc 20', 3);
 
 --
 -- Dane collection_item
