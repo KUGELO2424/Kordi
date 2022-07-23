@@ -11,6 +11,7 @@ import lombok.ToString;
 
 @Getter
 @AllArgsConstructor
+@EqualsAndHashCode
 @ToString
 public class UserDTO {
 
