@@ -1,5 +1,7 @@
 package pl.kucharski.Kordi.entity;
 
+import lombok.Getter;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -9,6 +11,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @MappedSuperclass
+@Getter
 public class BaseEntity implements Serializable {
 
     @Id
@@ -16,6 +19,13 @@ public class BaseEntity implements Serializable {
     private Long id;
 
     private final String uuid = UUID.randomUUID().toString();
+
+    public BaseEntity() {
+    }
+
+    public BaseEntity(Long id) {
+        this.id = id;
+    }
 
     @Override
     public boolean equals(Object o) {

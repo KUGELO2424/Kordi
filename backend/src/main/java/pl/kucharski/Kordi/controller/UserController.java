@@ -6,7 +6,7 @@ import pl.kucharski.Kordi.dto.UserDTO;
 import pl.kucharski.Kordi.dto.UserRegistrationDTO;
 import pl.kucharski.Kordi.entity.EmailToken;
 import pl.kucharski.Kordi.entity.User;
-import pl.kucharski.Kordi.service.UserService;
+import pl.kucharski.Kordi.service.user.UserService;
 import pl.kucharski.Kordi.service.verification.EmailTokenService;
 
 

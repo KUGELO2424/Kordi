@@ -1,22 +1,22 @@
 package pl.kucharski.Kordi.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @AllArgsConstructor
+@EqualsAndHashCode
 @ToString
+@Builder
 public class CollectionDTO {
 
     private Long id;
     private String title;
     private String description;
-    private Date startTime;
-    private Date endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private String userFirstname;
     private String userLastname;
     private List<AddressDTO> addresses;

@@ -1,4 +1,4 @@
-package pl.kucharski.Kordi.service;
+package pl.kucharski.Kordi.service.user;
 
 import pl.kucharski.Kordi.dto.UserDTO;
 import pl.kucharski.Kordi.dto.UserRegistrationDTO;

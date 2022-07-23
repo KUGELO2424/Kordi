@@ -16,6 +16,7 @@ import pl.kucharski.Kordi.entity.User;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.exception.UserRegisterException;
 import pl.kucharski.Kordi.repository.UserRepository;
+import pl.kucharski.Kordi.service.user.UserServiceImpl;
 import pl.kucharski.Kordi.service.verification.VerificationService;
 import pl.kucharski.Kordi.validator.EmailValidator;
 

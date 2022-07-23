@@ -1,13 +1,13 @@
 package pl.kucharski.Kordi.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,11 +18,10 @@ import java.util.List;
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
  */
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Entity
 @Table(name = "collection")
+@Builder
 public class Collection extends BaseEntity{
 
     private String title;
@@ -30,10 +29,10 @@ public class Collection extends BaseEntity{
 
     @CreationTimestamp
     @Column(name = "start_time")
-    private Date startTime;
+    private LocalDateTime startTime;
 
     @Column(name = "end_time")
-    private Date endTime;
+    private LocalDateTime endTime;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -41,15 +40,44 @@ public class Collection extends BaseEntity{
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "collection_id")
-    private List<Address> addresses;
+    private List<Address> addresses = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "collection_id")
-    private List<CollectionItem> items;
+    private List<CollectionItem> items = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "collection_id")
-    private List<SubmittedItem> submittedItems;
+    private List<SubmittedItem> submittedItems = new ArrayList<>();
 
+    public Collection(Long id, String title, String description, LocalDateTime startTime, LocalDateTime endTime,
+                      User user, List<Address> addresses, List<CollectionItem> items,
+                      List<SubmittedItem> submittedItems) {
+        super(id);
+        this.title = title;
+        this.description = description;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.user = user;
+        this.addresses = addresses;
+        this.items = items;
+        this.submittedItems = submittedItems;
+    }
+
+    public Collection(String title, String description, LocalDateTime startTime, LocalDateTime endTime, User user,
+                      List<Address> addresses, List<CollectionItem> items, List<SubmittedItem> submittedItems) {
+        this.title = title;
+        this.description = description;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.user = user;
+        this.addresses = addresses;
+        this.items = items;
+        this.submittedItems = submittedItems;
+    }
+
+    public Collection() {
+        super();
+    }
 }

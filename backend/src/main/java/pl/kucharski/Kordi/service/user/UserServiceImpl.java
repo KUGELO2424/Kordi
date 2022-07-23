@@ -1,4 +1,4 @@
-package pl.kucharski.Kordi.service;
+package pl.kucharski.Kordi.service.user;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
