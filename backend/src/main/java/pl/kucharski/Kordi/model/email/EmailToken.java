@@ -1,7 +1,9 @@
-package pl.kucharski.Kordi.entity;
+package pl.kucharski.Kordi.model.email;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.kucharski.Kordi.model.BaseEntity;
+import pl.kucharski.Kordi.model.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,7 +19,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "email_token")
-public class EmailToken extends BaseEntity{
+public class EmailToken extends BaseEntity {
 
     @Column(name = "token")
     private String token;

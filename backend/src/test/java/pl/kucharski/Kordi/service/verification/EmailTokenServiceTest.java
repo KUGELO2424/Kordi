@@ -1,17 +1,19 @@
 package pl.kucharski.Kordi.service.verification;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.kucharski.Kordi.entity.EmailToken;
+import pl.kucharski.Kordi.model.email.EmailToken;
 import pl.kucharski.Kordi.repository.EmailTokenRepository;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -54,6 +56,7 @@ class EmailTokenServiceTest {
         Optional<EmailToken> result = underTest.getToken("testToken");
 
         // then
+        Assertions.assertTrue(result.isPresent());
         assertEquals(result.get(), emailToken);
     }
 

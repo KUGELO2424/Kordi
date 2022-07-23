@@ -1,4 +1,4 @@
-package pl.kucharski.Kordi.entity;
+package pl.kucharski.Kordi.model;
 
 import lombok.Getter;
 

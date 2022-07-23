@@ -3,7 +3,7 @@ package pl.kucharski.Kordi.repository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import pl.kucharski.Kordi.entity.EmailToken;
+import pl.kucharski.Kordi.model.email.EmailToken;
 
 import java.time.LocalDateTime;
 

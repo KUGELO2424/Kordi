@@ -1,7 +1,7 @@
 package pl.kucharski.Kordi.service.verification;
 
 import org.springframework.stereotype.Service;
-import pl.kucharski.Kordi.entity.EmailToken;
+import pl.kucharski.Kordi.model.email.EmailToken;
 import pl.kucharski.Kordi.repository.EmailTokenRepository;
 
 import java.time.LocalDateTime;
@@ -38,7 +38,7 @@ public class EmailTokenService {
      *
      * @param token which we want to update confirmed at date
      */
-    public int setConfirmedAt(String token) {
-        return tokenRepository.updateConfirmedAt(token, LocalDateTime.now());
+    public void setConfirmedAt(String token) {
+        tokenRepository.updateConfirmedAt(token, LocalDateTime.now());
     }
 }

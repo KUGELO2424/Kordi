@@ -2,10 +2,10 @@ package pl.kucharski.Kordi.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.kucharski.Kordi.dto.UserDTO;
-import pl.kucharski.Kordi.dto.UserRegistrationDTO;
-import pl.kucharski.Kordi.entity.EmailToken;
-import pl.kucharski.Kordi.entity.User;
+import pl.kucharski.Kordi.model.user.UserDTO;
+import pl.kucharski.Kordi.model.user.UserRegistrationDTO;
+import pl.kucharski.Kordi.model.email.EmailToken;
+import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.service.user.UserService;
 import pl.kucharski.Kordi.service.verification.EmailTokenService;
 
@@ -29,7 +29,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<?> saveUser(@RequestParam("phoneVerification") boolean phoneVerification,
                                       @RequestBody UserRegistrationDTO user) {
-        String result = "";
+        String result;
         try {
             result = userService.saveUser(user, phoneVerification);
         } catch (Exception ex) {
@@ -41,7 +41,7 @@ public class UserController {
     @GetMapping("/verify")
     public ResponseEntity<?> verifyUser(@RequestParam("token") String token,
                                         @RequestParam(value = "phone", required = false) String phone) {
-        String result = "";
+        String result;
         try {
             if (phone != null) {
                 UserDTO user = userService.getUserByPhone(phone);

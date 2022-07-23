@@ -8,9 +8,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import pl.kucharski.Kordi.dto.UserDTO;
-import pl.kucharski.Kordi.entity.EmailToken;
-import pl.kucharski.Kordi.entity.User;
+import pl.kucharski.Kordi.model.user.UserDTO;
+import pl.kucharski.Kordi.model.email.EmailToken;
+import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.exception.UserVerifyException;
 
 import javax.mail.internet.MimeMessage;
@@ -79,9 +79,8 @@ class EmailVerificationServiceTest {
         String token = "testToken";
 
         // when + then
-        IllegalStateException thrown = assertThrows(IllegalStateException.class, () -> {
-            underTest.verify(NOT_VERIFIED_USER_DTO, token);
-        });
+        IllegalStateException thrown = assertThrows(IllegalStateException.class,
+                () -> underTest.verify(NOT_VERIFIED_USER_DTO, token));
         assertEquals("token not found", thrown.getMessage());
     }
 
@@ -94,9 +93,8 @@ class EmailVerificationServiceTest {
         given(tokenService.getToken("testToken")).willReturn(Optional.of(emailToken));
 
         // when + then
-        UserVerifyException thrown = assertThrows(UserVerifyException.class, () -> {
-            underTest.verify(NOT_VERIFIED_USER_DTO, token);
-        });
+        UserVerifyException thrown = assertThrows(UserVerifyException.class,
+                () -> underTest.verify(NOT_VERIFIED_USER_DTO, token));
         assertEquals("Email already confirmed", thrown.getMessage());
     }
 
@@ -109,9 +107,8 @@ class EmailVerificationServiceTest {
         given(tokenService.getToken("testToken")).willReturn(Optional.of(emailToken));
 
         // when + then
-        UserVerifyException thrown = assertThrows(UserVerifyException.class, () -> {
-            underTest.verify(NOT_VERIFIED_USER_DTO, token);
-        });
+        UserVerifyException thrown = assertThrows(UserVerifyException.class,
+                () -> underTest.verify(NOT_VERIFIED_USER_DTO, token));
         assertEquals("Token expired", thrown.getMessage());
     }
 }

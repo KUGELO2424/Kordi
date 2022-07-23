@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import pl.kucharski.Kordi.entity.EmailToken;
+import pl.kucharski.Kordi.model.email.EmailToken;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -23,6 +23,6 @@ public interface EmailTokenRepository extends JpaRepository<EmailToken, Long> {
     @Query("UPDATE EmailToken c " +
             "SET c.confirmedAt = ?2 " +
             "WHERE c.token = ?1")
-    int updateConfirmedAt(String token,
+    void updateConfirmedAt(String token,
                           LocalDateTime confirmedAt);
 }

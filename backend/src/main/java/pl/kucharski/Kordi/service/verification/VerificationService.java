@@ -1,7 +1,7 @@
 package pl.kucharski.Kordi.service.verification;
 
-import pl.kucharski.Kordi.dto.UserDTO;
-import pl.kucharski.Kordi.entity.User;
+import pl.kucharski.Kordi.model.user.UserDTO;
+import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.exception.UserRegisterException;
 import pl.kucharski.Kordi.exception.UserVerifyException;
 

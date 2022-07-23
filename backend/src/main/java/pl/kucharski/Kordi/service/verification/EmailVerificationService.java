@@ -5,9 +5,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import pl.kucharski.Kordi.dto.UserDTO;
-import pl.kucharski.Kordi.entity.EmailToken;
-import pl.kucharski.Kordi.entity.User;
+import pl.kucharski.Kordi.model.user.UserDTO;
+import pl.kucharski.Kordi.model.email.EmailToken;
+import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.exception.UserRegisterException;
 import pl.kucharski.Kordi.exception.UserVerifyException;
 

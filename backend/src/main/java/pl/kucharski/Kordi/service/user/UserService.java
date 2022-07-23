@@ -1,7 +1,7 @@
 package pl.kucharski.Kordi.service.user;
 
-import pl.kucharski.Kordi.dto.UserDTO;
-import pl.kucharski.Kordi.dto.UserRegistrationDTO;
+import pl.kucharski.Kordi.model.user.UserDTO;
+import pl.kucharski.Kordi.model.user.UserRegistrationDTO;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.exception.UserRegisterException;
 import pl.kucharski.Kordi.exception.UserVerifyException;

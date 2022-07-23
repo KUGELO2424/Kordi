@@ -1,9 +1,11 @@
-package pl.kucharski.Kordi.entity;
+package pl.kucharski.Kordi.model.collection_item;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.kucharski.Kordi.enums.ItemType;
+import pl.kucharski.Kordi.model.BaseEntity;
+import pl.kucharski.Kordi.model.collection.Collection;
 
 import javax.persistence.*;
 
@@ -21,7 +23,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "collection_item")
-public class CollectionItem extends BaseEntity{
+public class CollectionItem extends BaseEntity {
 
     private String name;
 

@@ -10,9 +10,9 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import pl.kucharski.Kordi.dto.UserDTO;
-import pl.kucharski.Kordi.dto.UserRegistrationDTO;
-import pl.kucharski.Kordi.entity.User;
+import pl.kucharski.Kordi.model.user.UserDTO;
+import pl.kucharski.Kordi.model.user.UserRegistrationDTO;
+import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.exception.UserRegisterException;
 import pl.kucharski.Kordi.repository.UserRepository;
@@ -38,8 +38,6 @@ class UserServiceImplTest {
     private VerificationService emailVerificationService;
     @Mock
     private VerificationService phoneVerificationService;
-    private EmailValidator emailValidator;
-    private PasswordEncoder passwordEncoder;
     private UserServiceImpl underTest;
 
     private static final User NOT_VERIFIED_USER = new User("Test", "test", "test123", "qwerty",
@@ -63,8 +61,8 @@ class UserServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        emailValidator = new EmailValidator();
-        passwordEncoder = new BCryptPasswordEncoder();
+        EmailValidator emailValidator = new EmailValidator();
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         underTest = new UserServiceImpl(userRepository, passwordEncoder, emailValidator,
                 emailVerificationService, phoneVerificationService);
     }
@@ -81,9 +79,8 @@ class UserServiceImplTest {
     @Test
     void shouldThrowWhenUserNotFound() {
         // when + then
-        UserNotFoundException thrown = assertThrows(UserNotFoundException.class, () -> {
-            underTest.loadUserByUsername("testuser");
-        });
+        UserNotFoundException thrown = assertThrows(UserNotFoundException.class,
+                () -> underTest.loadUserByUsername("testuser"));
         assertEquals("User not found in database", thrown.getMessage());
     }
 
@@ -93,9 +90,8 @@ class UserServiceImplTest {
         given(userRepository.findUserByUsername("test123")).willReturn(Optional.of(NOT_VERIFIED_USER));
 
         // when + then
-        DisabledException thrown = assertThrows(DisabledException.class, () -> {
-            underTest.loadUserByUsername("test123");
-        });
+        DisabledException thrown = assertThrows(DisabledException.class,
+                () -> underTest.loadUserByUsername("test123"));
         assertEquals("User is not verified", thrown.getMessage());
     }
 
@@ -166,9 +162,8 @@ class UserServiceImplTest {
     @Test
     void shouldThrowWhenEmailIsInvalid() {
         // when + then
-        UserRegisterException thrown = assertThrows(UserRegisterException.class, () -> {
-            underTest.saveUser(INVALID_USER_TO_REGISTER, false);
-        });
+        UserRegisterException thrown = assertThrows(UserRegisterException.class,
+                () -> underTest.saveUser(INVALID_USER_TO_REGISTER, false));
 
         assertEquals("Email is not valid", thrown.getMessage());
         verify(userRepository, never()).save(any());
@@ -180,9 +175,8 @@ class UserServiceImplTest {
         given(userRepository.findUserByUsername("test123")).willReturn(Optional.of(NOT_VERIFIED_USER));
 
         // when + then
-        UserRegisterException thrown = assertThrows(UserRegisterException.class, () -> {
-            underTest.saveUser(USER_TO_REGISTER_1, false);
-        });
+        UserRegisterException thrown = assertThrows(UserRegisterException.class,
+                () -> underTest.saveUser(USER_TO_REGISTER_1, false));
 
         assertEquals("Username is already in use!", thrown.getMessage());
         verify(userRepository, never()).save(any());
@@ -194,9 +188,8 @@ class UserServiceImplTest {
         given(userRepository.findUserByEmail("test@mail.com")).willReturn(Optional.of(NOT_VERIFIED_USER));
 
         // when + then
-        UserRegisterException thrown = assertThrows(UserRegisterException.class, () -> {
-            underTest.saveUser(USER_TO_REGISTER_2, false);
-        });
+        UserRegisterException thrown = assertThrows(UserRegisterException.class,
+                () -> underTest.saveUser(USER_TO_REGISTER_2, false));
 
         assertEquals("Email is already in use!", thrown.getMessage());
         verify(userRepository, never()).save(any());
@@ -208,9 +201,8 @@ class UserServiceImplTest {
         given(userRepository.findUserByPhone("110339332")).willReturn(Optional.of(NOT_VERIFIED_USER));
 
         // when + then
-        UserRegisterException thrown = assertThrows(UserRegisterException.class, () -> {
-            underTest.saveUser(USER_TO_REGISTER_3, false);
-        });
+        UserRegisterException thrown = assertThrows(UserRegisterException.class,
+                () -> underTest.saveUser(USER_TO_REGISTER_3, false));
 
         assertEquals("Phone number is already in use!", thrown.getMessage());
         verify(userRepository, never()).save(any());
@@ -263,9 +255,8 @@ class UserServiceImplTest {
     @Test
     void shouldThrowWhenUserNotFoundById() {
         // when + then
-        UserNotFoundException thrown = assertThrows(UserNotFoundException.class, () -> {
-            underTest.getUserById(1L);
-        });
+        UserNotFoundException thrown = assertThrows(UserNotFoundException.class,
+                () -> underTest.getUserById(1L));
         assertEquals("User not found in database", thrown.getMessage());
     }
 
@@ -284,9 +275,8 @@ class UserServiceImplTest {
     @Test
     void shouldThrowWhenUserNotFoundByUsername() {
         // when + then
-        UserNotFoundException thrown = assertThrows(UserNotFoundException.class, () -> {
-            underTest.getUserByEmail("testuser");
-        });
+        UserNotFoundException thrown = assertThrows(UserNotFoundException.class,
+                () -> underTest.getUserByEmail("testuser"));
         assertEquals("User not found in database", thrown.getMessage());
     }
 
@@ -305,9 +295,8 @@ class UserServiceImplTest {
     @Test
     void shouldThrowWhenUserNotFoundByEmail() {
         // when + then
-        UserNotFoundException thrown = assertThrows(UserNotFoundException.class, () -> {
-            underTest.getUserByEmail("test@mail.com");
-        });
+        UserNotFoundException thrown = assertThrows(UserNotFoundException.class,
+                () -> underTest.getUserByEmail("test@mail.com"));
         assertEquals("User not found in database", thrown.getMessage());
     }
 
@@ -330,9 +319,8 @@ class UserServiceImplTest {
                 "test@mail.com", "110339332", true);
 
         // when + then
-        UserNotFoundException thrown = assertThrows(UserNotFoundException.class, () -> {
-            underTest.getUserByPhone("110339332");
-        });
+        UserNotFoundException thrown = assertThrows(UserNotFoundException.class,
+                () -> underTest.getUserByPhone("110339332"));
         assertEquals("User not found in database", thrown.getMessage());
     }
 

@@ -1,9 +1,6 @@
-package pl.kucharski.Kordi.dto;
+package pl.kucharski.Kordi.model.user;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
@@ -13,6 +10,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
+@Builder
 public class UserDTO {
 
     private String firstName;

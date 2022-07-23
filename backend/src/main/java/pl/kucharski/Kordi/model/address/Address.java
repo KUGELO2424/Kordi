@@ -1,8 +1,9 @@
-package pl.kucharski.Kordi.entity;
+package pl.kucharski.Kordi.model.address;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.kucharski.Kordi.model.BaseEntity;
 
 import javax.persistence.*;
 
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "address")
-public class Address extends BaseEntity{
+public class Address extends BaseEntity {
 
     private String city;
     private String street;

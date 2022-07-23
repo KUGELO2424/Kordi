@@ -1,14 +1,10 @@
 package pl.kucharski.Kordi.repository;
 
-import org.h2.tools.Server;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import pl.kucharski.Kordi.entity.User;
+import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
-
-import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -55,7 +51,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void shouldEnableUser() throws InterruptedException {
+    void shouldEnableUser() {
         // given
         User user = underTest.findUserByUsername("test").orElseThrow(UserNotFoundException::new);
         assertFalse(user.isEnabled());

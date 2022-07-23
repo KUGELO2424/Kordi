@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import pl.kucharski.Kordi.entity.Collection;
+import pl.kucharski.Kordi.model.collection.Collection;
 
 import java.util.List;
 

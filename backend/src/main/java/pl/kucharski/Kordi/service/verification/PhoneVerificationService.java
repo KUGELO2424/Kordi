@@ -5,8 +5,8 @@ import com.twilio.rest.verify.v2.service.Verification;
 import com.twilio.rest.verify.v2.service.VerificationCheck;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import pl.kucharski.Kordi.dto.UserDTO;
-import pl.kucharski.Kordi.entity.User;
+import pl.kucharski.Kordi.model.user.UserDTO;
+import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.exception.UserVerifyException;
 
 /**
@@ -29,8 +29,8 @@ public class PhoneVerificationService implements VerificationService{
      */
     @Override
     public String send(User user) {
-        Verification verification = null;
-        String phoneNumber = "+48" + user.getPhone();;
+        Verification verification;
+        String phoneNumber = "+48" + user.getPhone();
 
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         verification = Verification.creator(
@@ -47,7 +47,7 @@ public class PhoneVerificationService implements VerificationService{
      */
     @Override
     public String verify(UserDTO user, String token) {
-        VerificationCheck verificationCheck = null;
+        VerificationCheck verificationCheck;
         String phoneNumber = "+48" + user.getPhone();
 
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);

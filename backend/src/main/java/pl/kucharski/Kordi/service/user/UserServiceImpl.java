@@ -7,9 +7,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.kucharski.Kordi.dto.UserDTO;
-import pl.kucharski.Kordi.dto.UserRegistrationDTO;
-import pl.kucharski.Kordi.entity.User;
+import pl.kucharski.Kordi.model.user.UserDTO;
+import pl.kucharski.Kordi.model.user.UserMapper;
+import pl.kucharski.Kordi.model.user.UserRegistrationDTO;
+import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.exception.UserRegisterException;
 import pl.kucharski.Kordi.repository.UserRepository;
@@ -68,8 +69,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public String saveUser(UserRegistrationDTO user, boolean phoneVerification) {
         User foundUserByEmail = userRepository.findUserByEmail(user.getEmail()).orElse(null);
-        User foundUserByUsername = userRepository.findUserByUsername(user.getUsername()).orElse(null);;
-        User foundUserByPhone = userRepository.findUserByPhone(user.getPhone()).orElse(null);;
+        User foundUserByUsername = userRepository.findUserByUsername(user.getUsername()).orElse(null);
+        User foundUserByPhone = userRepository.findUserByPhone(user.getPhone()).orElse(null);
 
         // If given user attributes are the same, send verification token again
         if (foundUserByUsername != null && foundUserByEmail != null && foundUserByPhone != null) {
@@ -95,6 +96,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         User newUser = new User(user.getFirstName(), user.getLastName(), user.getUsername(),
                 passwordEncoder.encode(user.getPassword()), user.getEmail(), user.getPhone(), false);
+
         userRepository.save(newUser);
         if (phoneVerification) {
             return registerUserWithPhoneVerification(newUser);
@@ -130,12 +132,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDTO getUserById(long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found in database"));
-        return new UserDTO(user.getFirstName(),
-                user.getLastName(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getPhone(),
-                user.isEnabled());
+        return UserMapper.mapUserDTOFromUser(user);
     }
 
     /**
@@ -145,12 +142,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDTO getUserByUsername(String username) {
         User user = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("User not found in database"));
-        return new UserDTO(user.getFirstName(),
-                user.getLastName(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getPhone(),
-                user.isEnabled());
+        return UserMapper.mapUserDTOFromUser(user);
     }
 
     /**
@@ -160,12 +152,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDTO getUserByEmail(String email) {
         User user = userRepository.findUserByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found in database"));
-        return new UserDTO(user.getFirstName(),
-                user.getLastName(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getPhone(),
-                user.isEnabled());
+        return UserMapper.mapUserDTOFromUser(user);
     }
 
     /**
@@ -175,12 +162,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDTO getUserByPhone(String phone) {
         User user = userRepository.findUserByPhone(phone)
                 .orElseThrow(() -> new UserNotFoundException("User not found in database"));
-        return new UserDTO(user.getFirstName(),
-                user.getLastName(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getPhone(),
-                user.isEnabled());
+        return UserMapper.mapUserDTOFromUser(user);
     }
 
     /**
@@ -188,14 +170,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
      */
     @Override
     public List<UserDTO> getUsers() {
-        return userRepository.findAll().stream().map(user -> new UserDTO(
-                user.getFirstName(),
-                user.getLastName(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getPhone(),
-                user.isEnabled()
-        )).collect(Collectors.toList());
+        return userRepository.findAll().stream().map(UserMapper::mapUserDTOFromUser).collect(Collectors.toList());
     }
 
 
