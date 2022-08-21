@@ -1,0 +1,19 @@
+spring:
+  config:
+    import: optional:classpath:configuration.properties
+  datasource:
+    url: jdbc:h2:mem:db;NON_KEYWORDS=user
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: sa
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+  mail:
+    host: localhost
+    port: 3025
+    protocol: smtp
+#    password: secret
+#    username: username
