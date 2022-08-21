@@ -5,6 +5,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.model.user.UserDTO;
 import pl.kucharski.Kordi.model.email.EmailToken;
 import pl.kucharski.Kordi.model.user.User;
@@ -20,6 +21,7 @@ import java.util.UUID;
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
  */
 @Service
+@Transactional
 public class EmailVerificationService implements VerificationService{
 
     private final JavaMailSender mailSender;

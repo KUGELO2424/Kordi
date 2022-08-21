@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.model.user.UserDTO;
 import pl.kucharski.Kordi.model.user.UserMapper;
 import pl.kucharski.Kordi.model.user.UserRegistrationDTO;
@@ -17,7 +18,6 @@ import pl.kucharski.Kordi.repository.UserRepository;
 import pl.kucharski.Kordi.service.verification.VerificationService;
 import pl.kucharski.Kordi.validator.EmailValidator;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  */
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
@@ -111,6 +111,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
      * @see UserService#verifyToken(UserDTO, String, boolean)
      */
     @Override
+    @Transactional
     public String verifyToken(UserDTO user, String token, boolean phoneVerification) {
         String response;
         if (phoneVerification) {
@@ -172,7 +173,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public List<UserDTO> getUsers() {
         return userRepository.findAll().stream().map(UserMapper::mapUserDTOFromUser).collect(Collectors.toList());
     }
-
 
     private void enableUser(UserDTO user) {
         userRepository.enableUser(user.getUsername());
