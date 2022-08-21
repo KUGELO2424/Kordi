@@ -1,13 +1,11 @@
 package pl.kucharski.Kordi.model.collection_item;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import pl.kucharski.Kordi.enums.ItemType;
 
 @Getter
 @AllArgsConstructor
+@EqualsAndHashCode
 @ToString
 @Builder
 public class CollectionItemDTO {

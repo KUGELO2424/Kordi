@@ -18,20 +18,22 @@ public interface CollectionRepository extends JpaRepository<Collection, Long> {
 
     List<Collection> findByTitleContaining(String title, Pageable pageable);
 
-    @Query(nativeQuery = true, value =
-            "SELECT * FROM collection LEFT JOIN address ON collection.id = address.collection_id " +
-                    "WHERE collection.title LIKE CONCAT('%',?1,'%') " +
-                    "AND address.city LIKE CONCAT('%',?2,'%') " +
-                    "AND address.street LIKE CONCAT('%',?3,'%') ")
+    @Query(value =
+            "SELECT DISTINCT c FROM Collection c " +
+                    "LEFT JOIN c.addresses a " +
+                    "WHERE c.title LIKE CONCAT('%',?1,'%') " +
+                    "AND a.city LIKE CONCAT('%',?2,'%') " +
+                    "AND a.street LIKE CONCAT('%',?3,'%') ")
     List<Collection> findByTitleAndAddress(String title, String city, String street, Pageable pageable);
 
-    @Query(nativeQuery = true, value =
-            "SELECT * FROM collection LEFT JOIN address ON collection.id = address.collection_id " +
-                    "LEFT JOIN collection_item ON collection.id = collection_item.collection_id " +
-                    "WHERE collection.title LIKE CONCAT('%',?1,'%') " +
-                    "AND address.city LIKE CONCAT('%',?2,'%') " +
-                    "AND address.street LIKE CONCAT('%',?3,'%') " +
-                    "AND collection_item.name LIKE CONCAT('%', ?4, '%')")
+    @Query(value =
+            "SELECT DISTINCT c FROM Collection c " +
+                    "LEFT JOIN c.addresses a " +
+                    "LEFT JOIN c.items i " +
+                    "WHERE c.title LIKE CONCAT('%',?1,'%') " +
+                    "AND a.city LIKE CONCAT('%',?2,'%') " +
+                    "AND a.street LIKE CONCAT('%',?3,'%') " +
+                    "AND i.name LIKE CONCAT('%', ?4, '%')")
     List<Collection> findByTitleAndAddressAndItem(String title, String city, String street, String itemName,
                                                   Pageable pageable);
 }
