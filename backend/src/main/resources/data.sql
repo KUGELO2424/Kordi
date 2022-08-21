@@ -217,12 +217,12 @@ VALUES ('87251290-7859-4dcf-b3f0-8b4c2aa2e55b', 'Zbiórka dla Bartka', 'Zbieramy
         '2022-06-28 15:15:00', null, 4);
 INSERT INTO collection (uuid, title, description, start_time, end_time, user_id)
 VALUES ('dc3d8821-a9d9-43d8-a5d8-695824bd0880', 'Zbiórka dla Oliwii', 'Zbieramy ubrania dziewczęce',
-        '2022-06-28 15:15:00', null,  4);
+        '2022-06-28 15:25:00', null,  4);
 INSERT INTO collection (uuid, title, description, start_time, end_time, user_id)
-VALUES ('4c1e22e9-85c2-4cae-add3-0e82e206e9ac', 'Dary dary dla Oliwii', 'zbieram dary', '2022-06-28 15:15:00',
+VALUES ('4c1e22e9-85c2-4cae-add3-0e82e206e9ac', 'Dary dary dla Oliwii', 'zbieram dary', '2022-06-28 15:45:00',
         null,  3);
 INSERT INTO collection (uuid, title, description, start_time, end_time, user_id)
-VALUES ('1603f612-fd7f-495d-9829-4b637d48c374', 'Pomoc dla Plamy', 'pomoc dla królika', '2022-06-28 15:15:00',
+VALUES ('1603f612-fd7f-495d-9829-4b637d48c374', 'Pomoc dla Plamy', 'pomoc dla królika', '2022-06-28 15:55:00',
         null,  3);
 
 --
@@ -242,6 +242,8 @@ VALUES ('306f5343-9fa9-4506-ad24-51ea97df06a8', 'Warszawa', 'Noc 20', 3);
 --
 INSERT INTO collection_item (uuid, name, type, current_amount, max_amount, collection_id)
 VALUES ('ce2ac4b5-f508-48f0-9326-09a01616ac9a', 'Buty sportowe', 'amount', 0, 4, 1);
+INSERT INTO collection_item (uuid, name, type, current_amount, max_amount, collection_id)
+VALUES ('be89507a-db89-4b7d-bac1-d76696b392e8', 'Buty zimowe', 'amount', 0, 2, 1);
 INSERT INTO collection_item (uuid, name, type, current_amount, max_amount, collection_id)
 VALUES ('97187d76-d5ea-4340-936b-9c7584020cf5', 'Koszulki', 'amount', 1, 10, 1);
 INSERT INTO collection_item (uuid, name, type, current_amount, max_amount, collection_id)
