@@ -5,6 +5,7 @@ import pl.kucharski.Kordi.model.address.AddressDTO;
 import pl.kucharski.Kordi.model.collection_item.CollectionItemDTO;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -22,7 +23,10 @@ public class CollectionDTO {
     private Long userId;
     private String userFirstname;
     private String userLastname;
-    private List<AddressDTO> addresses;
-    private List<CollectionItemDTO> items;
+    @Builder.Default
+    private List<AddressDTO> addresses = new ArrayList<>();
+    @Builder.Default
+    private List<CollectionItemDTO> items = new ArrayList<>();
+
 
 }

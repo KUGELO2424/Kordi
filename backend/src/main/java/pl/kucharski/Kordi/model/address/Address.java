@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.kucharski.Kordi.model.BaseEntity;
+import pl.kucharski.Kordi.model.collection.Collection;
+import pl.kucharski.Kordi.model.user.User;
 
 import javax.persistence.*;
 

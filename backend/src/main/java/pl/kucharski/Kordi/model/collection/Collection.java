@@ -15,6 +15,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Entity that represents collection created by User. Collection can be located in multiple addresses.
@@ -49,7 +50,7 @@ public class Collection extends BaseEntity {
     private Long userId;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "collection_id")
+    @JoinColumn(name = "collection_id", nullable = false)
     private List<Address> addresses;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -70,9 +71,9 @@ public class Collection extends BaseEntity {
         this.startTime = startTime;
         this.endTime = endTime;
         this.user = user;
-        this.addresses = addresses;
-        this.items = items;
-        this.submittedItems = submittedItems;
+        setAddresses(addresses);
+        setItems(items);
+        setSubmittedItems(submittedItems);
     }
 
     public Collection(String title, String description, LocalDateTime startTime, LocalDateTime endTime,
@@ -83,12 +84,24 @@ public class Collection extends BaseEntity {
         this.startTime = startTime;
         this.endTime = endTime;
         this.userId = userId;
-        this.addresses = addresses;
-        this.items = items;
-        this.submittedItems = submittedItems;
+        setAddresses(addresses);
+        setItems(items);
+        setSubmittedItems(submittedItems);
     }
 
     public Collection() {
         super();
+    }
+
+    private void setAddresses(List<Address> addresses) {
+        this.addresses = Objects.requireNonNullElseGet(addresses, ArrayList::new);
+    }
+
+    private void setItems(List<CollectionItem> items) {
+        this.items = Objects.requireNonNullElseGet(items, ArrayList::new);
+    }
+
+    private void setSubmittedItems(List<SubmittedItem> submittedItems) {
+        this.submittedItems = Objects.requireNonNullElseGet(submittedItems, ArrayList::new);
     }
 }

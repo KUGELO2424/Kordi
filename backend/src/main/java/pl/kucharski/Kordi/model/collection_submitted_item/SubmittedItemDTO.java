@@ -1,14 +1,12 @@
 package pl.kucharski.Kordi.model.collection_submitted_item;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
 
 @Getter
 @AllArgsConstructor
+@EqualsAndHashCode
 @ToString
 @Builder
 public class SubmittedItemDTO {

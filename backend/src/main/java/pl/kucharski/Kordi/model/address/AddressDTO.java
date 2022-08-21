@@ -1,12 +1,10 @@
 package pl.kucharski.Kordi.model.address;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
+@EqualsAndHashCode
 @ToString
 @Builder
 public class AddressDTO {
