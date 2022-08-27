@@ -1,0 +1,25 @@
+spring:
+  config:
+    import: optional:classpath:configuration.properties
+  datasource:
+    url: jdbc:mysql://${DB_HOSTNAME}:${DB_PORT}/${DB_NAME}
+    username: ${KORDI_USER}
+    password: ${KORDI_PASS}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  mail:
+    host: localhost
+    port: 1025
+    username: kordi
+    password: kordi
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+jwt:
+  secret: HRlELXqpSB

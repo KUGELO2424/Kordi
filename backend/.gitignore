@@ -1,4 +1,4 @@
-database.properties
+configuration.properties
 
 HELP.md
 target/
@@ -19,6 +19,7 @@ target/
 .idea
 *.iws
 *.iml
+../Kordi.iml
 *.ipr
 
 ### NetBeans ###
