@@ -1,20 +1,11 @@
 package pl.kucharski.Kordi.model.collection_item;
 
-public final class CollectionItemMapper {
+import org.mapstruct.Mapper;
 
-    public static CollectionItemDTO mapCollectionItemDTOFromCollectionItem(CollectionItem item) {
-        return CollectionItemDTO.builder()
-                .id(item.getId())
-                .name(item.getName())
-                .type(item.getType())
-                .currentAmount(item.getCurrentAmount())
-                .maxAmount(item.getMaxAmount())
-                .build();
-    }
+@Mapper(componentModel = "spring")
+public interface CollectionItemMapper {
 
-    public static CollectionItem mapCollectionItemFromCollectionItemDTO(CollectionItemDTO item) {
-        return new CollectionItem(item.getName(), item.getType(), item.getCurrentAmount(), item.getMaxAmount());
-    }
-
+    CollectionItemDTO mapToCollectionItemDTO(CollectionItem collectionItem);
+    CollectionItem mapToCollectionItem(CollectionItemDTO collectionItem);
 
 }

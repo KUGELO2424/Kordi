@@ -58,7 +58,7 @@ public class Collection extends BaseEntity {
     private List<CollectionItem> items;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "collection_id")
     private List<SubmittedItem> submittedItems;
 
@@ -71,19 +71,6 @@ public class Collection extends BaseEntity {
         this.startTime = startTime;
         this.endTime = endTime;
         this.user = user;
-        setAddresses(addresses);
-        setItems(items);
-        setSubmittedItems(submittedItems);
-    }
-
-    public Collection(String title, String description, LocalDateTime startTime, LocalDateTime endTime,
-                      Long userId, List<Address> addresses, List<CollectionItem> items,
-                      List<SubmittedItem> submittedItems) {
-        this.title = title;
-        this.description = description;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.userId = userId;
         setAddresses(addresses);
         setItems(items);
         setSubmittedItems(submittedItems);
