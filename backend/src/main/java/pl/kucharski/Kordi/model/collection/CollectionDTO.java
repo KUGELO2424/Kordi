@@ -4,6 +4,8 @@ import lombok.*;
 import pl.kucharski.Kordi.model.address.AddressDTO;
 import pl.kucharski.Kordi.model.collection_item.CollectionItemDTO;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +18,12 @@ import java.util.List;
 public class CollectionDTO {
 
     private Long id;
+    @NotBlank(message = "Title cannot be empty")
     private String title;
     private String description;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    @NotNull
     private Long userId;
     private String userFirstname;
     private String userLastname;

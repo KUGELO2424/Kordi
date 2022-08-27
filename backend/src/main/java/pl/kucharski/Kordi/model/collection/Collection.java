@@ -54,7 +54,7 @@ public class Collection extends BaseEntity {
     private List<Address> addresses;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "collection_id")
+    @JoinColumn(name = "collection_id", nullable = false)
     private List<CollectionItem> items;
 
     @JsonIgnore
@@ -93,6 +93,14 @@ public class Collection extends BaseEntity {
         super();
     }
 
+    public void addItem(CollectionItem item) {
+        this.items.add(item);
+    }
+
+    public void addAddress(Address address) {
+        this.addresses.add(address);
+    }
+
     private void setAddresses(List<Address> addresses) {
         this.addresses = Objects.requireNonNullElseGet(addresses, ArrayList::new);
     }
@@ -103,5 +111,17 @@ public class Collection extends BaseEntity {
 
     private void setSubmittedItems(List<SubmittedItem> submittedItems) {
         this.submittedItems = Objects.requireNonNullElseGet(submittedItems, ArrayList::new);
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 }
