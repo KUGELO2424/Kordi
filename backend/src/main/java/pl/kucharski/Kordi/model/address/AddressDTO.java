@@ -2,7 +2,8 @@ package pl.kucharski.Kordi.model.address;
 
 import lombok.*;
 
-@Getter
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString

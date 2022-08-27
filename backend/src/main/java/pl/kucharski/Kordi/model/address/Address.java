@@ -1,21 +1,22 @@
 package pl.kucharski.Kordi.model.address;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import pl.kucharski.Kordi.model.BaseEntity;
-import pl.kucharski.Kordi.model.collection.Collection;
-import pl.kucharski.Kordi.model.user.User;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
  */
 
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
+@Data
 @Entity
 @Table(name = "address")
 public class Address extends BaseEntity {

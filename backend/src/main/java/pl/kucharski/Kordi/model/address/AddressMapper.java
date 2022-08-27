@@ -1,16 +1,11 @@
 package pl.kucharski.Kordi.model.address;
 
-public final class AddressMapper {
+import org.mapstruct.Mapper;
 
-    public static AddressDTO mapAddressDTOFromAddress(Address address) {
-        return AddressDTO.builder()
-                .city(address.getCity())
-                .street(address.getStreet())
-                .build();
-    }
+@Mapper(componentModel = "spring")
+public interface AddressMapper {
 
-    public static Address mapAddressFromAddressDTO(AddressDTO addressDTO) {
-        return new Address(addressDTO.getCity(), addressDTO.getStreet());
-    }
+    AddressDTO mapToAddressDTO(Address address);
+    Address mapToAddress(AddressDTO address);
 
 }

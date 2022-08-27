@@ -1,5 +1,7 @@
 package pl.kucharski.Kordi.model.collection;
 
+import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
 import pl.kucharski.Kordi.model.address.AddressMapper;
 import pl.kucharski.Kordi.model.collection_item.CollectionItemMapper;
 
@@ -7,6 +9,8 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public final class CollectionMapper {
+
+    private static final AddressMapper addressMapper = Mappers.getMapper(AddressMapper.class);
 
     public static CollectionDTO mapCollectionDTOFromCollection(Collection collection) {
         return CollectionDTO.builder()
@@ -19,7 +23,7 @@ public final class CollectionMapper {
                 .userLastname(collection.getUser().getLastName())
                 .addresses(collection.getAddresses()
                         .stream()
-                        .map(AddressMapper::mapAddressDTOFromAddress).collect(Collectors.toList()))
+                        .map(addressMapper::mapToAddressDTO).collect(Collectors.toList()))
                 .items(collection.getItems()
                         .stream()
                         .map(CollectionItemMapper::mapCollectionItemDTOFromCollectionItem).collect(Collectors.toList()))
@@ -34,7 +38,7 @@ public final class CollectionMapper {
                 collection.getUserId(),
                 collection.getAddresses()
                         .stream()
-                        .map(AddressMapper::mapAddressFromAddressDTO).collect(Collectors.toList()),
+                        .map(addressMapper::mapToAddress).collect(Collectors.toList()),
                 collection.getItems()
                         .stream()
                         .map(CollectionItemMapper::mapCollectionItemFromCollectionItemDTO).collect(Collectors.toList()),
