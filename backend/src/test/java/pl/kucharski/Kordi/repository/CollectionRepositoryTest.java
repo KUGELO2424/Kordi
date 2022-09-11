@@ -11,7 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.CollectionMapperTestImpl;
 import pl.kucharski.Kordi.enums.ItemType;
-import pl.kucharski.Kordi.exception.CollectionNotFound;
+import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.model.address.AddressDTO;
 import pl.kucharski.Kordi.model.collection.Collection;
 import pl.kucharski.Kordi.model.collection.CollectionDTO;
@@ -208,7 +208,7 @@ class CollectionRepositoryTest {
     @Test
     void shouldSaveCollectionItem() {
         // when
-        Collection collection = underTest.findById(1L).orElseThrow(CollectionNotFound::new);
+        Collection collection = underTest.findById(1L).orElseThrow(CollectionNotFoundException::new);
         collection.addItem(itemMapper.mapToCollectionItem(COLLECTION_ITEM_DTO));
         Collection savedCollection = underTest.save(collection);
 

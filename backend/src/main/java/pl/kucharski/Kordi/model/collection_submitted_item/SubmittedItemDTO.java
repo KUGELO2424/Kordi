@@ -1,8 +1,12 @@
 package pl.kucharski.Kordi.model.collection_submitted_item;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
@@ -12,7 +16,7 @@ import java.util.Date;
 public class SubmittedItemDTO {
 
     private int amount;
-    private Date submitTime;
+    private LocalDateTime submitTime;
     private String username;
     private Long userId;
     private Long collectionId;

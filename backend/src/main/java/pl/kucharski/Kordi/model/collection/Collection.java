@@ -11,7 +11,14 @@ import pl.kucharski.Kordi.model.collection_item.CollectionItem;
 import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItem;
 import pl.kucharski.Kordi.model.user.User;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +93,10 @@ public class Collection extends BaseEntity {
 
     public void addAddress(Address address) {
         this.addresses.add(address);
+    }
+
+    public void addSubmittedItem(SubmittedItem item) {
+        this.submittedItems.add(item);
     }
 
     private void setAddresses(List<Address> addresses) {
