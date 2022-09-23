@@ -9,6 +9,7 @@ import pl.kucharski.Kordi.model.BaseEntity;
 import pl.kucharski.Kordi.model.address.Address;
 import pl.kucharski.Kordi.model.collection_item.CollectionItem;
 import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItem;
+import pl.kucharski.Kordi.model.comment.Comment;
 import pl.kucharski.Kordi.model.user.User;
 
 import javax.persistence.CascadeType;
@@ -69,9 +70,14 @@ public class Collection extends BaseEntity {
     @JoinColumn(name = "collection_id")
     private List<SubmittedItem> submittedItems;
 
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "collection_id")
+    private List<Comment> comments;
+
     public Collection(Long id, String title, String description, LocalDateTime startTime, LocalDateTime endTime,
                       User user, List<Address> addresses, List<CollectionItem> items,
-                      List<SubmittedItem> submittedItems) {
+                      List<SubmittedItem> submittedItems, List<Comment> comments) {
         super(id);
         this.title = title;
         this.description = description;
@@ -81,6 +87,7 @@ public class Collection extends BaseEntity {
         setAddresses(addresses);
         setItems(items);
         setSubmittedItems(submittedItems);
+        setComments(comments);
     }
 
     public Collection() {
@@ -99,6 +106,10 @@ public class Collection extends BaseEntity {
         this.submittedItems.add(item);
     }
 
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+    }
+
     private void setAddresses(List<Address> addresses) {
         this.addresses = Objects.requireNonNullElseGet(addresses, ArrayList::new);
     }
@@ -109,6 +120,10 @@ public class Collection extends BaseEntity {
 
     private void setSubmittedItems(List<SubmittedItem> submittedItems) {
         this.submittedItems = Objects.requireNonNullElseGet(submittedItems, ArrayList::new);
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = Objects.requireNonNullElseGet(comments, ArrayList::new);
     }
 
     public void setTitle(String title) {

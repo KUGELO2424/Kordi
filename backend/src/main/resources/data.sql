@@ -100,7 +100,11 @@ CREATE TABLE IF NOT EXISTS collection_comment (
 	FOREIGN KEY (user_id) REFERENCES account(id),
 	FOREIGN KEY (collection_id) REFERENCES collection(id)
 );
-	
+
+
+--
+-- ARCHIWA
+--
 --
 -- Struktura tabeli collection_archive
 --
