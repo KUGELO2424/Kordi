@@ -125,7 +125,7 @@ class UserControllerTest {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> request = new HttpEntity<>(USER_TO_REGISTER, headers);
-        ResponseEntity<?> response = testRestTemplate.postForEntity("/register?phoneVerification=false", request, String.class);
+        ResponseEntity<?> response = testRestTemplate.postForEntity("/register?verificationType=EMAIL", request, String.class);
         assertEquals(200, response.getStatusCodeValue());
         assertNotNull(response.getBody());
 
@@ -140,7 +140,7 @@ class UserControllerTest {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> request = new HttpEntity<>(USER_THAT_EXISTS, headers);
-        ResponseEntity<?> response = testRestTemplate.postForEntity("/register?phoneVerification=false", request, String.class);
+        ResponseEntity<?> response = testRestTemplate.postForEntity("/register?verificationType=EMAIL", request, String.class);
         assertEquals(400, response.getStatusCodeValue());
         assertEquals("Email is already in use!", Objects.requireNonNull(response.getBody()).toString());
     }
@@ -158,7 +158,7 @@ class UserControllerTest {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> request = new HttpEntity<>(USER_TO_REGISTER, headers);
-        ResponseEntity<?> response = testRestTemplate.postForEntity("/register?phoneVerification=false", request, String.class);
+        ResponseEntity<?> response = testRestTemplate.postForEntity("/register?verificationType=EMAIL", request, String.class);
         assertEquals(200, response.getStatusCodeValue());
         String token = Objects.requireNonNull(response.getBody()).toString();
 

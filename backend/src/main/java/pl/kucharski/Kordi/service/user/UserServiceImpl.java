@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.kucharski.Kordi.enums.VerificationType;
 import pl.kucharski.Kordi.model.user.UserDTO;
 import pl.kucharski.Kordi.model.user.UserMapper;
 import pl.kucharski.Kordi.model.user.UserRegistrationDTO;
@@ -63,11 +64,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     /**
-     * @see UserService#saveUser(UserRegistrationDTO, boolean)
+     * @see UserService#saveUser(UserRegistrationDTO, VerificationType)
      */
     @Override
     @Transactional
-    public String saveUser(UserRegistrationDTO user, boolean phoneVerification) {
+    public String saveUser(UserRegistrationDTO user, VerificationType verificationType) {
         User foundUserByEmail = userRepository.findUserByEmail(user.getEmail()).orElse(null);
         User foundUserByUsername = userRepository.findUserByUsername(user.getUsername()).orElse(null);
         User foundUserByPhone = userRepository.findUserByPhone(user.getPhone()).orElse(null);
@@ -76,7 +77,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (foundUserByUsername != null && foundUserByEmail != null && foundUserByPhone != null) {
             if (foundUserByUsername.equals(foundUserByEmail) && foundUserByUsername.equals(foundUserByPhone)
                     && !foundUserByEmail.isEnabled()) {
-                if (phoneVerification) {
+                if (verificationType == VerificationType.PHONE) {
                     return registerUserWithPhoneVerification(foundUserByEmail);
                 } else {
                     return registerUserWithEmailVerification(foundUserByEmail);
@@ -98,7 +99,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 passwordEncoder.encode(user.getPassword()), user.getEmail(), user.getPhone(), false);
 
         userRepository.save(newUser);
-        if (phoneVerification) {
+        if (verificationType == VerificationType.PHONE) {
             return registerUserWithPhoneVerification(newUser);
         } else {
             return registerUserWithEmailVerification(newUser);
@@ -108,13 +109,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     /**
-     * @see UserService#verifyToken(UserDTO, String, boolean)
+     * @see UserService#verifyToken(UserDTO, String, VerificationType)
      */
     @Override
     @Transactional
-    public String verifyToken(UserDTO user, String token, boolean phoneVerification) {
+    public String verifyToken(UserDTO user, String token, VerificationType verificationType) {
         String response;
-        if (phoneVerification) {
+        if (verificationType == VerificationType.PHONE) {
             response = phoneVerificationService.verify(user, token);
         } else {
             response = emailVerificationService.verify(user, token);

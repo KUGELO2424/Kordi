@@ -2,6 +2,7 @@ package pl.kucharski.Kordi.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.kucharski.Kordi.enums.VerificationType;
 import pl.kucharski.Kordi.model.user.UserDTO;
 import pl.kucharski.Kordi.model.user.UserRegistrationDTO;
 import pl.kucharski.Kordi.model.email.EmailToken;
@@ -27,11 +28,11 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> saveUser(@RequestParam("phoneVerification") boolean phoneVerification,
+    public ResponseEntity<?> saveUser(@RequestParam("verificationType") VerificationType verificationType,
                                       @RequestBody UserRegistrationDTO user) {
         String result;
         try {
-            result = userService.saveUser(user, phoneVerification);
+            result = userService.saveUser(user, verificationType);
         } catch (Exception ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
@@ -48,7 +49,7 @@ public class UserController {
                 if (user == null) {
                     throw new IllegalStateException("User not found with given phone number");
                 }
-                result = userService.verifyToken(user, token, true);
+                result = userService.verifyToken(user, token, VerificationType.PHONE);
                 return ResponseEntity.ok(result);
             }
             EmailToken emailToken = tokenService.getToken(token).orElseThrow(() -> {
@@ -57,7 +58,7 @@ public class UserController {
             User user = emailToken.getUser();
             UserDTO userDTO = new UserDTO(user.getFirstName(), user.getLastName(),
                     user.getUsername(), user.getEmail(), user.getPhone(), user.isEnabled());
-            result = userService.verifyToken(userDTO, token, false);
+            result = userService.verifyToken(userDTO, token, VerificationType.EMAIL);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
