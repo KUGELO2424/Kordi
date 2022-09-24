@@ -1,4 +1,6 @@
-# KORDI
+<p align="center">
+<img src="https://user-images.githubusercontent.com/55559640/192118631-6d29f9f6-fe43-4c0b-a3a2-d9373a2a8996.png" width="350" height="100">
+</p>
 
 ## General info
 
