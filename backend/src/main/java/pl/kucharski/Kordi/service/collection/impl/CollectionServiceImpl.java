@@ -7,7 +7,6 @@ import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.model.collection.Collection;
 import pl.kucharski.Kordi.model.collection.CollectionDTO;
 import pl.kucharski.Kordi.model.collection.CollectionMapper;
-import pl.kucharski.Kordi.model.collection_item.CollectionItemMapper;
 import pl.kucharski.Kordi.repository.CollectionRepository;
 import pl.kucharski.Kordi.service.collection.CollectionService;
 
