@@ -1,5 +1,6 @@
 package pl.kucharski.Kordi.service;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,24 +12,30 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.kucharski.Kordi.enums.VerificationType;
-import pl.kucharski.Kordi.model.user.UserDTO;
-import pl.kucharski.Kordi.model.user.UserRegistrationDTO;
-import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.exception.UserRegisterException;
+import pl.kucharski.Kordi.model.user.PasswordEncoderMapper;
+import pl.kucharski.Kordi.model.user.User;
+import pl.kucharski.Kordi.model.user.UserDTO;
+import pl.kucharski.Kordi.model.user.UserMapper;
+import pl.kucharski.Kordi.model.user.UserMapperImpl;
+import pl.kucharski.Kordi.model.user.UserRegistrationDTO;
 import pl.kucharski.Kordi.repository.UserRepository;
 import pl.kucharski.Kordi.service.user.UserServiceImpl;
 import pl.kucharski.Kordi.service.verification.VerificationService;
 import pl.kucharski.Kordi.validator.EmailValidator;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -63,17 +70,22 @@ class UserServiceImplTest {
     @BeforeEach
     void setUp() {
         EmailValidator emailValidator = new EmailValidator();
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        underTest = new UserServiceImpl(userRepository, passwordEncoder, emailValidator,
-                emailVerificationService, phoneVerificationService);
+        PasswordEncoderMapper passwordEncoderMapper = new PasswordEncoderMapper(new BCryptPasswordEncoder());
+        UserMapper userMapper = new UserMapperImpl(passwordEncoderMapper);
+        underTest = new UserServiceImpl(userRepository, emailValidator,
+                emailVerificationService, phoneVerificationService, userMapper);
     }
 
     @Test
     void shouldGetAllUsers() {
+        // given
+        when(userRepository.findAll()).thenReturn(List.of(VERIFIED_USER, NOT_VERIFIED_USER));
+
         // when
-        underTest.getUsers();
+        List<UserDTO> users = underTest.getUsers();
 
         // then
+        assertEquals(2, users.size());
         verify(userRepository).findAll();
     }
 
@@ -116,6 +128,8 @@ class UserServiceImplTest {
         // then
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userArgumentCaptor.capture());
+        Assertions.assertNotEquals(userArgumentCaptor.getValue().getPassword(), USER_TO_REGISTER_1.getPassword());
+        assertTrue(userArgumentCaptor.getValue().getPassword().contains("$2a$10$"));
         verify(emailVerificationService).send(userArgumentCaptor.capture());
     }
 
@@ -127,6 +141,8 @@ class UserServiceImplTest {
         // then
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userArgumentCaptor.capture());
+        Assertions.assertNotEquals(userArgumentCaptor.getValue().getPassword(), USER_TO_REGISTER_1.getPassword());
+        assertTrue(userArgumentCaptor.getValue().getPassword().contains("$2a$10$"));
         verify(phoneVerificationService).send(userArgumentCaptor.capture());
     }
 

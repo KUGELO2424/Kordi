@@ -1,16 +1,17 @@
 package pl.kucharski.Kordi.model.user;
 
-public final class UserMapper {
+import org.mapstruct.InjectionStrategy;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-    public static UserDTO mapUserDTOFromUser(User user) {
-        return UserDTO.builder()
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .phone(user.getPhone())
-                .enabled(user.isEnabled())
-                .build();
-    }
+@Mapper(componentModel = "spring", uses = PasswordEncoderMapper.class,
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+public abstract class UserMapper {
+
+    public abstract UserDTO mapToUserDTO(User user);
+
+    @Mapping(target = "password", source= "user.password", qualifiedBy = EncodedMapping.class)
+    public abstract User mapToUser(UserRegistrationDTO user);
 
 }
+

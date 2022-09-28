@@ -32,20 +32,20 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final EmailValidator emailValidator;
     private final VerificationService emailVerificationService;
     private final VerificationService phoneVerificationService;
+    private final UserMapper userMapper;
 
-    public UserServiceImpl(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder,
-                           EmailValidator emailValidator,
+    public UserServiceImpl(UserRepository userRepository, EmailValidator emailValidator,
                            @Qualifier("emailVerificationService") VerificationService emailVerificationService,
-                           @Qualifier("phoneVerificationService") VerificationService phoneVerificationService) {
+                           @Qualifier("phoneVerificationService") VerificationService phoneVerificationService,
+                           UserMapper userMapper) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
         this.emailValidator = emailValidator;
         this.emailVerificationService = emailVerificationService;
         this.phoneVerificationService = phoneVerificationService;
+        this.userMapper = userMapper;
     }
 
     /**
@@ -95,8 +95,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UserRegisterException("Phone number is already in use!");
         }
 
-        User newUser = new User(user.getFirstName(), user.getLastName(), user.getUsername(),
-                passwordEncoder.encode(user.getPassword()), user.getEmail(), user.getPhone(), false);
+        User newUser = userMapper.mapToUser(user);
 
         userRepository.save(newUser);
         if (verificationType == VerificationType.PHONE) {
@@ -134,7 +133,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDTO getUserById(long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found in database"));
-        return UserMapper.mapUserDTOFromUser(user);
+        return userMapper.mapToUserDTO(user);
     }
 
     /**
@@ -144,7 +143,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDTO getUserByUsername(String username) {
         User user = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("User not found in database"));
-        return UserMapper.mapUserDTOFromUser(user);
+        return userMapper.mapToUserDTO(user);
     }
 
     /**
@@ -154,7 +153,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDTO getUserByEmail(String email) {
         User user = userRepository.findUserByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found in database"));
-        return UserMapper.mapUserDTOFromUser(user);
+        return userMapper.mapToUserDTO(user);
     }
 
     /**
@@ -164,7 +163,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDTO getUserByPhone(String phone) {
         User user = userRepository.findUserByPhone(phone)
                 .orElseThrow(() -> new UserNotFoundException("User not found in database"));
-        return UserMapper.mapUserDTOFromUser(user);
+        return userMapper.mapToUserDTO(user);
     }
 
     /**
@@ -172,7 +171,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
      */
     @Override
     public List<UserDTO> getUsers() {
-        return userRepository.findAll().stream().map(UserMapper::mapUserDTOFromUser).collect(Collectors.toList());
+        return userRepository.findAll().stream().map(userMapper::mapToUserDTO).collect(Collectors.toList());
     }
 
     private void enableUser(UserDTO user) {

@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.kucharski.Kordi.enums.VerificationType;
 import pl.kucharski.Kordi.model.user.UserDTO;
+import pl.kucharski.Kordi.model.user.UserMapper;
 import pl.kucharski.Kordi.model.user.UserRegistrationDTO;
 import pl.kucharski.Kordi.model.email.EmailToken;
 import pl.kucharski.Kordi.model.user.User;
@@ -16,10 +17,12 @@ public class UserController {
 
     private final UserService userService;
     private final EmailTokenService tokenService;
+    private final UserMapper userMapper;
 
-    public UserController(UserService userService, EmailTokenService tokenService) {
+    public UserController(UserService userService, EmailTokenService tokenService, UserMapper userMapper) {
         this.userService = userService;
         this.tokenService = tokenService;
+        this.userMapper = userMapper;
     }
 
     @GetMapping("/users")
@@ -56,8 +59,7 @@ public class UserController {
                 throw new IllegalStateException("User not found with given token");
             });
             User user = emailToken.getUser();
-            UserDTO userDTO = new UserDTO(user.getFirstName(), user.getLastName(),
-                    user.getUsername(), user.getEmail(), user.getPhone(), user.isEnabled());
+            UserDTO userDTO = userMapper.mapToUserDTO(user);
             result = userService.verifyToken(userDTO, token, VerificationType.EMAIL);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
