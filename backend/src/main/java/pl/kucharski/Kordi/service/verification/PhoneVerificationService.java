@@ -5,6 +5,7 @@ import com.twilio.rest.verify.v2.service.Verification;
 import com.twilio.rest.verify.v2.service.VerificationCheck;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import pl.kucharski.Kordi.enums.VerificationStatus;
 import pl.kucharski.Kordi.model.user.UserDTO;
 import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.exception.UserVerifyException;
@@ -28,7 +29,7 @@ public class PhoneVerificationService implements VerificationService{
      * @see VerificationService#send(User)
      */
     @Override
-    public String send(User user) {
+    public VerificationStatus send(User user) {
         Verification verification;
         String phoneNumber = "+48" + user.getPhone();
 
@@ -39,14 +40,17 @@ public class PhoneVerificationService implements VerificationService{
                         "sms")
                 .create();
 
-        return verification.getStatus();
+        if (verification.getStatus().equals("pending")) {
+            return VerificationStatus.PENDING;
+        }
+        return VerificationStatus.REJECTED;
     }
 
     /**
      * @see VerificationService#verify(UserDTO, String)
      */
     @Override
-    public String verify(UserDTO user, String token) {
+    public VerificationStatus verify(UserDTO user, String token) {
         VerificationCheck verificationCheck;
         String phoneNumber = "+48" + user.getPhone();
 
@@ -57,7 +61,7 @@ public class PhoneVerificationService implements VerificationService{
                 .setTo(phoneNumber).create();
 
         if (verificationCheck.getValid()) {
-            return verificationCheck.getStatus();
+            return VerificationStatus.VERIFIED;
         } else {
             throw new UserVerifyException("Cannot verify your account");
         }

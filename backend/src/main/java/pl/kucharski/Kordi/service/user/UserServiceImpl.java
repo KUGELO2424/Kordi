@@ -1,20 +1,19 @@
 package pl.kucharski.Kordi.service.user;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.kucharski.Kordi.enums.VerificationStatus;
 import pl.kucharski.Kordi.enums.VerificationType;
+import pl.kucharski.Kordi.exception.UserNotFoundException;
+import pl.kucharski.Kordi.exception.UserRegisterException;
+import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.model.user.UserDTO;
 import pl.kucharski.Kordi.model.user.UserMapper;
 import pl.kucharski.Kordi.model.user.UserRegistrationDTO;
-import pl.kucharski.Kordi.model.user.User;
-import pl.kucharski.Kordi.exception.UserNotFoundException;
-import pl.kucharski.Kordi.exception.UserRegisterException;
 import pl.kucharski.Kordi.repository.UserRepository;
 import pl.kucharski.Kordi.service.verification.VerificationService;
 import pl.kucharski.Kordi.validator.EmailValidator;
@@ -68,7 +67,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
      */
     @Override
     @Transactional
-    public String saveUser(UserRegistrationDTO user, VerificationType verificationType) {
+    public VerificationStatus saveUser(UserRegistrationDTO user, VerificationType verificationType) {
         User foundUserByEmail = userRepository.findUserByEmail(user.getEmail()).orElse(null);
         User foundUserByUsername = userRepository.findUserByUsername(user.getUsername()).orElse(null);
         User foundUserByPhone = userRepository.findUserByPhone(user.getPhone()).orElse(null);
@@ -105,26 +104,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
     }
 
-
-
     /**
      * @see UserService#verifyToken(UserDTO, String, VerificationType)
      */
     @Override
     @Transactional
-    public String verifyToken(UserDTO user, String token, VerificationType verificationType) {
-        String response;
+    public VerificationStatus verifyToken(UserDTO user, String token, VerificationType verificationType) {
+        VerificationStatus response;
         if (verificationType == VerificationType.PHONE) {
             response = phoneVerificationService.verify(user, token);
         } else {
             response = emailVerificationService.verify(user, token);
         }
-       if (response.equals("verified") || response.equals("approved")) {
+       if (response.equals(VerificationStatus.VERIFIED)) {
            enableUser(user);
        }
        return response;
     }
-
 
     /**
      * @see UserService#getUserById(long)
@@ -179,12 +175,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
 
-    private String registerUserWithEmailVerification(User user) {
+    private VerificationStatus registerUserWithEmailVerification(User user) {
         return emailVerificationService.send(user);
     }
 
 
-    private String registerUserWithPhoneVerification(User user) {
+    private VerificationStatus registerUserWithPhoneVerification(User user) {
         return phoneVerificationService.send(user);
     }
 

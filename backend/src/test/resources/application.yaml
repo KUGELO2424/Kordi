@@ -17,3 +17,6 @@ spring:
     protocol: smtp
 #    password: secret
 #    username: username
+
+jwt:
+  secret: testSecret

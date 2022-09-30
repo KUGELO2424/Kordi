@@ -1,5 +1,6 @@
 package pl.kucharski.Kordi.service.verification;
 
+import pl.kucharski.Kordi.enums.VerificationStatus;
 import pl.kucharski.Kordi.model.user.UserDTO;
 import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.exception.UserRegisterException;
@@ -14,17 +15,17 @@ public interface VerificationService {
      * Send verification token to user
      *
      * @param user whom we sent verification token
-     * @return token or information that token has been sent
+     * @return VerificationStatus
      * @throws UserRegisterException with error message if it cannot register
      */
-    String send(User user);
+    VerificationStatus send(User user);
 
     /**
      * Verify user by given token
      *
-     * @param user to verify
-     * @return "verified" on email verification or "approved" on phone verification if success
+     * @param user user to verify
+     * @return VerificationStatus
      * @throws UserVerifyException with error message if it cannot verify
      */
-    String verify(UserDTO user, String token);
+    VerificationStatus verify(UserDTO user, String token);
 }

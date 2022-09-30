@@ -26,6 +26,9 @@ public class CollectionServiceImpl implements CollectionService {
         this.collectionMapper = collectionMapper;
     }
 
+    /**
+     * @see CollectionService#getCollectionById(long)
+     */
     @Override
     public CollectionDTO getCollectionById(long id) {
         Collection collection = collectionRepository.findById(id)
@@ -34,6 +37,9 @@ public class CollectionServiceImpl implements CollectionService {
         return collectionMapper.mapToCollectionDTO(collection);
     }
 
+    /**
+     * @see CollectionService#getCollectionsByUser(String, Pageable)
+     */
     @Override
     public List<CollectionDTO> getCollectionsByUser(String username, Pageable pageable) {
         List<Collection> collections = collectionRepository.findByUserUsername(username, pageable);
@@ -43,6 +49,9 @@ public class CollectionServiceImpl implements CollectionService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * @see CollectionService#getCollectionsWithFiltering(String, String, String, String, Pageable)
+     */
     @Override
     public List<CollectionDTO> getCollectionsWithFiltering(String title, String city, String street, String itemName, Pageable pageable) {
         List<Collection> collections;
@@ -60,6 +69,9 @@ public class CollectionServiceImpl implements CollectionService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * @see CollectionService#saveCollection(CollectionDTO)
+     */
     @Override
     @Transactional
     public CollectionDTO saveCollection(CollectionDTO collectionDTO) {
@@ -68,6 +80,9 @@ public class CollectionServiceImpl implements CollectionService {
         return collectionMapper.mapToCollectionDTO(savedCollection);
     }
 
+    /**
+     * @see CollectionService#updateCollection(long, String, String, LocalDateTime)
+     */
     @Override
     @Transactional
     public CollectionDTO updateCollection(long id, String title, String description, LocalDateTime endTime) {

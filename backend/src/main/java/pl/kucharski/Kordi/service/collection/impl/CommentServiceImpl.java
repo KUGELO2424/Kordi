@@ -32,6 +32,9 @@ public class CommentServiceImpl implements CommentService {
         this.commentMapper = commentMapper;
     }
 
+    /**
+     * @see CommentService#addComment(Long, CreateCommentDTO)
+     */
     @Override
     public CommentDTO addComment(Long collectionId, CreateCommentDTO commentDTO) {
         Comment comment = commentMapper.mapToComment(commentDTO);
@@ -41,6 +44,9 @@ public class CommentServiceImpl implements CommentService {
         return commentMapper.mapToCommentDTO(commentRepository.save(comment));
     }
 
+    /**
+     * @see CommentService#removeComment(Long, Long)
+     */
     @Override
     public void removeComment(Long collectionId, Long commentId) {
         Collection foundCollection = collectionRepository.findById(collectionId)
@@ -52,6 +58,9 @@ public class CommentServiceImpl implements CommentService {
         foundCollection.getComments().remove(commentToDelete);
     }
 
+    /**
+     * @see CommentService#getAllComments(Long, Pageable)
+     */
     @Override
     public List<CommentDTO> getAllComments(Long collectionId, Pageable pageable) {
         if (!collectionRepository.existsById(collectionId)) {

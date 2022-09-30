@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import pl.kucharski.Kordi.enums.VerificationStatus;
 import pl.kucharski.Kordi.model.user.UserDTO;
 import pl.kucharski.Kordi.model.email.EmailToken;
 import pl.kucharski.Kordi.model.user.User;
@@ -67,10 +68,10 @@ class EmailVerificationServiceTest {
         given(tokenService.getToken("testToken")).willReturn(Optional.of(emailToken));
 
         // when
-        String result = underTest.verify(NOT_VERIFIED_USER_DTO, token);
+        VerificationStatus result = underTest.verify(NOT_VERIFIED_USER_DTO, token);
 
         // then
-        assertEquals("verified", result);
+        assertEquals(VerificationStatus.VERIFIED, result);
     }
 
     @Test

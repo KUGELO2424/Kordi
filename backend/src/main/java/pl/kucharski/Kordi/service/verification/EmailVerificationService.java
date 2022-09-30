@@ -6,6 +6,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.kucharski.Kordi.enums.VerificationStatus;
 import pl.kucharski.Kordi.model.user.UserDTO;
 import pl.kucharski.Kordi.model.email.EmailToken;
 import pl.kucharski.Kordi.model.user.User;
@@ -37,7 +38,7 @@ public class EmailVerificationService implements VerificationService{
      */
     @Override
     @Async
-    public String send(User user) {
+    public VerificationStatus send(User user) {
         String token = UUID.randomUUID().toString();
         EmailToken emailToken = new EmailToken(
                 token,
@@ -61,14 +62,14 @@ public class EmailVerificationService implements VerificationService{
         } catch(MessagingException e) {
             throw new UserRegisterException("Failed to send an email");
         }
-        return token;
+        return VerificationStatus.PENDING;
     }
 
     /**
      * @see VerificationService#verify(UserDTO, String)
      */
     @Override
-    public String verify(UserDTO user, String token) {
+    public VerificationStatus verify(UserDTO user, String token) {
         EmailToken emailToken = emailTokenService.getToken(token)
                 .orElseThrow(() -> new IllegalStateException("token not found"));
         if (emailToken.getConfirmedAt() != null) {
@@ -80,7 +81,7 @@ public class EmailVerificationService implements VerificationService{
         }
         emailTokenService.setConfirmedAt(token);
 
-        return "verified";
+        return VerificationStatus.VERIFIED;
     }
 
     private String buildEmail(String name, String link) {

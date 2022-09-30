@@ -23,6 +23,9 @@ public class CollectionAddressServiceImpl implements CollectionAddressService {
         this.collectionRepository = collectionRepository;
     }
 
+    /**
+     * @see CollectionAddressService#addCollectionAddress(Long, AddressDTO)
+     */
     @Override
     @Transactional
     public void addCollectionAddress(Long collectionId, AddressDTO addressDTO) {
@@ -38,6 +41,9 @@ public class CollectionAddressServiceImpl implements CollectionAddressService {
         collection.addAddress(addressToAdd);
     }
 
+    /**
+     * @see CollectionAddressService#removeCollectionAddress(Long, AddressDTO)
+     */
     @Override
     public void removeCollectionAddress(Long collectionId, AddressDTO addressDTO) {
         Address addressToRemove = addressMapper.mapToAddress(addressDTO);

@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import pl.kucharski.Kordi.enums.VerificationStatus;
 import pl.kucharski.Kordi.enums.VerificationType;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.exception.UserRegisterException;
@@ -228,33 +228,33 @@ class UserServiceImplTest {
     @Test
     void shouldVerifyTokenOnEmailVerification() {
         // given
-        given(emailVerificationService.verify(NOT_VERIFIED_USER_DTO, "token")).willReturn("verified");
+        given(emailVerificationService.verify(NOT_VERIFIED_USER_DTO, "token")).willReturn(VerificationStatus.VERIFIED);
 
         // when
-        String result = underTest.verifyToken(NOT_VERIFIED_USER_DTO, "token", VerificationType.EMAIL);
+        VerificationStatus result = underTest.verifyToken(NOT_VERIFIED_USER_DTO, "token", VerificationType.EMAIL);
 
         //then
         ArgumentCaptor<UserDTO> userArgumentCaptor = ArgumentCaptor.forClass(UserDTO.class);
         ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(emailVerificationService).verify(userArgumentCaptor.capture(), stringArgumentCaptor.capture());
         verify(userRepository).enableUser(stringArgumentCaptor.capture());
-        assertEquals("verified", result);
+        assertEquals(VerificationStatus.VERIFIED, result);
     }
 
     @Test
     void shouldVerifyTokenOnPhoneVerification() {
         // given
-        given(phoneVerificationService.verify(NOT_VERIFIED_USER_DTO, "token")).willReturn("approved");
+        given(phoneVerificationService.verify(NOT_VERIFIED_USER_DTO, "token")).willReturn(VerificationStatus.VERIFIED);
 
         // when
-        String result = underTest.verifyToken(NOT_VERIFIED_USER_DTO, "token", VerificationType.PHONE);
+        VerificationStatus result = underTest.verifyToken(NOT_VERIFIED_USER_DTO, "token", VerificationType.PHONE);
 
         //then
         ArgumentCaptor<UserDTO> userArgumentCaptor = ArgumentCaptor.forClass(UserDTO.class);
         ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(phoneVerificationService).verify(userArgumentCaptor.capture(), stringArgumentCaptor.capture());
         verify(userRepository).enableUser(stringArgumentCaptor.capture());
-        assertEquals("approved", result);
+        assertEquals(VerificationStatus.VERIFIED, result);
     }
 
     @Test

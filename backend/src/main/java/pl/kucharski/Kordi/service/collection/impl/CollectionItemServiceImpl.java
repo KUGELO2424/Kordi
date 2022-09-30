@@ -36,6 +36,9 @@ public class CollectionItemServiceImpl implements CollectionItemService {
         this.submittedItemMapper = submittedItemMapper;
     }
 
+    /**
+     * @see CollectionItemService#addCollectionItem(Long, CollectionItemDTO)
+     */
     @Override
     @Transactional
     public void addCollectionItem(Long collectionId, CollectionItemDTO collectionItemDTO) {
@@ -45,6 +48,9 @@ public class CollectionItemServiceImpl implements CollectionItemService {
         collection.addItem(collectionItem);
     }
 
+    /**
+     * @see CollectionItemService#updateCollectionItem(long, long, int, int)
+     */
     @Override
     @Transactional
     public CollectionDTO updateCollectionItem(long collectionId, long itemId, int currentAmount, int maxAmount) {
@@ -67,6 +73,9 @@ public class CollectionItemServiceImpl implements CollectionItemService {
         return collectionMapper.mapToCollectionDTO(collection);
     }
 
+    /**
+     * @see CollectionItemService#submitItem(SubmittedItemDTO)
+     */
     @Override
     @Transactional
     public CollectionDTO submitItem(SubmittedItemDTO itemToSubmit) {
@@ -87,6 +96,9 @@ public class CollectionItemServiceImpl implements CollectionItemService {
                 foundItem.getCurrentAmount() + itemToSubmit.getAmount(), foundItem.getMaxAmount());
     }
 
+    /**
+     * @see CollectionItemService#getSubmittedItems(long)
+     */
     @Override
     public List<SubmittedItemDTO> getSubmittedItems(long collectionId) {
         Collection foundCollection = collectionRepository.findById(collectionId)
@@ -97,6 +109,9 @@ public class CollectionItemServiceImpl implements CollectionItemService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * @see CollectionItemService#getSubmittedItemsForSpecificItem(long, long)
+     */
     @Override
     public List<SubmittedItemDTO> getSubmittedItemsForSpecificItem(long collectionId, long itemId) {
         Collection foundCollection = collectionRepository.findById(collectionId)
