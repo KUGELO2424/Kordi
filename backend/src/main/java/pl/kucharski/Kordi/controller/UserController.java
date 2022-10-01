@@ -80,27 +80,34 @@ public class UserController {
     @GetMapping("/verify")
     public ResponseEntity<?> verifyUser(@RequestParam("token") String token,
                                         @RequestParam(value = "phone", required = false) String phone) {
-        VerificationStatus result;
         try {
             if (phone != null) {
-                UserDTO user = userService.getUserByPhone(phone);
-                if (user == null) {
-                    throw new IllegalStateException("User not found with given phone number");
-                }
-                result = userService.verifyToken(user, token, VerificationType.PHONE);
-                return ResponseEntity.ok(result);
+                return verifyUserOnPhoneVerification(token, phone);
+            } else {
+                return verifyUserOnEmailVerification(token);
             }
-            EmailToken emailToken = tokenService.getToken(token).orElseThrow(() -> {
-                throw new IllegalStateException("User not found with given token");
-            });
-            User user = emailToken.getUser();
-            UserDTO userDTO = userMapper.mapToUserDTO(user);
-            result = userService.verifyToken(userDTO, token, VerificationType.EMAIL);
-            return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
 
+    private ResponseEntity<?> verifyUserOnPhoneVerification(String token, String phone) {
+        UserDTO user = userService.getUserByPhone(phone);
+        if (user == null) {
+            throw new IllegalStateException("User not found with given phone number");
+        }
+        VerificationStatus result = userService.verifyToken(user, token, VerificationType.PHONE);
+        return ResponseEntity.ok(result);
+    }
+
+    private ResponseEntity<?> verifyUserOnEmailVerification(String token) {
+        EmailToken emailToken = tokenService.getToken(token).orElseThrow(() -> {
+            throw new IllegalStateException("User not found with given token");
+        });
+        User user = emailToken.getUser();
+        UserDTO userDTO = userMapper.mapToUserDTO(user);
+        VerificationStatus result = userService.verifyToken(userDTO, token, VerificationType.EMAIL);
+        return ResponseEntity.ok(result);
     }
 
 }

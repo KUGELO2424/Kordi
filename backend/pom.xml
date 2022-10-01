@@ -16,8 +16,14 @@
 
 	<properties>
 		<java.version>17</java.version>
+		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
 		<mapstruct-version>1.5.2.Final</mapstruct-version>
 		<lombok-version>1.18.24</lombok-version>
+		<springdoc-version>1.6.11</springdoc-version>
+		<commons-lang3-version>3.12.0</commons-lang3-version>
+		<java-jwt.version>3.19.2</java-jwt.version>
+		<twilio.version>8.31.1</twilio.version>
+		<greenmail.version>1.6.5</greenmail.version>
 	</properties>
 
 	<dependencies>
@@ -28,12 +34,12 @@
 		<dependency>
 			<groupId>com.auth0</groupId>
 			<artifactId>java-jwt</artifactId>
-			<version>3.19.2</version>
+			<version>${java-jwt.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.twilio.sdk</groupId>
 			<artifactId>twilio</artifactId>
-			<version>8.31.1</version>
+			<version>${twilio.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -96,18 +102,23 @@
 		<dependency>
 			<groupId>com.icegreen</groupId>
 			<artifactId>greenmail-junit5</artifactId>
-			<version>1.6.5</version>
+			<version>${greenmail.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.12.0</version>
+			<version>${commons-lang3-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.6.11</version>
+			<version>${springdoc-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-javadoc</artifactId>
+			<version>${springdoc-version}</version>
 		</dependency>
 
 	</dependencies>
@@ -137,7 +148,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<annotationProcessorPaths>
 						<path>
@@ -149,6 +160,11 @@
 							<groupId>org.mapstruct</groupId>
 							<artifactId>mapstruct-processor</artifactId>
 							<version>${mapstruct-version}</version>
+						</path>
+						<path>
+							<groupId>com.github.therapi</groupId>
+							<artifactId>therapi-runtime-javadoc-scribe</artifactId>
+							<version>0.15.0</version>
 						</path>
 					</annotationProcessorPaths>
 					<compilerArgs>
