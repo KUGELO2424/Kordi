@@ -3,6 +3,7 @@ package pl.kucharski.Kordi.model.collection_item;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import pl.kucharski.Kordi.enums.ItemType;
 import pl.kucharski.Kordi.model.BaseEntity;
 import pl.kucharski.Kordi.model.collection.Collection;
@@ -18,9 +19,10 @@ import javax.persistence.*;
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
  */
 
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Entity
 @Table(name = "collection_item")
 public class CollectionItem extends BaseEntity {

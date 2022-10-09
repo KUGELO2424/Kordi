@@ -4,6 +4,7 @@ import lombok.*;
 import pl.kucharski.Kordi.enums.ItemType;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString

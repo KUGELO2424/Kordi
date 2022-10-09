@@ -32,7 +32,6 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-    private static final String secret = "secret";
     private final Algorithm tokenAlgorithm;
 
 
@@ -42,7 +41,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     }
 
     /**
-     * Attempt authentication, if cannot authenticate, write error to response
+     * Attempt authentication, if user cannot authenticate, write error to response
      */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
@@ -80,7 +79,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String accessToken = JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
-                .withIssuer(request.getRequestURI().toString())
+                .withIssuer(request.getRequestURI())
                 .withClaim("authorities",
                         grantedAuthorities.stream()
                                 .map(GrantedAuthority::getAuthority)

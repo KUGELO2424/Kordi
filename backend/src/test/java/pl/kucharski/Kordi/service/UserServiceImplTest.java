@@ -1,5 +1,6 @@
 package pl.kucharski.Kordi.service;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,25 +10,32 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import pl.kucharski.Kordi.model.user.UserDTO;
-import pl.kucharski.Kordi.model.user.UserRegistrationDTO;
-import pl.kucharski.Kordi.model.user.User;
+import pl.kucharski.Kordi.enums.VerificationStatus;
+import pl.kucharski.Kordi.enums.VerificationType;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.exception.UserRegisterException;
+import pl.kucharski.Kordi.model.user.PasswordEncoderMapper;
+import pl.kucharski.Kordi.model.user.User;
+import pl.kucharski.Kordi.model.user.UserDTO;
+import pl.kucharski.Kordi.model.user.UserMapper;
+import pl.kucharski.Kordi.model.user.UserMapperImpl;
+import pl.kucharski.Kordi.model.user.UserRegistrationDTO;
 import pl.kucharski.Kordi.repository.UserRepository;
 import pl.kucharski.Kordi.service.user.UserServiceImpl;
 import pl.kucharski.Kordi.service.verification.VerificationService;
 import pl.kucharski.Kordi.validator.EmailValidator;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -62,17 +70,22 @@ class UserServiceImplTest {
     @BeforeEach
     void setUp() {
         EmailValidator emailValidator = new EmailValidator();
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        underTest = new UserServiceImpl(userRepository, passwordEncoder, emailValidator,
-                emailVerificationService, phoneVerificationService);
+        PasswordEncoderMapper passwordEncoderMapper = new PasswordEncoderMapper(new BCryptPasswordEncoder());
+        UserMapper userMapper = new UserMapperImpl(passwordEncoderMapper);
+        underTest = new UserServiceImpl(userRepository, emailValidator,
+                emailVerificationService, phoneVerificationService, userMapper);
     }
 
     @Test
     void shouldGetAllUsers() {
+        // given
+        when(userRepository.findAll()).thenReturn(List.of(VERIFIED_USER, NOT_VERIFIED_USER));
+
         // when
-        underTest.getUsers();
+        List<UserDTO> users = underTest.getUsers();
 
         // then
+        assertEquals(2, users.size());
         verify(userRepository).findAll();
     }
 
@@ -110,22 +123,26 @@ class UserServiceImplTest {
     @Test
     void shouldSaveUserWithEmailVerification() {
         // give + when
-        underTest.saveUser(USER_TO_REGISTER_1, false);
+        underTest.saveUser(USER_TO_REGISTER_1, VerificationType.EMAIL);
 
         // then
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userArgumentCaptor.capture());
+        Assertions.assertNotEquals(userArgumentCaptor.getValue().getPassword(), USER_TO_REGISTER_1.getPassword());
+        assertTrue(userArgumentCaptor.getValue().getPassword().contains("$2a$10$"));
         verify(emailVerificationService).send(userArgumentCaptor.capture());
     }
 
     @Test
     void shouldSaveUserWithPhoneVerification() {
         // given + when
-        underTest.saveUser(USER_TO_REGISTER_1, true);
+        underTest.saveUser(USER_TO_REGISTER_1, VerificationType.PHONE);
 
         // then
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userArgumentCaptor.capture());
+        Assertions.assertNotEquals(userArgumentCaptor.getValue().getPassword(), USER_TO_REGISTER_1.getPassword());
+        assertTrue(userArgumentCaptor.getValue().getPassword().contains("$2a$10$"));
         verify(phoneVerificationService).send(userArgumentCaptor.capture());
     }
 
@@ -137,7 +154,7 @@ class UserServiceImplTest {
         given(userRepository.findUserByPhone("110339332")).willReturn(Optional.of(NOT_VERIFIED_USER));
 
         // when
-        underTest.saveUser(USER_TO_REGISTER_1, false);
+        underTest.saveUser(USER_TO_REGISTER_1, VerificationType.EMAIL);
 
         // then
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -152,7 +169,7 @@ class UserServiceImplTest {
         given(userRepository.findUserByPhone("110339332")).willReturn(Optional.of(NOT_VERIFIED_USER));
 
         // when
-        underTest.saveUser(USER_TO_REGISTER_1, true);
+        underTest.saveUser(USER_TO_REGISTER_1, VerificationType.PHONE);
 
         // then
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -163,7 +180,7 @@ class UserServiceImplTest {
     void shouldThrowWhenEmailIsInvalid() {
         // when + then
         UserRegisterException thrown = assertThrows(UserRegisterException.class,
-                () -> underTest.saveUser(INVALID_USER_TO_REGISTER, false));
+                () -> underTest.saveUser(INVALID_USER_TO_REGISTER, VerificationType.EMAIL));
 
         assertEquals("Email is not valid", thrown.getMessage());
         verify(userRepository, never()).save(any());
@@ -176,7 +193,7 @@ class UserServiceImplTest {
 
         // when + then
         UserRegisterException thrown = assertThrows(UserRegisterException.class,
-                () -> underTest.saveUser(USER_TO_REGISTER_1, false));
+                () -> underTest.saveUser(USER_TO_REGISTER_1, VerificationType.EMAIL));
 
         assertEquals("Username is already in use!", thrown.getMessage());
         verify(userRepository, never()).save(any());
@@ -189,7 +206,7 @@ class UserServiceImplTest {
 
         // when + then
         UserRegisterException thrown = assertThrows(UserRegisterException.class,
-                () -> underTest.saveUser(USER_TO_REGISTER_2, false));
+                () -> underTest.saveUser(USER_TO_REGISTER_2, VerificationType.EMAIL));
 
         assertEquals("Email is already in use!", thrown.getMessage());
         verify(userRepository, never()).save(any());
@@ -202,7 +219,7 @@ class UserServiceImplTest {
 
         // when + then
         UserRegisterException thrown = assertThrows(UserRegisterException.class,
-                () -> underTest.saveUser(USER_TO_REGISTER_3, false));
+                () -> underTest.saveUser(USER_TO_REGISTER_3, VerificationType.EMAIL));
 
         assertEquals("Phone number is already in use!", thrown.getMessage());
         verify(userRepository, never()).save(any());
@@ -211,33 +228,33 @@ class UserServiceImplTest {
     @Test
     void shouldVerifyTokenOnEmailVerification() {
         // given
-        given(emailVerificationService.verify(NOT_VERIFIED_USER_DTO, "token")).willReturn("verified");
+        given(emailVerificationService.verify(NOT_VERIFIED_USER_DTO, "token")).willReturn(VerificationStatus.VERIFIED);
 
         // when
-        String result = underTest.verifyToken(NOT_VERIFIED_USER_DTO, "token", false);
+        VerificationStatus result = underTest.verifyToken(NOT_VERIFIED_USER_DTO, "token", VerificationType.EMAIL);
 
         //then
         ArgumentCaptor<UserDTO> userArgumentCaptor = ArgumentCaptor.forClass(UserDTO.class);
         ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(emailVerificationService).verify(userArgumentCaptor.capture(), stringArgumentCaptor.capture());
         verify(userRepository).enableUser(stringArgumentCaptor.capture());
-        assertEquals("verified", result);
+        assertEquals(VerificationStatus.VERIFIED, result);
     }
 
     @Test
     void shouldVerifyTokenOnPhoneVerification() {
         // given
-        given(phoneVerificationService.verify(NOT_VERIFIED_USER_DTO, "token")).willReturn("approved");
+        given(phoneVerificationService.verify(NOT_VERIFIED_USER_DTO, "token")).willReturn(VerificationStatus.VERIFIED);
 
         // when
-        String result = underTest.verifyToken(NOT_VERIFIED_USER_DTO, "token", true);
+        VerificationStatus result = underTest.verifyToken(NOT_VERIFIED_USER_DTO, "token", VerificationType.PHONE);
 
         //then
         ArgumentCaptor<UserDTO> userArgumentCaptor = ArgumentCaptor.forClass(UserDTO.class);
         ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(phoneVerificationService).verify(userArgumentCaptor.capture(), stringArgumentCaptor.capture());
         verify(userRepository).enableUser(stringArgumentCaptor.capture());
-        assertEquals("approved", result);
+        assertEquals(VerificationStatus.VERIFIED, result);
     }
 
     @Test

@@ -9,9 +9,17 @@ import pl.kucharski.Kordi.model.BaseEntity;
 import pl.kucharski.Kordi.model.address.Address;
 import pl.kucharski.Kordi.model.collection_item.CollectionItem;
 import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItem;
+import pl.kucharski.Kordi.model.comment.Comment;
 import pl.kucharski.Kordi.model.user.User;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,13 +66,18 @@ public class Collection extends BaseEntity {
     private List<CollectionItem> items;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "collection_id")
     private List<SubmittedItem> submittedItems;
 
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "collection_id")
+    private List<Comment> comments;
+
     public Collection(Long id, String title, String description, LocalDateTime startTime, LocalDateTime endTime,
                       User user, List<Address> addresses, List<CollectionItem> items,
-                      List<SubmittedItem> submittedItems) {
+                      List<SubmittedItem> submittedItems, List<Comment> comments) {
         super(id);
         this.title = title;
         this.description = description;
@@ -74,19 +87,7 @@ public class Collection extends BaseEntity {
         setAddresses(addresses);
         setItems(items);
         setSubmittedItems(submittedItems);
-    }
-
-    public Collection(String title, String description, LocalDateTime startTime, LocalDateTime endTime,
-                      Long userId, List<Address> addresses, List<CollectionItem> items,
-                      List<SubmittedItem> submittedItems) {
-        this.title = title;
-        this.description = description;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.userId = userId;
-        setAddresses(addresses);
-        setItems(items);
-        setSubmittedItems(submittedItems);
+        setComments(comments);
     }
 
     public Collection() {
@@ -101,6 +102,14 @@ public class Collection extends BaseEntity {
         this.addresses.add(address);
     }
 
+    public void addSubmittedItem(SubmittedItem item) {
+        this.submittedItems.add(item);
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+    }
+
     private void setAddresses(List<Address> addresses) {
         this.addresses = Objects.requireNonNullElseGet(addresses, ArrayList::new);
     }
@@ -111,6 +120,10 @@ public class Collection extends BaseEntity {
 
     private void setSubmittedItems(List<SubmittedItem> submittedItems) {
         this.submittedItems = Objects.requireNonNullElseGet(submittedItems, ArrayList::new);
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = Objects.requireNonNullElseGet(comments, ArrayList::new);
     }
 
     public void setTitle(String title) {

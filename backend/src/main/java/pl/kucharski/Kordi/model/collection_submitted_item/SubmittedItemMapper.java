@@ -1,21 +1,16 @@
 package pl.kucharski.Kordi.model.collection_submitted_item;
 
-public final class SubmittedItemMapper {
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-    public static SubmittedItemDTO mapSubmittedItemDTOFromSubmittedItem(SubmittedItem item) {
-        return SubmittedItemDTO.builder()
-                .amount(item.getAmount())
-                .submitTime(item.getSubmitTime())
-                .username(item.getUser().getUsername())
-                .userId(item.getUser().getId())
-                .collectionId(item.getCollection().getId())
-                .collectionItemId(item.getCollection_item().getId())
-                .build();
-    }
+@Mapper(componentModel = "spring")
+public interface SubmittedItemMapper {
 
-    public static SubmittedItem mapSubmittedItemFromSubmittedItemDTO(SubmittedItemDTO item) {
-        return new SubmittedItem(item.getAmount(), item.getSubmitTime(), item.getUserId(),
-                item.getCollectionId(), item.getCollectionItemId());
-    }
+    @Mapping(target = "username", source = "user.username")
+    @Mapping(target = "collectionItemId", source = "itemId")
+    SubmittedItemDTO mapToSubmittedItemDTO(SubmittedItem item);
+
+    @Mapping(target = "itemId", source = "collectionItemId")
+    SubmittedItem mapToSubmittedItem(SubmittedItemDTO item);
 
 }

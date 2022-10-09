@@ -14,6 +14,9 @@ import java.util.List;
 
 @Repository
 public interface CollectionRepository extends JpaRepository<Collection, Long> {
+
+    boolean existsById(Long collectionId);
+
     List<Collection> findByUserUsername(String username, Pageable pageable);
 
     List<Collection> findByTitleContaining(String title, Pageable pageable);

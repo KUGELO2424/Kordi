@@ -11,9 +11,9 @@ import pl.kucharski.Kordi.model.email.EmailToken;
 import pl.kucharski.Kordi.repository.EmailTokenRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -61,10 +61,25 @@ class EmailTokenServiceTest {
     }
 
     @Test
+    void shouldGetTokenByUserId() {
+        // given
+        EmailToken emailToken1 = new EmailToken("testToken1", LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15), null, null);
+        EmailToken emailToken2 = new EmailToken("testToken2", LocalDateTime.now().plusMinutes(5),
+                LocalDateTime.now().plusMinutes(20), null, null);
+        given(tokenRepository.findByUserId(1L)).willReturn(List.of(emailToken1, emailToken2));
+
+        // when
+        EmailToken result = underTest.getTokenByUserId(1L);
+
+        // then
+        assertEquals(result.getToken(), "testToken2");
+    }
+
+    @Test
     void shouldUpdateConfirmedAtAttribute() {
         // when
         underTest.setConfirmedAt("testToken");
-        LocalDateTime currentTime = LocalDateTime.now();
         // then
         ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<LocalDateTime> dateArgumentCaptor = ArgumentCaptor.forClass(LocalDateTime.class);

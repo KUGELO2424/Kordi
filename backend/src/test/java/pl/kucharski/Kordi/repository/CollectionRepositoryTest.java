@@ -2,21 +2,28 @@ package pl.kucharski.Kordi.repository;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
+import pl.kucharski.Kordi.CollectionMapperTestImpl;
+import pl.kucharski.Kordi.enums.ItemType;
+import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.model.address.AddressDTO;
 import pl.kucharski.Kordi.model.collection.Collection;
 import pl.kucharski.Kordi.model.collection.CollectionDTO;
-import pl.kucharski.Kordi.model.collection.CollectionMapper;
+import pl.kucharski.Kordi.model.collection_item.CollectionItemDTO;
+import pl.kucharski.Kordi.model.collection_item.CollectionItemMapper;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @DataJpaTest
+@Transactional
 class CollectionRepositoryTest {
 
     private static final Pageable paging = PageRequest.of(0, 10);
@@ -36,15 +43,25 @@ class CollectionRepositoryTest {
             .build();
 
     private static final CollectionDTO COLLECTION_DTO_TO_SAVE = CollectionDTO.builder()
-            .title("New Collection V2")
+            .title("")
             .description("description")
             .startTime(CURRENT_TIME)
             .userId(1L)
             .addresses(List.of(ADDRESS_DTO_TO_SAVE))
             .build();
 
+    private static final CollectionItemDTO COLLECTION_ITEM_DTO = CollectionItemDTO.builder()
+            .name("item")
+            .currentAmount(0)
+            .maxAmount(10)
+            .type(ItemType.AMOUNT)
+            .build();
+
     @Autowired
     private CollectionRepository underTest;
+
+    private final CollectionItemMapper itemMapper = Mappers.getMapper(CollectionItemMapper.class);
+    private final CollectionMapperTestImpl collectionMapper = new CollectionMapperTestImpl();
 
 
     @Test
@@ -181,11 +198,24 @@ class CollectionRepositoryTest {
     @Test
     void shouldSaveCollection() {
         // when
-        Collection savedCollection = underTest.saveAndFlush(CollectionMapper.mapCollectionFromCollectionDTO(COLLECTION_DTO_TO_SAVE));
+        Collection savedCollection = underTest.save(collectionMapper.mapToCollection(COLLECTION_DTO_TO_SAVE));
 
         // then
         Assertions.assertEquals(5, savedCollection.getId());
         Assertions.assertEquals(5, savedCollection.getAddresses().get(0).getId());
+    }
+
+    @Test
+    void shouldSaveCollectionItem() {
+        // when
+        Collection collection = underTest.findById(1L).orElseThrow(CollectionNotFoundException::new);
+        collection.addItem(itemMapper.mapToCollectionItem(COLLECTION_ITEM_DTO));
+        Collection savedCollection = underTest.save(collection);
+
+        // then
+        Assertions.assertEquals(1, savedCollection.getId());
+        Assertions.assertEquals(4, savedCollection.getItems().size());
+        Assertions.assertEquals("item", savedCollection.getItems().get(3).getName());
     }
 
 }

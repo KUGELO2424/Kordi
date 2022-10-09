@@ -13,7 +13,7 @@ import javax.persistence.Table;
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
  */
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

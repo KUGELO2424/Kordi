@@ -2,6 +2,7 @@ package pl.kucharski.Kordi.model.user;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import pl.kucharski.Kordi.model.BaseEntity;
 
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ import javax.persistence.Table;
  */
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "account")

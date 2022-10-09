@@ -1,16 +1,19 @@
 package pl.kucharski.Kordi.model.collection_submitted_item;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import pl.kucharski.Kordi.model.BaseEntity;
 import pl.kucharski.Kordi.model.collection.Collection;
 import pl.kucharski.Kordi.model.collection_item.CollectionItem;
 import pl.kucharski.Kordi.model.user.User;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 /**
  * Entity that represents submitted collection item. It contains submit time and amount of donated item.
@@ -20,6 +23,7 @@ import java.util.Date;
  */
 
 @Getter
+@Setter
 @Entity
 @Table(name = "submitted_item")
 public class SubmittedItem extends BaseEntity {
@@ -29,7 +33,7 @@ public class SubmittedItem extends BaseEntity {
 
     @Column(name = "submit_time")
     @CreationTimestamp
-    private Date submitTime;
+    private LocalDateTime submitTime;
 
     @ManyToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
@@ -55,7 +59,7 @@ public class SubmittedItem extends BaseEntity {
     public SubmittedItem() {
     }
 
-    public SubmittedItem(int amount, Date submitTime, Long userId, Long collectionId, Long itemId) {
+    public SubmittedItem(int amount, LocalDateTime submitTime, Long userId, Long collectionId, Long itemId) {
         this.amount = amount;
         this.submitTime = submitTime;
         this.userId = userId;

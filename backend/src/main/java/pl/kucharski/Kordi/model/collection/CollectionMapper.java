@@ -1,48 +1,20 @@
 package pl.kucharski.Kordi.model.collection;
 
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
-import org.springframework.beans.factory.annotation.Autowired;
 import pl.kucharski.Kordi.model.address.AddressMapper;
 import pl.kucharski.Kordi.model.collection_item.CollectionItemMapper;
 
-import java.util.ArrayList;
-import java.util.stream.Collectors;
+@Mapper(uses = {AddressMapper.class, CollectionItemMapper.class}, componentModel = "spring",
+injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+public interface CollectionMapper {
 
-public final class CollectionMapper {
+    CollectionMapper INSTANCE = Mappers.getMapper(CollectionMapper.class);
 
-    private static final AddressMapper addressMapper = Mappers.getMapper(AddressMapper.class);
+    @Mapping(target = "userFirstname", source = "user.firstName")
+    @Mapping(target = "userLastname", source = "user.lastName")
+    CollectionDTO mapToCollectionDTO(Collection collection);
 
-    public static CollectionDTO mapCollectionDTOFromCollection(Collection collection) {
-        return CollectionDTO.builder()
-                .id(collection.getId())
-                .title(collection.getTitle())
-                .description(collection.getDescription())
-                .startTime(collection.getStartTime())
-                .endTime(collection.getEndTime())
-                .userFirstname(collection.getUser().getFirstName())
-                .userLastname(collection.getUser().getLastName())
-                .addresses(collection.getAddresses()
-                        .stream()
-                        .map(addressMapper::mapToAddressDTO).collect(Collectors.toList()))
-                .items(collection.getItems()
-                        .stream()
-                        .map(CollectionItemMapper::mapCollectionItemDTOFromCollectionItem).collect(Collectors.toList()))
-                .build();
-    }
-
-    public static Collection mapCollectionFromCollectionDTO(CollectionDTO collection) {
-        return new Collection(collection.getTitle(),
-                collection.getDescription(),
-                collection.getStartTime(),
-                collection.getEndTime(),
-                collection.getUserId(),
-                collection.getAddresses()
-                        .stream()
-                        .map(addressMapper::mapToAddress).collect(Collectors.toList()),
-                collection.getItems()
-                        .stream()
-                        .map(CollectionItemMapper::mapCollectionItemFromCollectionItemDTO).collect(Collectors.toList()),
-                new ArrayList<>());
-    }
+    Collection mapToCollection(CollectionDTO collection);
 
 }
