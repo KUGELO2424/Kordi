@@ -1,5 +1,6 @@
 package pl.kucharski.Kordi.controller;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,8 @@ import pl.kucharski.Kordi.model.user.UserMapper;
 import pl.kucharski.Kordi.model.user.UserRegistrationDTO;
 import pl.kucharski.Kordi.service.user.UserService;
 import pl.kucharski.Kordi.service.verification.EmailTokenService;
+
+import java.util.Collections;
 
 
 /**
@@ -55,7 +58,7 @@ public class UserController {
      * @return VerificationStatus - if token was sent correctly,<br>
      *         status 400 with message if UserRegisterException occurred
      */
-    @PostMapping("/register")
+    @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveUser(@RequestParam("verificationType") VerificationType verificationType,
                                       @RequestBody UserRegistrationDTO user) {
         VerificationStatus result;
@@ -64,7 +67,7 @@ public class UserController {
         } catch (Exception ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(Collections.singletonMap("status", result));
     }
 
     /**
@@ -81,33 +84,33 @@ public class UserController {
     public ResponseEntity<?> verifyUser(@RequestParam("token") String token,
                                         @RequestParam(value = "phone", required = false) String phone) {
         try {
+            VerificationStatus result;
             if (phone != null) {
-                return verifyUserOnPhoneVerification(token, phone);
+                result = verifyUserOnPhoneVerification(token, phone);
             } else {
-                return verifyUserOnEmailVerification(token);
+                result = verifyUserOnEmailVerification(token);
             }
+            return ResponseEntity.ok(Collections.singletonMap("status", result));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    private ResponseEntity<?> verifyUserOnPhoneVerification(String token, String phone) {
+    private VerificationStatus verifyUserOnPhoneVerification(String token, String phone) {
         UserDTO user = userService.getUserByPhone(phone);
         if (user == null) {
             throw new IllegalStateException("User not found with given phone number");
         }
-        VerificationStatus result = userService.verifyToken(user, token, VerificationType.PHONE);
-        return ResponseEntity.ok(result);
+        return userService.verifyToken(user, token, VerificationType.PHONE);
     }
 
-    private ResponseEntity<?> verifyUserOnEmailVerification(String token) {
+    private VerificationStatus verifyUserOnEmailVerification(String token) {
         EmailToken emailToken = tokenService.getToken(token).orElseThrow(() -> {
             throw new IllegalStateException("User not found with given token");
         });
         User user = emailToken.getUser();
         UserDTO userDTO = userMapper.mapToUserDTO(user);
-        VerificationStatus result = userService.verifyToken(userDTO, token, VerificationType.EMAIL);
-        return ResponseEntity.ok(result);
+        return userService.verifyToken(userDTO, token, VerificationType.EMAIL);
     }
 
 }
