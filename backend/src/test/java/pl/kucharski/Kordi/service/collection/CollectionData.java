@@ -25,6 +25,10 @@ public class CollectionData {
     public static final LocalDateTime YESTERDAY = LocalDateTime.now().minusDays(1);
     public static final String COMMENT_CONTENT = "New content";
 
+    public static final LocalDateTime NEW_END_TIME = LocalDateTime.now().plusDays(100);
+    public static final String NEW_TITLE = "NewTitle";
+    public static final String NEW_DESC = "NewDescription";
+
     public static final Address ADDRESS = new Address("Warszawa", "Wielka");
     public static final AddressDTO ADDRESS_DTO = AddressDTO.builder()
             .city("Warszawa")
@@ -120,4 +124,72 @@ public class CollectionData {
         comments.add(comment);
         return comments;
     }
+
+    public static final String COLLECTION_TO_CREATE = "{" +
+            "\"title\":\"TestCollection\", " +
+            "\"description\":\"TestDescription\"," +
+            "\"userId\":\"1\"," +
+            "\"addresses\": " +
+            "[{\"city\":\"TestCity\"," +
+            "\"street\":\"TestStreet\"}]," +
+            "\"items\": " +
+            "[{\"name\":\"TestName\"," +
+            "\"type\":\"AMOUNT\"," +
+            "\"currentAmount\":\"0\"," +
+            "\"maxAmount\":\"10\"}]" +
+            "}";
+
+    public static final String COLLECTION_TO_CREATE_WITH_NOT_EXISTING_USER = "{" +
+            "\"title\":\"TestCollection\", " +
+            "\"description\":\"TestDescription\"," +
+            "\"userId\":\"10\"," +
+            "\"addresses\": " +
+            "[{\"city\":\"TestCity\"," +
+            "\"street\":\"TestStreet\"}]," +
+            "\"items\": " +
+            "[{\"name\":\"TestName\"," +
+            "\"type\":\"AMOUNT\"," +
+            "\"currentAmount\":\"0\"," +
+            "\"maxAmount\":\"10\"}]" +
+            "}";
+
+    public static final String COLLECTION_TO_CREATE_WITH_EMPTY_TITLE = "{" +
+            "\"title\":\"\", " +
+            "\"description\":\"TestDescription\"," +
+            "\"userId\":\"1\"," +
+            "\"addresses\": " +
+            "[{\"city\":\"TestCity\"," +
+            "\"street\":\"TestStreet\"}]," +
+            "\"items\": " +
+            "[{\"name\":\"TestName\"," +
+            "\"type\":\"AMOUNT\"," +
+            "\"currentAmount\":\"0\"," +
+            "\"maxAmount\":\"10\"}]" +
+            "}";
+
+    public static final String COLLECTION_TO_CREATE_WITH_NOT_EXISTING_ITEM_TYPE = "{" +
+            "\"title\":\"TestCollection\", " +
+            "\"description\":\"TestDescription\"," +
+            "\"userId\":\"1\"," +
+            "\"addresses\": " +
+            "[{\"city\":\"TestCity\"," +
+            "\"street\":\"TestStreet\"}]," +
+            "\"items\": " +
+            "[{\"name\":\"TestName\"," +
+            "\"type\":\"UNKNOWN\"," +
+            "\"currentAmount\":\"0\"," +
+            "\"maxAmount\":\"10\"}]" +
+            "}";
+
+    public static final String COLLECTION_TO_UPDATE = "{" +
+            "\"id\":\"4\", " +
+            "\"title\":\"" + NEW_TITLE + "\", " +
+            "\"description\":\"" + NEW_DESC + "\"," +
+            "\"endTime\":\"" + NEW_END_TIME + "\"}";
+
+    public static final String NOT_EXISTING_COLLECTION_TO_UPDATE = "{" +
+            "\"id\":\"55\", " +
+            "\"title\":\"" + NEW_TITLE + "\", " +
+            "\"description\":\"" + NEW_DESC + "\"," +
+            "\"endTime\":\"" + NEW_END_TIME + "\"}";
 }

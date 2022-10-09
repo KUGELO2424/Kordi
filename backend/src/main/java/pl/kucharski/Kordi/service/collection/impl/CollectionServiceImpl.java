@@ -4,10 +4,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
+import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.model.collection.Collection;
 import pl.kucharski.Kordi.model.collection.CollectionDTO;
 import pl.kucharski.Kordi.model.collection.CollectionMapper;
 import pl.kucharski.Kordi.repository.CollectionRepository;
+import pl.kucharski.Kordi.repository.UserRepository;
 import pl.kucharski.Kordi.service.collection.CollectionService;
 
 import java.time.LocalDateTime;
@@ -19,10 +21,12 @@ import java.util.stream.Collectors;
 public class CollectionServiceImpl implements CollectionService {
 
     private final CollectionRepository collectionRepository;
+    private final UserRepository userRepository;
     private final CollectionMapper collectionMapper;
 
-    public CollectionServiceImpl(CollectionRepository collectionRepository, CollectionMapper collectionMapper) {
+    public CollectionServiceImpl(CollectionRepository collectionRepository, UserRepository userRepository, CollectionMapper collectionMapper) {
         this.collectionRepository = collectionRepository;
+        this.userRepository = userRepository;
         this.collectionMapper = collectionMapper;
     }
 
@@ -75,6 +79,9 @@ public class CollectionServiceImpl implements CollectionService {
     @Override
     @Transactional
     public CollectionDTO saveCollection(CollectionDTO collectionDTO) {
+        if (!userRepository.existsById(collectionDTO.getUserId())) {
+            throw new UserNotFoundException("User with id " + collectionDTO.getUserId() + " not found");
+        }
         Collection collection = collectionMapper.mapToCollection(collectionDTO);
         Collection savedCollection = collectionRepository.save(collection);
         return collectionMapper.mapToCollectionDTO(savedCollection);

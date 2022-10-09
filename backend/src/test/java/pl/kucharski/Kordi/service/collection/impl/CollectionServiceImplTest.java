@@ -17,6 +17,7 @@ import pl.kucharski.Kordi.model.collection.CollectionMapper;
 import pl.kucharski.Kordi.model.collection.CollectionMapperImpl;
 import pl.kucharski.Kordi.model.collection_item.CollectionItemMapper;
 import pl.kucharski.Kordi.repository.CollectionRepository;
+import pl.kucharski.Kordi.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -49,12 +50,15 @@ class CollectionServiceImplTest {
     @Mock
     private CollectionRepository collectionRepository;
 
+    @Mock
+    private UserRepository userRepository;
+
     @InjectMocks
     private CollectionServiceImpl underTest;
 
     @BeforeEach
     void setUp() {
-        underTest = new CollectionServiceImpl(collectionRepository, collectionMapper);
+        underTest = new CollectionServiceImpl(collectionRepository, userRepository, collectionMapper);
 
         COLLECTION_WITH_ID = createCollectionWithId();
         COLLECTION_DTO_WITH_ID = createCollectionDTOWithId();
@@ -190,6 +194,7 @@ class CollectionServiceImplTest {
     @Test
     void shouldSaveCollection() {
         // given
+        given(userRepository.existsById(1L)).willReturn(true);
         given(collectionRepository.save(any())).willReturn(COLLECTION_WITH_ID);
 
         // when
