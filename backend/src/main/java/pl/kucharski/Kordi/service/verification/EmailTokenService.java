@@ -5,6 +5,7 @@ import pl.kucharski.Kordi.model.email.EmailToken;
 import pl.kucharski.Kordi.repository.EmailTokenRepository;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.Optional;
 
 /**
@@ -31,6 +32,15 @@ public class EmailTokenService {
      */
     public Optional<EmailToken> getToken(String token) {
         return tokenRepository.findByToken(token);
+    }
+
+    /**
+     * @param userId id of user
+     */
+    public EmailToken getTokenByUserId(Long userId) {
+        return tokenRepository.findByUserId(userId).stream()
+                .max(Comparator.comparing(EmailToken::getCreatedAt))
+                .orElseThrow(IllegalAccessError::new);
     }
 
     /**

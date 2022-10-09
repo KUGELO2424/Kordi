@@ -8,6 +8,7 @@ import pl.kucharski.Kordi.model.email.EmailToken;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,6 +18,7 @@ import java.util.Optional;
 @Repository
 public interface EmailTokenRepository extends JpaRepository<EmailToken, Long> {
     Optional<EmailToken> findByToken(String token);
+    List<EmailToken> findByUserId(Long userId);
 
     @Transactional
     @Modifying(clearAutomatically = true)
