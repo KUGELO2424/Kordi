@@ -192,4 +192,9 @@ public class CollectionData {
             "\"title\":\"" + NEW_TITLE + "\", " +
             "\"description\":\"" + NEW_DESC + "\"," +
             "\"endTime\":\"" + NEW_END_TIME + "\"}";
+
+    public static final String COMMENT_TO_ADD = "{" +
+            "\"content\":\"" + COMMENT_CONTENT + "\", " +
+            "\"userId\":\"1\"," +
+            "\"collectionId\":\"2\"}";
 }

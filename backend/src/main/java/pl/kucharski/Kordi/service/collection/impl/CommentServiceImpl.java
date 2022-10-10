@@ -36,6 +36,7 @@ public class CommentServiceImpl implements CommentService {
      * @see CommentService#addComment(Long, CreateCommentDTO)
      */
     @Override
+    @Transactional
     public CommentDTO addComment(Long collectionId, CreateCommentDTO commentDTO) {
         Comment comment = commentMapper.mapToComment(commentDTO);
         Collection foundCollection = collectionRepository.findById(collectionId)
@@ -48,6 +49,7 @@ public class CommentServiceImpl implements CommentService {
      * @see CommentService#removeComment(Long, Long)
      */
     @Override
+    @Transactional
     public void removeComment(Long collectionId, Long commentId) {
         Collection foundCollection = collectionRepository.findById(collectionId)
                 .orElseThrow(CollectionNotFoundException::new);
