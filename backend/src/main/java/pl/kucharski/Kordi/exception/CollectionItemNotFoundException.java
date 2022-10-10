@@ -5,20 +5,7 @@ package pl.kucharski.Kordi.exception;
  */
 
 public class CollectionItemNotFoundException extends RuntimeException{
-
-    public CollectionItemNotFoundException() {
-        super();
-    }
-
     public CollectionItemNotFoundException(String message) {
         super(message);
-    }
-
-    public CollectionItemNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public CollectionItemNotFoundException(Throwable cause) {
-        super(cause);
     }
 }
