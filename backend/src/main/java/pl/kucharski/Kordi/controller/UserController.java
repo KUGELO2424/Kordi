@@ -98,9 +98,6 @@ public class UserController {
 
     private VerificationStatus verifyUserOnPhoneVerification(String token, String phone) {
         UserDTO user = userService.getUserByPhone(phone);
-        if (user == null) {
-            throw new IllegalStateException("User not found with given phone number");
-        }
         return userService.verifyToken(user, token, VerificationType.PHONE);
     }
 

@@ -17,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.kucharski.Kordi.KordiApplication;
@@ -53,18 +52,28 @@ class UserControllerTest {
     private static final String TOKEN_TO_VERIFY = "qwerty123456";
     private static final String LOGIN_USERNAME = "gelo2424";
     private static final String LOGIN_PASSWORD = "qwerty";
-    private static final String USER_TO_REGISTER = "{\"firstName\":\"test\", " +
+    private static final String USER_PHONE = "198321555";
+    private static final String USER_TO_REGISTER_WITH_PHONE_VERIFICATION =
+            "{\"firstName\":\"test\", " +
             "\"lastName\":\"test\"," +
             "\"username\":\"test123\"," +
             "\"password\":\"qwerty\"," +
             "\"email\":\"test@gmai.pl\"," +
-            "\"phone\":\"198321555\"}";
+            "\"phone\":\"" + USER_PHONE + "\"}";
+
+    private static final String USER_TO_REGISTER_WITH_EMAIL_VERIFICATION =
+            "{\"firstName\":\"test2\", " +
+                    "\"lastName\":\"test2\"," +
+                    "\"username\":\"test1234\"," +
+                    "\"password\":\"qwerty\"," +
+                    "\"email\":\"test2@gmai.pl\"," +
+                    "\"phone\":\"876555444\"}";
     private static final String USER_THAT_EXISTS = "{\"firstName\":\"test\", " +
             "\"lastName\":\"test\"," +
             "\"username\":\"newUser\"," +
             "\"password\":\"qwerty\"," +
             "\"email\":\"gelo@gmail.com\"," +
-            "\"phone\":\"198321555\"}";
+            "\"phone\":\"" + USER_PHONE + "\"}";
 
     @Autowired
     private MockMvc mvc;
@@ -139,7 +148,7 @@ class UserControllerTest {
     public void shouldRegisterUserWithEmailVerification() throws Exception {
         mvc.perform(post("/register?verificationType=EMAIL")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(USER_TO_REGISTER)
+                        .content(USER_TO_REGISTER_WITH_EMAIL_VERIFICATION)
                         .param("username", LOGIN_USERNAME)
                         .param("password", "worngPassword"))
                 .andExpect(status().isOk())
@@ -148,7 +157,7 @@ class UserControllerTest {
         MimeMessage[] received = greenMail.getReceivedMessages();
         assertEquals(1, received.length);
         MimeMessage receivedMessage = received[0];
-        assertEquals("test@gmai.pl", receivedMessage.getAllRecipients()[0].toString());
+        assertEquals("test2@gmai.pl", receivedMessage.getAllRecipients()[0].toString());
     }
 
     @Test
@@ -156,7 +165,7 @@ class UserControllerTest {
         when(phoneVerificationService.send(any())).thenReturn(VerificationStatus.PENDING);
         mvc.perform(post("/register?verificationType=PHONE")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(USER_TO_REGISTER)
+                        .content(USER_TO_REGISTER_WITH_PHONE_VERIFICATION)
                         .param("username", LOGIN_USERNAME)
                         .param("password", "worngPassword"))
                 .andExpect(status().isOk())
@@ -182,22 +191,45 @@ class UserControllerTest {
     }
 
     @Test
-    public void shouldVerifyUser() throws Exception {
+    public void shouldVerifyUserWithEmailVerification() throws Exception {
         mvc.perform(post("/register?verificationType=EMAIL")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(USER_TO_REGISTER)
-                        .param("username", LOGIN_USERNAME)
-                        .param("password", "worngPassword"))
+                        .content(USER_TO_REGISTER_WITH_EMAIL_VERIFICATION))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("PENDING")));
 
-        EmailToken emailToken = emailTokenService.getTokenByUserId(8L);
+        EmailToken emailToken = emailTokenService.getTokenByUserId(9L);
 
         mvc.perform(get("/verify")
                         .queryParam("token", emailToken.getToken()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("VERIFIED")));
+    }
 
+    @Test
+    public void shouldVerifyUserWithPhoneVerification() throws Exception {
+        when(phoneVerificationService.send(any())).thenReturn(VerificationStatus.PENDING);
+        when(phoneVerificationService.verify(any(), any())).thenReturn(VerificationStatus.VERIFIED);
+        mvc.perform(post("/register?verificationType=PHONE")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(USER_TO_REGISTER_WITH_PHONE_VERIFICATION))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is("PENDING")));
+
+        mvc.perform(get("/verify")
+                        .queryParam("token", "someToken")
+                        .queryParam("phone", USER_PHONE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is("VERIFIED")));
+    }
+
+    @Test
+    public void shouldThrow400IfNoUserWithGivenPhoneNumber() throws Exception {
+        mvc.perform(get("/verify")
+                        .queryParam("token", "someToken")
+                        .queryParam("phone", "notExistingPhone"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("User not found in database"));
     }
 
     @Test
