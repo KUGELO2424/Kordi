@@ -22,6 +22,11 @@ import pl.kucharski.Kordi.service.collection.CollectionService;
 import javax.validation.Valid;
 import java.net.URI;
 
+/**
+ * Collection controller responsible for basic collection management
+ *
+ * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ */
 @RestController
 public class CollectionController {
 

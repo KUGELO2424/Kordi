@@ -21,6 +21,11 @@ import pl.kucharski.Kordi.service.collection.CommentService;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Comment controller responsible for comment management
+ *
+ * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ */
 @RestController
 public class CommentController {
 
@@ -30,6 +35,14 @@ public class CommentController {
         this.commentService = commentService;
     }
 
+    /**
+     * Add new comment
+     * @param collectionId id of collection which you want to add comment
+     * @param comment comment to add
+     *
+     * @return created comment<br>
+     * status 404 if collection not found
+     */
     @PostMapping("/collections/{collectionId}/comments")
     ResponseEntity<?> addComment(@PathVariable("collectionId") Long collectionId, @RequestBody CreateCommentDTO comment){
         try {
@@ -42,6 +55,15 @@ public class CommentController {
         }
     }
 
+    /**
+     * Remove comment from collection
+     * @param collectionId id of collection from which you want to remove comment
+     * @param commentId id of comment to delete
+     *
+     * @return info about deleted comment
+     * status 404 if collection not found
+     * status 404 if comment not found in given collection
+     */
     @DeleteMapping("/collections/{collectionId}/comments/{commentId}")
     ResponseEntity<?> removeComment(@PathVariable("collectionId") Long collectionId, @PathVariable("commentId") Long commentId){
         try {
@@ -55,6 +77,13 @@ public class CommentController {
         }
     }
 
+    /**
+     * Get all comment from collection
+     * @param collectionId id of collection from which you want to remove comment
+     *
+     * @return list of found comments
+     * status 404 if collection not found
+     */
     @GetMapping("/collections/{collectionId}/comments")
     ResponseEntity<?> getCommentFromCollection(@PathVariable("collectionId") Long collectionId,
                                                @RequestParam(value = "pageNo",

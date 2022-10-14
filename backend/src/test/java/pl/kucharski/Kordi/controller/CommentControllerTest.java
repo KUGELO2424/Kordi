@@ -65,7 +65,6 @@ class CommentControllerTest {
     @Test
     @WithMockUser
     void shouldAddCommentToCollection() throws Exception {
-        commentRepository.findAll().forEach(comment -> System.out.println(comment.toString()));
         mvc.perform(post("/collections/" + EXISTING_COLLECTION_V2_ID + "/comments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(COMMENT_TO_ADD)
