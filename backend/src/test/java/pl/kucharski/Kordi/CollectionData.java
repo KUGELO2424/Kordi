@@ -1,4 +1,4 @@
-package pl.kucharski.Kordi.service.collection;
+package pl.kucharski.Kordi;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

@@ -28,10 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
-import static pl.kucharski.Kordi.service.collection.CollectionData.createCollectionWithId;
-import static pl.kucharski.Kordi.service.collection.CollectionData.createItemDTOWithId;
-import static pl.kucharski.Kordi.service.collection.CollectionData.createSecondItemDTOWithId;
-import static pl.kucharski.Kordi.service.collection.CollectionData.createSubmittedItemDTO;
+import static pl.kucharski.Kordi.CollectionData.createCollectionWithId;
+import static pl.kucharski.Kordi.CollectionData.createItemDTOWithId;
+import static pl.kucharski.Kordi.CollectionData.createSecondItemDTOWithId;
+import static pl.kucharski.Kordi.CollectionData.createSubmittedItemDTO;
 
 @ExtendWith(MockitoExtension.class)
 @Transactional

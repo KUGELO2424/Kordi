@@ -22,15 +22,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static pl.kucharski.Kordi.service.collection.CollectionData.COLLECTION_TO_CREATE;
-import static pl.kucharski.Kordi.service.collection.CollectionData.COLLECTION_TO_CREATE_WITH_EMPTY_TITLE;
-import static pl.kucharski.Kordi.service.collection.CollectionData.COLLECTION_TO_CREATE_WITH_NOT_EXISTING_ITEM_TYPE;
-import static pl.kucharski.Kordi.service.collection.CollectionData.COLLECTION_TO_CREATE_WITH_NOT_EXISTING_USER;
-import static pl.kucharski.Kordi.service.collection.CollectionData.COLLECTION_TO_UPDATE;
-import static pl.kucharski.Kordi.service.collection.CollectionData.NEW_DESC;
-import static pl.kucharski.Kordi.service.collection.CollectionData.NEW_END_TIME;
-import static pl.kucharski.Kordi.service.collection.CollectionData.NEW_TITLE;
-import static pl.kucharski.Kordi.service.collection.CollectionData.NOT_EXISTING_COLLECTION_TO_UPDATE;
+import static pl.kucharski.Kordi.CollectionData.COLLECTION_TO_CREATE;
+import static pl.kucharski.Kordi.CollectionData.COLLECTION_TO_CREATE_WITH_EMPTY_TITLE;
+import static pl.kucharski.Kordi.CollectionData.COLLECTION_TO_CREATE_WITH_NOT_EXISTING_ITEM_TYPE;
+import static pl.kucharski.Kordi.CollectionData.COLLECTION_TO_CREATE_WITH_NOT_EXISTING_USER;
+import static pl.kucharski.Kordi.CollectionData.COLLECTION_TO_UPDATE;
+import static pl.kucharski.Kordi.CollectionData.NEW_DESC;
+import static pl.kucharski.Kordi.CollectionData.NEW_END_TIME;
+import static pl.kucharski.Kordi.CollectionData.NEW_TITLE;
+import static pl.kucharski.Kordi.CollectionData.NOT_EXISTING_COLLECTION_TO_UPDATE;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = KordiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

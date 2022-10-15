@@ -28,12 +28,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static pl.kucharski.Kordi.service.collection.CollectionData.PAGING;
-import static pl.kucharski.Kordi.service.collection.CollectionData.TOMORROW;
-import static pl.kucharski.Kordi.service.collection.CollectionData.YESTERDAY;
-import static pl.kucharski.Kordi.service.collection.CollectionData.createCollectionDTOWithId;
-import static pl.kucharski.Kordi.service.collection.CollectionData.createCollectionDTOWithoutId;
-import static pl.kucharski.Kordi.service.collection.CollectionData.createCollectionWithId;
+import static pl.kucharski.Kordi.CollectionData.PAGING;
+import static pl.kucharski.Kordi.CollectionData.TOMORROW;
+import static pl.kucharski.Kordi.CollectionData.YESTERDAY;
+import static pl.kucharski.Kordi.CollectionData.createCollectionDTOWithId;
+import static pl.kucharski.Kordi.CollectionData.createCollectionDTOWithoutId;
+import static pl.kucharski.Kordi.CollectionData.createCollectionWithId;
 
 @ExtendWith(MockitoExtension.class)
 @Transactional

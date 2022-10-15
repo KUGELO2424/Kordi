@@ -17,7 +17,7 @@ import pl.kucharski.Kordi.model.comment.CommentMapper;
 import pl.kucharski.Kordi.model.comment.CreateCommentDTO;
 import pl.kucharski.Kordi.repository.CollectionRepository;
 import pl.kucharski.Kordi.repository.CommentRepository;
-import pl.kucharski.Kordi.service.collection.CollectionData;
+import pl.kucharski.Kordi.CollectionData;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
-import static pl.kucharski.Kordi.service.collection.CollectionData.COMMENT_CONTENT;
+import static pl.kucharski.Kordi.CollectionData.COMMENT_CONTENT;
 
 @ExtendWith(MockitoExtension.class)
 @Transactional
