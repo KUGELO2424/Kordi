@@ -2,7 +2,6 @@ package pl.kucharski.Kordi.service.collection;
 
 import pl.kucharski.Kordi.exception.CollectionItemNotFoundException;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
-import pl.kucharski.Kordi.model.collection.CollectionDTO;
 import pl.kucharski.Kordi.model.collection_item.CollectionItemDTO;
 import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItemDTO;
 
@@ -33,7 +32,7 @@ public interface CollectionItemService {
      * @throws CollectionNotFoundException if no collection with given id
      * @throws CollectionItemNotFoundException if no collection item with given id in collection
      */
-    CollectionDTO updateCollectionItem(long collectionId, long itemId, int currentAmount, int maxAmount);
+    CollectionItemDTO updateCollectionItem(long collectionId, long itemId, int currentAmount, int maxAmount);
 
     /**
      * Submit item
@@ -42,7 +41,7 @@ public interface CollectionItemService {
      * @throws CollectionNotFoundException if no collection with given id
      * @throws CollectionItemNotFoundException if no collection item with given id in collection
      */
-    CollectionDTO submitItem(SubmittedItemDTO item);
+    CollectionItemDTO submitItem(long collectionId, long itemId, SubmittedItemDTO item);
 
     /**
      * Get all submitted items from specific collection

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -27,6 +28,7 @@ import java.util.List;
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
  */
 @RestController
+@RequestMapping("/collections")
 public class CommentController {
 
     CommentService commentService;
@@ -43,7 +45,7 @@ public class CommentController {
      * @return created comment<br>
      * status 404 if collection not found
      */
-    @PostMapping("/collections/{collectionId}/comments")
+    @PostMapping("/{collectionId}/comments")
     ResponseEntity<?> addComment(@PathVariable("collectionId") Long collectionId, @RequestBody CreateCommentDTO comment){
         try {
             CommentDTO addedComment = commentService.addComment(collectionId, comment);
@@ -64,7 +66,7 @@ public class CommentController {
      * status 404 if collection not found
      * status 404 if comment not found in given collection
      */
-    @DeleteMapping("/collections/{collectionId}/comments/{commentId}")
+    @DeleteMapping("/{collectionId}/comments/{commentId}")
     ResponseEntity<?> removeComment(@PathVariable("collectionId") Long collectionId, @PathVariable("commentId") Long commentId){
         try {
             commentService.removeComment(collectionId, commentId);
@@ -84,7 +86,7 @@ public class CommentController {
      * @return list of found comments
      * status 404 if collection not found
      */
-    @GetMapping("/collections/{collectionId}/comments")
+    @GetMapping("/{collectionId}/comments")
     ResponseEntity<?> getCommentFromCollection(@PathVariable("collectionId") Long collectionId,
                                                @RequestParam(value = "pageNo",
                                                        defaultValue = PaginationConstants.DEFAULT_PAGE_NUMBER,

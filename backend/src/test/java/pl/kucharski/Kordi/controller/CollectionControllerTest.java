@@ -5,7 +5,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
@@ -39,9 +38,9 @@ import static pl.kucharski.Kordi.service.collection.CollectionData.NOT_EXISTING_
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class CollectionControllerTest {
 
+    public final static Long EXISTING_COLLECTION_ID = 1L;
+    public final static Long NOT_EXISTING_COLLECTION_ID = 555L;
     private final static String EXISTING_USERNAME = "ewa";
-    private final static Long EXISTING_COLLECTION_ID = 1L;
-    private final static Long NOT_EXISTING_COLLECTION_ID = 555L;
     private final static String NOT_EXISTING_USERNAME = "not_existing_username";
     private final static String TITLE_OF_COLLECTION_OF_EXISTING_USER = "Zbiórka dla Bartka";
     private final static String TITLE_02_OF_COLLECTION_OF_EXISTING_USER = "Zbiórka dla Oliwii";
@@ -49,18 +48,14 @@ class CollectionControllerTest {
     private final static String CITY_FOR_SEARCH = "Warszawa";
     private final static String ITEM_FOR_SEARCH = "Spodnie";
 
-
     @Autowired
     private MockMvc mvc;
-
-    @Autowired
-    private TestRestTemplate testRestTemplate;
 
     @Test
     @WithMockUser
     void shouldReturnEmptyListOfCollectionsIfUserNotExists() throws Exception {
         mvc.perform(get("/user/" + NOT_EXISTING_USERNAME + "/collections")
-                    .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.*", hasSize(0)));
@@ -81,7 +76,7 @@ class CollectionControllerTest {
     @Test
     @WithMockUser
     void shouldReturnCollectionById() throws Exception {
-        mvc.perform(get("/collections/" + EXISTING_COLLECTION_ID )
+        mvc.perform(get("/collections/" + EXISTING_COLLECTION_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
@@ -91,7 +86,7 @@ class CollectionControllerTest {
     @Test
     @WithMockUser
     void shouldThrowCollectionNotFound() throws Exception {
-        mvc.perform(get("/collections/" + NOT_EXISTING_COLLECTION_ID )
+        mvc.perform(get("/collections/" + NOT_EXISTING_COLLECTION_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isNotFound());

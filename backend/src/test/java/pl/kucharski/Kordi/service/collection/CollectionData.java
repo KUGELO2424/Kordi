@@ -197,4 +197,10 @@ public class CollectionData {
             "\"content\":\"" + COMMENT_CONTENT + "\", " +
             "\"userId\":\"1\"," +
             "\"collectionId\":\"2\"}";
+
+    public static final String ITEM_DTO_TO_ADD = "{" +
+            "\"name\":\"Koszulki\", " +
+            "\"currentAmount\":\"5\"," +
+            "\"maxAmount\":\"10\"," +
+            "\"type\":\"AMOUNT\"}";
 }
