@@ -20,6 +20,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import pl.kucharski.Kordi.KordiApplication;
 import pl.kucharski.Kordi.enums.VerificationStatus;
 import pl.kucharski.Kordi.model.email.EmailToken;
@@ -35,10 +37,12 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -55,6 +59,13 @@ class UserControllerTest {
     private static final String LOGIN_USERNAME = "gelo2424";
     private static final String LOGIN_PASSWORD = "qwerty";
     private static final String USER_PHONE = "198321555";
+    private static final String USER_TO_REGISTER_WITH_TOO_SHORT_PASSWORD =
+            "{\"firstName\":\"test\", " +
+                    "\"lastName\":\"test\"," +
+                    "\"username\":\"test123\"," +
+                    "\"password\":\"short\"," +
+                    "\"email\":\"test@gmai.pl\"," +
+                    "\"phone\":\"" + USER_PHONE + "\"}";
     private static final String USER_TO_REGISTER_WITH_PHONE_VERIFICATION =
             "{\"firstName\":\"test\", " +
             "\"lastName\":\"test\"," +
@@ -147,12 +158,19 @@ class UserControllerTest {
     }
 
     @Test
+    public void shouldNotRegisterUserIfPasswordIsTooShort() throws Exception {
+        mvc.perform(post("/register?verificationType=EMAIL")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(USER_TO_REGISTER_WITH_TOO_SHORT_PASSWORD))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException));
+    }
+
+    @Test
     public void shouldRegisterUserWithEmailVerification() throws Exception {
         mvc.perform(post("/register?verificationType=EMAIL")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(USER_TO_REGISTER_WITH_EMAIL_VERIFICATION)
-                        .param("username", LOGIN_USERNAME)
-                        .param("password", "worngPassword"))
+                        .content(USER_TO_REGISTER_WITH_EMAIL_VERIFICATION))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("PENDING")));
 
@@ -167,9 +185,7 @@ class UserControllerTest {
         when(phoneVerificationService.send(any())).thenReturn(VerificationStatus.PENDING);
         mvc.perform(post("/register?verificationType=PHONE")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(USER_TO_REGISTER_WITH_PHONE_VERIFICATION)
-                        .param("username", LOGIN_USERNAME)
-                        .param("password", "worngPassword"))
+                        .content(USER_TO_REGISTER_WITH_PHONE_VERIFICATION))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("PENDING")));
     }
@@ -241,6 +257,59 @@ class UserControllerTest {
                         .queryParam("token", "NotExistingToken"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("User not found with given token"));
+    }
+
+    @Test
+    public void shouldThrow400IfOldPasswordDoesNotMatch() throws Exception {
+        String token = logInUser();
+        String headerWithToken = "Bearer ".concat(token);
+        mvc.perform(put("/users/updatePassword")
+                        .header("Authorization", headerWithToken)
+                        .queryParam("oldPassword", "notExisting")
+                        .queryParam("password", "newPassword"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void shouldThrow400IfNewPasswordIsTooShort() throws Exception {
+        String token = logInUser();
+        String headerWithToken = "Bearer ".concat(token);
+        mvc.perform(put("/users/updatePassword")
+                        .header("Authorization", headerWithToken)
+                        .queryParam("oldPassword", LOGIN_PASSWORD)
+                        .queryParam("password", "short"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    public void shouldUpdateUserPassword() throws Exception {
+        String token = logInUser();
+        String headerWithToken = "Bearer ".concat(token);
+        mvc.perform(put("/users/updatePassword")
+                        .header("Authorization", headerWithToken)
+                        .queryParam("oldPassword", LOGIN_PASSWORD)
+                        .queryParam("password", "newPassword"))
+                .andExpect(status().isOk());
+
+        mvc.perform(post("/login")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param("username", LOGIN_USERNAME)
+                        .param("password", "newPassword"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.access_token", is(notNullValue())));
+    }
+
+    private String logInUser() throws Exception {
+        MockHttpServletResponse response = mvc.perform(post("/login")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param("username", LOGIN_USERNAME)
+                        .param("password", LOGIN_PASSWORD))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.access_token", is(notNullValue())))
+                .andReturn().getResponse();
+        return response.getContentAsString().substring(START_OFFSET_RESPONSE_TOKEN, END_OFFSET_RESPONSE_TOKEN);
+
     }
 
 }

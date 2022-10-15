@@ -1,13 +1,16 @@
 package pl.kucharski.Kordi.service.user;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.enums.VerificationStatus;
 import pl.kucharski.Kordi.enums.VerificationType;
+import pl.kucharski.Kordi.exception.InvalidPasswordException;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.exception.UserRegisterException;
 import pl.kucharski.Kordi.model.user.User;
@@ -36,15 +39,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final VerificationService phoneVerificationService;
     private final UserMapper userMapper;
 
+    private final PasswordEncoder passwordEncoder;
+
     public UserServiceImpl(UserRepository userRepository, EmailValidator emailValidator,
                            @Qualifier("emailVerificationService") VerificationService emailVerificationService,
                            @Qualifier("phoneVerificationService") VerificationService phoneVerificationService,
-                           UserMapper userMapper) {
+                           UserMapper userMapper, @Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.emailValidator = emailValidator;
         this.emailVerificationService = emailVerificationService;
         this.phoneVerificationService = phoneVerificationService;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -120,6 +126,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
            enableUser(user);
        }
        return response;
+    }
+
+    /**
+     * @see UserService#updatePassword(String, String, String)
+     */
+    @Override
+    @Transactional
+    public void updatePassword(String username, String oldPassword, String newPassword) {
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new InvalidPasswordException("Old password does not match to current password");
+        }
+        if (newPassword.length() < 6) {
+            throw new InvalidPasswordException("Password must be at least 6 characters long");
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
     }
 
     /**

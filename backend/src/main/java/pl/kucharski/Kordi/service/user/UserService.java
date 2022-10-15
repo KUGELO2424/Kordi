@@ -6,6 +6,7 @@ import pl.kucharski.Kordi.model.user.UserDTO;
 import pl.kucharski.Kordi.model.user.UserRegistrationDTO;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.exception.UserRegisterException;
+import pl.kucharski.Kordi.exception.InvalidPasswordException;
 import pl.kucharski.Kordi.exception.UserVerifyException;
 
 import java.util.List;
@@ -36,6 +37,16 @@ public interface UserService {
      * @throws UserVerifyException with error message if it cannot verify user
      */
     VerificationStatus verifyToken(UserDTO user, String token, VerificationType verificationType);
+
+    /**
+     * Update user password if oldPassword match
+     * @param username whom you want change password
+     * @param oldPassword old password of user
+     * @param newPassword new password for user
+     *
+     * @throws InvalidPasswordException if oldPassword does not match
+     */
+    void updatePassword(String username, String oldPassword, String newPassword);
 
     /**
      * Find user with given id.

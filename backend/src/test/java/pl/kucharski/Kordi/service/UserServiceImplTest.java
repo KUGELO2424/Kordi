@@ -10,8 +10,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.kucharski.Kordi.enums.VerificationStatus;
 import pl.kucharski.Kordi.enums.VerificationType;
+import pl.kucharski.Kordi.exception.InvalidPasswordException;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.exception.UserRegisterException;
 import pl.kucharski.Kordi.model.user.PasswordEncoderMapper;
@@ -47,6 +49,9 @@ class UserServiceImplTest {
     @Mock
     private VerificationService phoneVerificationService;
     private UserServiceImpl underTest;
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    private static final String NEW_PASSWORD = "newPassword";
 
     private static final User NOT_VERIFIED_USER = new User("Test", "test", "test123", "qwerty",
             "test@mail.com", "110339332", false);
@@ -59,7 +64,7 @@ class UserServiceImplTest {
             "test@mail.com", "110339332", true);
 
     private static final UserRegistrationDTO USER_TO_REGISTER_1 = new UserRegistrationDTO("Test",
-            "test", "test123", "qwerty","test@mail.com", "110339332");
+            "test", "test123", "ytr","test@mail.com", "110339332");
     private static final UserRegistrationDTO USER_TO_REGISTER_2 = new UserRegistrationDTO("Test",
             "test", "test1234", "qwerty","test@mail.com", "987142231");
     private static final UserRegistrationDTO USER_TO_REGISTER_3 = new UserRegistrationDTO("Test",
@@ -73,7 +78,7 @@ class UserServiceImplTest {
         PasswordEncoderMapper passwordEncoderMapper = new PasswordEncoderMapper(new BCryptPasswordEncoder());
         UserMapper userMapper = new UserMapperImpl(passwordEncoderMapper);
         underTest = new UserServiceImpl(userRepository, emailValidator,
-                emailVerificationService, phoneVerificationService, userMapper);
+                emailVerificationService, phoneVerificationService, userMapper, passwordEncoder);
     }
 
     @Test
@@ -331,14 +336,43 @@ class UserServiceImplTest {
 
     @Test
     void shouldThrowWhenUserNotFoundByPhone() {
-        // given
-        User user = new User("Test", "test", "testuser", "qwerty",
-                "test@mail.com", "110339332", true);
-
         // when + then
         UserNotFoundException thrown = assertThrows(UserNotFoundException.class,
                 () -> underTest.getUserByPhone("110339332"));
         assertEquals("User not found in database", thrown.getMessage());
+    }
+
+    @Test
+    void shouldUpdateUserPassword() {
+        // given
+        VERIFIED_USER.setPassword(passwordEncoder.encode("qwerty"));
+        when(userRepository.findUserByUsername("testuser")).thenReturn(Optional.of(VERIFIED_USER));
+
+        // when
+        underTest.updatePassword("testuser", "qwerty", NEW_PASSWORD);
+
+        // then
+        assertTrue(passwordEncoder.matches(NEW_PASSWORD, VERIFIED_USER.getPassword()));
+    }
+
+    @Test
+    void shouldThrowInvalidPasswordExceptionIfOldPasswordDoesNotMatch() {
+        // given
+        VERIFIED_USER.setPassword(passwordEncoder.encode("qwerty"));
+        when(userRepository.findUserByUsername("testuser")).thenReturn(Optional.of(VERIFIED_USER));
+
+        // when + then
+        assertThrows(InvalidPasswordException.class, () -> underTest.updatePassword("testuser", "wrongOldPassword", NEW_PASSWORD));
+    }
+
+    @Test
+    void shouldThrowUserNotFoundOnUpdatedUserPassword() {
+        // given
+        VERIFIED_USER.setPassword(passwordEncoder.encode("qwerty"));
+        when(userRepository.findUserByUsername("testuser")).thenReturn(Optional.empty());
+
+        // when + then
+        assertThrows(UserNotFoundException.class, () -> underTest.updatePassword("testuser", "qwerty", NEW_PASSWORD));
     }
 
 }
