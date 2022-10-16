@@ -40,7 +40,10 @@ public class CollectionData {
             .build();
 
 
-    public static final User USER = new User(1L,"Test", "test", "test123", "qwerty",
+    public static final String USERNAME = "test123";
+    public static final String USERNAME_FROM_DB = "test";
+    public static final String USERNAME_OF_COLLECTION_4 = "jan";
+    public static final User USER = new User(1L,"Test", "test", USERNAME, "qwerty",
             "test@mail.com", "110339332", true);
 
     private static List<Address> crateListOfAddresses() {
@@ -128,7 +131,6 @@ public class CollectionData {
     public static final String COLLECTION_TO_CREATE = "{" +
             "\"title\":\"TestCollection\", " +
             "\"description\":\"TestDescription\"," +
-            "\"userId\":\"1\"," +
             "\"addresses\": " +
             "[{\"city\":\"TestCity\"," +
             "\"street\":\"TestStreet\"}]," +
