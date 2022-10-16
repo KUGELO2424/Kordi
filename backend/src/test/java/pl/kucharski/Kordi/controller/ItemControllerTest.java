@@ -14,9 +14,9 @@ import pl.kucharski.Kordi.KordiApplication;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static pl.kucharski.Kordi.CollectionData.ITEM_DTO_TO_ADD;
 import static pl.kucharski.Kordi.controller.CollectionControllerTest.EXISTING_COLLECTION_ID;
 import static pl.kucharski.Kordi.controller.CollectionControllerTest.NOT_EXISTING_COLLECTION_ID;
-import static pl.kucharski.Kordi.CollectionData.ITEM_DTO_TO_ADD;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = KordiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -28,7 +28,7 @@ class ItemControllerTest {
     private MockMvc mvc;
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "ewa")
     void shouldReturnOkOnAddNewItem() throws Exception {
         mvc.perform(post("/collections/" + EXISTING_COLLECTION_ID)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -38,7 +38,7 @@ class ItemControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "ewa")
     void shouldReturn404OnAddNewItem() throws Exception {
         mvc.perform(post("/collections/" + NOT_EXISTING_COLLECTION_ID)
                         .contentType(MediaType.APPLICATION_JSON)

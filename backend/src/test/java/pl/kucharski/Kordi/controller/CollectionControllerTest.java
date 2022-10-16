@@ -31,6 +31,8 @@ import static pl.kucharski.Kordi.CollectionData.NEW_DESC;
 import static pl.kucharski.Kordi.CollectionData.NEW_END_TIME;
 import static pl.kucharski.Kordi.CollectionData.NEW_TITLE;
 import static pl.kucharski.Kordi.CollectionData.NOT_EXISTING_COLLECTION_TO_UPDATE;
+import static pl.kucharski.Kordi.CollectionData.USERNAME_FROM_DB;
+import static pl.kucharski.Kordi.CollectionData.USERNAME_OF_COLLECTION_4;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = KordiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -140,7 +142,7 @@ class CollectionControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = USERNAME_FROM_DB)
     void shouldSaveNewCollection() throws Exception {
         mvc.perform(post("/collections")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -184,8 +186,8 @@ class CollectionControllerTest {
     }
 
     @Test
-    @WithMockUser
-    void shouldUpdateExistingCollection() throws Exception {
+    @WithMockUser(username = USERNAME_OF_COLLECTION_4)
+    void shouldUpdateExistingCollectionIfUserIsOwnerOfCollection() throws Exception {
         mvc.perform(patch("/collections")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(COLLECTION_TO_UPDATE)
@@ -197,7 +199,18 @@ class CollectionControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = USERNAME_FROM_DB)
+    void shouldNotUpdateIfUserIsNotOwnerOfCollection() throws Exception {
+        mvc.perform(patch("/collections")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(COLLECTION_TO_UPDATE)
+                )
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.error", is("User with id 7 is not an owner of collection with id 4")));
+    }
+
+    @Test
+    @WithMockUser()
     void shouldThrowNotFoundOnUpdateIfCollectionNotFound() throws Exception {
         mvc.perform(patch("/collections")
                         .contentType(MediaType.APPLICATION_JSON)
