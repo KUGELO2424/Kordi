@@ -17,11 +17,13 @@ import java.time.temporal.ChronoUnit;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static pl.kucharski.Kordi.CollectionData.ADDRESS_TO_ADD;
 import static pl.kucharski.Kordi.CollectionData.COLLECTION_TO_CREATE;
 import static pl.kucharski.Kordi.CollectionData.COLLECTION_TO_CREATE_WITH_EMPTY_TITLE;
 import static pl.kucharski.Kordi.CollectionData.COLLECTION_TO_CREATE_WITH_NOT_EXISTING_ITEM_TYPE;
@@ -41,6 +43,7 @@ import static pl.kucharski.Kordi.CollectionData.USERNAME_OF_COLLECTION_4;
 class CollectionControllerTest {
 
     public final static Long EXISTING_COLLECTION_ID = 1L;
+    public final static Long EXISTING_COLLECTION_ID_2 = 2L;
     public final static Long NOT_EXISTING_COLLECTION_ID = 555L;
     private final static String EXISTING_USERNAME = "ewa";
     private final static String NOT_EXISTING_USERNAME = "not_existing_username";
@@ -210,7 +213,7 @@ class CollectionControllerTest {
     }
 
     @Test
-    @WithMockUser()
+    @WithMockUser
     void shouldThrowNotFoundOnUpdateIfCollectionNotFound() throws Exception {
         mvc.perform(patch("/collections")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -219,4 +222,70 @@ class CollectionControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    @WithMockUser(username = EXISTING_USERNAME)
+    void shouldAddNewAddressToCollectionIfUserIsAnOwner() throws Exception {
+        mvc.perform(get("/collections/" + EXISTING_COLLECTION_ID_2)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.addresses", hasSize(1)));
+        mvc.perform(post("/collections/" + EXISTING_COLLECTION_ID_2 + "/addresses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ADDRESS_TO_ADD)
+                )
+                .andExpect(status().isOk());
+        mvc.perform(get("/collections/" + EXISTING_COLLECTION_ID_2)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.addresses", hasSize(2)));
+    }
+
+    @Test
+    @WithMockUser(username = EXISTING_USERNAME)
+    void shouldNotAddNewAddressToCollectionIfUserIsNotAnOwner() throws Exception {
+        mvc.perform(post("/collections/" + EXISTING_COLLECTION_ID + "/addresses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ADDRESS_TO_ADD)
+                )
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = EXISTING_USERNAME)
+    void shouldRemoveAddressFromCollectionIfUserIsAnOwner() throws Exception {
+        mvc.perform(post("/collections/" + EXISTING_COLLECTION_ID_2 + "/addresses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ADDRESS_TO_ADD)
+                )
+                .andExpect(status().isOk());
+        mvc.perform(get("/collections/" + EXISTING_COLLECTION_ID_2)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.addresses", hasSize(2)));
+        mvc.perform(delete("/collections/" + EXISTING_COLLECTION_ID_2 + "/addresses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ADDRESS_TO_ADD)
+                )
+                .andExpect(status().isOk());
+        mvc.perform(get("/collections/" + EXISTING_COLLECTION_ID_2)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.addresses", hasSize(1)));
+    }
+
+    @Test
+    @WithMockUser(username = EXISTING_USERNAME)
+    void shouldNotRemoveAddressFromCollectionIfUserIsNotAnOwner() throws Exception {
+
+        mvc.perform(delete("/collections/" + EXISTING_COLLECTION_ID + "/addresses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ADDRESS_TO_ADD)
+                )
+                .andExpect(status().isOk());
+
+    }
 }

@@ -22,6 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static pl.kucharski.Kordi.CollectionData.COMMENT_TO_ADD;
+import static pl.kucharski.Kordi.CollectionData.USERNAME_FROM_DB;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = KordiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -84,8 +85,8 @@ class CommentControllerTest {
     }
 
     @Test
-    @WithMockUser
-    void shouldRemoveCommentFromCollection() throws Exception {
+    @WithMockUser(username = "ewa")
+    void shouldRemoveCommentFromCollectionIfUserIsOwner() throws Exception {
         int numOfComments = commentRepository.getAllByCollectionId(EXISTING_COLLECTION_V2_ID, PageRequest.of(0, 10)).size();
 
         mvc.perform(delete("/collections/" + EXISTING_COLLECTION_V2_ID + "/comments/" + 3)
@@ -101,6 +102,18 @@ class CommentControllerTest {
     }
 
     @Test
+    @WithMockUser(username = USERNAME_FROM_DB)
+    void shouldNotRemoveCommentFromCollectionIfUserIsNotAnOwner() throws Exception {
+        mvc.perform(delete("/collections/" + EXISTING_COLLECTION_V2_ID + "/comments/" + 3)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.error", is("User with id 7 is not an owner of collection with id 2")));
+
+
+    }
+
+    @Test
     @WithMockUser
     void shouldReturn404IfCollectionNotFoundOnRemoveComment() throws Exception {
         mvc.perform(delete("/collections/" + NOT_EXISTING_COLLECTION_ID + "/comments/" + 3)
@@ -111,7 +124,7 @@ class CommentControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "ewa")
     void shouldReturn404IfCommentNotFoundOnRemoveComment() throws Exception {
         mvc.perform(delete("/collections/" + EXISTING_COLLECTION_V2_ID + "/comments/" + 999)
                         .contentType(MediaType.APPLICATION_JSON)

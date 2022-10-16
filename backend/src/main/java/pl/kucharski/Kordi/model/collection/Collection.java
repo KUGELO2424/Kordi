@@ -57,7 +57,7 @@ public class Collection extends BaseEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "collection_id", nullable = false)
     private List<Address> addresses;
 

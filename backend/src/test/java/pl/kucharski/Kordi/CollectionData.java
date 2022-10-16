@@ -205,4 +205,8 @@ public class CollectionData {
             "\"currentAmount\":\"5\"," +
             "\"maxAmount\":\"10\"," +
             "\"type\":\"AMOUNT\"}";
+
+    public static final String ADDRESS_TO_ADD = "{" +
+            "\"city\":\"NewCity\", " +
+            "\"street\":\"NewStreet\"}";
 }
