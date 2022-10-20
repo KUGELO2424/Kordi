@@ -57,7 +57,7 @@ public class Collection extends BaseEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "collection_id", nullable = false)
     private List<Address> addresses;
 
@@ -71,8 +71,8 @@ public class Collection extends BaseEntity {
     private List<SubmittedItem> submittedItems;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "collection_id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "collection_id", insertable = false, updatable = false)
     private List<Comment> comments;
 
     public Collection(Long id, String title, String description, LocalDateTime startTime, LocalDateTime endTime,

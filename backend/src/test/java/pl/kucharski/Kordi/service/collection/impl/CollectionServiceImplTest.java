@@ -1,6 +1,8 @@
 package pl.kucharski.Kordi.service.collection.impl;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,6 +10,9 @@ import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.model.address.AddressMapper;
@@ -28,12 +33,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static pl.kucharski.Kordi.service.collection.CollectionData.PAGING;
-import static pl.kucharski.Kordi.service.collection.CollectionData.TOMORROW;
-import static pl.kucharski.Kordi.service.collection.CollectionData.YESTERDAY;
-import static pl.kucharski.Kordi.service.collection.CollectionData.createCollectionDTOWithId;
-import static pl.kucharski.Kordi.service.collection.CollectionData.createCollectionDTOWithoutId;
-import static pl.kucharski.Kordi.service.collection.CollectionData.createCollectionWithId;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static pl.kucharski.Kordi.CollectionData.PAGING;
+import static pl.kucharski.Kordi.CollectionData.TOMORROW;
+import static pl.kucharski.Kordi.CollectionData.USER;
+import static pl.kucharski.Kordi.CollectionData.USERNAME;
+import static pl.kucharski.Kordi.CollectionData.YESTERDAY;
+import static pl.kucharski.Kordi.CollectionData.createCollectionDTOWithId;
+import static pl.kucharski.Kordi.CollectionData.createCollectionDTOWithoutId;
+import static pl.kucharski.Kordi.CollectionData.createCollectionWithId;
 
 @ExtendWith(MockitoExtension.class)
 @Transactional
@@ -59,10 +68,22 @@ class CollectionServiceImplTest {
     @BeforeEach
     void setUp() {
         underTest = new CollectionServiceImpl(collectionRepository, userRepository, collectionMapper);
-
         COLLECTION_WITH_ID = createCollectionWithId();
         COLLECTION_DTO_WITH_ID = createCollectionDTOWithId();
         COLLECTION_DTO_WITHOUT_ID = createCollectionDTOWithoutId();
+    }
+
+    @BeforeAll
+    static void setUpContext() {
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+    }
+
+    @AfterAll
+    static void tearDown() {
+        SecurityContextHolder.clearContext();
     }
 
     @Test
@@ -194,7 +215,8 @@ class CollectionServiceImplTest {
     @Test
     void shouldSaveCollection() {
         // given
-        given(userRepository.existsById(1L)).willReturn(true);
+        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(USERNAME);
+        given(userRepository.findUserByUsername(USERNAME)).willReturn(Optional.of(USER));
         given(collectionRepository.save(any())).willReturn(COLLECTION_WITH_ID);
 
         // when
@@ -202,12 +224,11 @@ class CollectionServiceImplTest {
 
         // then
         assertEquals(COLLECTION_DTO_WITH_ID, savedCollectionDTO);
+        SecurityContextHolder.clearContext();
     }
 
-
-
     @Test
-    void shouldUpdateCollection() {
+    void shouldUpdateCollectionIfUserIsOwner() {
         // given
         given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
 

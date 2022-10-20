@@ -230,6 +230,16 @@ VALUES ('1603f612-fd7f-495d-9829-4b637d48c374', 'Pomoc dla Plamy', 'pomoc dla kr
         null,  3);
 
 --
+-- Dane comments
+--
+INSERT INTO collection_comment (uuid, content, created_time, user_id, collection_id)
+VALUES ('de8ed0c2-8a32-42b4-a5b3-a1ed93473f2f', 'New content for comment 01', '2022-06-28 16:00:00', 1, 1);
+INSERT INTO collection_comment (uuid, content, created_time, user_id, collection_id)
+VALUES ('523bb084-abed-4580-a5ea-f059a8fb91ae', 'New content for comment 02', '2022-06-28 16:05:00', 2, 1);
+INSERT INTO collection_comment (uuid, content, created_time, user_id, collection_id)
+VALUES ('c7a0fbdd-ba0f-4f0d-957d-4ac46dd335bd', 'New content for comment 03', '2022-06-28 16:10:00', 3, 2);
+
+--
 -- Dane address
 --
 INSERT INTO address (uuid, city, street, collection_id)

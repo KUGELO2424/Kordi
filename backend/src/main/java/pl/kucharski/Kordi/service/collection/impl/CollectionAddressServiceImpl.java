@@ -2,6 +2,7 @@ package pl.kucharski.Kordi.service.collection.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.kucharski.Kordi.aop.IsCollectionOwner;
 import pl.kucharski.Kordi.exception.AddressAlreadyExistsInCollectionException;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.model.address.Address;
@@ -28,6 +29,7 @@ public class CollectionAddressServiceImpl implements CollectionAddressService {
      */
     @Override
     @Transactional
+    @IsCollectionOwner
     public void addCollectionAddress(Long collectionId, AddressDTO addressDTO) {
         Address addressToAdd = addressMapper.mapToAddress(addressDTO);
         Collection collection = collectionRepository.findById(collectionId)
@@ -45,12 +47,15 @@ public class CollectionAddressServiceImpl implements CollectionAddressService {
      * @see CollectionAddressService#removeCollectionAddress(Long, AddressDTO)
      */
     @Override
+    @Transactional
+    @IsCollectionOwner
     public void removeCollectionAddress(Long collectionId, AddressDTO addressDTO) {
         Address addressToRemove = addressMapper.mapToAddress(addressDTO);
         Collection collection = collectionRepository.findById(collectionId)
                 .orElseThrow(CollectionNotFoundException::new);
         collection.getAddresses().stream()
-                .filter(address -> address.equals(addressToRemove))
+                .filter(address -> address.getCity().equals(addressToRemove.getCity())
+                        && address.getStreet().equals(addressToRemove.getStreet()))
                 .findFirst()
                 .ifPresent(address -> collection.getAddresses().remove(address));
     }

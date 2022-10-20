@@ -6,8 +6,6 @@ import pl.kucharski.Kordi.exception.CollectionItemException;
 import pl.kucharski.Kordi.exception.CollectionItemNotFoundException;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.model.collection.Collection;
-import pl.kucharski.Kordi.model.collection.CollectionDTO;
-import pl.kucharski.Kordi.model.collection.CollectionMapper;
 import pl.kucharski.Kordi.model.collection_item.CollectionItem;
 import pl.kucharski.Kordi.model.collection_item.CollectionItemDTO;
 import pl.kucharski.Kordi.model.collection_item.CollectionItemMapper;
@@ -25,14 +23,12 @@ public class CollectionItemServiceImpl implements CollectionItemService {
 
     private final CollectionRepository collectionRepository;
     private final CollectionItemMapper itemMapper;
-    private final CollectionMapper collectionMapper;
     private final SubmittedItemMapper submittedItemMapper;
 
     public CollectionItemServiceImpl(CollectionRepository collectionRepository, CollectionItemMapper itemMapper,
-                                     CollectionMapper collectionMapper, SubmittedItemMapper submittedItemMapper) {
+                                     SubmittedItemMapper submittedItemMapper) {
         this.collectionRepository = collectionRepository;
         this.itemMapper = itemMapper;
-        this.collectionMapper = collectionMapper;
         this.submittedItemMapper = submittedItemMapper;
     }
 
@@ -53,7 +49,7 @@ public class CollectionItemServiceImpl implements CollectionItemService {
      */
     @Override
     @Transactional
-    public CollectionDTO updateCollectionItem(long collectionId, long itemId, int currentAmount, int maxAmount) {
+    public CollectionItemDTO updateCollectionItem(long collectionId, long itemId, int currentAmount, int maxAmount) {
         Collection collection = collectionRepository.findById(collectionId)
                 .orElseThrow(() -> new CollectionNotFoundException("Collection with id " + collectionId
                         + " not found in database"));
@@ -70,18 +66,15 @@ public class CollectionItemServiceImpl implements CollectionItemService {
         foundItem.setCurrentAmount(currentAmount);
         foundItem.setMaxAmount(maxAmount);
 
-        return collectionMapper.mapToCollectionDTO(collection);
+        return itemMapper.mapToCollectionItemDTO(foundItem);
     }
 
     /**
-     * @see CollectionItemService#submitItem(SubmittedItemDTO)
+     * @see CollectionItemService#submitItem(long, long, SubmittedItemDTO)
      */
     @Override
     @Transactional
-    public CollectionDTO submitItem(SubmittedItemDTO itemToSubmit) {
-        Long collectionId = itemToSubmit.getCollectionId();
-        Long itemId = itemToSubmit.getCollectionItemId();
-
+    public CollectionItemDTO submitItem(long collectionId, long itemId, SubmittedItemDTO itemToSubmit) {
         Collection foundCollection = collectionRepository.findById(collectionId)
                 .orElseThrow(() -> new CollectionNotFoundException("Collection with id " + collectionId
                         + " not found in database"));
@@ -91,6 +84,8 @@ public class CollectionItemServiceImpl implements CollectionItemService {
                 .orElseThrow(() -> new CollectionItemNotFoundException("Item with id " + itemId
                         + " not found in collection with id " + collectionId));
 
+        itemToSubmit.setCollectionId(collectionId);
+        itemToSubmit.setCollectionItemId(itemId);
         foundCollection.addSubmittedItem(submittedItemMapper.mapToSubmittedItem(itemToSubmit));
         return updateCollectionItem(collectionId, itemId,
                 foundItem.getCurrentAmount() + itemToSubmit.getAmount(), foundItem.getMaxAmount());

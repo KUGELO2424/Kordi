@@ -1,4 +1,4 @@
-package pl.kucharski.Kordi.service.collection;
+package pl.kucharski.Kordi;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +40,10 @@ public class CollectionData {
             .build();
 
 
-    public static final User USER = new User(1L,"Test", "test", "test123", "qwerty",
+    public static final String USERNAME = "test123";
+    public static final String USERNAME_FROM_DB = "test";
+    public static final String USERNAME_OF_COLLECTION_4 = "jan";
+    public static final User USER = new User(1L,"Test", "test", USERNAME, "qwerty",
             "test@mail.com", "110339332", true);
 
     private static List<Address> crateListOfAddresses() {
@@ -128,7 +131,6 @@ public class CollectionData {
     public static final String COLLECTION_TO_CREATE = "{" +
             "\"title\":\"TestCollection\", " +
             "\"description\":\"TestDescription\"," +
-            "\"userId\":\"1\"," +
             "\"addresses\": " +
             "[{\"city\":\"TestCity\"," +
             "\"street\":\"TestStreet\"}]," +
@@ -192,4 +194,19 @@ public class CollectionData {
             "\"title\":\"" + NEW_TITLE + "\", " +
             "\"description\":\"" + NEW_DESC + "\"," +
             "\"endTime\":\"" + NEW_END_TIME + "\"}";
+
+    public static final String COMMENT_TO_ADD = "{" +
+            "\"content\":\"" + COMMENT_CONTENT + "\", " +
+            "\"userId\":\"1\"," +
+            "\"collectionId\":\"2\"}";
+
+    public static final String ITEM_DTO_TO_ADD = "{" +
+            "\"name\":\"Koszulki\", " +
+            "\"currentAmount\":\"5\"," +
+            "\"maxAmount\":\"10\"," +
+            "\"type\":\"AMOUNT\"}";
+
+    public static final String ADDRESS_TO_ADD = "{" +
+            "\"city\":\"NewCity\", " +
+            "\"street\":\"NewStreet\"}";
 }

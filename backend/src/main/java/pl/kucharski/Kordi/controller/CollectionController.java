@@ -4,6 +4,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,20 +16,29 @@ import org.springframework.web.server.ResponseStatusException;
 import pl.kucharski.Kordi.config.PaginationConstants;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
+import pl.kucharski.Kordi.model.address.AddressDTO;
 import pl.kucharski.Kordi.model.collection.CollectionDTO;
 import pl.kucharski.Kordi.model.collection.CollectionUpdateDTO;
+import pl.kucharski.Kordi.service.collection.CollectionAddressService;
 import pl.kucharski.Kordi.service.collection.CollectionService;
 
 import javax.validation.Valid;
 import java.net.URI;
 
+/**
+ * Collection controller responsible for basic collection management
+ *
+ * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ */
 @RestController
 public class CollectionController {
 
     private final CollectionService collectionService;
+    private final CollectionAddressService addressService;
 
-    public CollectionController(CollectionService collectionService) {
+    public CollectionController(CollectionService collectionService, CollectionAddressService addressService) {
         this.collectionService = collectionService;
+        this.addressService = addressService;
     }
 
     /**
@@ -125,6 +135,7 @@ public class CollectionController {
      *
      * @return updated collection<br>
      * status 404 if collection not found<br>
+     * status 403 if logged user is not an owner of collection
      */
     @PatchMapping("/collections")
     ResponseEntity<?> updateCollection(
@@ -140,6 +151,48 @@ public class CollectionController {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     "Collection with id " + collectionToUpdate.getId() + " not found");
+        }
+    }
+
+    /**
+     * Add new address to collection
+     * @param collectionId id of collection where you want to add new address
+     * @param address new address to add
+     *
+     * @return message if address added<br>
+     * status 404 if collection not found<br>
+     * status 403 if logged user is not an owner of collection<br>
+     */
+    @PostMapping("/collections/{collectionId}/addresses")
+    ResponseEntity<?> addAddressToCollection(@PathVariable long collectionId, @RequestBody AddressDTO address) {
+        try {
+            addressService.addCollectionAddress(collectionId, address);
+            return ResponseEntity.ok("New address added to collection with id " + collectionId);
+        } catch (CollectionNotFoundException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Collection with id " + collectionId + " not found");
+        }
+    }
+
+    /**
+     * Add new address to collection
+     * @param collectionId id of collection where you want to add new address
+     * @param address new address to add
+     *
+     * @return message if address added<br>
+     * status 404 if collection not found<br>
+     * status 403 if logged user is not an owner of collection<br>
+     */
+    @DeleteMapping("/collections/{collectionId}/addresses")
+    ResponseEntity<?> removeAddressFromCollection(@PathVariable long collectionId, @RequestBody AddressDTO address) {
+        try {
+            addressService.removeCollectionAddress(collectionId, address);
+            return ResponseEntity.ok("Address removed from collection with id " + collectionId);
+        } catch (CollectionNotFoundException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Collection with id " + collectionId + " not found");
         }
     }
 

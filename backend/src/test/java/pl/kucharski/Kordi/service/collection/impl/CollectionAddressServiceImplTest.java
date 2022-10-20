@@ -20,9 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
-import static pl.kucharski.Kordi.service.collection.CollectionData.ADDRESS_DTO;
-import static pl.kucharski.Kordi.service.collection.CollectionData.ADDRESS_DTO_V2;
-import static pl.kucharski.Kordi.service.collection.CollectionData.createCollectionWithId;
+import static pl.kucharski.Kordi.CollectionData.ADDRESS_DTO;
+import static pl.kucharski.Kordi.CollectionData.ADDRESS_DTO_V2;
+import static pl.kucharski.Kordi.CollectionData.createCollectionWithId;
 
 @ExtendWith(MockitoExtension.class)
 @Transactional

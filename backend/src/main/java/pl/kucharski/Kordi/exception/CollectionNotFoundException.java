@@ -14,11 +14,4 @@ public class CollectionNotFoundException extends RuntimeException{
         super(message);
     }
 
-    public CollectionNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public CollectionNotFoundException(Throwable cause) {
-        super(cause);
-    }
 }

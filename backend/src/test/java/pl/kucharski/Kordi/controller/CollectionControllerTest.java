@@ -1,12 +1,10 @@
 package pl.kucharski.Kordi.controller;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
@@ -19,20 +17,24 @@ import java.time.temporal.ChronoUnit;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static pl.kucharski.Kordi.service.collection.CollectionData.COLLECTION_TO_CREATE;
-import static pl.kucharski.Kordi.service.collection.CollectionData.COLLECTION_TO_CREATE_WITH_EMPTY_TITLE;
-import static pl.kucharski.Kordi.service.collection.CollectionData.COLLECTION_TO_CREATE_WITH_NOT_EXISTING_ITEM_TYPE;
-import static pl.kucharski.Kordi.service.collection.CollectionData.COLLECTION_TO_CREATE_WITH_NOT_EXISTING_USER;
-import static pl.kucharski.Kordi.service.collection.CollectionData.COLLECTION_TO_UPDATE;
-import static pl.kucharski.Kordi.service.collection.CollectionData.NEW_DESC;
-import static pl.kucharski.Kordi.service.collection.CollectionData.NEW_END_TIME;
-import static pl.kucharski.Kordi.service.collection.CollectionData.NEW_TITLE;
-import static pl.kucharski.Kordi.service.collection.CollectionData.NOT_EXISTING_COLLECTION_TO_UPDATE;
+import static pl.kucharski.Kordi.CollectionData.ADDRESS_TO_ADD;
+import static pl.kucharski.Kordi.CollectionData.COLLECTION_TO_CREATE;
+import static pl.kucharski.Kordi.CollectionData.COLLECTION_TO_CREATE_WITH_EMPTY_TITLE;
+import static pl.kucharski.Kordi.CollectionData.COLLECTION_TO_CREATE_WITH_NOT_EXISTING_ITEM_TYPE;
+import static pl.kucharski.Kordi.CollectionData.COLLECTION_TO_CREATE_WITH_NOT_EXISTING_USER;
+import static pl.kucharski.Kordi.CollectionData.COLLECTION_TO_UPDATE;
+import static pl.kucharski.Kordi.CollectionData.NEW_DESC;
+import static pl.kucharski.Kordi.CollectionData.NEW_END_TIME;
+import static pl.kucharski.Kordi.CollectionData.NEW_TITLE;
+import static pl.kucharski.Kordi.CollectionData.NOT_EXISTING_COLLECTION_TO_UPDATE;
+import static pl.kucharski.Kordi.CollectionData.USERNAME_FROM_DB;
+import static pl.kucharski.Kordi.CollectionData.USERNAME_OF_COLLECTION_4;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = KordiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -40,9 +42,10 @@ import static pl.kucharski.Kordi.service.collection.CollectionData.NOT_EXISTING_
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class CollectionControllerTest {
 
+    public final static Long EXISTING_COLLECTION_ID = 1L;
+    public final static Long EXISTING_COLLECTION_ID_2 = 2L;
+    public final static Long NOT_EXISTING_COLLECTION_ID = 555L;
     private final static String EXISTING_USERNAME = "ewa";
-    private final static Long EXISTING_COLLECTION_ID = 1L;
-    private final static Long NOT_EXISTING_COLLECTION_ID = 555L;
     private final static String NOT_EXISTING_USERNAME = "not_existing_username";
     private final static String TITLE_OF_COLLECTION_OF_EXISTING_USER = "Zbiórka dla Bartka";
     private final static String TITLE_02_OF_COLLECTION_OF_EXISTING_USER = "Zbiórka dla Oliwii";
@@ -50,18 +53,14 @@ class CollectionControllerTest {
     private final static String CITY_FOR_SEARCH = "Warszawa";
     private final static String ITEM_FOR_SEARCH = "Spodnie";
 
-
     @Autowired
     private MockMvc mvc;
-
-    @Autowired
-    private TestRestTemplate testRestTemplate;
 
     @Test
     @WithMockUser
     void shouldReturnEmptyListOfCollectionsIfUserNotExists() throws Exception {
         mvc.perform(get("/user/" + NOT_EXISTING_USERNAME + "/collections")
-                    .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.*", hasSize(0)));
@@ -82,7 +81,7 @@ class CollectionControllerTest {
     @Test
     @WithMockUser
     void shouldReturnCollectionById() throws Exception {
-        mvc.perform(get("/collections/" + EXISTING_COLLECTION_ID )
+        mvc.perform(get("/collections/" + EXISTING_COLLECTION_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
@@ -92,7 +91,7 @@ class CollectionControllerTest {
     @Test
     @WithMockUser
     void shouldThrowCollectionNotFound() throws Exception {
-        mvc.perform(get("/collections/" + NOT_EXISTING_COLLECTION_ID )
+        mvc.perform(get("/collections/" + NOT_EXISTING_COLLECTION_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isNotFound());
@@ -146,7 +145,7 @@ class CollectionControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = USERNAME_FROM_DB)
     void shouldSaveNewCollection() throws Exception {
         mvc.perform(post("/collections")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -190,8 +189,8 @@ class CollectionControllerTest {
     }
 
     @Test
-    @WithMockUser
-    void shouldUpdateExistingCollection() throws Exception {
+    @WithMockUser(username = USERNAME_OF_COLLECTION_4)
+    void shouldUpdateExistingCollectionIfUserIsOwnerOfCollection() throws Exception {
         mvc.perform(patch("/collections")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(COLLECTION_TO_UPDATE)
@@ -200,6 +199,17 @@ class CollectionControllerTest {
                 .andExpect(jsonPath("$.title", is(NEW_TITLE)))
                 .andExpect(jsonPath("$.description", is(NEW_DESC)))
                 .andExpect(jsonPath(("$.endTime"), containsString(String.valueOf(NEW_END_TIME.truncatedTo(ChronoUnit.SECONDS)))));
+    }
+
+    @Test
+    @WithMockUser(username = USERNAME_FROM_DB)
+    void shouldNotUpdateIfUserIsNotOwnerOfCollection() throws Exception {
+        mvc.perform(patch("/collections")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(COLLECTION_TO_UPDATE)
+                )
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.error", is("User with id 7 is not an owner of collection with id 4")));
     }
 
     @Test
@@ -212,4 +222,70 @@ class CollectionControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    @WithMockUser(username = EXISTING_USERNAME)
+    void shouldAddNewAddressToCollectionIfUserIsAnOwner() throws Exception {
+        mvc.perform(get("/collections/" + EXISTING_COLLECTION_ID_2)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.addresses", hasSize(1)));
+        mvc.perform(post("/collections/" + EXISTING_COLLECTION_ID_2 + "/addresses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ADDRESS_TO_ADD)
+                )
+                .andExpect(status().isOk());
+        mvc.perform(get("/collections/" + EXISTING_COLLECTION_ID_2)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.addresses", hasSize(2)));
+    }
+
+    @Test
+    @WithMockUser(username = EXISTING_USERNAME)
+    void shouldNotAddNewAddressToCollectionIfUserIsNotAnOwner() throws Exception {
+        mvc.perform(post("/collections/" + EXISTING_COLLECTION_ID + "/addresses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ADDRESS_TO_ADD)
+                )
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = EXISTING_USERNAME)
+    void shouldRemoveAddressFromCollectionIfUserIsAnOwner() throws Exception {
+        mvc.perform(post("/collections/" + EXISTING_COLLECTION_ID_2 + "/addresses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ADDRESS_TO_ADD)
+                )
+                .andExpect(status().isOk());
+        mvc.perform(get("/collections/" + EXISTING_COLLECTION_ID_2)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.addresses", hasSize(2)));
+        mvc.perform(delete("/collections/" + EXISTING_COLLECTION_ID_2 + "/addresses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ADDRESS_TO_ADD)
+                )
+                .andExpect(status().isOk());
+        mvc.perform(get("/collections/" + EXISTING_COLLECTION_ID_2)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.addresses", hasSize(1)));
+    }
+
+    @Test
+    @WithMockUser(username = EXISTING_USERNAME)
+    void shouldNotRemoveAddressFromCollectionIfUserIsNotAnOwner() throws Exception {
+
+        mvc.perform(delete("/collections/" + EXISTING_COLLECTION_ID + "/addresses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ADDRESS_TO_ADD)
+                )
+                .andExpect(status().isOk());
+
+    }
 }

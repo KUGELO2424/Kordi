@@ -1,14 +1,19 @@
 package pl.kucharski.Kordi.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import pl.kucharski.Kordi.enums.VerificationStatus;
 import pl.kucharski.Kordi.enums.VerificationType;
+import pl.kucharski.Kordi.exception.InvalidPasswordException;
 import pl.kucharski.Kordi.model.email.EmailToken;
 import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.model.user.UserDTO;
@@ -17,6 +22,7 @@ import pl.kucharski.Kordi.model.user.UserRegistrationDTO;
 import pl.kucharski.Kordi.service.user.UserService;
 import pl.kucharski.Kordi.service.verification.EmailTokenService;
 
+import javax.validation.Valid;
 import java.util.Collections;
 
 
@@ -60,7 +66,7 @@ public class UserController {
      */
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveUser(@RequestParam("verificationType") VerificationType verificationType,
-                                      @RequestBody UserRegistrationDTO user) {
+                                      @RequestBody @Valid UserRegistrationDTO user) {
         VerificationStatus result;
         try {
             result = userService.saveUser(user, verificationType);
@@ -93,6 +99,30 @@ public class UserController {
             return ResponseEntity.ok(Collections.singletonMap("status", result));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    /**
+     * Update user password
+     *
+     * @param newPassword new password to set
+     * @param oldPassword old password of user to check if correct
+     * @return message if password changed<br>
+     *         400 if new password invalid
+     *         400 if old password does not match password
+     */
+    @PutMapping("/users/updatePassword")
+    public ResponseEntity<?> updatedUserPassword(@RequestParam("password") String newPassword,
+                                                 @RequestParam("oldPassword") String oldPassword) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        try {
+            userService.updatePassword(username, oldPassword, newPassword);
+            return ResponseEntity.ok().body("Password has been updated");
+        } catch (InvalidPasswordException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    ex.getMessage()
+            );
         }
     }
 

@@ -1,13 +1,16 @@
 package pl.kucharski.Kordi.service.collection.impl;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.kucharski.Kordi.aop.IsCollectionOwner;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.model.collection.Collection;
 import pl.kucharski.Kordi.model.collection.CollectionDTO;
 import pl.kucharski.Kordi.model.collection.CollectionMapper;
+import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.repository.CollectionRepository;
 import pl.kucharski.Kordi.repository.UserRepository;
 import pl.kucharski.Kordi.service.collection.CollectionService;
@@ -79,9 +82,10 @@ public class CollectionServiceImpl implements CollectionService {
     @Override
     @Transactional
     public CollectionDTO saveCollection(CollectionDTO collectionDTO) {
-        if (!userRepository.existsById(collectionDTO.getUserId())) {
-            throw new UserNotFoundException("User with id " + collectionDTO.getUserId() + " not found");
-        }
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User with username " + username + " not found"));
+        collectionDTO.setUserId(user.getId());
         Collection collection = collectionMapper.mapToCollection(collectionDTO);
         Collection savedCollection = collectionRepository.save(collection);
         return collectionMapper.mapToCollectionDTO(savedCollection);
@@ -92,9 +96,10 @@ public class CollectionServiceImpl implements CollectionService {
      */
     @Override
     @Transactional
-    public CollectionDTO updateCollection(long id, String title, String description, LocalDateTime endTime) {
-        Collection collection = collectionRepository.findById(id)
-                .orElseThrow(() -> new CollectionNotFoundException("Collection with id " + id
+    @IsCollectionOwner
+    public CollectionDTO updateCollection(long collectionId, String title, String description, LocalDateTime endTime) {
+        Collection collection = collectionRepository.findById(collectionId)
+                .orElseThrow(() -> new CollectionNotFoundException("Collection with id " + collectionId
                         + " not found in database"));
         if (title != null && !title.isEmpty()) {
             collection.setTitle(title);

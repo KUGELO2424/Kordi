@@ -3,6 +3,7 @@ package pl.kucharski.Kordi.service.collection.impl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.kucharski.Kordi.aop.IsCollectionOwner;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.exception.CommentNotFoundException;
 import pl.kucharski.Kordi.model.collection.Collection;
@@ -36,6 +37,7 @@ public class CommentServiceImpl implements CommentService {
      * @see CommentService#addComment(Long, CreateCommentDTO)
      */
     @Override
+    @Transactional
     public CommentDTO addComment(Long collectionId, CreateCommentDTO commentDTO) {
         Comment comment = commentMapper.mapToComment(commentDTO);
         Collection foundCollection = collectionRepository.findById(collectionId)
@@ -48,6 +50,8 @@ public class CommentServiceImpl implements CommentService {
      * @see CommentService#removeComment(Long, Long)
      */
     @Override
+    @Transactional
+    @IsCollectionOwner
     public void removeComment(Long collectionId, Long commentId) {
         Collection foundCollection = collectionRepository.findById(collectionId)
                 .orElseThrow(CollectionNotFoundException::new);

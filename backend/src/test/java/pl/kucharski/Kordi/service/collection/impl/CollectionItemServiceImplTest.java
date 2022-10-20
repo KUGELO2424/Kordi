@@ -13,11 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.exception.CollectionItemException;
 import pl.kucharski.Kordi.exception.CollectionItemNotFoundException;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
-import pl.kucharski.Kordi.model.address.AddressMapper;
 import pl.kucharski.Kordi.model.collection.Collection;
-import pl.kucharski.Kordi.model.collection.CollectionDTO;
-import pl.kucharski.Kordi.model.collection.CollectionMapper;
-import pl.kucharski.Kordi.model.collection.CollectionMapperImpl;
 import pl.kucharski.Kordi.model.collection_item.CollectionItemDTO;
 import pl.kucharski.Kordi.model.collection_item.CollectionItemMapper;
 import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItemDTO;
@@ -32,20 +28,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
-import static pl.kucharski.Kordi.service.collection.CollectionData.createCollectionWithId;
-import static pl.kucharski.Kordi.service.collection.CollectionData.createItemDTOWithId;
-import static pl.kucharski.Kordi.service.collection.CollectionData.createSecondItemDTOWithId;
-import static pl.kucharski.Kordi.service.collection.CollectionData.createSubmittedItemDTO;
+import static pl.kucharski.Kordi.CollectionData.createCollectionWithId;
+import static pl.kucharski.Kordi.CollectionData.createItemDTOWithId;
+import static pl.kucharski.Kordi.CollectionData.createSecondItemDTOWithId;
+import static pl.kucharski.Kordi.CollectionData.createSubmittedItemDTO;
 
 @ExtendWith(MockitoExtension.class)
 @Transactional
 class CollectionItemServiceImplTest {
 
-    private final AddressMapper addressMapper = Mappers.getMapper(AddressMapper.class);
     private final CollectionItemMapper itemMapper = Mappers.getMapper(CollectionItemMapper.class);
     private final SubmittedItemMapper submittedItemMapper = new SubmittedItemMapperImpl();
-    private final CollectionMapper collectionMapper = new CollectionMapperImpl(addressMapper, itemMapper);
-
     private static Collection COLLECTION_WITH_ID;
     private static CollectionItemDTO COLLECTION_ITEM_DTO;
     private static CollectionItemDTO COLLECTION_ITEM_V2_DTO;
@@ -59,7 +52,7 @@ class CollectionItemServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new CollectionItemServiceImpl(collectionRepository, itemMapper, collectionMapper, submittedItemMapper);
+        underTest = new CollectionItemServiceImpl(collectionRepository, itemMapper, submittedItemMapper);
 
         COLLECTION_WITH_ID = createCollectionWithId();
         COLLECTION_ITEM_DTO = createItemDTOWithId();
@@ -90,11 +83,11 @@ class CollectionItemServiceImplTest {
         given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
 
         // when
-        CollectionDTO updatedCollection = underTest.updateCollectionItem(1L, 1L, newCurrent, newMax);
+        CollectionItemDTO updatedItem = underTest.updateCollectionItem(1L, 1L, newCurrent, newMax);
 
         // then
-        assertEquals(newCurrent, updatedCollection.getItems().get(0).getCurrentAmount());
-        assertEquals(newMax, updatedCollection.getItems().get(0).getMaxAmount());
+        assertEquals(newCurrent, updatedItem.getCurrentAmount());
+        assertEquals(newMax, updatedItem.getMaxAmount());
     }
 
     @Test
@@ -142,10 +135,11 @@ class CollectionItemServiceImplTest {
         assertEquals(3, COLLECTION_WITH_ID.getItems().get(0).getCurrentAmount());
 
         // when
-        CollectionDTO collectionDTO = underTest.submitItem(ITEM_TO_SUBMIT);
+        CollectionItemDTO itemDTO =
+                underTest.submitItem(COLLECTION_WITH_ID.getId(), COLLECTION_ITEM_DTO.getId(), ITEM_TO_SUBMIT);
 
         // then
-        assertEquals(4, collectionDTO.getItems().get(0).getCurrentAmount());
+        assertEquals(4, itemDTO.getCurrentAmount());
     }
 
     @Test
@@ -158,7 +152,8 @@ class CollectionItemServiceImplTest {
 
         // when + then
         CollectionItemException exception =
-                assertThrows(CollectionItemException.class, () -> underTest.submitItem(ITEM_TO_SUBMIT));
+                assertThrows(CollectionItemException.class,
+                        () -> underTest.submitItem(COLLECTION_WITH_ID.getId(), COLLECTION_ITEM_DTO.getId(), ITEM_TO_SUBMIT));
         assertEquals("Current amount cannot be bigger than maximum", exception.getMessage());
     }
 
@@ -169,7 +164,8 @@ class CollectionItemServiceImplTest {
 
         // when + then
         CollectionNotFoundException exception =
-                assertThrows(CollectionNotFoundException.class, () -> underTest.submitItem(ITEM_TO_SUBMIT));
+                assertThrows(CollectionNotFoundException.class,
+                        () -> underTest.submitItem(COLLECTION_WITH_ID.getId(), COLLECTION_ITEM_DTO.getId(), ITEM_TO_SUBMIT));
         assertEquals("Collection with id 1 not found in database", exception.getMessage());
     }
 
@@ -180,7 +176,8 @@ class CollectionItemServiceImplTest {
 
         // when + then
         CollectionItemNotFoundException exception =
-                assertThrows(CollectionItemNotFoundException.class, () -> underTest.submitItem(ITEM_TO_SUBMIT));
+                assertThrows(CollectionItemNotFoundException.class,
+                        () -> underTest.submitItem(COLLECTION_WITH_ID.getId(), COLLECTION_ITEM_DTO.getId(), ITEM_TO_SUBMIT));
         assertEquals("Item with id 1 not found in collection with id 1", exception.getMessage());
     }
 
