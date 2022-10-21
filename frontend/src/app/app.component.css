@@ -1,0 +1,35 @@
+.navbar { background-color: #454553; }
+.navbar .navbar-nav .nav-link { color: #fff; }
+.navbar .navbar-nav .nav-link:hover { color: #FF9E00; }
+.navbar .navbar-nav .active > .nav-link { color: #FF9E00; }
+
+a.logo {
+    color: white;
+    margin: 0px 15px 0px 30px;
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    background: linear-gradient(to right, #FF9E00, #FF9E00 50%, white 50%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 100%;
+    background-position: 100%;
+    transition: background-position 275ms ease;
+  }
+  
+  a.logo:hover {
+    background-position: 0 100%;
+  }
+  
+  .logo > span {
+    margin-left: 10px;
+    font-size: 25px;
+    font-weight: 1000;
+  }
+
+  footer a:hover {
+    color: #FF9E00 !important;
+    transition: 0.375s;
+  }
