@@ -33,3 +33,7 @@ a.logo {
     color: #FF9E00 !important;
     transition: 0.375s;
   }
+
+  footer {
+    background-color: #E9E8E7 !important;
+  }

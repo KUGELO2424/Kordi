@@ -1,0 +1,76 @@
+<div class="content">
+  <section class="mt-5">
+    <div class="container-fluid align-middle">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-8 col-lg-6 col-xl-6">
+          <img
+            src="assets/img/login.svg"
+            class="img-fluid mb-4"
+            alt="Sample image"
+          />
+        </div>
+        <div class="col-md-8 col-lg-6 col-xl-6">
+          <mat-card>
+            <mat-card-title>Zaloguj się</mat-card-title>
+            <mat-card-content
+              ><form [formGroup]="form" (ngSubmit)="submit()">
+                <!-- Login input -->
+                <mat-icon matPrefix>person_outline</mat-icon>
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>Nazwa użytkownika</mat-label>
+                  <input type="text" matInput formControlName="username" />
+                </mat-form-field>
+
+                <!-- Password input -->
+                <mat-icon matPrefix>lock_outline</mat-icon>
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>Hasło</mat-label>
+                  <input type="password" matInput formControlName="password" />
+                </mat-form-field>
+
+                <div class="text-center text-lg-start mt-4 pt-2">
+                  <button
+                    type="submit"
+                    class="btn my-btn-primary btn-lg"
+                    style="padding-left: 2.5rem; padding-right: 2.5rem"
+                  >
+                    Zaloguj się
+                  </button>
+                  <p class="small fw-bold mt-2 pt-1 mb-0">
+                    Nie masz konta?
+                    <a routerLink="/signup" class="link-color"
+                      >Zarejestruj się</a
+                    >
+                  </p>
+                </div>
+              </form></mat-card-content
+            >
+          </mat-card>
+        </div>
+      </div>
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-8 col-lg-6 col-xl-6"></div>
+        <div class="col-md-8 col-lg-6 col-xl-6">
+          <div
+            class="alert alert-danger alert-dismissible mt-3"
+            data-auto-dismiss
+            role="alert"
+            *ngIf="error"
+          >
+            Błędna nazwa użytkownika lub hasło
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+              (click)="clearError()"
+            ></button>
+          </div>
+          <div class="alert alert-success mt-3" role="alert" *ngIf="message">
+            {{ message }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
