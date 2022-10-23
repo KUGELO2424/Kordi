@@ -37,3 +37,21 @@ a.logo {
   footer {
     background-color: #E9E8E7 !important;
   }
+
+  .navbar-toggler {
+    background-color: #E9E8E7;
+    border: 1px solid #E9E8E7;
+    box-shadow: none;
+  }
+
+  .navbar-toggler:hover {
+    background-color: #FF9E00;
+    border: 1px solid #FF9E00;
+    transition: 0.375s;
+  }
+
+  .nav-item {
+    
+  }
+
+

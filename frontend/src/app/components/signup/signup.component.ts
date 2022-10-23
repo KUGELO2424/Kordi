@@ -20,7 +20,7 @@ export class SignupComponent implements OnInit {
     lastname: new FormControl('', [Validators.required, Validators.minLength(2)]),
     email: new FormControl('', [Validators.required, Validators.email]),
     phone: new FormControl('', [Validators.required, Validators.pattern("[0-9]{9}")]),
-    verificationType: new FormControl('email')
+    verificationType: new FormControl('EMAIL')
   });
 
   constructor(private router: Router) { }

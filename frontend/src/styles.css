@@ -55,6 +55,13 @@ a:hover {
   color: white !important;
 }
 
+.my-btn-secondary {
+  background-color: #FF9E00 !important;
+  color: white !important;
+  width: 300px;
+  height: 60px;
+}
+
 .my-btn-primary:hover {
   background-color: #4A2799 !important;
   color: white !important;

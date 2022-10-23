@@ -16,11 +16,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { VerificationComponent } from './components/verification/verification.component';
 
 const routes: Routes = [
   {path: 'home', component: HomePageComponent},
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
+  {path: 'verify', component: VerificationComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', redirectTo: '/home', pathMatch: 'full'},
 ];
@@ -29,7 +31,8 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    VerificationComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
