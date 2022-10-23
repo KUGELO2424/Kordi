@@ -5,24 +5,29 @@ import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { VerificationComponent } from './components/verification/verification.component';
+import { CollectionListComponent } from './components/collection-list/collection-list.component';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { VerificationComponent } from './components/verification/verification.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 const routes: Routes = [
   {path: 'home', component: HomePageComponent},
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'verify', component: VerificationComponent},
+  {path: 'collections', component: CollectionListComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', redirectTo: '/home', pathMatch: 'full'},
 ];
@@ -32,7 +37,8 @@ const routes: Routes = [
     AppComponent,
     LoginComponent,
     SignupComponent,
-    VerificationComponent
+    VerificationComponent,
+    CollectionListComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -44,7 +50,10 @@ const routes: Routes = [
     MatInputModule,
     MatCardModule,
     MatIconModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatProgressBarModule,
+    MatExpansionModule,
+    MatPaginatorModule
   ],
   providers: [],
   bootstrap: [AppComponent]
