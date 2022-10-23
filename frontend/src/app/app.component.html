@@ -29,28 +29,36 @@
               class="nav-link active"
               aria-current="page"
               routerLink="/collections"
-              ><i class="fa-solid fa-magnifying-glass me-2"></i>Przeglądaj</a
+              ><i class="fa-solid fa-magnifying-glass me-2"></i
+              >{{ "navbar.search" | translate }}</a
             >
           </li>
           <li class="nav-item pl-1">
             <a class="nav-link" routerLink="/add"
-              ><i class="fa-regular fa-calendar-plus me-2"></i>Dodaj zbiórkę</a
+              ><i class="fa-regular fa-calendar-plus me-2"></i
+              >{{ "navbar.add" | translate }}</a
             >
           </li>
           <li class="nav-item pl-1">
             <a class="nav-link" routerLink="/profile"
-              ><i class="fa-solid fa-user me-1"></i>Profil</a
+              ><i class="fa-solid fa-user me-1"></i
+              >{{ "navbar.profile" | translate }}</a
             >
           </li>
           <li class="nav-item pl-1">
             <a class="nav-link" routerLink="/login"
-              ><i class="fa fa-sign-in fa-fw me-1"></i>Zaloguj</a
+              ><i class="fa fa-sign-in fa-fw me-1"></i
+              >{{ "navbar.login" | translate }}</a
             >
           </li>
-          <li class="nav-item pl-1">
+          <li class="nav-item pl-1 me-5">
             <a class="nav-link" routerLink="/signup"
-              ><i class="fa-solid fa-user-plus fa-fw me-1"></i>Zarejestruj</a
+              ><i class="fa-solid fa-user-plus fa-fw me-1"></i
+              >{{ "navbar.signup" | translate }}</a
             >
+          </li>
+          <li class="nav-item pl-1 nav-item-lang">
+            <app-language-selector></app-language-selector>
           </li>
         </ul>
       </div>
@@ -71,7 +79,7 @@
   >
     <!-- Left -->
     <div class="me-5 d-none d-lg-block">
-      <span>Znajdziesz nas też tutaj:</span>
+      <span>{{ "footer.find_us" | translate }}</span>
     </div>
     <!-- Left -->
 
@@ -121,15 +129,23 @@
         <!-- Grid column -->
         <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
           <!-- Links -->
-          <h6 class="text-uppercase fw-bold mb-4">Zbiórki</h6>
+          <h6 class="text-uppercase fw-bold mb-4">
+            {{ "footer.collections" | translate }}
+          </h6>
           <p>
-            <a href="#!" class="text-reset">Załóż zbiórkę</a>
+            <a href="#!" class="text-reset">{{
+              "footer.create" | translate
+            }}</a>
           </p>
           <p>
-            <a href="#!" class="text-reset">Przeglądaj zbiórki</a>
+            <a href="#!" class="text-reset">{{
+              "footer.serach" | translate
+            }}</a>
           </p>
           <p>
-            <a href="#!" class="text-reset">Zarejestruj się</a>
+            <a href="#!" class="text-reset">{{
+              "footer.signup" | translate
+            }}</a>
           </p>
         </div>
         <!-- Grid column -->
@@ -137,15 +153,21 @@
         <!-- Grid column -->
         <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
           <!-- Links -->
-          <h6 class="text-uppercase fw-bold mb-4">Popularne kategorie</h6>
+          <h6 class="text-uppercase fw-bold mb-4">
+            {{ "footer.popular_categories" | translate }}
+          </h6>
           <p>
-            <a href="#!" class="text-reset">Ubrania</a>
+            <a href="#!" class="text-reset">{{
+              "footer.clothes" | translate
+            }}</a>
           </p>
           <p>
-            <a href="#!" class="text-reset">Jedzenie</a>
+            <a href="#!" class="text-reset">{{ "footer.food" | translate }}</a>
           </p>
           <p>
-            <a href="#!" class="text-reset">Chemia</a>
+            <a href="#!" class="text-reset">{{
+              "footer.chemicals" | translate
+            }}</a>
           </p>
         </div>
         <!-- Grid column -->
@@ -153,7 +175,9 @@
         <!-- Grid column -->
         <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
           <!-- Links -->
-          <h6 class="text-uppercase fw-bold mb-4">Kontakt</h6>
+          <h6 class="text-uppercase fw-bold mb-4">
+            {{ "footer.contact" | translate }}
+          </h6>
           <p><i class="fas fa-home me-3"></i> Łódź, 99-999, PL</p>
           <p>
             <i class="fas fa-envelope me-3"></i>

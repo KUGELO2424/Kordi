@@ -9,7 +9,7 @@ import { FormControl } from '@angular/forms';
 export class VerificationComponent implements OnInit {
 
   code = "";
-  verificationType = "EMAIL";
+  verificationType = "PHONE";
   email = "test@mail.pl";
   phone = "******123";
   error: string | undefined;

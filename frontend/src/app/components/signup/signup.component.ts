@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-signup',
@@ -23,7 +24,7 @@ export class SignupComponent implements OnInit {
     verificationType: new FormControl('EMAIL')
   });
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private translate: TranslateService) { }
 
   ngOnInit(): void {
   }
@@ -43,9 +44,9 @@ export class SignupComponent implements OnInit {
     const verificationType = formData.value.verificationType;
     console.log("REGISTER USER with " + verificationType);
     if (username == "Test") {
-      this.authError = "Wystąpił nieoczekiwany błąd. Spróbuj ponownie za chwilę.";
+      this.authError = this.translate.instant("login.error_occured");
     } else {
-      const navigationExtras: NavigationExtras = {state: {data: 'Konto użytkownika zostało założone pomyślnie. Zaloguj się by je zweryfikować'}};
+      const navigationExtras: NavigationExtras = {state: {data: this.translate.instant('login.signup_success')}};
       this.router.navigateByUrl("/login", navigationExtras);
       formDirective.resetForm();
       this.form.reset();

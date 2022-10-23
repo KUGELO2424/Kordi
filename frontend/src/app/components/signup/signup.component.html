@@ -12,7 +12,7 @@
 
         <div class="col-md-8 col-lg-6 col-xl-6">
           <mat-card>
-            <mat-card-title>Zarejestruj się</mat-card-title>
+            <mat-card-title>{{ "login.signup" | translate }}</mat-card-title>
             <mat-card-content>
               <form
                 role="form"
@@ -23,34 +23,34 @@
               >
                 <!-- Username -->
                 <mat-form-field class="full-width" appearance="outline">
-                  <mat-label>Nazwa użytkownika</mat-label>
+                  <mat-label>{{ "login.username" | translate }}</mat-label>
                   <input type="text" matInput formControlName="username" />
                   <mat-error *ngIf="checkValidation('username')">
-                    Nazwa użytkownika musi mieć przynajmniej 3 znaki
+                    {{ "login.username_inv" | translate }}
                   </mat-error>
                 </mat-form-field>
 
                 <!-- Firstname -->
                 <mat-form-field class="full-width" appearance="outline">
-                  <mat-label>Imię</mat-label>
+                  <mat-label>{{ "login.firstname" | translate }}</mat-label>
                   <input type="text" matInput formControlName="firstname" />
                   <mat-error *ngIf="checkValidation('firstname')">
-                    Imię musi mieć przynajmniej 2 znaki
+                    {{ "login.firstname_inv" | translate }}
                   </mat-error>
                 </mat-form-field>
 
                 <!-- Lastname -->
                 <mat-form-field class="full-width" appearance="outline">
-                  <mat-label>Nazwisko</mat-label>
+                  <mat-label>{{ "login.lastname" | translate }}</mat-label>
                   <input type="text" matInput formControlName="lastname" />
                   <mat-error *ngIf="checkValidation('lastname')">
-                    Nazwisko musi mieć przynajmniej 2 znaki
+                    {{ "login.lastname_inv" | translate }}
                   </mat-error>
                 </mat-form-field>
 
                 <!-- Email -->
                 <mat-form-field class="full-width" appearance="outline">
-                  <mat-label>Email</mat-label>
+                  <mat-label>{{ "login.email" | translate }}</mat-label>
                   <input
                     type="email"
                     matInput
@@ -58,13 +58,13 @@
                     placeholder="jan@poczta.pl"
                   />
                   <mat-error *ngIf="checkValidation('email')">
-                    Proszę wprowadź poprawny adres email
+                    {{ "login.email_inv" | translate }}
                   </mat-error>
                 </mat-form-field>
 
                 <!-- Phone -->
                 <mat-form-field class="full-width" appearance="outline">
-                  <mat-label>Telefon</mat-label>
+                  <mat-label>{{ "login.phone" | translate }}</mat-label>
                   <input
                     type="tel"
                     matInput
@@ -72,13 +72,13 @@
                     formControlName="phone"
                   />
                   <mat-error *ngIf="checkValidation('phone')">
-                    Proszę wprowadź poprawny numer telefonu
+                    {{ "login.phone_inv" | translate }}
                   </mat-error>
                 </mat-form-field>
 
                 <!-- Password -->
                 <mat-form-field class="full-width" appearance="outline">
-                  <mat-label>Hasło</mat-label>
+                  <mat-label>{{ "login.password" | translate }}</mat-label>
                   <input
                     matInput
                     [type]="hide ? 'password' : 'text'"
@@ -89,14 +89,18 @@
                     hide ? "visibility_off" : "visibility"
                   }}</mat-icon>
                   <mat-error *ngIf="checkValidation('password')">
-                    Hasło musi zawierać przynajmniej 6 znaków
+                    {{ "login.password_inv" | translate }}
                   </mat-error>
                 </mat-form-field>
 
-                <h5>Wybierz typ weryfikacji konta</h5>
+                <h5>{{ "login.verification_type" | translate }}</h5>
                 <mat-button-toggle-group formControlName="verificationType">
-                  <mat-button-toggle value="PHONE">Telefon</mat-button-toggle>
-                  <mat-button-toggle value="EMAIL">Email</mat-button-toggle>
+                  <mat-button-toggle value="PHONE">{{
+                    "login.phone" | translate
+                  }}</mat-button-toggle>
+                  <mat-button-toggle value="EMAIL">{{
+                    "login.email" | translate
+                  }}</mat-button-toggle>
                 </mat-button-toggle-group>
 
                 <div class="text-center text-lg-start mt-4 pt-2">
@@ -106,11 +110,13 @@
                     class="btn my-btn-primary btn-lg"
                     style="padding-left: 2.5rem; padding-right: 2.5rem"
                   >
-                    Załóż konto
+                    {{ "login.create" | translate }}
                   </button>
                   <p class="small fw-bold mt-2 pt-1 mb-3">
-                    Masz już konto?
-                    <a routerLink="/login" class="link-color">Zaloguj się</a>
+                    {{ "login.account_exists" | translate }}
+                    <a routerLink="/login" class="link-color">{{
+                      "login.login" | translate
+                    }}</a>
                   </p>
                 </div>
               </form>

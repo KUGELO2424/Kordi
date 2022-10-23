@@ -1,0 +1,63 @@
+{
+    "navbar": {
+        "search": "Browse",
+        "add": "Add a collection",
+        "profile": "Profile",
+        "login": "Log in",
+        "signup": "Sign up"
+    },
+    "footer": {
+        "find_us": "Find us here:",
+        "collections": "COLLECTIONS",
+        "create": "Create collection",
+        "serach": "Browse collections",
+        "signup": "Sign up",
+        "popular_categories": "POPULAR CATEGORIES",
+        "clothes": "Clothes",
+        "food": "Food",
+        "chemicals": "Chemicals",
+        "contact": "Contact"
+    },
+    "login": {
+        "login": "Log in",
+        "username": "Username",
+        "password": "Password",
+        "no_account": "No account?",
+        "signup": "Sign up",
+        "firstname": "Firstname",
+        "lastname": "Lastname",
+        "email": "Email",
+        "phone": "Phone",
+        "verification_type": "Select the type of account verification",
+        "account_exists": "Already have an account?",
+        "create": "Sign up",
+        "invalid": "Incorrect username or password",
+        "username_inv": "Username must be at least 3 characters long",
+        "firstname_inv": "First name must be at least 2 characters long",
+        "lastname_inv": "Last name must be at least 2 characters long",
+        "email_inv": "Please enter a valid email address",
+        "phone_inv": "Please enter a valid phone number",
+        "password_inv": "Password must be at least 6 characters long",
+        "error_occured": "An unexpected error has occurred. Please try again in a moment.",
+        "signup_success": "User account has been created successfully. Log in to verify it"
+    },
+    "verify": {
+        "welcome": "Welcome in Kordi!",
+        "to_be_able": "To be able to take full advantage of our website, you still need to verify your account.",
+        "send_again": "Send again",
+        "send_again_info": "Click to resend the email.",
+        "info": "An e-mail with an activation link has been sent to your <b>{{email}}</b> e-mail address. Click on the link provided to validate your account.",
+        "info_phone": "An activation code has been sent to your <b>{{phone}}</b> phone number. Enter it below to verify your account.",
+        "verify": "Verify",
+        "activation_code": "Activation code"
+    },
+    "collections": {
+        "search_input": "Search",
+        "search_button": "Search",
+        "filter": "Filter",
+        "localization": "Locations",
+        "click": "Click here",
+        "progress": "Collection progress"
+    }
+    
+}

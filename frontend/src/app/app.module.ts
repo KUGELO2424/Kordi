@@ -6,6 +6,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxTranslateModule } from './translate/translate.module';
 
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
@@ -13,6 +14,7 @@ import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { VerificationComponent } from './components/verification/verification.component';
 import { CollectionListComponent } from './components/collection-list/collection-list.component';
+import { LanguageSelectorComponent } from './components/language-selector/language-selector.component';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
@@ -21,6 +23,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
 
 const routes: Routes = [
   {path: 'home', component: HomePageComponent},
@@ -38,7 +41,8 @@ const routes: Routes = [
     LoginComponent,
     SignupComponent,
     VerificationComponent,
-    CollectionListComponent
+    CollectionListComponent,
+    LanguageSelectorComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -53,7 +57,9 @@ const routes: Routes = [
     MatButtonToggleModule,
     MatProgressBarModule,
     MatExpansionModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSelectModule,
+    NgxTranslateModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -4,7 +4,9 @@
       <div class="row justify-content-md-center">
         <div class="col-md-8 col-lg-6 col-xl-6 mb-3">
           <mat-card>
-            <mat-card-title>Filtruj</mat-card-title>
+            <mat-card-title>{{
+              "collections.filter" | translate
+            }}</mat-card-title>
             <mat-expansion-panel>
               <mat-expansion-panel-header>
                 <mat-panel-title> Opcje filtrowania</mat-panel-title>
@@ -19,7 +21,9 @@
           <div class="row justify-content-md-center d-flex align-items-center">
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 mt-3">
               <mat-form-field class="full-width" appearance="outline">
-                <mat-label>Szukaj</mat-label>
+                <mat-label>{{
+                  "collections.search_input" | translate
+                }}</mat-label>
                 <input matInput [(ngModel)]="searchTerm" />
                 <mat-icon matPrefix>search</mat-icon>
               </mat-form-field>
@@ -31,7 +35,7 @@
                   class="btn my-btn-primary btn-lg"
                   style="padding-left: 2rem; padding-right: 2rem"
                 >
-                  Wyszukaj
+                  {{ "collections.search_button" | translate }}
                 </button>
               </div>
             </div>
@@ -64,9 +68,11 @@
               <mat-accordion>
                 <mat-expansion-panel>
                   <mat-expansion-panel-header>
-                    <mat-panel-title> Lokalizacje </mat-panel-title>
+                    <mat-panel-title>
+                      {{ "collections.localization" | translate }}
+                    </mat-panel-title>
                     <mat-panel-description class="d-flex justify-content-end">
-                      Kliknij tutaj
+                      {{ "collections.click" | translate }}
                     </mat-panel-description>
                   </mat-expansion-panel-header>
                   <p>Warszawa, Miła 20</p>
@@ -74,7 +80,7 @@
                 </mat-expansion-panel>
               </mat-accordion>
               <div class="card-footer">
-                <p>Postęp zbiórki:</p>
+                <p>{{ "collections.progress" | translate }}</p>
                 <mat-progress-bar
                   mode="determinate"
                   value="40"
