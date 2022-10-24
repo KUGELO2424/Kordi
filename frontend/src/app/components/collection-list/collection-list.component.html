@@ -1,48 +1,126 @@
-<div class="content">
+<div class="content min-vw-25">
   <section class="mt-5">
     <div class="container-fluid align-middle">
-      <div class="row justify-content-md-center">
-        <div class="col-md-8 col-lg-6 col-xl-6 mb-3">
-          <mat-card>
-            <mat-card-title>{{
-              "collections.filter" | translate
-            }}</mat-card-title>
-            <mat-expansion-panel>
-              <mat-expansion-panel-header>
-                <mat-panel-title> Opcje filtrowania</mat-panel-title>
-              </mat-expansion-panel-header>
-              <p>Warszawa, Miła 20</p>
-              <p>Warszawa, Miła 20</p>
-            </mat-expansion-panel>
-          </mat-card>
-        </div>
-        <div class="col-md-8 col-lg-6 col-xl-6 mb-3 d-flex align-items-center">
-          <!-- <mat-card> -->
-          <div class="row justify-content-md-center d-flex align-items-center">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 mt-3">
-              <mat-form-field class="full-width" appearance="outline">
-                <mat-label>{{
-                  "collections.search_input" | translate
-                }}</mat-label>
-                <input matInput [(ngModel)]="searchTerm" />
-                <mat-icon matPrefix>search</mat-icon>
-              </mat-form-field>
-            </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
-              <div class="d-flex justify-content-md-left">
-                <button
-                  type="submit"
-                  class="btn my-btn-primary btn-lg"
-                  style="padding-left: 2rem; padding-right: 2rem"
-                >
-                  {{ "collections.search_button" | translate }}
-                </button>
-              </div>
+      <!-- ROW TOP PANEL -->
+      <div class="row justify-content-md-start ms-5">
+        <!-- SEARCH INPUT -->
+        <div class="row justify-content-md-start d-flex align-items-center">
+          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 mt-4">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>{{
+                "collections.search_input" | translate
+              }}</mat-label>
+              <input matInput [(ngModel)]="searchTerm" />
+              <mat-icon matPrefix>search</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+            <div class="d-flex justify-content-md-center">
+              <button
+                type="submit"
+                class="btn my-btn-primary btn-lg"
+                style="padding-left: 2rem; padding-right: 2rem"
+              >
+                {{ "collections.search_button" | translate }}
+              </button>
             </div>
           </div>
-          <!-- </mat-card> -->
         </div>
+        <!-- END SEARCH INPUT -->
+        <!-- FILTER INPUT -->
+        <div
+          class="row justify-content-md-start d-flex align-items-center w-75 mt-4"
+        >
+          <mat-expansion-panel class="ms-2">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ "collections.filtr_options" | translate }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="d-flex flex-column bd-highlight mb-1">
+              <!-- CITY FILTR -->
+              <div class="bd-highlight">
+                <mat-form-field
+                  class="example-form-field me-3"
+                  appearance="outline"
+                >
+                  <mat-label>{{ "collections.city" | translate }}</mat-label>
+                  <input matInput type="text" [(ngModel)]="searchCity" />
+                  <button
+                    *ngIf="searchCity"
+                    matSuffix
+                    mat-icon-button
+                    aria-label="Clear"
+                    (click)="searchCity = ''"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+              <!-- END CITY FILTR -->
+              <!-- STREET FILTR -->
+              <div class="bd-highlight">
+                <mat-form-field
+                  class="example-form-field me-3"
+                  appearance="outline"
+                >
+                  <mat-label>{{ "collections.street" | translate }}</mat-label>
+                  <input matInput type="text" [(ngModel)]="searchStreet" />
+                  <button
+                    *ngIf="searchStreet"
+                    matSuffix
+                    mat-icon-button
+                    aria-label="Clear"
+                    (click)="searchStreet = ''"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+              <!-- END STREET FILTR -->
+              <!-- ITEM NAME FILTR -->
+              <div class="bd-highlight">
+                <mat-form-field class="example-form-field" appearance="outline">
+                  <mat-label>{{ "collections.item" | translate }}</mat-label>
+                  <input matInput type="text" [(ngModel)]="searchItem" />
+                  <button
+                    *ngIf="searchItem"
+                    matSuffix
+                    mat-icon-button
+                    aria-label="Clear"
+                    (click)="searchItem = ''"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+              <!-- END ITEM NAME FILTR -->
+              <!-- CATEGORIES CHECKBOXES -->
+              <section [formGroup]="categoriesForm">
+                <h5>Wybierz kategorię:</h5>
+                <div class="row row-cols-auto">
+                  <div
+                    class="col d-flex justify-content-start"
+                    *ngFor="let category of categories"
+                  >
+                    <p>
+                      <mat-checkbox
+                        formControlName="{{ category.value }}"
+                        color="primary"
+                        >{{ category.label }}</mat-checkbox
+                      >
+                    </p>
+                  </div>
+                </div>
+              </section>
+              <!-- END CATEGORIES CHECKBOXES -->
+            </div>
+          </mat-expansion-panel>
+        </div>
+        <!-- END FILTER INPUT -->
       </div>
+      <!-- END ROW TOP PANEL -->
+      <!-- ROW CONTENT PANEL -->
       <div class="row justify-content-md-center">
         <div
           class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 row justify-content-md-center"
@@ -92,6 +170,8 @@
         </div>
         <!-- END ROW -->
       </div>
+      <!-- END ROW CONTENT PANEL -->
+      <!-- PAGINATOR -->
       <div class="d-flex justify-content-end">
         <mat-paginator
           [length]="100"
@@ -102,6 +182,7 @@
         >
         </mat-paginator>
       </div>
+      <!-- END PAGINATOR -->
     </div>
     <!-- END CONTAINER -->
   </section>

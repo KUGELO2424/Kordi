@@ -54,10 +54,14 @@
     "collections": {
         "search_input": "Search",
         "search_button": "Search",
-        "filter": "Filter",
+        "filter": "Filtration",
         "localization": "Locations",
         "click": "Click here",
-        "progress": "Collection progress"
+        "progress": "Collection progress",
+        "city": "City",
+        "street": "Street",
+        "item": "Item name",
+        "filtr_options": "Filter options"
     }
     
 }

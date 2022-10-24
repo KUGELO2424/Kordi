@@ -57,7 +57,11 @@
         "filter": "Filtruj",
         "localization": "Lokalizacje",
         "click": "Kliknij tutaj",
-        "progress": "Postęp zbiórki"
+        "progress": "Postęp zbiórki",
+        "city": "Miasto",
+        "street": "Ulica",
+        "item": "Nazwa przedmiotu",
+        "filtr_options": "Opcje filtrowania"
     }
     
 }
