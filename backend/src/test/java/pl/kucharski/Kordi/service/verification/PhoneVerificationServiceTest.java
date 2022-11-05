@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockedStatic;
 import pl.kucharski.Kordi.enums.VerificationStatus;
+import pl.kucharski.Kordi.enums.VerificationType;
 import pl.kucharski.Kordi.exception.UserVerifyException;
 import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.model.user.UserDTO;
@@ -33,10 +34,10 @@ class PhoneVerificationServiceTest {
     private MockedStatic<Twilio> twilioMockedStatic;
 
     private static final User NOT_VERIFIED_USER = new User("Test", "test", "test123", "qwerty",
-            "test@mail.com", "110339332", false);
+            "test@mail.com", "110339332", false, VerificationType.PHONE);
 
     private static final UserDTO NOT_VERIFIED_USER_DTO= new UserDTO("Test", "test", "test123",
-            "test@mail.com", "110339332", false);
+            "test@mail.com", "110339332", false, VerificationType.PHONE);
 
     private static final String VALID_TOKEN = "valid_token";
 

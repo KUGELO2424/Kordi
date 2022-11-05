@@ -3,10 +3,13 @@ package pl.kucharski.Kordi.model.user;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.kucharski.Kordi.enums.VerificationType;
 import pl.kucharski.Kordi.model.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 /**
@@ -33,9 +36,12 @@ public class User extends BaseEntity {
     private String email;
     private String phone;
     private boolean enabled;
+    @Column(columnDefinition="ENUM('EMAIL', 'PHONE')")
+    @Enumerated(EnumType.STRING)
+    private VerificationType verificationType;
 
     public User(Long id, String firstName, String lastName, String username, String password, String email,
-                String phone, boolean enabled) {
+                String phone, boolean enabled, VerificationType verificationType) {
         super(id);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -44,10 +50,11 @@ public class User extends BaseEntity {
         this.email = email;
         this.phone = phone;
         this.enabled = enabled;
+        this.verificationType = verificationType;
     }
 
     public User(String firstName, String lastName, String username, String password, String email, String phone,
-                boolean enabled) {
+                boolean enabled, VerificationType verificationType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -55,5 +62,6 @@ public class User extends BaseEntity {
         this.email = email;
         this.phone = phone;
         this.enabled = enabled;
+        this.verificationType = verificationType;
     }
 }

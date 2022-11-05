@@ -3,6 +3,7 @@ package pl.kucharski.Kordi;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import pl.kucharski.Kordi.enums.ItemType;
+import pl.kucharski.Kordi.enums.VerificationType;
 import pl.kucharski.Kordi.model.address.Address;
 import pl.kucharski.Kordi.model.address.AddressDTO;
 import pl.kucharski.Kordi.model.collection.Collection;
@@ -44,7 +45,7 @@ public class CollectionData {
     public static final String USERNAME_FROM_DB = "test";
     public static final String USERNAME_OF_COLLECTION_4 = "jan";
     public static final User USER = new User(1L,"Test", "test", USERNAME, "qwerty",
-            "test@mail.com", "110339332", true);
+            "test@mail.com", "110339332", true, VerificationType.EMAIL);
 
     private static List<Address> crateListOfAddresses() {
         return new ArrayList<>() {

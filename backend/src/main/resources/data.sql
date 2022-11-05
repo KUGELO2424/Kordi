@@ -14,7 +14,8 @@ CREATE TABLE IF NOT EXISTS account (
     password VARCHAR(255) NOT NULL,
     email VARCHAR(319) NOT NULL,
 	phone VARCHAR(319) NOT NULL,
-    enabled BOOLEAN
+    enabled BOOLEAN,
+    verification_type ENUM('EMAIL', 'PHONE')
 );
 
 --
@@ -205,8 +206,8 @@ INSERT INTO account (uuid, first_name, last_name, username, password, email, pho
 VALUES ('407855b1-f901-4efa-9634-5fbbc57e61b3', 'Daniel', 'Spaniel', 'daniel', '$2a$12$exSprWI2lA.TgHrkIQyfR.QAHfsOVaCPKBLBhMUOPruXUDdj3JcK6', 'daniel@gmail.com', '987123123', '1');
 INSERT INTO account (uuid, first_name, last_name, username, password, email, phone, enabled)
 VALUES ('bf6cc765-1baa-4a39-9e9d-74cd570e4eb1', 'Michał', 'Kichał', 'michał', '$2a$12$exSprWI2lA.TgHrkIQyfR.QAHfsOVaCPKBLBhMUOPruXUDdj3JcK6', 'michal@gmail.com', '555444333', '1');
-INSERT INTO account (uuid, first_name, last_name, username, password, email, phone, enabled)
-VALUES ('af1c34e0-9843-494b-975d-e1214ed1d49e', 'Test', 'Test', 'test', '$2a$12$exSprWI2lA.TgHrkIQyfR.QAHfsOVaCPKBLBhMUOPruXUDdj3JcK6', 'test@gmail.com', '111666342', '0');
+INSERT INTO account (uuid, first_name, last_name, username, password, email, phone, enabled, verification_type)
+VALUES ('af1c34e0-9843-494b-975d-e1214ed1d49e', 'Test', 'Test', 'test', '$2a$12$exSprWI2lA.TgHrkIQyfR.QAHfsOVaCPKBLBhMUOPruXUDdj3JcK6', 'test@gmail.com', '111666342', '0', 'EMAIL');
 
 --
 -- Dane email_token

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import pl.kucharski.Kordi.enums.VerificationStatus;
-import pl.kucharski.Kordi.enums.VerificationType;
 import pl.kucharski.Kordi.exception.InvalidPasswordException;
+import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.model.email.EmailToken;
 import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.model.user.UserDTO;
@@ -59,18 +59,41 @@ public class UserController {
      * After successful registration, token is sent to user email or phone, which is needed
      * to verify account by {@link UserController#verifyUser(String, String)}.
      *
-     * @param verificationType type of verification, could be EMAIL or PHONE
      * @param user DTO of user to register
      * @return VerificationStatus - if token was sent correctly,<br>
      *         status 400 with message if UserRegisterException occurred
      */
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> saveUser(@RequestParam("verificationType") VerificationType verificationType,
-                                      @RequestBody @Valid UserRegistrationDTO user) {
+    public ResponseEntity<?> saveUser(@RequestBody @Valid UserRegistrationDTO user) {
         VerificationStatus result;
         try {
-            result = userService.saveUser(user, verificationType);
+            result = userService.saveUser(user);
         } catch (Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+        return ResponseEntity.ok(Collections.singletonMap("status", result));
+    }
+
+    /**
+     * Send verification token again if user account was already created.
+     * Then token is sent to user email or phone, which is needed to verify account
+     * by {@link UserController#verifyUser(String, String)}.
+     *
+     * @param username username of user to send verification token
+     * @return VerificationStatus - if token was sent correctly,<br>
+     *         status 404 with message if UserNotFoundException occurred
+     *         status 400 with message if some error occurred
+     */
+    @PostMapping(value = "/sendToken", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> sendVerificationTokenAgain(@RequestParam("username") String username) {
+        VerificationStatus result;
+        try {
+            UserDTO userDTO = userService.getUserByUsername(username);
+            result = userService.sendVerificationToken(userDTO);
+        } catch (UserNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
+        }
+        catch (Exception ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
         return ResponseEntity.ok(Collections.singletonMap("status", result));
@@ -128,7 +151,7 @@ public class UserController {
 
     private VerificationStatus verifyUserOnPhoneVerification(String token, String phone) {
         UserDTO user = userService.getUserByPhone(phone);
-        return userService.verifyToken(user, token, VerificationType.PHONE);
+        return userService.verifyToken(user, token);
     }
 
     private VerificationStatus verifyUserOnEmailVerification(String token) {
@@ -137,7 +160,7 @@ public class UserController {
         });
         User user = emailToken.getUser();
         UserDTO userDTO = userMapper.mapToUserDTO(user);
-        return userService.verifyToken(userDTO, token, VerificationType.EMAIL);
+        return userService.verifyToken(userDTO, token);
     }
 
 }

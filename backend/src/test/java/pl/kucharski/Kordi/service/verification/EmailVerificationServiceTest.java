@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import pl.kucharski.Kordi.enums.VerificationStatus;
+import pl.kucharski.Kordi.enums.VerificationType;
 import pl.kucharski.Kordi.model.user.UserDTO;
 import pl.kucharski.Kordi.model.email.EmailToken;
 import pl.kucharski.Kordi.model.user.User;
@@ -35,10 +36,10 @@ class EmailVerificationServiceTest {
 
 
     private static final User NOT_VERIFIED_USER = new User("Test", "test", "test123", "qwerty",
-            "test@mail.com", "110339332", false);
+            "test@mail.com", "110339332", false, VerificationType.EMAIL);
 
     private static final UserDTO NOT_VERIFIED_USER_DTO= new UserDTO("Test", "test", "test123",
-            "test@mail.com", "110339332", false);
+            "test@mail.com", "110339332", false, VerificationType.EMAIL);
 
     @BeforeEach
     void setUp() {

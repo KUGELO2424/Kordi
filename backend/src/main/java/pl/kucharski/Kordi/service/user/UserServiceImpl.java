@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.enums.VerificationStatus;
 import pl.kucharski.Kordi.enums.VerificationType;
 import pl.kucharski.Kordi.exception.InvalidPasswordException;
+import pl.kucharski.Kordi.exception.UserAlreadyVerifiedException;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.exception.UserRegisterException;
 import pl.kucharski.Kordi.model.user.User;
@@ -69,24 +70,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     /**
-     * @see UserService#saveUser(UserRegistrationDTO, VerificationType)
+     * @see UserService#saveUser(UserRegistrationDTO)
      */
     @Override
     @Transactional
-    public VerificationStatus saveUser(UserRegistrationDTO user, VerificationType verificationType) {
-        User foundUserByEmail = userRepository.findUserByEmail(user.getEmail()).orElse(null);
-        User foundUserByUsername = userRepository.findUserByUsername(user.getUsername()).orElse(null);
-        User foundUserByPhone = userRepository.findUserByPhone(user.getPhone()).orElse(null);
+    public VerificationStatus saveUser(UserRegistrationDTO user) {
+        UserDTO userDTO = userMapper.mapToUserDTO(user);
+        User foundUserByEmail = userRepository.findUserByEmail(userDTO.getEmail()).orElse(null);
+        User foundUserByUsername = userRepository.findUserByUsername(userDTO.getUsername()).orElse(null);
+        User foundUserByPhone = userRepository.findUserByPhone(userDTO.getPhone()).orElse(null);
 
         // If given user attributes are the same, send verification token again
         if (foundUserByUsername != null && foundUserByEmail != null && foundUserByPhone != null) {
             if (foundUserByUsername.equals(foundUserByEmail) && foundUserByUsername.equals(foundUserByPhone)
                     && !foundUserByEmail.isEnabled()) {
-                if (verificationType == VerificationType.PHONE) {
-                    return registerUserWithPhoneVerification(foundUserByEmail);
-                } else {
-                    return registerUserWithEmailVerification(foundUserByEmail);
-                }
+                return sendVerificationToken(userDTO);
             }
         }
 
@@ -101,23 +99,36 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
         User newUser = userMapper.mapToUser(user);
-
         userRepository.save(newUser);
-        if (verificationType == VerificationType.PHONE) {
-            return registerUserWithPhoneVerification(newUser);
+        return sendVerificationToken(userDTO);
+    }
+
+    /**
+     * @see UserService#sendVerificationToken(UserDTO)
+     */
+    @Override
+    @Transactional
+    public VerificationStatus sendVerificationToken(UserDTO userDTO) {
+        if (userDTO.isEnabled()) {
+            throw new UserAlreadyVerifiedException("User is already verified");
+        }
+        User user = userRepository.findUserByUsername(userDTO.getUsername())
+                .orElseThrow(() -> new UserNotFoundException("User not found in database"));
+        if (userDTO.getVerificationType() == VerificationType.PHONE) {
+            return registerUserWithPhoneVerification(user);
         } else {
-            return registerUserWithEmailVerification(newUser);
+            return registerUserWithEmailVerification(user);
         }
     }
 
     /**
-     * @see UserService#verifyToken(UserDTO, String, VerificationType)
+     * @see UserService#verifyToken(UserDTO, String)
      */
     @Override
     @Transactional
-    public VerificationStatus verifyToken(UserDTO user, String token, VerificationType verificationType) {
+    public VerificationStatus verifyToken(UserDTO user, String token) {
         VerificationStatus response;
-        if (verificationType == VerificationType.PHONE) {
+        if (user.getVerificationType() == VerificationType.PHONE) {
             response = phoneVerificationService.verify(user, token);
         } else {
             response = emailVerificationService.verify(user, token);

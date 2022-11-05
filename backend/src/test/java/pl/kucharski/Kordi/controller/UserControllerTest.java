@@ -3,6 +3,7 @@ package pl.kucharski.Kordi.controller;
 import com.icegreen.greenmail.configuration.GreenMailConfiguration;
 import com.icegreen.greenmail.junit5.GreenMailExtension;
 import com.icegreen.greenmail.util.ServerSetupTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -59,12 +60,14 @@ class UserControllerTest {
     private static final String LOGIN_USERNAME = "gelo2424";
     private static final String LOGIN_PASSWORD = "qwerty";
     private static final String USER_PHONE = "198321555";
+    private static final String NOT_VERIFIED_USERNAME = "test";
     private static final String USER_TO_REGISTER_WITH_TOO_SHORT_PASSWORD =
             "{\"firstName\":\"test\", " +
                     "\"lastName\":\"test\"," +
                     "\"username\":\"test123\"," +
                     "\"password\":\"short\"," +
                     "\"email\":\"test@gmai.pl\"," +
+                    "\"verificationType\":\"EMAIL\"," +
                     "\"phone\":\"" + USER_PHONE + "\"}";
     private static final String USER_TO_REGISTER_WITH_PHONE_VERIFICATION =
             "{\"firstName\":\"test\", " +
@@ -72,6 +75,7 @@ class UserControllerTest {
             "\"username\":\"test123\"," +
             "\"password\":\"qwerty\"," +
             "\"email\":\"test@gmai.pl\"," +
+            "\"verificationType\":\"PHONE\"," +
             "\"phone\":\"" + USER_PHONE + "\"}";
 
     private static final String USER_TO_REGISTER_WITH_EMAIL_VERIFICATION =
@@ -80,12 +84,14 @@ class UserControllerTest {
                     "\"username\":\"test1234\"," +
                     "\"password\":\"qwerty\"," +
                     "\"email\":\"test2@gmai.pl\"," +
+                    "\"verificationType\":\"EMAIL\"," +
                     "\"phone\":\"876555444\"}";
     private static final String USER_THAT_EXISTS = "{\"firstName\":\"test\", " +
             "\"lastName\":\"test\"," +
             "\"username\":\"newUser\"," +
             "\"password\":\"qwerty\"," +
             "\"email\":\"gelo@gmail.com\"," +
+            "\"verificationType\":\"EMAIL\"," +
             "\"phone\":\"" + USER_PHONE + "\"}";
 
     @Autowired
@@ -104,6 +110,12 @@ class UserControllerTest {
     static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.SMTP)
             .withConfiguration(GreenMailConfiguration.aConfig())
             .withPerMethodLifecycle(false);
+
+
+    @AfterEach
+    void tearDown() {
+        greenMail.reset();
+    }
 
     @Test
     public void shouldReturnValidTokenOnValidCredentials() throws Exception {
@@ -159,7 +171,7 @@ class UserControllerTest {
 
     @Test
     public void shouldNotRegisterUserIfPasswordIsTooShort() throws Exception {
-        mvc.perform(post("/register?verificationType=EMAIL")
+        mvc.perform(post("/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(USER_TO_REGISTER_WITH_TOO_SHORT_PASSWORD))
                 .andExpect(status().isBadRequest())
@@ -168,7 +180,7 @@ class UserControllerTest {
 
     @Test
     public void shouldRegisterUserWithEmailVerification() throws Exception {
-        mvc.perform(post("/register?verificationType=EMAIL")
+        mvc.perform(post("/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(USER_TO_REGISTER_WITH_EMAIL_VERIFICATION))
                 .andExpect(status().isOk())
@@ -181,9 +193,37 @@ class UserControllerTest {
     }
 
     @Test
+    public void shouldSendVerificationTokenAgain() throws Exception {
+        mvc.perform(post("/sendToken?username=" + NOT_VERIFIED_USERNAME)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is("PENDING")));
+
+        MimeMessage[] received = greenMail.getReceivedMessages();
+        assertEquals(1, received.length);
+        MimeMessage receivedMessage = received[0];
+        assertEquals("test@gmail.com", receivedMessage.getAllRecipients()[0].toString());
+    }
+
+    @Test
+    public void shouldNotSendVerificationTokenAgainIfUserAlreadyVerified() throws Exception {
+        mvc.perform(post("/sendToken?verificationType=EMAIL&username=" + LOGIN_USERNAME)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("User is already verified"));
+    }
+
+    @Test
+    public void shouldNotSendVerificationTokenAgainIfUserNotExists() throws Exception {
+        mvc.perform(post("/sendToken?verificationType=EMAIL&username=NotExisting")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     public void shouldRegisterUserWithPhoneVerification() throws Exception {
         when(phoneVerificationService.send(any())).thenReturn(VerificationStatus.PENDING);
-        mvc.perform(post("/register?verificationType=PHONE")
+        mvc.perform(post("/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(USER_TO_REGISTER_WITH_PHONE_VERIFICATION))
                 .andExpect(status().isOk())
@@ -195,7 +235,7 @@ class UserControllerTest {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> request = new HttpEntity<>(USER_THAT_EXISTS, headers);
-        ResponseEntity<?> response = testRestTemplate.postForEntity("/register?verificationType=EMAIL", request, String.class);
+        ResponseEntity<?> response = testRestTemplate.postForEntity("/register", request, String.class);
         assertEquals(400, response.getStatusCodeValue());
         assertEquals("Email is already in use!", Objects.requireNonNull(response.getBody()).toString());
     }
@@ -210,7 +250,7 @@ class UserControllerTest {
 
     @Test
     public void shouldVerifyUserWithEmailVerification() throws Exception {
-        mvc.perform(post("/register?verificationType=EMAIL")
+        mvc.perform(post("/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(USER_TO_REGISTER_WITH_EMAIL_VERIFICATION))
                 .andExpect(status().isOk())
@@ -228,7 +268,7 @@ class UserControllerTest {
     public void shouldVerifyUserWithPhoneVerification() throws Exception {
         when(phoneVerificationService.send(any())).thenReturn(VerificationStatus.PENDING);
         when(phoneVerificationService.verify(any(), any())).thenReturn(VerificationStatus.VERIFIED);
-        mvc.perform(post("/register?verificationType=PHONE")
+        mvc.perform(post("/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(USER_TO_REGISTER_WITH_PHONE_VERIFICATION))
                 .andExpect(status().isOk())

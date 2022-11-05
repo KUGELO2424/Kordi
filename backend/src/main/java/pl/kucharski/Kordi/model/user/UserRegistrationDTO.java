@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import pl.kucharski.Kordi.enums.VerificationType;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -30,5 +32,7 @@ public class UserRegistrationDTO {
     private String email;
     @NotBlank(message = "Phone number cannot be empty")
     private String phone;
+    @NotNull(message = "Verification type cannot be empty")
+    private VerificationType verificationType;
 
 }
