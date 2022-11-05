@@ -64,7 +64,8 @@ CREATE TABLE IF NOT EXISTS collection_item (
 	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     uuid VARCHAR(36) NOT NULL,
     name VARCHAR(100) NOT NULL,
-    type ENUM('AMOUNT', 'WEIGHT', 'UNLIMITED'),
+    type ENUM('AMOUNT', 'WEIGHT', 'UNLIMITED') NOT NULL,
+    category ENUM('CLOTHES', 'FOOD', 'ANIMALS', 'CHILDREN', 'MEDICINE', 'ELECTRONIC', 'OTHER') NOT NULL,
     current_amount INT,
     max_amount INT,
 	collection_id BIGINT NOT NULL,
@@ -254,14 +255,14 @@ VALUES ('306f5343-9fa9-4506-ad24-51ea97df06a8', 'Warszawa', 'Noc 20', 3);
 --
 -- Dane collection_item
 --
-INSERT INTO collection_item (uuid, name, type, current_amount, max_amount, collection_id)
-VALUES ('ce2ac4b5-f508-48f0-9326-09a01616ac9a', 'Buty sportowe', 'amount', 0, 4, 1);
-INSERT INTO collection_item (uuid, name, type, current_amount, max_amount, collection_id)
-VALUES ('be89507a-db89-4b7d-bac1-d76696b392e8', 'Buty zimowe', 'amount', 0, 2, 1);
-INSERT INTO collection_item (uuid, name, type, current_amount, max_amount, collection_id)
-VALUES ('97187d76-d5ea-4340-936b-9c7584020cf5', 'Koszulki', 'amount', 1, 10, 1);
-INSERT INTO collection_item (uuid, name, type, current_amount, max_amount, collection_id)
-VALUES ('51352e5f-8b86-472f-8364-ab4f0f65db24', 'Spodnie', 'amount', 0, 2, 2);
+INSERT INTO collection_item (uuid, name, type, category, current_amount, max_amount, collection_id)
+VALUES ('ce2ac4b5-f508-48f0-9326-09a01616ac9a', 'Buty sportowe', 'amount', 'CLOTHES', 0, 4, 1);
+INSERT INTO collection_item (uuid, name, type, category, current_amount, max_amount, collection_id)
+VALUES ('be89507a-db89-4b7d-bac1-d76696b392e8', 'Buty zimowe', 'amount', 'CLOTHES', 0, 2, 1);
+INSERT INTO collection_item (uuid, name, type, category, current_amount, max_amount, collection_id)
+VALUES ('97187d76-d5ea-4340-936b-9c7584020cf5', 'Koszulki', 'amount', 'CLOTHES', 1, 10, 1);
+INSERT INTO collection_item (uuid, name, type, category, current_amount, max_amount, collection_id)
+VALUES ('51352e5f-8b86-472f-8364-ab4f0f65db24', 'Spodnie', 'amount', 'CLOTHES', 0, 2, 2);
 
 --
 -- Dane submitted_item

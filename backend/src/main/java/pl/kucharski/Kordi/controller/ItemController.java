@@ -43,6 +43,7 @@ public class ItemController {
      *
      * @return created new item
      * status 404 if collection not found
+     * status 400 if itemType or itemCategory is wrong<br>
      */
     @PostMapping("/{collectionId}")
     ResponseEntity<?> addNewItemToCollection(@PathVariable("collectionId") Long collectionId,

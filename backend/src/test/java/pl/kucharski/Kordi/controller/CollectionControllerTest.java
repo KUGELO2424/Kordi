@@ -25,6 +25,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static pl.kucharski.Kordi.CollectionData.ADDRESS_TO_ADD;
 import static pl.kucharski.Kordi.CollectionData.COLLECTION_TO_CREATE;
+import static pl.kucharski.Kordi.CollectionData.COLLECTION_TO_CREATE_WITHOUT_ITEM_CATEGORY;
+import static pl.kucharski.Kordi.CollectionData.COLLECTION_TO_CREATE_WITHOUT_ITEM_TYPE;
 import static pl.kucharski.Kordi.CollectionData.COLLECTION_TO_CREATE_WITH_EMPTY_TITLE;
 import static pl.kucharski.Kordi.CollectionData.COLLECTION_TO_CREATE_WITH_NOT_EXISTING_ITEM_TYPE;
 import static pl.kucharski.Kordi.CollectionData.COLLECTION_TO_CREATE_WITH_NOT_EXISTING_USER;
@@ -175,7 +177,19 @@ class CollectionControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(COLLECTION_TO_CREATE_WITH_EMPTY_TITLE)
                 )
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("Title cannot be empty.")));
+    }
+
+    @Test
+    @WithMockUser
+    void shouldThrowBadRequestIfItemTypeIsNull() throws Exception {
+        mvc.perform(post("/collections")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(COLLECTION_TO_CREATE_WITHOUT_ITEM_TYPE)
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is("Item type cannot be null.")));
     }
 
     @Test
@@ -185,7 +199,19 @@ class CollectionControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(COLLECTION_TO_CREATE_WITH_NOT_EXISTING_ITEM_TYPE)
                 )
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", containsString("not one of the values accepted for Enum class")));
+    }
+
+    @Test
+    @WithMockUser
+    void shouldThrowBadRequestIfItemCategoryNotExists() throws Exception {
+        mvc.perform(post("/collections")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(COLLECTION_TO_CREATE_WITHOUT_ITEM_CATEGORY)
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", containsString("Item category cannot be null.")));
     }
 
     @Test

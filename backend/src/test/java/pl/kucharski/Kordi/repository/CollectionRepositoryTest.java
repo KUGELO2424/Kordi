@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.CollectionMapperTestImpl;
+import pl.kucharski.Kordi.enums.ItemCategory;
 import pl.kucharski.Kordi.enums.ItemType;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.model.address.AddressDTO;
@@ -54,6 +55,7 @@ class CollectionRepositoryTest {
             .name("item")
             .currentAmount(0)
             .maxAmount(10)
+            .category(ItemCategory.OTHER)
             .type(ItemType.AMOUNT)
             .build();
 

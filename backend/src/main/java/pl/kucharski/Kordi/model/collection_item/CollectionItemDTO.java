@@ -6,10 +6,12 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import pl.kucharski.Kordi.enums.ItemCategory;
 import pl.kucharski.Kordi.enums.ItemType;
 import pl.kucharski.Kordi.validator.ItemValidator;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -23,7 +25,10 @@ public class CollectionItemDTO {
     private Long id;
     @NotBlank(message = "Name of item cannot be empty")
     private String name;
+    @NotNull(message = "Item type cannot be null")
     private ItemType type;
+    @NotNull(message = "Item category cannot be null")
+    private ItemCategory category;
     private int currentAmount;
     private int maxAmount;
 

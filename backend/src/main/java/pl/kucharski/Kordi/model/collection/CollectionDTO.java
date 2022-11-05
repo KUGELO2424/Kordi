@@ -9,6 +9,7 @@ import lombok.ToString;
 import pl.kucharski.Kordi.model.address.AddressDTO;
 import pl.kucharski.Kordi.model.collection_item.CollectionItemDTO;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class CollectionDTO {
     @Builder.Default
     private List<AddressDTO> addresses = new ArrayList<>();
     @Builder.Default
+    @Valid
     private List<CollectionItemDTO> items = new ArrayList<>();
 
 

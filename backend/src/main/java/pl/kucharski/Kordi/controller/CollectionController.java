@@ -113,7 +113,7 @@ public class CollectionController {
      *
      * @return created collection with ids<br>
      * status 404 if user not found<br>
-     * status 400 if itemType is wrong<br>
+     * status 400 if itemType or itemCategory is wrong<br>
      * status 400 if title is empty
      */
     @PostMapping("/collections")

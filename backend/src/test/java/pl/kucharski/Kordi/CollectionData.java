@@ -137,6 +137,7 @@ public class CollectionData {
             "\"items\": " +
             "[{\"name\":\"TestName\"," +
             "\"type\":\"AMOUNT\"," +
+            "\"category\":\"OTHER\"," +
             "\"currentAmount\":\"0\"," +
             "\"maxAmount\":\"10\"}]" +
             "}";
@@ -151,6 +152,7 @@ public class CollectionData {
             "\"items\": " +
             "[{\"name\":\"TestName\"," +
             "\"type\":\"AMOUNT\"," +
+            "\"category\":\"OTHER\"," +
             "\"currentAmount\":\"0\"," +
             "\"maxAmount\":\"10\"}]" +
             "}";
@@ -159,6 +161,34 @@ public class CollectionData {
             "\"title\":\"\", " +
             "\"description\":\"TestDescription\"," +
             "\"userId\":\"1\"," +
+            "\"addresses\": " +
+            "[{\"city\":\"TestCity\"," +
+            "\"street\":\"TestStreet\"}]," +
+            "\"items\": " +
+            "[{\"name\":\"TestName\"," +
+            "\"type\":\"AMOUNT\"," +
+            "\"category\":\"OTHER\"," +
+            "\"currentAmount\":\"0\"," +
+            "\"maxAmount\":\"10\"}]" +
+            "}";
+
+    public static final String COLLECTION_TO_CREATE_WITHOUT_ITEM_TYPE = "{" +
+            "\"title\":\"TestCollection\", " +
+            "\"description\":\"TestDescription\"," +
+            "\"userId\":\"1\"," +
+            "\"addresses\": " +
+            "[{\"city\":\"TestCity\"," +
+            "\"street\":\"TestStreet\"}]," +
+            "\"items\": " +
+            "[{\"name\":\"TestName\"," +
+            "\"currentAmount\":\"0\"," +
+            "\"category\":\"OTHER\"," +
+            "\"maxAmount\":\"10\"}]" +
+            "}";
+
+    public static final String COLLECTION_TO_CREATE_WITHOUT_ITEM_CATEGORY = "{" +
+            "\"title\":\"TestCollection\", " +
+            "\"description\":\"TestDescription\"," +
             "\"addresses\": " +
             "[{\"city\":\"TestCity\"," +
             "\"street\":\"TestStreet\"}]," +
@@ -179,6 +209,7 @@ public class CollectionData {
             "\"items\": " +
             "[{\"name\":\"TestName\"," +
             "\"type\":\"UNKNOWN\"," +
+            "\"category\":\"OTHER\"," +
             "\"currentAmount\":\"0\"," +
             "\"maxAmount\":\"10\"}]" +
             "}";
@@ -204,6 +235,7 @@ public class CollectionData {
             "\"name\":\"Koszulki\", " +
             "\"currentAmount\":\"5\"," +
             "\"maxAmount\":\"10\"," +
+            "\"category\":\"CLOTHES\"," +
             "\"type\":\"AMOUNT\"}";
 
     public static final String ADDRESS_TO_ADD = "{" +

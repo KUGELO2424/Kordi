@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.kucharski.Kordi.enums.ItemCategory;
 import pl.kucharski.Kordi.enums.ItemType;
 import pl.kucharski.Kordi.model.BaseEntity;
 import pl.kucharski.Kordi.model.collection.Collection;
@@ -32,6 +33,10 @@ public class CollectionItem extends BaseEntity {
     @Column(columnDefinition="ENUM('AMOUNT', 'WEIGHT', 'UNLIMITED')")
     @Enumerated(EnumType.STRING)
     private ItemType type;
+
+    @Column(columnDefinition="ENUM('CLOTHES', 'FOOD', 'ANIMALS', 'CHILDREN', 'MEDICINE', 'ELECTRONIC', 'OTHER')")
+    @Enumerated(EnumType.STRING)
+    private ItemCategory category;
 
     @Column(name = "current_amount")
     private int currentAmount;
