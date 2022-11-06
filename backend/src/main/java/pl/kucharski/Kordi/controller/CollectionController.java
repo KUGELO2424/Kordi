@@ -76,7 +76,7 @@ public class CollectionController {
         } catch (CollectionNotFoundException ex) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
-                    "Collection with id " + collectionId + " not found");
+                    ex.getMessage());
         }
     }
 
@@ -125,7 +125,7 @@ public class CollectionController {
         } catch (UserNotFoundException ex) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
-                    "User with id " + collection.getUserId() + " not found");
+                    ex.getMessage());
         }
     }
 
@@ -150,7 +150,7 @@ public class CollectionController {
         } catch (CollectionNotFoundException ex) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
-                    "Collection with id " + collectionToUpdate.getId() + " not found");
+                    ex.getMessage());
         }
     }
 
@@ -171,7 +171,7 @@ public class CollectionController {
         } catch (CollectionNotFoundException ex) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
-                    "Collection with id " + collectionId + " not found");
+                    ex.getMessage());
         }
     }
 
@@ -192,7 +192,7 @@ public class CollectionController {
         } catch (CollectionNotFoundException ex) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
-                    "Collection with id " + collectionId + " not found");
+                    ex.getMessage());
         }
     }
 

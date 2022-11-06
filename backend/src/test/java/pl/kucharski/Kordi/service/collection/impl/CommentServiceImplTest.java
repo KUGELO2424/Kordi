@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.exception.CommentNotFoundException;
+import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.model.collection.Collection;
 import pl.kucharski.Kordi.model.comment.Comment;
 import pl.kucharski.Kordi.model.comment.CommentDTO;
@@ -18,6 +19,7 @@ import pl.kucharski.Kordi.model.comment.CreateCommentDTO;
 import pl.kucharski.Kordi.repository.CollectionRepository;
 import pl.kucharski.Kordi.repository.CommentRepository;
 import pl.kucharski.Kordi.CollectionData;
+import pl.kucharski.Kordi.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static pl.kucharski.Kordi.CollectionData.COMMENT_CONTENT;
+import static pl.kucharski.Kordi.CollectionData.USER;
 
 @ExtendWith(MockitoExtension.class)
 @Transactional
@@ -43,12 +46,15 @@ class CommentServiceImplTest {
     @Mock
     private CollectionRepository collectionRepository;
 
+    @Mock
+    private UserRepository userRepository;
+
     @InjectMocks
     private CommentServiceImpl underTest;
 
     @BeforeEach
     void setUp() {
-        underTest = new CommentServiceImpl(commentRepository, collectionRepository, commentMapper);
+        underTest = new CommentServiceImpl(commentRepository, userRepository, collectionRepository, commentMapper);
         CREATE_COMMENT_DTO = CollectionData.createCommentDTO();
         COLLECTION_WITH_ID = CollectionData.createCollectionWithId();
         COMMENTS_WITH_ID = CollectionData.createListOfComments();
@@ -58,6 +64,7 @@ class CommentServiceImplTest {
     void shouldAddComment() {
         // given
         given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
+        given(userRepository.findById(1L)).willReturn(Optional.of(USER));
 
         // when
         underTest.addComment(1L, CREATE_COMMENT_DTO);
@@ -76,6 +83,17 @@ class CommentServiceImplTest {
 
         // when + then
         assertThrows(CollectionNotFoundException.class, () -> underTest.addComment(1L, CREATE_COMMENT_DTO));
+    }
+
+    @Test
+    void shouldThrowUserNotFound() {
+        // given
+        given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
+        given(userRepository.findById(1L)).willReturn(Optional.empty());
+        given(userRepository.findById(1L)).willReturn(Optional.empty());
+
+        // when + then
+        assertThrows(UserNotFoundException.class, () -> underTest.addComment(1L, CREATE_COMMENT_DTO));
     }
 
     @Test

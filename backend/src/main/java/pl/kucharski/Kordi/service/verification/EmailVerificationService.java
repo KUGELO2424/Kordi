@@ -18,6 +18,12 @@ import javax.mail.internet.MimeMessage;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static pl.kucharski.Kordi.config.ErrorCodes.EMAIL_ALREADY_CONFIRMED;
+import static pl.kucharski.Kordi.config.ErrorCodes.EMAIL_FAILED;
+import static pl.kucharski.Kordi.config.ErrorCodes.EMAIL_FAILED_CONNECTION;
+import static pl.kucharski.Kordi.config.ErrorCodes.TOKEN_EXPIRED;
+import static pl.kucharski.Kordi.config.ErrorCodes.TOKEN_NOT_FOUND;
+
 /**
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
  */
@@ -58,9 +64,9 @@ public class EmailVerificationService implements VerificationService{
             helper.setFrom("help@kordi.com");
             mailSender.send(mimeMessage);
         } catch(MailSendException e) {
-            throw new UserRegisterException("Failed to send an email. Connection failed");
+            throw new UserRegisterException(EMAIL_FAILED_CONNECTION);
         } catch(MessagingException e) {
-            throw new UserRegisterException("Failed to send an email");
+            throw new UserRegisterException(EMAIL_FAILED);
         }
         return VerificationStatus.PENDING;
     }
@@ -71,13 +77,13 @@ public class EmailVerificationService implements VerificationService{
     @Override
     public VerificationStatus verify(UserDTO user, String token) {
         EmailToken emailToken = emailTokenService.getToken(token)
-                .orElseThrow(() -> new IllegalStateException("token not found"));
+                .orElseThrow(() -> new IllegalStateException(TOKEN_NOT_FOUND));
         if (emailToken.getConfirmedAt() != null) {
-            throw new UserVerifyException("Email already confirmed");
+            throw new UserVerifyException(EMAIL_ALREADY_CONFIRMED);
         }
         LocalDateTime expiredAt = emailToken.getExpiresAt();
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new UserVerifyException("Token expired");
+            throw new UserVerifyException(TOKEN_EXPIRED);
         }
         emailTokenService.setConfirmedAt(token);
 

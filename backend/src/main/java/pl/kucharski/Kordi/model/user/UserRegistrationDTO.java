@@ -10,6 +10,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import static pl.kucharski.Kordi.config.ErrorCodes.EMAIL_CANNOT_BE_EMPTY;
+import static pl.kucharski.Kordi.config.ErrorCodes.FIRSTNAME_CANNOT_BE_EMPTY;
+import static pl.kucharski.Kordi.config.ErrorCodes.LASTNAME_CANNOT_BE_EMPTY;
+import static pl.kucharski.Kordi.config.ErrorCodes.PASSWORD_TOO_SHORT;
+import static pl.kucharski.Kordi.config.ErrorCodes.PHONE_CANNOT_BE_EMPTY;
+import static pl.kucharski.Kordi.config.ErrorCodes.USERNAME_CANNOT_BE_EMPTY;
+import static pl.kucharski.Kordi.config.ErrorCodes.VERIFICATION_TYPE_CANNOT_BE_EMPTY;
+
 /**
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
  */
@@ -20,19 +28,19 @@ import javax.validation.constraints.Size;
 @ToString
 public class UserRegistrationDTO {
 
-    @NotBlank(message = "Firstname cannot be empty")
+    @NotBlank(message = FIRSTNAME_CANNOT_BE_EMPTY)
     private String firstName;
-    @NotBlank(message = "Lastname cannot be empty")
+    @NotBlank(message = LASTNAME_CANNOT_BE_EMPTY)
     private String lastName;
-    @NotBlank(message = "Username cannot be empty")
+    @NotBlank(message = USERNAME_CANNOT_BE_EMPTY)
     private String username;
-    @Size(min = 6, message = "Password must be at least 6 characters long")
+    @Size(min = 6, message = PASSWORD_TOO_SHORT)
     private String password;
-    @NotBlank(message = "Email cannot be empty")
+    @NotBlank(message = EMAIL_CANNOT_BE_EMPTY)
     private String email;
-    @NotBlank(message = "Phone number cannot be empty")
+    @NotBlank(message = PHONE_CANNOT_BE_EMPTY)
     private String phone;
-    @NotNull(message = "Verification type cannot be empty")
+    @NotNull(message = VERIFICATION_TYPE_CANNOT_BE_EMPTY)
     private VerificationType verificationType;
 
 }

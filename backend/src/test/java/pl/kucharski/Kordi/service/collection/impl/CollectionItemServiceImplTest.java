@@ -20,6 +20,7 @@ import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItemDTO;
 import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItemMapper;
 import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItemMapperImpl;
 import pl.kucharski.Kordi.repository.CollectionRepository;
+import pl.kucharski.Kordi.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,10 +29,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
+import static pl.kucharski.Kordi.CollectionData.USER;
 import static pl.kucharski.Kordi.CollectionData.createCollectionWithId;
 import static pl.kucharski.Kordi.CollectionData.createItemDTOWithId;
 import static pl.kucharski.Kordi.CollectionData.createSecondItemDTOWithId;
 import static pl.kucharski.Kordi.CollectionData.createSubmittedItemDTO;
+import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_ITEM_CURRENT_BIGGER_THAN_MAX;
+import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_ITEM_NOT_FOUND;
+import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_NOT_FOUND;
 
 @ExtendWith(MockitoExtension.class)
 @Transactional
@@ -47,12 +52,15 @@ class CollectionItemServiceImplTest {
     @Mock
     private CollectionRepository collectionRepository;
 
+    @Mock
+    private UserRepository userRepository;
+
     @InjectMocks
     private CollectionItemServiceImpl underTest;
 
     @BeforeEach
     void setUp() {
-        underTest = new CollectionItemServiceImpl(collectionRepository, itemMapper, submittedItemMapper);
+        underTest = new CollectionItemServiceImpl(collectionRepository, userRepository, itemMapper, submittedItemMapper);
 
         COLLECTION_WITH_ID = createCollectionWithId();
         COLLECTION_ITEM_DTO = createItemDTOWithId();
@@ -100,7 +108,7 @@ class CollectionItemServiceImplTest {
         CollectionItemException exception =
                 assertThrows(CollectionItemException.class,
                         () -> underTest.updateCollectionItem(1L, 1L, 5, 4));
-        assertEquals("Current amount cannot be bigger than maximum", exception.getMessage());
+        assertEquals(COLLECTION_ITEM_CURRENT_BIGGER_THAN_MAX, exception.getMessage());
     }
 
     @Test
@@ -112,7 +120,7 @@ class CollectionItemServiceImplTest {
         CollectionNotFoundException exception =
                 assertThrows(CollectionNotFoundException.class,
                         () -> underTest.updateCollectionItem(1L, 1L, 1, 10));
-        assertEquals("Collection with id 1 not found in database", exception.getMessage());
+        assertEquals(COLLECTION_NOT_FOUND, exception.getMessage());
     }
 
     @Test
@@ -121,10 +129,10 @@ class CollectionItemServiceImplTest {
         given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
 
         // when + then
-        CollectionNotFoundException exception =
-                assertThrows(CollectionNotFoundException.class,
+        CollectionItemNotFoundException exception =
+                assertThrows(CollectionItemNotFoundException.class,
                         () -> underTest.updateCollectionItem(1L, 1L, 1, 10));
-        assertEquals("Item with id 1 not found in collection with id 1", exception.getMessage());
+        assertEquals(COLLECTION_ITEM_NOT_FOUND, exception.getMessage());
     }
 
     @Test
@@ -132,6 +140,7 @@ class CollectionItemServiceImplTest {
         // given
         COLLECTION_WITH_ID.addItem(itemMapper.mapToCollectionItem(COLLECTION_ITEM_DTO));
         given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
+        given(userRepository.findById(1L)).willReturn(Optional.of(USER));
         assertEquals(3, COLLECTION_WITH_ID.getItems().get(0).getCurrentAmount());
 
         // when
@@ -148,13 +157,14 @@ class CollectionItemServiceImplTest {
         COLLECTION_ITEM_DTO.setCurrentAmount(10);
         COLLECTION_WITH_ID.addItem(itemMapper.mapToCollectionItem(COLLECTION_ITEM_DTO));
         given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
+        given(userRepository.findById(1L)).willReturn(Optional.of(USER));
         assertEquals(10, COLLECTION_WITH_ID.getItems().get(0).getCurrentAmount());
 
         // when + then
         CollectionItemException exception =
                 assertThrows(CollectionItemException.class,
                         () -> underTest.submitItem(COLLECTION_WITH_ID.getId(), COLLECTION_ITEM_DTO.getId(), ITEM_TO_SUBMIT));
-        assertEquals("Current amount cannot be bigger than maximum", exception.getMessage());
+        assertEquals(COLLECTION_ITEM_CURRENT_BIGGER_THAN_MAX, exception.getMessage());
     }
 
     @Test
@@ -166,19 +176,20 @@ class CollectionItemServiceImplTest {
         CollectionNotFoundException exception =
                 assertThrows(CollectionNotFoundException.class,
                         () -> underTest.submitItem(COLLECTION_WITH_ID.getId(), COLLECTION_ITEM_DTO.getId(), ITEM_TO_SUBMIT));
-        assertEquals("Collection with id 1 not found in database", exception.getMessage());
+        assertEquals(COLLECTION_NOT_FOUND, exception.getMessage());
     }
 
     @Test
     void shouldThrowCollectionItemNotFoundOnSubmitItem() {
         // given
         given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
+        given(userRepository.findById(1L)).willReturn(Optional.of(USER));
 
         // when + then
         CollectionItemNotFoundException exception =
                 assertThrows(CollectionItemNotFoundException.class,
                         () -> underTest.submitItem(COLLECTION_WITH_ID.getId(), COLLECTION_ITEM_DTO.getId(), ITEM_TO_SUBMIT));
-        assertEquals("Item with id 1 not found in collection with id 1", exception.getMessage());
+        assertEquals(COLLECTION_ITEM_NOT_FOUND, exception.getMessage());
     }
 
     @Test

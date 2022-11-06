@@ -39,6 +39,12 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static pl.kucharski.Kordi.config.ErrorCodes.EMAIL_ALREADY_EXISTS;
+import static pl.kucharski.Kordi.config.ErrorCodes.EMAIL_NOT_VALID;
+import static pl.kucharski.Kordi.config.ErrorCodes.PHONE_ALREADY_EXISTS;
+import static pl.kucharski.Kordi.config.ErrorCodes.USERNAME_ALREADY_EXISTS;
+import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND;
+import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_VERIFIED;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -101,7 +107,7 @@ class UserServiceImplTest {
         // when + then
         UserNotFoundException thrown = assertThrows(UserNotFoundException.class,
                 () -> underTest.loadUserByUsername("testuser"));
-        assertEquals("User not found in database", thrown.getMessage());
+        assertEquals(USER_NOT_FOUND, thrown.getMessage());
     }
 
     @Test
@@ -112,7 +118,7 @@ class UserServiceImplTest {
         // when + then
         DisabledException thrown = assertThrows(DisabledException.class,
                 () -> underTest.loadUserByUsername("test123"));
-        assertEquals("User is not verified", thrown.getMessage());
+        assertEquals(USER_NOT_VERIFIED, thrown.getMessage());
     }
 
     @Test
@@ -203,7 +209,7 @@ class UserServiceImplTest {
         UserRegisterException thrown = assertThrows(UserRegisterException.class,
                 () -> underTest.saveUser(INVALID_USER_TO_REGISTER));
 
-        assertEquals("Email is not valid", thrown.getMessage());
+        assertEquals(EMAIL_NOT_VALID, thrown.getMessage());
         verify(userRepository, never()).save(any());
     }
 
@@ -217,7 +223,7 @@ class UserServiceImplTest {
         UserRegisterException thrown = assertThrows(UserRegisterException.class,
                 () -> underTest.saveUser(USER_TO_REGISTER_1));
 
-        assertEquals("Username is already in use!", thrown.getMessage());
+        assertEquals(USERNAME_ALREADY_EXISTS, thrown.getMessage());
         verify(userRepository, never()).save(any());
     }
 
@@ -231,7 +237,7 @@ class UserServiceImplTest {
         UserRegisterException thrown = assertThrows(UserRegisterException.class,
                 () -> underTest.saveUser(USER_TO_REGISTER_2));
 
-        assertEquals("Email is already in use!", thrown.getMessage());
+        assertEquals(EMAIL_ALREADY_EXISTS, thrown.getMessage());
         verify(userRepository, never()).save(any());
     }
 
@@ -245,7 +251,7 @@ class UserServiceImplTest {
         UserRegisterException thrown = assertThrows(UserRegisterException.class,
                 () -> underTest.saveUser(USER_TO_REGISTER_3));
 
-        assertEquals("Phone number is already in use!", thrown.getMessage());
+        assertEquals(PHONE_ALREADY_EXISTS, thrown.getMessage());
         verify(userRepository, never()).save(any());
     }
 
@@ -300,7 +306,7 @@ class UserServiceImplTest {
         // when + then
         UserNotFoundException thrown = assertThrows(UserNotFoundException.class,
                 () -> underTest.getUserById(1L));
-        assertEquals("User not found in database", thrown.getMessage());
+        assertEquals(USER_NOT_FOUND, thrown.getMessage());
     }
 
     @Test
@@ -320,7 +326,7 @@ class UserServiceImplTest {
         // when + then
         UserNotFoundException thrown = assertThrows(UserNotFoundException.class,
                 () -> underTest.getUserByEmail("testuser"));
-        assertEquals("User not found in database", thrown.getMessage());
+        assertEquals(USER_NOT_FOUND, thrown.getMessage());
     }
 
     @Test
@@ -340,7 +346,7 @@ class UserServiceImplTest {
         // when + then
         UserNotFoundException thrown = assertThrows(UserNotFoundException.class,
                 () -> underTest.getUserByEmail("test@mail.com"));
-        assertEquals("User not found in database", thrown.getMessage());
+        assertEquals(USER_NOT_FOUND, thrown.getMessage());
     }
 
     @Test
@@ -360,7 +366,7 @@ class UserServiceImplTest {
         // when + then
         UserNotFoundException thrown = assertThrows(UserNotFoundException.class,
                 () -> underTest.getUserByPhone("110339332"));
-        assertEquals("User not found in database", thrown.getMessage());
+        assertEquals(USER_NOT_FOUND, thrown.getMessage());
     }
 
     @Test

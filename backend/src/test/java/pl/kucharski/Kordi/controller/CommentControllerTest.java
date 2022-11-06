@@ -22,7 +22,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static pl.kucharski.Kordi.CollectionData.COMMENT_TO_ADD;
+import static pl.kucharski.Kordi.CollectionData.COMMENT_TO_ADD_WITH_WRONG_USERID;
 import static pl.kucharski.Kordi.CollectionData.USERNAME_FROM_DB;
+import static pl.kucharski.Kordi.config.ErrorCodes.CURRENT_USER_NOT_AN_OWNER;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = KordiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -76,10 +78,20 @@ class CommentControllerTest {
 
     @Test
     @WithMockUser
-    void shouldReturn404IfCollectionNotFoundOnCollectionAdd() throws Exception {
+    void shouldReturn404IfCollectionNotFoundOnCommentAdd() throws Exception {
         mvc.perform(post("/collections/" + NOT_EXISTING_COLLECTION_ID + "/comments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(COMMENT_TO_ADD)
+                )
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser
+    void shouldReturn404IfUserNotFoundOnCommentAdd() throws Exception {
+        mvc.perform(post("/collections/" + EXISTING_COLLECTION_ID + "/comments")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(COMMENT_TO_ADD_WITH_WRONG_USERID)
                 )
                 .andExpect(status().isNotFound());
     }
@@ -108,7 +120,7 @@ class CommentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$.error", is("User with id 7 is not an owner of collection with id 2")));
+                .andExpect(jsonPath("$.error", is(CURRENT_USER_NOT_AN_OWNER)));
 
 
     }

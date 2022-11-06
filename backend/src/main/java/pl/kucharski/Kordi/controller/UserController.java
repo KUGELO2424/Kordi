@@ -25,6 +25,8 @@ import pl.kucharski.Kordi.service.verification.EmailTokenService;
 import javax.validation.Valid;
 import java.util.Collections;
 
+import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND_WITH_GIVEN_TOKEN;
+
 
 /**
  * User controller responsible for user management
@@ -69,7 +71,7 @@ public class UserController {
         try {
             result = userService.saveUser(user);
         } catch (Exception ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
         }
         return ResponseEntity.ok(Collections.singletonMap("status", result));
     }
@@ -120,8 +122,10 @@ public class UserController {
                 result = verifyUserOnEmailVerification(token);
             }
             return ResponseEntity.ok(Collections.singletonMap("status", result));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (UserNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
         }
     }
 
@@ -156,7 +160,7 @@ public class UserController {
 
     private VerificationStatus verifyUserOnEmailVerification(String token) {
         EmailToken emailToken = tokenService.getToken(token).orElseThrow(() -> {
-            throw new IllegalStateException("User not found with given token");
+            throw new UserNotFoundException(USER_NOT_FOUND_WITH_GIVEN_TOKEN);
         });
         User user = emailToken.getUser();
         UserDTO userDTO = userMapper.mapToUserDTO(user);

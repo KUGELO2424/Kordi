@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import pl.kucharski.Kordi.config.PaginationConstants;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.exception.CommentNotFoundException;
+import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.model.comment.CommentDTO;
 import pl.kucharski.Kordi.model.comment.CreateCommentDTO;
 import pl.kucharski.Kordi.service.collection.CommentService;
@@ -52,8 +53,8 @@ public class CommentController {
             return ResponseEntity.created(
                     URI.create("/collections/" + collectionId + "/comments/" + addedComment.getId())
             ).body(addedComment);
-        } catch (CollectionNotFoundException ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Collection with id " + collectionId + " not found");
+        } catch (CollectionNotFoundException | UserNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
         }
     }
 
@@ -71,11 +72,8 @@ public class CommentController {
         try {
             commentService.removeComment(collectionId, commentId);
             return ResponseEntity.ok("Comment with id " + commentId + " deleted");
-        } catch (CollectionNotFoundException ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Collection with id " + collectionId + " not found");
-        } catch (CommentNotFoundException ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment with id " + commentId +
-                    " in collection with id " + collectionId + " not found");
+        } catch (CollectionNotFoundException | CommentNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
         }
     }
 
@@ -98,7 +96,7 @@ public class CommentController {
             List<CommentDTO> comments = commentService.getAllComments(collectionId, PageRequest.of(pageNo, pageSize));
             return ResponseEntity.ok(comments);
         } catch (CollectionNotFoundException ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Collection with id " + collectionId + " not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
         }
     }
 

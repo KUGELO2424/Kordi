@@ -1,6 +1,5 @@
 package pl.kucharski.Kordi.aop;
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +8,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.server.ResponseStatusException;
 import pl.kucharski.Kordi.exception.NotOwnerOfCollectionException;
 import pl.kucharski.Kordi.model.CustomError;
 
@@ -39,4 +39,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<Object>(
                 error, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(value = {ResponseStatusException.class})
+    public ResponseEntity<?> handleException(ResponseStatusException ex){
+        CustomError error = new CustomError(ex.getStatus(), ex.getReason());
+        return new ResponseEntity<Object>(
+                error, new HttpHeaders(), ex.getStatus());
+    }
+
 }

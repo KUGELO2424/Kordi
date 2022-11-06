@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static pl.kucharski.Kordi.config.ErrorCodes.TITLE_CANNOT_BE_EMPTY;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -24,7 +26,7 @@ import java.util.List;
 public class CollectionDTO {
 
     private Long id;
-    @NotBlank(message = "Title cannot be empty")
+    @NotBlank(message = TITLE_CANNOT_BE_EMPTY)
     private String title;
     private String description;
     private LocalDateTime startTime;

@@ -14,6 +14,7 @@ import pl.kucharski.Kordi.enums.ItemCategory;
 import pl.kucharski.Kordi.exception.CollectionItemException;
 import pl.kucharski.Kordi.exception.CollectionItemNotFoundException;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
+import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.model.collection_item.CollectionItemDTO;
 import pl.kucharski.Kordi.model.collection_item.CollectionItemUpdateDTO;
 import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItemDTO;
@@ -106,7 +107,7 @@ public class ItemController {
             return ResponseEntity.ok(updatedItem);
         } catch (CollectionItemException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
-        } catch (CollectionNotFoundException | CollectionItemNotFoundException ex) {
+        } catch (CollectionNotFoundException | CollectionItemNotFoundException | UserNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
         }
     }

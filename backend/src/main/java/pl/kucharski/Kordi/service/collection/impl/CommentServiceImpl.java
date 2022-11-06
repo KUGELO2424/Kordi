@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.aop.IsCollectionOwner;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.exception.CommentNotFoundException;
+import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.model.collection.Collection;
 import pl.kucharski.Kordi.model.comment.Comment;
 import pl.kucharski.Kordi.model.comment.CommentDTO;
@@ -13,22 +14,29 @@ import pl.kucharski.Kordi.model.comment.CommentMapper;
 import pl.kucharski.Kordi.model.comment.CreateCommentDTO;
 import pl.kucharski.Kordi.repository.CollectionRepository;
 import pl.kucharski.Kordi.repository.CommentRepository;
+import pl.kucharski.Kordi.repository.UserRepository;
 import pl.kucharski.Kordi.service.collection.CommentService;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_NOT_FOUND;
+import static pl.kucharski.Kordi.config.ErrorCodes.COMMENT_NOT_FOUND;
+import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND;
 
 @Service
 @Transactional(readOnly = true)
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
     private final CollectionRepository collectionRepository;
     private final CommentMapper commentMapper;
 
-    public CommentServiceImpl(CommentRepository commentRepository, CollectionRepository collectionRepository,
+    public CommentServiceImpl(CommentRepository commentRepository, UserRepository userRepository, CollectionRepository collectionRepository,
                               CommentMapper commentMapper) {
         this.commentRepository = commentRepository;
+        this.userRepository = userRepository;
         this.collectionRepository = collectionRepository;
         this.commentMapper = commentMapper;
     }
@@ -41,7 +49,9 @@ public class CommentServiceImpl implements CommentService {
     public CommentDTO addComment(Long collectionId, CreateCommentDTO commentDTO) {
         Comment comment = commentMapper.mapToComment(commentDTO);
         Collection foundCollection = collectionRepository.findById(collectionId)
-                .orElseThrow(CollectionNotFoundException::new);
+                .orElseThrow(() -> new CollectionNotFoundException(COLLECTION_NOT_FOUND));
+        userRepository.findById(commentDTO.getUserId())
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         foundCollection.addComment(comment);
         return commentMapper.mapToCommentDTO(commentRepository.save(comment));
     }
@@ -54,11 +64,11 @@ public class CommentServiceImpl implements CommentService {
     @IsCollectionOwner
     public void removeComment(Long collectionId, Long commentId) {
         Collection foundCollection = collectionRepository.findById(collectionId)
-                .orElseThrow(CollectionNotFoundException::new);
+                .orElseThrow(() -> new CollectionNotFoundException(COLLECTION_NOT_FOUND));
         Comment commentToDelete = foundCollection.getComments().stream()
                 .filter(comment -> comment.getId().equals(commentId))
                 .findFirst()
-                .orElseThrow(CommentNotFoundException::new);
+                .orElseThrow(() -> new CommentNotFoundException(COMMENT_NOT_FOUND));
         foundCollection.getComments().remove(commentToDelete);
     }
 
@@ -68,7 +78,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<CommentDTO> getAllComments(Long collectionId, Pageable pageable) {
         if (!collectionRepository.existsById(collectionId)) {
-            throw new CollectionNotFoundException("Collection with id " + collectionId + " not found");
+            throw new CollectionNotFoundException(COLLECTION_NOT_FOUND);
         }
         return commentRepository.getAllByCollectionId(collectionId, pageable).stream()
                 .map(commentMapper::mapToCommentDTO)

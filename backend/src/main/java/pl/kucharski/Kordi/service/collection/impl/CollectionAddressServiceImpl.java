@@ -12,6 +12,9 @@ import pl.kucharski.Kordi.model.collection.Collection;
 import pl.kucharski.Kordi.repository.CollectionRepository;
 import pl.kucharski.Kordi.service.collection.CollectionAddressService;
 
+import static pl.kucharski.Kordi.config.ErrorCodes.ADDRESS_EXISTS;
+import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_NOT_FOUND;
+
 @Service
 @Transactional(readOnly = true)
 public class CollectionAddressServiceImpl implements CollectionAddressService {
@@ -33,12 +36,12 @@ public class CollectionAddressServiceImpl implements CollectionAddressService {
     public void addCollectionAddress(Long collectionId, AddressDTO addressDTO) {
         Address addressToAdd = addressMapper.mapToAddress(addressDTO);
         Collection collection = collectionRepository.findById(collectionId)
-                .orElseThrow(CollectionNotFoundException::new);
+                .orElseThrow(() -> new CollectionNotFoundException(COLLECTION_NOT_FOUND));
         collection.getAddresses().stream()
                 .filter(address -> address.equals(addressToAdd))
                 .findFirst()
                 .ifPresent(address -> {
-                    throw new AddressAlreadyExistsInCollectionException();
+                    throw new AddressAlreadyExistsInCollectionException(ADDRESS_EXISTS);
                 });
         collection.addAddress(addressToAdd);
     }
@@ -52,7 +55,7 @@ public class CollectionAddressServiceImpl implements CollectionAddressService {
     public void removeCollectionAddress(Long collectionId, AddressDTO addressDTO) {
         Address addressToRemove = addressMapper.mapToAddress(addressDTO);
         Collection collection = collectionRepository.findById(collectionId)
-                .orElseThrow(CollectionNotFoundException::new);
+                .orElseThrow(() -> new CollectionNotFoundException(COLLECTION_NOT_FOUND));
         collection.getAddresses().stream()
                 .filter(address -> address.getCity().equals(addressToRemove.getCity())
                         && address.getStreet().equals(addressToRemove.getStreet()))

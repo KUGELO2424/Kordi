@@ -26,6 +26,10 @@ import static pl.kucharski.Kordi.CollectionData.ITEM_DTO_TO_SUBMIT_WITH_WRONG_VA
 import static pl.kucharski.Kordi.CollectionData.ITEM_TO_UPDATE;
 import static pl.kucharski.Kordi.CollectionData.ITEM_TO_UPDATE_WITH_NOT_VALID_VALUES;
 import static pl.kucharski.Kordi.CollectionData.NOT_VALID_ITEM_DTO_TO_ADD;
+import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_ITEM_CURRENT_BIGGER_THAN_MAX;
+import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_ITEM_NOT_FOUND;
+import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_NOT_FOUND;
+import static pl.kucharski.Kordi.config.ErrorCodes.ITEM_CATEGORY_CANNOT_BE_EMPTY;
 import static pl.kucharski.Kordi.controller.CollectionControllerTest.EXISTING_COLLECTION_ID;
 import static pl.kucharski.Kordi.controller.CollectionControllerTest.EXISTING_ITEM_ID;
 import static pl.kucharski.Kordi.controller.CollectionControllerTest.EXISTING_ITEM_ID_2;
@@ -69,7 +73,7 @@ class ItemControllerTest {
                         .content(NOT_VALID_ITEM_DTO_TO_ADD)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error", containsString("Item category cannot be null.")));
+                .andExpect(jsonPath("$.error", containsString(ITEM_CATEGORY_CANNOT_BE_EMPTY)));
     }
 
     @Test
@@ -93,7 +97,7 @@ class ItemControllerTest {
                         .content(ITEM_TO_UPDATE)
                 )
                 .andExpect(status().isNotFound())
-                .andExpect(status().reason("Collection with id " + NOT_EXISTING_COLLECTION_ID + " not found in database"));
+                .andExpect(jsonPath("$.error", is(COLLECTION_NOT_FOUND)));
     }
 
     @Test
@@ -104,8 +108,7 @@ class ItemControllerTest {
                         .content(ITEM_TO_UPDATE)
                 )
                 .andExpect(status().isNotFound())
-                .andExpect(status().reason("Item with id " + NOT_EXISTING_ITEM_ID +
-                        " not found in collection with id " + EXISTING_COLLECTION_ID));
+                .andExpect(jsonPath("$.error", is(COLLECTION_ITEM_NOT_FOUND)));
     }
 
     @Test
@@ -116,7 +119,7 @@ class ItemControllerTest {
                         .content(ITEM_TO_UPDATE_WITH_NOT_VALID_VALUES)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(status().reason("Current amount cannot be bigger than maximum"));
+                .andExpect(jsonPath("$.error", is(COLLECTION_ITEM_CURRENT_BIGGER_THAN_MAX)));
     }
 
     @Test
@@ -141,7 +144,7 @@ class ItemControllerTest {
                         .content(ITEM_DTO_TO_SUBMIT_WITH_WRONG_VALUES)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(status().reason("Current amount cannot be bigger than maximum"));
+                .andExpect(jsonPath("$.error", is(COLLECTION_ITEM_CURRENT_BIGGER_THAN_MAX)));
     }
 
     @Test

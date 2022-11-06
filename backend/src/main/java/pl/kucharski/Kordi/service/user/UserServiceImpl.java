@@ -26,6 +26,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static pl.kucharski.Kordi.config.ErrorCodes.EMAIL_ALREADY_EXISTS;
+import static pl.kucharski.Kordi.config.ErrorCodes.EMAIL_NOT_VALID;
+import static pl.kucharski.Kordi.config.ErrorCodes.PASSWORD_OLD_DOES_NOT_MATCH;
+import static pl.kucharski.Kordi.config.ErrorCodes.PASSWORD_TOO_SHORT;
+import static pl.kucharski.Kordi.config.ErrorCodes.PHONE_ALREADY_EXISTS;
+import static pl.kucharski.Kordi.config.ErrorCodes.USERNAME_ALREADY_EXISTS;
+import static pl.kucharski.Kordi.config.ErrorCodes.USER_ALREADY_VERIFIED;
+import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND;
+import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_VERIFIED;
+
 /**
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
  */
@@ -61,9 +71,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("User not found in database"));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         if (!user.isEnabled()) {
-            throw new DisabledException("User is not verified");
+            throw new DisabledException(USER_NOT_VERIFIED);
         }
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 new ArrayList<>());
@@ -89,13 +99,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
         if (!emailValidator.test(user.getEmail())) {
-            throw new UserRegisterException("Email is not valid");
+            throw new UserRegisterException(EMAIL_NOT_VALID);
         } else if (foundUserByUsername != null) {
-            throw new UserRegisterException("Username is already in use!");
+            throw new UserRegisterException(USERNAME_ALREADY_EXISTS);
         } else if (foundUserByEmail != null) {
-            throw new UserRegisterException("Email is already in use!");
+            throw new UserRegisterException(EMAIL_ALREADY_EXISTS);
         } else if (foundUserByPhone != null) {
-            throw new UserRegisterException("Phone number is already in use!");
+            throw new UserRegisterException(PHONE_ALREADY_EXISTS);
         }
 
         User newUser = userMapper.mapToUser(user);
@@ -110,10 +120,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public VerificationStatus sendVerificationToken(UserDTO userDTO) {
         if (userDTO.isEnabled()) {
-            throw new UserAlreadyVerifiedException("User is already verified");
+            throw new UserAlreadyVerifiedException(USER_ALREADY_VERIFIED);
         }
         User user = userRepository.findUserByUsername(userDTO.getUsername())
-                .orElseThrow(() -> new UserNotFoundException("User not found in database"));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         if (userDTO.getVerificationType() == VerificationType.PHONE) {
             return registerUserWithPhoneVerification(user);
         } else {
@@ -148,10 +158,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findUserByUsername(username)
                 .orElseThrow(UserNotFoundException::new);
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
-            throw new InvalidPasswordException("Old password does not match to current password");
+            throw new InvalidPasswordException(PASSWORD_OLD_DOES_NOT_MATCH);
         }
         if (newPassword.length() < 6) {
-            throw new InvalidPasswordException("Password must be at least 6 characters long");
+            throw new InvalidPasswordException(PASSWORD_TOO_SHORT);
         }
         user.setPassword(passwordEncoder.encode(newPassword));
     }
@@ -162,7 +172,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDTO getUserById(long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found in database"));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         return userMapper.mapToUserDTO(user);
     }
 
@@ -172,7 +182,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDTO getUserByUsername(String username) {
         User user = userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("User not found in database"));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         return userMapper.mapToUserDTO(user);
     }
 
@@ -182,7 +192,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDTO getUserByEmail(String email) {
         User user = userRepository.findUserByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User not found in database"));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         return userMapper.mapToUserDTO(user);
     }
 
@@ -192,7 +202,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDTO getUserByPhone(String phone) {
         User user = userRepository.findUserByPhone(phone)
-                .orElseThrow(() -> new UserNotFoundException("User not found in database"));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         return userMapper.mapToUserDTO(user);
     }
 

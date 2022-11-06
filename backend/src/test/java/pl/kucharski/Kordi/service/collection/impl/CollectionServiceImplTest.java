@@ -43,6 +43,7 @@ import static pl.kucharski.Kordi.CollectionData.YESTERDAY;
 import static pl.kucharski.Kordi.CollectionData.createCollectionDTOWithId;
 import static pl.kucharski.Kordi.CollectionData.createCollectionDTOWithoutId;
 import static pl.kucharski.Kordi.CollectionData.createCollectionWithId;
+import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_NOT_FOUND;
 
 @ExtendWith(MockitoExtension.class)
 @Transactional
@@ -103,7 +104,7 @@ class CollectionServiceImplTest {
         // when + then
         CollectionNotFoundException thrown =
                 assertThrows(CollectionNotFoundException.class, () -> underTest.getCollectionById(10L));
-        assertEquals("Collection not found in database", thrown.getMessage());
+        assertEquals(COLLECTION_NOT_FOUND, thrown.getMessage());
     }
 
     @Test
@@ -262,7 +263,7 @@ class CollectionServiceImplTest {
         // when + then
         CollectionNotFoundException exception =
                 assertThrows(CollectionNotFoundException.class, () -> underTest.updateCollection(1L, "new title", "new desc", TOMORROW));
-        assertEquals("Collection with id 1 not found in database", exception.getMessage());
+        assertEquals(COLLECTION_NOT_FOUND, exception.getMessage());
     }
 
 }

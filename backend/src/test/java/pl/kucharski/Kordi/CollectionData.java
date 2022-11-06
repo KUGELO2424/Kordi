@@ -232,6 +232,11 @@ public class CollectionData {
             "\"userId\":\"1\"," +
             "\"collectionId\":\"2\"}";
 
+    public static final String COMMENT_TO_ADD_WITH_WRONG_USERID = "{" +
+            "\"content\":\"" + COMMENT_CONTENT + "\", " +
+            "\"userId\":\"55\"," +
+            "\"collectionId\":\"2\"}";
+
     public static final String ITEM_DTO_TO_ADD = "{" +
             "\"name\":\"Koszulki\", " +
             "\"currentAmount\":\"5\"," +

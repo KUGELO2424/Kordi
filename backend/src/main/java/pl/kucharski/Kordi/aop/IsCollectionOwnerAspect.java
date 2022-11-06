@@ -16,6 +16,10 @@ import pl.kucharski.Kordi.repository.UserRepository;
 
 import java.util.Objects;
 
+import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_NOT_FOUND;
+import static pl.kucharski.Kordi.config.ErrorCodes.CURRENT_USER_NOT_AN_OWNER;
+import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND;
+
 /**
  * An aspect that check if logged user is collection owner.
  */
@@ -31,12 +35,11 @@ public class IsCollectionOwnerAspect {
     public Object isCollectionOwnerAdvice(ProceedingJoinPoint joinPoint, long collectionId) throws Throwable {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Collection collection = collectionRepository.findById(collectionId)
-                .orElseThrow(() ->  new CollectionNotFoundException("Collection with id " + collectionId + " not found"));
+                .orElseThrow(() ->  new CollectionNotFoundException(COLLECTION_NOT_FOUND));
         User user = userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("User with username " + username + " not found"));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         if (!Objects.equals(collection.getUserId(), user.getId())) {
-            throw new NotOwnerOfCollectionException("User with id " + user.getId() +
-                    " is not an owner of collection with id " + collectionId);
+            throw new NotOwnerOfCollectionException(CURRENT_USER_NOT_AN_OWNER);
         }
         return joinPoint.proceed();
     }

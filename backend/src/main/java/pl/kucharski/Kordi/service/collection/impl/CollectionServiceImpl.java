@@ -19,6 +19,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_NOT_FOUND;
+import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND;
+
 @Service
 @Transactional(readOnly = true)
 public class CollectionServiceImpl implements CollectionService {
@@ -39,7 +42,7 @@ public class CollectionServiceImpl implements CollectionService {
     @Override
     public CollectionDTO getCollectionById(long id) {
         Collection collection = collectionRepository.findById(id)
-                .orElseThrow(() -> new CollectionNotFoundException("Collection not found in database"));
+                .orElseThrow(() -> new CollectionNotFoundException(COLLECTION_NOT_FOUND));
 
         return collectionMapper.mapToCollectionDTO(collection);
     }
@@ -84,7 +87,7 @@ public class CollectionServiceImpl implements CollectionService {
     public CollectionDTO saveCollection(CollectionDTO collectionDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("User with username " + username + " not found"));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         collectionDTO.setUserId(user.getId());
         Collection collection = collectionMapper.mapToCollection(collectionDTO);
         Collection savedCollection = collectionRepository.save(collection);
@@ -99,8 +102,7 @@ public class CollectionServiceImpl implements CollectionService {
     @IsCollectionOwner
     public CollectionDTO updateCollection(long collectionId, String title, String description, LocalDateTime endTime) {
         Collection collection = collectionRepository.findById(collectionId)
-                .orElseThrow(() -> new CollectionNotFoundException("Collection with id " + collectionId
-                        + " not found in database"));
+                .orElseThrow(() -> new CollectionNotFoundException(COLLECTION_NOT_FOUND));
         if (title != null && !title.isEmpty()) {
             collection.setTitle(title);
         }

@@ -47,6 +47,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static pl.kucharski.Kordi.config.ErrorCodes.EMAIL_ALREADY_EXISTS;
+import static pl.kucharski.Kordi.config.ErrorCodes.TOKEN_EXPIRED;
+import static pl.kucharski.Kordi.config.ErrorCodes.USER_ALREADY_VERIFIED;
+import static pl.kucharski.Kordi.config.ErrorCodes.USER_BAD_CREDENTIALS;
+import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND;
+import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND_WITH_GIVEN_TOKEN;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = KordiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -152,7 +158,7 @@ class UserControllerTest {
                         .param("username", LOGIN_USERNAME)
                         .param("password", "worngPassword"))
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.error", is("Bad credentials")));
+                .andExpect(jsonPath("$.error", is(USER_BAD_CREDENTIALS)));
     }
 
     @Test
@@ -210,7 +216,7 @@ class UserControllerTest {
         mvc.perform(post("/sendToken?verificationType=EMAIL&username=" + LOGIN_USERNAME)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("User is already verified"));
+                .andExpect(content().string(USER_ALREADY_VERIFIED));
     }
 
     @Test
@@ -231,13 +237,12 @@ class UserControllerTest {
     }
 
     @Test
-    public void shouldThrow400IfEmailAlreadyTaken() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> request = new HttpEntity<>(USER_THAT_EXISTS, headers);
-        ResponseEntity<?> response = testRestTemplate.postForEntity("/register", request, String.class);
-        assertEquals(400, response.getStatusCodeValue());
-        assertEquals("Email is already in use!", Objects.requireNonNull(response.getBody()).toString());
+    public void shouldThrow400IfEmailAlreadyTaken() throws Exception {
+        mvc.perform(post("/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(USER_THAT_EXISTS))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", is(EMAIL_ALREADY_EXISTS)));
     }
 
     @Test
@@ -245,7 +250,7 @@ class UserControllerTest {
         mvc.perform(get("/verify")
                         .queryParam("token", TOKEN_TO_VERIFY))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Token expired"));
+                .andExpect(jsonPath("$.error", is(TOKEN_EXPIRED)));
     }
 
     @Test
@@ -282,12 +287,12 @@ class UserControllerTest {
     }
 
     @Test
-    public void shouldThrow400IfNoUserWithGivenPhoneNumber() throws Exception {
+    public void shouldThrow404IfNoUserWithGivenPhoneNumber() throws Exception {
         mvc.perform(get("/verify")
                         .queryParam("token", "someToken")
                         .queryParam("phone", "notExistingPhone"))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("User not found in database"));
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error", is(USER_NOT_FOUND)));
     }
 
     @Test
@@ -295,8 +300,8 @@ class UserControllerTest {
 
         mvc.perform(get("/verify")
                         .queryParam("token", "NotExistingToken"))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("User not found with given token"));
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error", is(USER_NOT_FOUND_WITH_GIVEN_TOKEN)));
     }
 
     @Test

@@ -10,6 +10,8 @@ import pl.kucharski.Kordi.model.user.UserDTO;
 import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.exception.UserVerifyException;
 
+import static pl.kucharski.Kordi.config.ErrorCodes.VERIFICATION_ERROR;
+
 /**
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
  */
@@ -63,7 +65,7 @@ public class PhoneVerificationService implements VerificationService{
         if (verificationCheck.getValid()) {
             return VerificationStatus.VERIFIED;
         } else {
-            throw new UserVerifyException("Cannot verify your account");
+            throw new UserVerifyException(VERIFICATION_ERROR);
         }
     }
 }

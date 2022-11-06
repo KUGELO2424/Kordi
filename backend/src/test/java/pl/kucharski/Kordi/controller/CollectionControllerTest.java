@@ -37,6 +37,10 @@ import static pl.kucharski.Kordi.CollectionData.NEW_TITLE;
 import static pl.kucharski.Kordi.CollectionData.NOT_EXISTING_COLLECTION_TO_UPDATE;
 import static pl.kucharski.Kordi.CollectionData.USERNAME_FROM_DB;
 import static pl.kucharski.Kordi.CollectionData.USERNAME_OF_COLLECTION_4;
+import static pl.kucharski.Kordi.config.ErrorCodes.CURRENT_USER_NOT_AN_OWNER;
+import static pl.kucharski.Kordi.config.ErrorCodes.ITEM_CATEGORY_CANNOT_BE_EMPTY;
+import static pl.kucharski.Kordi.config.ErrorCodes.ITEM_TYPE_CANNOT_BE_EMPTY;
+import static pl.kucharski.Kordi.config.ErrorCodes.TITLE_CANNOT_BE_EMPTY;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = KordiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -181,7 +185,7 @@ class CollectionControllerTest {
                         .content(COLLECTION_TO_CREATE_WITH_EMPTY_TITLE)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error", is("Title cannot be empty.")));
+                .andExpect(jsonPath("$.error", containsString(TITLE_CANNOT_BE_EMPTY)));
     }
 
     @Test
@@ -192,7 +196,7 @@ class CollectionControllerTest {
                         .content(COLLECTION_TO_CREATE_WITHOUT_ITEM_TYPE)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error", is("Item type cannot be null.")));
+                .andExpect(jsonPath("$.error", containsString(ITEM_TYPE_CANNOT_BE_EMPTY)));
     }
 
     @Test
@@ -214,7 +218,7 @@ class CollectionControllerTest {
                         .content(COLLECTION_TO_CREATE_WITHOUT_ITEM_CATEGORY)
                 )
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error", containsString("Item category cannot be null.")));
+                .andExpect(jsonPath("$.error", containsString(ITEM_CATEGORY_CANNOT_BE_EMPTY)));
     }
 
     @Test
@@ -238,7 +242,7 @@ class CollectionControllerTest {
                         .content(COLLECTION_TO_UPDATE)
                 )
                 .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$.error", is("User with id 7 is not an owner of collection with id 4")));
+                .andExpect(jsonPath("$.error", is(CURRENT_USER_NOT_AN_OWNER)));
     }
 
     @Test

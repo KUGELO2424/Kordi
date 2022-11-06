@@ -23,6 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static pl.kucharski.Kordi.config.ErrorCodes.EMAIL_ALREADY_CONFIRMED;
+import static pl.kucharski.Kordi.config.ErrorCodes.TOKEN_EXPIRED;
+import static pl.kucharski.Kordi.config.ErrorCodes.TOKEN_NOT_FOUND;
 
 @ExtendWith(MockitoExtension.class)
 class EmailVerificationServiceTest {
@@ -83,7 +86,7 @@ class EmailVerificationServiceTest {
         // when + then
         IllegalStateException thrown = assertThrows(IllegalStateException.class,
                 () -> underTest.verify(NOT_VERIFIED_USER_DTO, token));
-        assertEquals("token not found", thrown.getMessage());
+        assertEquals(TOKEN_NOT_FOUND, thrown.getMessage());
     }
 
     @Test
@@ -97,7 +100,7 @@ class EmailVerificationServiceTest {
         // when + then
         UserVerifyException thrown = assertThrows(UserVerifyException.class,
                 () -> underTest.verify(NOT_VERIFIED_USER_DTO, token));
-        assertEquals("Email already confirmed", thrown.getMessage());
+        assertEquals(EMAIL_ALREADY_CONFIRMED, thrown.getMessage());
     }
 
     @Test
@@ -111,6 +114,6 @@ class EmailVerificationServiceTest {
         // when + then
         UserVerifyException thrown = assertThrows(UserVerifyException.class,
                 () -> underTest.verify(NOT_VERIFIED_USER_DTO, token));
-        assertEquals("Token expired", thrown.getMessage());
+        assertEquals(TOKEN_EXPIRED, thrown.getMessage());
     }
 }

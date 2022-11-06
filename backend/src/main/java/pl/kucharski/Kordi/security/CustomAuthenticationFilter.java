@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
+import static pl.kucharski.Kordi.config.ErrorCodes.USER_BAD_CREDENTIALS;
 
 /**
  * Filter responsible for authentication
@@ -54,7 +55,11 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             authentication = authenticationManager.authenticate(authenticationToken);
         } catch(Exception e) {
             Map<String, String> error = new HashMap<>();
-            error.put("error", e.getMessage());
+            if (e.getMessage().equals("Bad credentials")) {
+                error.put("error", USER_BAD_CREDENTIALS);
+            } else {
+                error.put("error", e.getMessage());
+            }
             response.setContentType(APPLICATION_JSON_VALUE);
             response.setStatus(401);
             try {
