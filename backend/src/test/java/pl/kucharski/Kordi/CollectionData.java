@@ -239,6 +239,34 @@ public class CollectionData {
             "\"category\":\"CLOTHES\"," +
             "\"type\":\"AMOUNT\"}";
 
+    public static final String NOT_VALID_ITEM_DTO_TO_ADD = "{" +
+            "\"name\":\"Koszulki\", " +
+            "\"currentAmount\":\"5\"," +
+            "\"maxAmount\":\"10\"," +
+            "\"type\":\"AMOUNT\"}";
+
+    public static final String ITEM_TO_UPDATE = "{" +
+            "\"currentAmount\":\"5\"," +
+            "\"maxAmount\":\"20\"}";
+
+    public static final String ITEM_TO_UPDATE_WITH_NOT_VALID_VALUES = "{" +
+            "\"currentAmount\":\"20\"," +
+            "\"maxAmount\":\"10\"}";
+
+    public static final String ITEM_DTO_TO_SUBMIT = "{" +
+            "\"amount\":\"2\", " +
+            "\"username\":\"test123\"," +
+            "\"userId\":\"1\"," +
+            "\"collectionId\":\"1\"," +
+            "\"collectionItemId\":\"1\"}";
+
+    public static final String ITEM_DTO_TO_SUBMIT_WITH_WRONG_VALUES = "{" +
+            "\"amount\":\"22\", " +
+            "\"username\":\"test123\"," +
+            "\"userId\":\"1\"," +
+            "\"collectionId\":\"1\"," +
+            "\"collectionItemId\":\"1\"}";
+
     public static final String ADDRESS_TO_ADD = "{" +
             "\"city\":\"NewCity\", " +
             "\"street\":\"NewStreet\"}";

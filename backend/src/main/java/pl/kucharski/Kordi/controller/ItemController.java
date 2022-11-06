@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import pl.kucharski.Kordi.enums.ItemCategory;
 import pl.kucharski.Kordi.exception.CollectionItemException;
 import pl.kucharski.Kordi.exception.CollectionItemNotFoundException;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
@@ -19,6 +20,7 @@ import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItemDTO;
 import pl.kucharski.Kordi.service.collection.CollectionItemService;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -95,7 +97,7 @@ public class ItemController {
      * status 404 if item not found<br>
      * status 400 if new values are incorrect
      */
-    @PostMapping("/{collectionId}/items/{itemId}")
+    @PostMapping("/{collectionId}/items/{itemId}/submit")
     ResponseEntity<?> submitItem(@PathVariable("collectionId") Long collectionId,
                                  @PathVariable("itemId") Long itemId,
                                  @RequestBody SubmittedItemDTO item) {
@@ -144,6 +146,16 @@ public class ItemController {
         } catch (CollectionNotFoundException | CollectionItemNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
         }
+    }
+
+    /**
+     * Get all available item categories
+     *
+     * @return list of available item categories
+     */
+    @GetMapping("/categories")
+    ResponseEntity<?> getAllCategories() {
+        return ResponseEntity.ok(Arrays.stream(ItemCategory.values()).toList());
     }
 
 }

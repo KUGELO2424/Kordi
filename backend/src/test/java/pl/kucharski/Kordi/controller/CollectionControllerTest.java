@@ -47,6 +47,9 @@ class CollectionControllerTest {
     public final static Long EXISTING_COLLECTION_ID = 1L;
     public final static Long EXISTING_COLLECTION_ID_2 = 2L;
     public final static Long NOT_EXISTING_COLLECTION_ID = 555L;
+    public final static Long EXISTING_ITEM_ID = 1L;
+    public final static Long EXISTING_ITEM_ID_2 = 2L;
+    public final static Long NOT_EXISTING_ITEM_ID = 555L;
     private final static String EXISTING_USERNAME = "ewa";
     private final static String NOT_EXISTING_USERNAME = "not_existing_username";
     private final static String TITLE_OF_COLLECTION_OF_EXISTING_USER = "Zbiórka dla Bartka";
