@@ -15,6 +15,7 @@ import { SignupComponent } from './components/signup/signup.component';
 import { VerificationComponent } from './components/verification/verification.component';
 import { CollectionListComponent } from './components/collection-list/collection-list.component';
 import { LanguageSelectorComponent } from './components/language-selector/language-selector.component';
+import { CollectionComponent } from './components/collection/collection.component';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
@@ -26,6 +27,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+
 
 const routes: Routes = [
   {path: 'home', component: HomePageComponent},
@@ -33,6 +36,7 @@ const routes: Routes = [
   {path: 'signup', component: SignupComponent},
   {path: 'verify', component: VerificationComponent},
   {path: 'collections', component: CollectionListComponent},
+  {path: 'collections/1', component: CollectionComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', redirectTo: '/home', pathMatch: 'full'},
 ];
@@ -45,7 +49,8 @@ const routes: Routes = [
     SignupComponent,
     VerificationComponent,
     CollectionListComponent,
-    LanguageSelectorComponent
+    LanguageSelectorComponent,
+    CollectionComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -64,7 +69,8 @@ const routes: Routes = [
     MatSelectModule,
     NgxTranslateModule,
     MatCheckboxModule,
-    MatDividerModule
+    MatDividerModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

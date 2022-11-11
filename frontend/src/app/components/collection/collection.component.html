@@ -1,0 +1,105 @@
+<div class="content min-vw-25">
+  <section class="mt-5">
+    <div class="container-fluid align-middle">
+      <h1 class="display-5 text-center mb-5">Nazwa zbiórki</h1>
+      <div class="row justify-content-center">
+        <!-- PHOTO + DESC -->
+        <div class="col-11 col-sm-11 col-md-9 col-lg-8 col-xl-8">
+          <mat-card>
+            <img mat-card-image src="assets/img/temp_collection.jpg" />
+            <mat-card-content>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+                non imperdiet tortor, in cursus magna. Maecenas eleifend orci
+                turpis, laoreet placerat sem facilisis ac. Maecenas non metus
+                nec lacus commodo consectetur. Donec non ipsum ullamcorper,
+                vehicula nibh at, lobortis risus. Vivamus facilisis lorem at mi
+                pulvinar aliquet vitae ut nunc. Integer convallis, nulla nec
+                lacinia consequat, erat mauris convallis sem, a viverra dui elit
+                in nulla. Aenean et risus vitae leo accumsan accumsan. Duis ac
+                gravida tortor. Sed facilisis gravida velit, sit amet fringilla
+                nunc placerat gravida. Nam et dui at magna bibendum
+                pellentesque. Nullam at leo a nibh vehicula convallis. Ut quis
+                ipsum urna. Vivamus et suscipit erat, at pulvinar diam.
+              </p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- INFO -->
+        <div
+          class="col-11 col-sm-11 col-md-9 col-lg-4 col-xl-4 justify-content-center"
+        >
+          <mat-card class="example-card">
+            <mat-card-title>Jan Kowalski</mat-card-title>
+            <mat-card-subtitle>Utworzono 11.10.2022</mat-card-subtitle>
+            <mat-card-content>
+              <p>Postęp zbiórki:</p>
+              <mat-progress-bar
+                mode="determinate"
+                value="88"
+              ></mat-progress-bar>
+            </mat-card-content>
+            <mat-card-content class="mt-4">
+              <button
+                class="btn my-btn-primary btn-xm"
+                style="padding-left: 2rem; padding-right: 2rem"
+              >
+                Udostępnij
+              </button>
+            </mat-card-content>
+            <mat-card-content class="mt-4">
+              <i class="fa-solid fa-users icon-color me-2"></i>
+              <b>12 osób</b> podarowało przedmioty
+            </mat-card-content>
+            <mat-divider></mat-divider>
+            <mat-card-content class="mt-4">
+              <mat-list>
+                <div mat-subheader>Ostatnie darowizny</div>
+                <mat-list-item *ngFor="let id of [1, 2, 3]">
+                  <mat-icon mat-list-icon
+                    ><i class="fa-regular fa-circle-user"></i
+                  ></mat-icon>
+                  <div mat-line>Adam</div>
+                  <div mat-line>4 przedmioty</div>
+                </mat-list-item>
+              </mat-list>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
+      <!-- LOCATIONS -->
+      <div class="row justify-content-center mt-3">
+        <mat-accordion>
+          <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title
+                ><i class="fa-solid fa-location-dot me-3 icon-color"></i>
+                Lokalizacje
+              </mat-panel-title>
+              <mat-panel-description> </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p>This is the primary content of the panel.</p>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+
+      <!-- ITEMS -->
+      <div class="row justify-content-center mt-3">
+        <mat-accordion>
+          <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title
+                ><i class="fa-solid fa-list me-3 icon-color"></i> Lista
+                przedmiotów
+              </mat-panel-title>
+              <mat-panel-description> </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p>This is the primary content of the panel.</p>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </div>
+  </section>
+</div>
