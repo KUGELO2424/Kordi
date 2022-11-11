@@ -18,16 +18,20 @@ export class CollectionListComponent implements OnInit {
     { value: 'food', label: 'Jedzenie'}, 
     { value: 'cloths', label: 'Ubrania'},
     { value: 'animals', label: 'Zwierzęta'},
-    { value: 'home', label: 'Dom'},
-    { value: 'accesories', label: 'Akcesoria'},
+    { value: 'children', label: 'Dzieci'},
+    { value: 'electronic', label: 'Elektronika'},
+    { value: 'medicine', label: 'Lekarstwa'},
+    { value: 'other', label: 'Inne'},
   ];
 
   categoriesForm = this.formBuilder.group({
     food: false,
     cloths: false,
     animals: false,
-    home: false,
-    accesories: false
+    children: false,
+    electronic: false,
+    medicine: false,
+    other: false,
   });
 
   constructor(private formBuilder: FormBuilder) { }

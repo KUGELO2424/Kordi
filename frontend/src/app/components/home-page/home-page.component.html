@@ -1,3 +1,74 @@
 <div class="content">
-  <p>home-page works!</p>
+  <section class="mt-5">
+    <div class="container-fluid align-middle">
+      <!-- WELCOME ROW -->
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-8 col-sm-8 col-md-5 col-lg-5 col-xl-5">
+          <img
+            src="assets/img/homepage.svg"
+            class="img-fluid mb-4"
+            alt="Sample image"
+          />
+        </div>
+        <div class="col-md-8 col-lg-7 col-xl-7 text-center">
+          <h1 class="display-3">
+            {{ "home.welcome" | translate }} <span class="title"> KORDI</span>!
+          </h1>
+          <div class="ps-4 pe-4">
+            <p class="lead">
+              {{ "home.welcome_text_1" | translate }}
+              <button
+                class="btn my-btn-primary btn-sm ms-2"
+                style="padding-left: 1rem; padding-right: 1rem"
+                routerLink="/collections"
+              >
+                {{ "home.create_collection" | translate }}
+              </button>
+            </p>
+            <p class="lead">
+              {{ "home.welcome_text_2" | translate }}
+              <button
+                class="btn my-btn-primary btn-sm ms-2"
+                style="padding-left: 1rem; padding-right: 1rem"
+                routerLink="/collections"
+              >
+                {{ "home.search_collection" | translate }}
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CATEGORY ROW -->
+      <div
+        class="row d-flex justify-content-center align-items-center h-100 mt-5 mb-5"
+      >
+        <div class="col-md-8 col-lg-7 col-xl-7 text-center">
+          <h1 class="display-5">{{ "home.search_by_category" | translate }}</h1>
+          <div class="ps-4 pe-4 mt-3 mb-3">
+            <div class="row justify-content-center align-items-center">
+              <div
+                class="col col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 mt-2"
+                *ngFor="let category of categories"
+              >
+                <button
+                  class="btn btn-outline-primary btn-sm w-100"
+                  routerLink="/collections"
+                >
+                  {{ "category." + category.value | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-8 col-sm-8 col-md-5 col-lg-5 col-xl-5">
+          <img
+            src="assets/img/search_category.svg"
+            class="img-fluid mb-4"
+            alt="Sample image"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
 </div>

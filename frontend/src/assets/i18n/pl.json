@@ -15,7 +15,7 @@
         "popular_categories": "POPULARNE KATEGORIE",
         "clothes": "Ubrania",
         "food": "Jedzenie",
-        "chemicals": "Chemia",
+        "animals": "Zwierzęta",
         "contact": "Kontakt"
     },
     "login": {
@@ -61,7 +61,25 @@
         "city": "Miasto",
         "street": "Ulica",
         "item": "Nazwa przedmiotu",
-        "filtr_options": "Opcje filtrowania"
+        "filtr_options": "Opcje filtrowania",
+        "choose_category": "Wybierz kategorię:"
+    },
+    "home": {
+        "welcome": "Witaj w",
+        "welcome_text_1": "Potrzebujesz pomocy rzeczowej? Stwórz własną zbiórkę, opisz swoją historię i otrzymaj pomoc od ludzi ze społeczności Kordi!",
+        "welcome_text_2": "Posiadasz zbędne rzeczy? Chcesz wesprzeć innych w potrzebie? Na naszej stronie znajdziesz wiele zbiórek stworzonych przez osoby prywante bądź organizację!",
+        "create_collection": "Załóż zbiórkę",
+        "search_collection": "Przeglądaj zbiórki",
+        "search_by_category": "Szukaj zbiórek po kategorii przedmiotu!"
+    },
+    "category": {
+        "food": "Jedzenie",
+        "clothes": "Ubrania",
+        "animals": "Zwierzęta",
+        "children": "Dzieci",
+        "electronic": "Elektronika",
+        "medicine": "Lekarstwa",
+        "other": "Inne"
     }
     
 }

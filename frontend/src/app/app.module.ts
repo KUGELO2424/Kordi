@@ -38,6 +38,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
+    HomePageComponent,
     AppComponent,
     LoginComponent,
     SignupComponent,

@@ -15,7 +15,7 @@
         "popular_categories": "POPULAR CATEGORIES",
         "clothes": "Clothes",
         "food": "Food",
-        "chemicals": "Chemicals",
+        "animals": "Animals",
         "contact": "Contact"
     },
     "login": {
@@ -61,7 +61,25 @@
         "city": "City",
         "street": "Street",
         "item": "Item name",
-        "filtr_options": "Filter options"
+        "filtr_options": "Filter options",
+        "choose_category": "Choose category:"
+    },
+    "home": {
+        "welcome": "Welcome in",
+        "welcome_text_1": "Need in-kind assistance? Create your own collection, tell your story and get help from people in the Kordi community!",
+        "welcome_text_2": "Do you own unnecessary items? Do you want to support others in need? On our site you will find many collections created by individuals or organizations!",
+        "create_collection": "Create a collection",
+        "search_collection": "Browse collections",
+        "search_by_category": "Search for collections by item category!"
+    },
+    "category": {
+        "food": "Food",
+        "clothes": "Clothes",
+        "animals": "Animals",
+        "children": "Children",
+        "electronic": "Electronic",
+        "medicine": "Medicines",
+        "other": "Other"
     }
     
 }

@@ -1,0 +1,14 @@
+.title {
+    color: #FF9E00;
+}
+
+.btn-outline-primary {
+    padding: 10px 25px;
+    border: 1px solid #6335CC;
+    color:  #6335CC;
+}
+
+.btn-outline-primary:hover {
+    background-color: #6335CC;
+    color: white
+  }

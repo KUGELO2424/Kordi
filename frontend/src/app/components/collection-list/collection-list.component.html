@@ -5,7 +5,7 @@
       <div class="row justify-content-md-start ms-5">
         <!-- SEARCH INPUT -->
         <div class="row justify-content-md-start d-flex align-items-center">
-          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 mt-4">
+          <div class="col-10 col-sm-8 col-md-8 col-lg-8 col-xl-8 mt-4">
             <mat-form-field class="w-100" appearance="outline">
               <mat-label>{{
                 "collections.search_input" | translate
@@ -14,7 +14,7 @@
               <mat-icon matPrefix>search</mat-icon>
             </mat-form-field>
           </div>
-          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+          <div class="col-5 col-sm-2 col-md-2 col-lg-2 col-xl-2">
             <div class="d-flex justify-content-md-center">
               <button
                 type="submit"
@@ -97,7 +97,7 @@
               <!-- END ITEM NAME FILTR -->
               <!-- CATEGORIES CHECKBOXES -->
               <section [formGroup]="categoriesForm">
-                <h5>Wybierz kategorię:</h5>
+                <h5>{{ "collections.choose_category" | translate }}</h5>
                 <div class="row row-cols-auto">
                   <div
                     class="col d-flex justify-content-start"
@@ -107,7 +107,9 @@
                       <mat-checkbox
                         formControlName="{{ category.value }}"
                         color="primary"
-                        >{{ category.label }}</mat-checkbox
+                        >{{
+                          "category." + category.value | translate
+                        }}</mat-checkbox
                       >
                     </p>
                   </div>
