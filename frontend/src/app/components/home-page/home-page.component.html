@@ -2,7 +2,9 @@
   <section class="mt-5">
     <div class="container-fluid align-middle">
       <!-- WELCOME ROW -->
-      <div class="row d-flex justify-content-center align-items-center h-100">
+      <div
+        class="row d-flex justify-content-center align-items-center welcome-row"
+      >
         <div class="col-8 col-sm-8 col-md-5 col-lg-5 col-xl-5">
           <img
             src="assets/img/homepage.svg"
@@ -38,13 +40,18 @@
           </div>
         </div>
       </div>
+      <mat-divider class="row-divider"></mat-divider>
 
       <!-- CATEGORY ROW -->
       <div
         class="row d-flex justify-content-center align-items-center h-100 mt-5 mb-5"
       >
         <div class="col-md-8 col-lg-7 col-xl-7 text-center">
-          <h1 class="display-5">{{ "home.search_by_category" | translate }}</h1>
+          <h1 class="display-5">
+            {{ "home.search_by_category_1" | translate }}
+            <span class="title"> zbiórek </span>
+            {{ "home.search_by_category_2" | translate }}
+          </h1>
           <div class="ps-4 pe-4 mt-3 mb-3">
             <div class="row justify-content-center align-items-center">
               <div
@@ -67,6 +74,57 @@
             class="img-fluid mb-4"
             alt="Sample image"
           />
+        </div>
+      </div>
+      <mat-divider class="row-divider-2"></mat-divider>
+
+      <!-- COLLECTION OWNER ROW -->
+      <div class="d-flex justify-content-center">
+        <h1 class="display-5 text-center w-75">
+          {{ "home.welcome_text_3" | translate }}
+          <span class="title"> Kordi</span>?
+        </h1>
+      </div>
+
+      <!-- PRIVATE PERSON -->
+      <div
+        class="row d-flex justify-content-center align-items-center h-100 mt-5 mb-5"
+      >
+        <div class="col-8 col-sm-8 col-md-5 col-lg-5 col-xl-5">
+          <img
+            src="assets/img/person.svg"
+            class="img-fluid mb-4"
+            alt="Sample image"
+          />
+        </div>
+        <div class="col-md-8 col-lg-7 col-xl-7 text-center ps-3">
+          <h1 class="display-5">{{ "home.person" | translate }}</h1>
+          <div class="ps-4 pe-4 mt-3 mb-3">
+            <p class="text">
+              {{ "home.person_text" | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORGANIZATION -->
+      <div
+        class="row d-flex justify-content-center align-items-center h-100 mt-5 mb-5"
+      >
+        <div class="col-8 col-sm-8 col-md-5 col-lg-5 col-xl-5">
+          <img
+            src="assets/img/organization.svg"
+            class="img-fluid mb-4"
+            alt="Sample image"
+          />
+        </div>
+        <div class="col-md-8 col-lg-7 col-xl-7 text-center ps-3">
+          <h1 class="display-5">{{ "home.organization" | translate }}</h1>
+          <div class="ps-4 pe-4 mt-3 mb-3">
+            <p class="text">
+              {{ "home.organization_text" | translate }}
+            </p>
+          </div>
         </div>
       </div>
     </div>

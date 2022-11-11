@@ -12,3 +12,22 @@
     background-color: #6335CC;
     color: white
   }
+
+.welcome-row {
+    margin-top: 80px;
+    margin-bottom: 100px;
+}
+
+.row-divider {
+    margin-top: 40px;
+    margin-bottom: 120px;
+}
+
+.row-divider-2 {
+    margin-top: 40px;
+    margin-bottom: 80px;
+}
+
+.text {
+    text-align: justify;
+}

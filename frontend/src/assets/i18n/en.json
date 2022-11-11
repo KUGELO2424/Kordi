@@ -70,7 +70,13 @@
         "welcome_text_2": "Do you own unnecessary items? Do you want to support others in need? On our site you will find many collections created by individuals or organizations!",
         "create_collection": "Create a collection",
         "search_collection": "Browse collections",
-        "search_by_category": "Search for collections by item category!"
+        "search_by_category_1": "Search for",
+        "search_by_category_2": "by item category!",
+        "welcome_text_3": "Who can set up a collection on",
+        "person": "Individual",
+        "organization": "Organization",
+        "person_text": "Any private person of age with an email address or phone number can create their own collection on our portal. Thanks to Kordi, it will be easier for you to reach more people who can support your collection. Start collecting now!",
+        "organization_text": "Are you active in an organization and need a medium to reach more people? Just create an account on Kordi and start collecting today!"
     },
     "category": {
         "food": "Food",

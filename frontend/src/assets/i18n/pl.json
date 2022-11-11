@@ -70,7 +70,13 @@
         "welcome_text_2": "Posiadasz zbędne rzeczy? Chcesz wesprzeć innych w potrzebie? Na naszej stronie znajdziesz wiele zbiórek stworzonych przez osoby prywante bądź organizację!",
         "create_collection": "Załóż zbiórkę",
         "search_collection": "Przeglądaj zbiórki",
-        "search_by_category": "Szukaj zbiórek po kategorii przedmiotu!"
+        "search_by_category_1": "Szukaj",
+        "search_by_category_2": "po kategorii przedmiotu!",
+        "welcome_text_3": "Kto może założyć zbiórkę na",
+        "person": "Osoba prywatna",
+        "organization": "Organizacja",
+        "person_text": "Każda pełnoletnia osoba prywatna posidająca adres email lub telefon może stworzyć swoją własną zbiórkę na naszym portalu. Dzięki Kordi, łatwiej będzie Ci dotrzeć do większej liczby osób, mogących wesprzeć twoją zbiórkę. Zacznij zbierać już teraz!",
+        "organization_text": "Działasz w organizacji i potrzebujesz medium by dotrzeć do większej liczby osób? Wystarczy że założysz konto na Kordi i zaczniesz zbierać już dziś!"
     },
     "category": {
         "food": "Jedzenie",
