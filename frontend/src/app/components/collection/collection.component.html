@@ -61,7 +61,7 @@
                     ><i class="fa-regular fa-circle-user"></i
                   ></mat-icon>
                   <div mat-line>Adam</div>
-                  <div mat-line>4 przedmioty</div>
+                  <div mat-line>5kg, 3szt</div>
                 </mat-list-item>
               </mat-list>
             </mat-card-content>
@@ -80,7 +80,9 @@
               </mat-panel-title>
               <mat-panel-description> </mat-panel-description>
             </mat-expansion-panel-header>
-            <p>This is the primary content of the panel.</p>
+            <div *ngFor="let id of [1, 2, 3]">
+              <p>Łódź, piotrkowska 53</p>
+            </div>
           </mat-expansion-panel>
         </mat-accordion>
       </div>
@@ -96,7 +98,8 @@
               </mat-panel-title>
               <mat-panel-description> </mat-panel-description>
             </mat-expansion-panel-header>
-            <p>This is the primary content of the panel.</p>
+            <!-- ITEM LIST -->
+            <app-item-list></app-item-list>
           </mat-expansion-panel>
         </mat-accordion>
       </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { FormBuilder, UntypedFormControl, UntypedFormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -14,14 +14,14 @@ export class SignupComponent implements OnInit {
   error: string | undefined;
   authError: string | undefined;
 
-  form: FormGroup = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-    firstname: new FormControl('', [Validators.required, Validators.minLength(2)]),
-    lastname: new FormControl('', [Validators.required, Validators.minLength(2)]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    phone: new FormControl('', [Validators.required, Validators.pattern("[0-9]{9}")]),
-    verificationType: new FormControl('EMAIL')
+  form: UntypedFormGroup = new UntypedFormGroup({
+    username: new UntypedFormControl('', [Validators.required, Validators.minLength(3)]),
+    password: new UntypedFormControl('', [Validators.required, Validators.minLength(6)]),
+    firstname: new UntypedFormControl('', [Validators.required, Validators.minLength(2)]),
+    lastname: new UntypedFormControl('', [Validators.required, Validators.minLength(2)]),
+    email: new UntypedFormControl('', [Validators.required, Validators.email]),
+    phone: new UntypedFormControl('', [Validators.required, Validators.pattern("[0-9]{9}")]),
+    verificationType: new UntypedFormControl('EMAIL')
   });
 
   constructor(private router: Router, private translate: TranslateService) { }
@@ -34,7 +34,7 @@ export class SignupComponent implements OnInit {
     return validation;
   }
 
-  submit(formData: FormGroup, formDirective: FormGroupDirective): void {
+  submit(formData: UntypedFormGroup, formDirective: FormGroupDirective): void {
     const username = formData.value.username;
     const password = formData.value.password;
     const firstname = formData.value.firstname;

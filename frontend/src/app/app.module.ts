@@ -16,6 +16,7 @@ import { VerificationComponent } from './components/verification/verification.co
 import { CollectionListComponent } from './components/collection-list/collection-list.component';
 import { LanguageSelectorComponent } from './components/language-selector/language-selector.component';
 import { CollectionComponent } from './components/collection/collection.component';
+import { ItemListComponent } from './components/item-list/item-list.component';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
@@ -28,6 +29,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
+
+import { TableModule } from 'primeng/table';
+
+
 
 
 const routes: Routes = [
@@ -50,7 +55,8 @@ const routes: Routes = [
     VerificationComponent,
     CollectionListComponent,
     LanguageSelectorComponent,
-    CollectionComponent
+    CollectionComponent,
+    ItemListComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -70,7 +76,8 @@ const routes: Routes = [
     NgxTranslateModule,
     MatCheckboxModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
+    TableModule
   ],
   providers: [],
   bootstrap: [AppComponent]
