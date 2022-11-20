@@ -16,7 +16,7 @@ export class CollectionListComponent implements OnInit {
 
   categories = [
     { value: 'food', label: 'Jedzenie'}, 
-    { value: 'cloths', label: 'Ubrania'},
+    { value: 'clothes', label: 'Ubrania'},
     { value: 'animals', label: 'Zwierzęta'},
     { value: 'children', label: 'Dzieci'},
     { value: 'electronic', label: 'Elektronika'},

@@ -18,6 +18,8 @@ import { LanguageSelectorComponent } from './components/language-selector/langua
 import { CollectionComponent } from './components/collection/collection.component';
 import { ItemListComponent } from './components/item-list/item-list.component';
 
+import { ConfirmationService } from 'primeng/api';
+
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -31,6 +33,12 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 
 import { TableModule } from 'primeng/table';
+import { SliderModule } from 'primeng/slider';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { PaginatorModule } from 'primeng/paginator';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ButtonModule } from 'primeng/button';
 
 
 
@@ -77,9 +85,15 @@ const routes: Routes = [
     MatCheckboxModule,
     MatDividerModule,
     MatListModule,
-    TableModule
+    TableModule,
+    SliderModule,
+    InputNumberModule,
+    ProgressBarModule,
+    PaginatorModule,
+    ConfirmPopupModule,
+    ButtonModule
   ],
-  providers: [],
+  providers: [ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

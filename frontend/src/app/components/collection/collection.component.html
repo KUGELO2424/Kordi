@@ -4,7 +4,7 @@
       <h1 class="display-5 text-center mb-5">Nazwa zbiórki</h1>
       <div class="row justify-content-center">
         <!-- PHOTO + DESC -->
-        <div class="col-11 col-sm-11 col-md-9 col-lg-8 col-xl-8">
+        <div class="col-11 col-sm-11 col-md-9 col-lg-8 col-xl-8 mb-1">
           <mat-card>
             <img mat-card-image src="assets/img/temp_collection.jpg" />
             <mat-card-content>
@@ -35,14 +35,11 @@
             <mat-card-subtitle>Utworzono 11.10.2022</mat-card-subtitle>
             <mat-card-content>
               <p>Postęp zbiórki:</p>
-              <mat-progress-bar
-                mode="determinate"
-                value="88"
-              ></mat-progress-bar>
+              <p-progressBar [value]="88"></p-progressBar>
             </mat-card-content>
             <mat-card-content class="mt-4">
               <button
-                class="btn my-btn-primary btn-xm"
+                class="btn my-btn-primary btn-lg"
                 style="padding-left: 2rem; padding-right: 2rem"
               >
                 Udostępnij
@@ -81,7 +78,26 @@
               <mat-panel-description> </mat-panel-description>
             </mat-expansion-panel-header>
             <div *ngFor="let id of [1, 2, 3]">
-              <p>Łódź, piotrkowska 53</p>
+              <div class="d-flex flex-row bd-highlight mb-1">
+                <div
+                  class="p-2 bd-highlight location d-flex align-items-center"
+                >
+                  <p>Łódź, piotrkowska 53</p>
+                </div>
+                <div class="p-2 bd-highlight">
+                  <a
+                    href="https://www.google.pl/maps/place/Piotrkowska 53,Lodz"
+                    target="_blank"
+                    ><button
+                      pButton
+                      pRipple
+                      type="button"
+                      icon="pi pi-map"
+                      class="p-button-rounded p-button-help p-button-text"
+                    ></button
+                  ></a>
+                </div>
+              </div>
             </div>
           </mat-expansion-panel>
         </mat-accordion>
@@ -100,9 +116,18 @@
             </mat-expansion-panel-header>
             <!-- ITEM LIST -->
             <app-item-list></app-item-list>
+            <!-- END ITEM LIST -->
           </mat-expansion-panel>
         </mat-accordion>
       </div>
+      <p-confirmPopup></p-confirmPopup>
+      <button
+        (click)="confirm($event)"
+        class="btn my-btn-primary btn-lm mt-3"
+        style="padding-left: 2rem; padding-right: 2rem"
+      >
+        Podaruj przedmioty
+      </button>
     </div>
   </section>
 </div>

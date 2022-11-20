@@ -135,7 +135,7 @@
             <div class="card h-100" style="width: 20rem">
               <a class="card-link" routerLink="/collections/1">
                 <div class="card-icon">
-                  <i class="fa-regular fa-image fa-10x card-img-top"></i>
+                  <img src="assets/img/temp_collection.jpg" class="img-fluid" />
                 </div>
                 <div class="card-body">
                   <h5 class="card-title">Nazwa zbiórki</h5>
@@ -174,15 +174,12 @@
       </div>
       <!-- END ROW CONTENT PANEL -->
       <!-- PAGINATOR -->
-      <div class="d-flex justify-content-end">
-        <mat-paginator
-          [length]="100"
-          [pageSize]="10"
-          [pageSizeOptions]="[5, 10, 25, 100]"
-          aria-label="Select page"
-          class="mt-5 paginator"
-        >
-        </mat-paginator>
+      <div class="mt-5">
+        <p-paginator
+          [rows]="10"
+          [totalRecords]="120"
+          [rowsPerPageOptions]="[5, 10, 15, 20, 25, 30]"
+        ></p-paginator>
       </div>
       <!-- END PAGINATOR -->
     </div>
