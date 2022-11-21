@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS collection (
     description VARCHAR(1000),
     start_time DATETIME,
     end_time DATETIME,
+    image LONGBLOB,
     user_id BIGINT NOT NULL,
 	FOREIGN KEY (user_id) REFERENCES account(id)
 );
