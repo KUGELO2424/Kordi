@@ -1,0 +1,11 @@
+<div
+  *ngIf="this.loader.getLoading()"
+  class="cssload-container d-flex justify-content-center align-items-center"
+>
+  <p-progressSpinner
+    [style]="{ width: '100px', height: '100px' }"
+    styleClass="custom-spinner"
+    strokeWidth="7"
+    animationDuration="1s"
+  ></p-progressSpinner>
+</div>

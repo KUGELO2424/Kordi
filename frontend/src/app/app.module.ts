@@ -1,6 +1,6 @@
+// ANGULAR STUFF
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxTranslateModule } from './translate/translate.module';
 
+// COMPONENTS
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { LoginComponent } from './components/login/login.component';
@@ -19,9 +20,15 @@ import { CollectionInfoComponent } from './components/collection/collection-info
 import { ItemListComponent } from './components/collection/item-list/item-list.component';
 import { LocationListComponent } from './components/collection/location-list/location-list.component';
 import { CommentListComponent } from './components/collection/comment-list/comment-list.component';
+import { LogoutComponent } from './components/logout/logout.component';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 
+// SERVICES
 import { ConfirmationService } from 'primeng/api';
+import { TokenInterceptorService } from './services/token-interceptor.service';
+import { LoadingInterceptorService } from './services/loading-interceptor.service';
 
+// MAT MODULES
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -34,6 +41,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 
+// PRIMENG MODULES
 import { TableModule } from 'primeng/table';
 import { SliderModule } from 'primeng/slider';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -44,8 +52,8 @@ import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { MessagesModule } from 'primeng/messages';
-import { LogoutComponent } from './components/logout/logout.component';
-import { TokenInterceptorService } from './services/token-interceptor.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+
 
 const routes: Routes = [
   {path: 'home', component: HomePageComponent},
@@ -72,7 +80,8 @@ const routes: Routes = [
     ItemListComponent,
     CommentListComponent,
     LocationListComponent,
-    LogoutComponent
+    LogoutComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -102,9 +111,14 @@ const routes: Routes = [
     ButtonModule,
     AvatarModule,
     InputTextareaModule,
-    MessagesModule
+    MessagesModule,
+    ProgressSpinnerModule
   ],
-  providers: [ConfirmationService, {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true}],
+  providers: [
+    ConfirmationService, 
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true}, 
+    {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptorService, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
