@@ -1,0 +1,91 @@
+{
+    "navbar": {
+        "search": "Przeglądaj",
+        "add": "Dodaj zbiórkę",
+        "profile": "Profil",
+        "login": "Zaloguj",
+        "signup": "Zarejestruj"
+    },
+    "footer": {
+        "find_us": "Znajdziesz nas też tutaj:",
+        "collections": "ZBIÓRKI",
+        "create": "Załóż zbiórkę",
+        "serach": "Przeglądaj zbiórki",
+        "signup": "Zarejestruj się",
+        "popular_categories": "POPULARNE KATEGORIE",
+        "clothes": "Ubrania",
+        "food": "Jedzenie",
+        "animals": "Zwierzęta",
+        "contact": "Kontakt"
+    },
+    "login": {
+        "login": "Zaloguj się",
+        "username": "Nazwa użytkownika",
+        "password": "Hasło",
+        "no_account": "Nie masz konta?",
+        "signup": "Zarejestruj się",
+        "firstname": "Imię",
+        "lastname": "Nazwisko",
+        "email": "Email",
+        "phone": "Telefon",
+        "verification_type": "Wybierz typ weryfikacji konta",
+        "account_exists": "Masz juz konto?",
+        "create": "Załóż konto",
+        "invalid": "Błędna nazwa użytkownika lub hasło",
+        "username_inv": "Nazwa użytkownika musi mieć przynajmniej 3 znaki",
+        "firstname_inv": "Imię musi mieć przynajmniej 2 znaki",
+        "lastname_inv": "Nazwisko musi mieć przynajmniej 2 znaki",
+        "email_inv": "Proszę wprowadź poprawny adres email",
+        "phone_inv": "Proszę wprowadź poprawny numer telefonu",
+        "password_inv": "Hasło musi zawierać przynajmniej 6 znaków",
+        "error_occured": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie za chwilę.",
+        "signup_success": "Konto użytkownika zostało założone pomyślnie. Zaloguj się by je zweryfikować"
+    },
+    "verify": {
+        "welcome": "Witaj w Kordi!",
+        "to_be_able": "By móc w pełni korzystać z naszego serwisu, musisz jeszcze zweryfikować swoje konto.",
+        "send_again": "Wyślij ponownie",
+        "send_again_info": "Kliknij by wysłać email ponownie.",
+        "info": "Na twój adres email <b>{{email}}</b> została wysłana wiadomość z linkiem aktywacyjnym. Kliknij w otrzymany link by zweyfikować konto.",
+        "info_phone": "Na twój numer telefonu <b>{{phone}}</b> został wysłany kod aktywacyjny. Wpisz go poniżej by zweryfikować konto.",
+        "verify": "Zweryfikuj",
+        "activation_code": "Kod aktywacyjny"
+    },
+    "collections": {
+        "search_input": "Szukaj",
+        "search_button": "Wyszukaj",
+        "filter": "Filtruj",
+        "localization": "Lokalizacje",
+        "click": "Kliknij tutaj",
+        "progress": "Postęp zbiórki",
+        "city": "Miasto",
+        "street": "Ulica",
+        "item": "Nazwa przedmiotu",
+        "filtr_options": "Opcje filtrowania",
+        "choose_category": "Wybierz kategorię:"
+    },
+    "home": {
+        "welcome": "Witaj w",
+        "welcome_text_1": "Potrzebujesz pomocy rzeczowej? Stwórz własną zbiórkę, opisz swoją historię i otrzymaj pomoc od ludzi ze społeczności Kordi!",
+        "welcome_text_2": "Posiadasz zbędne rzeczy? Chcesz wesprzeć innych w potrzebie? Na naszej stronie znajdziesz wiele zbiórek stworzonych przez osoby prywante bądź organizację!",
+        "create_collection": "Załóż zbiórkę",
+        "search_collection": "Przeglądaj zbiórki",
+        "search_by_category_1": "Szukaj",
+        "search_by_category_2": "po kategorii przedmiotu!",
+        "welcome_text_3": "Kto może założyć zbiórkę na",
+        "person": "Osoba prywatna",
+        "organization": "Organizacja",
+        "person_text": "Każda pełnoletnia osoba prywatna posidająca adres email lub telefon może stworzyć swoją własną zbiórkę na naszym portalu. Dzięki Kordi, łatwiej będzie Ci dotrzeć do większej liczby osób, mogących wesprzeć twoją zbiórkę. Zacznij zbierać już teraz!",
+        "organization_text": "Działasz w organizacji i potrzebujesz medium by dotrzeć do większej liczby osób? Wystarczy że założysz konto na Kordi i zaczniesz zbierać już dziś!"
+    },
+    "category": {
+        "food": "Jedzenie",
+        "clothes": "Ubrania",
+        "animals": "Zwierzęta",
+        "children": "Dla dzieci",
+        "electronic": "Elektronika",
+        "medicine": "Lekarstwa",
+        "other": "Inne"
+    }
+    
+}

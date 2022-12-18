@@ -1,0 +1,47 @@
+section {
+    width: 100%;
+}
+
+.card-icon {
+    text-align: center;
+}
+.mat-expansion-panel-header span.mat-expansion-indicator {
+    color: red;
+}
+
+.content {
+    max-width: 1200px;
+}
+
+.col {
+    min-width: 350px;
+}
+
+a {
+    color: #000;
+}
+
+.card {
+    pointer-events: auto;
+    opacity: 0.8;
+}
+
+.card-link {
+    pointer-events: auto;
+}
+
+.card:hover{
+    opacity: 1;
+    -webkit-box-shadow: 0px 0px 10px -4px rgba(99, 53, 204, 1);
+    -moz-box-shadow: 0px 0px 10px -4px rgba(99, 53, 204, 1);
+    box-shadow: 0px 0px 10px -4px rgba(99, 53, 204, 1);
+}
+
+.col-filter {
+    min-width: 250px;
+}
+
+mat-form-field button {
+    border: none;
+    background-color: white;
+}

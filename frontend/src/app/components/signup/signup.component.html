@@ -1,0 +1,149 @@
+<div class="content">
+  <section class="mt-5">
+    <div class="container-fluid align-middle">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-8 col-lg-6 col-xl-6">
+          <img
+            src="assets/img/signup.svg"
+            class="img-fluid mb-5"
+            alt="Sample image"
+          />
+        </div>
+
+        <div class="col-md-8 col-lg-6 col-xl-6">
+          <mat-card>
+            <mat-card-title>{{ "login.signup" | translate }}</mat-card-title>
+            <mat-card-content>
+              <form
+                role="form"
+                [formGroup]="form"
+                class="form"
+                #formDirective="ngForm"
+                (ngSubmit)="submit(form, formDirective)"
+              >
+                <!-- Username -->
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>{{ "login.username" | translate }}</mat-label>
+                  <input type="text" matInput formControlName="username" />
+                  <mat-error *ngIf="checkValidation('username')">
+                    {{ "login.username_inv" | translate }}
+                  </mat-error>
+                </mat-form-field>
+
+                <!-- Firstname -->
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>{{ "login.firstname" | translate }}</mat-label>
+                  <input type="text" matInput formControlName="firstname" />
+                  <mat-error *ngIf="checkValidation('firstname')">
+                    {{ "login.firstname_inv" | translate }}
+                  </mat-error>
+                </mat-form-field>
+
+                <!-- Lastname -->
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>{{ "login.lastname" | translate }}</mat-label>
+                  <input type="text" matInput formControlName="lastname" />
+                  <mat-error *ngIf="checkValidation('lastname')">
+                    {{ "login.lastname_inv" | translate }}
+                  </mat-error>
+                </mat-form-field>
+
+                <!-- Email -->
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>{{ "login.email" | translate }}</mat-label>
+                  <input
+                    type="email"
+                    matInput
+                    formControlName="email"
+                    placeholder="jan@poczta.pl"
+                  />
+                  <mat-error *ngIf="checkValidation('email')">
+                    {{ "login.email_inv" | translate }}
+                  </mat-error>
+                </mat-form-field>
+
+                <!-- Phone -->
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>{{ "login.phone" | translate }}</mat-label>
+                  <input
+                    type="tel"
+                    matInput
+                    placeholder="555333123"
+                    formControlName="phone"
+                  />
+                  <mat-error *ngIf="checkValidation('phone')">
+                    {{ "login.phone_inv" | translate }}
+                  </mat-error>
+                </mat-form-field>
+
+                <!-- Password -->
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>{{ "login.password" | translate }}</mat-label>
+                  <input
+                    matInput
+                    [type]="hide ? 'password' : 'text'"
+                    formControlName="password"
+                    required
+                  />
+                  <mat-icon matSuffix (click)="hide = !hide">{{
+                    hide ? "visibility_off" : "visibility"
+                  }}</mat-icon>
+                  <mat-error *ngIf="checkValidation('password')">
+                    {{ "login.password_inv" | translate }}
+                  </mat-error>
+                </mat-form-field>
+
+                <h5>{{ "login.verification_type" | translate }}</h5>
+                <mat-button-toggle-group formControlName="verificationType">
+                  <mat-button-toggle value="PHONE">{{
+                    "login.phone" | translate
+                  }}</mat-button-toggle>
+                  <mat-button-toggle value="EMAIL">{{
+                    "login.email" | translate
+                  }}</mat-button-toggle>
+                </mat-button-toggle-group>
+
+                <div class="text-center text-lg-start mt-4 pt-2">
+                  <button
+                    [disabled]="form.invalid"
+                    type="submit"
+                    class="btn my-btn-primary btn-lg"
+                    style="padding-left: 2.5rem; padding-right: 2.5rem"
+                  >
+                    {{ "login.create" | translate }}
+                  </button>
+                  <p class="small fw-bold mt-2 pt-1 mb-3">
+                    {{ "login.account_exists" | translate }}
+                    <a routerLink="/login" class="link-color">{{
+                      "login.login" | translate
+                    }}</a>
+                  </p>
+                </div>
+              </form>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-8 col-lg-6 col-xl-6"></div>
+        <div class="col-md-8 col-lg-6 col-xl-6">
+          <div
+            class="alert alert-danger alert-dismissible mt-3"
+            data-auto-dismiss
+            role="alert"
+            *ngIf="authError"
+          >
+            {{ authError }}
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+              (click)="clearError()"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

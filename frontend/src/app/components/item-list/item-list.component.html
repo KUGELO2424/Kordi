@@ -1,0 +1,51 @@
+<div
+  class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 row justify-content-md-center"
+>
+  <div
+    class="col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"
+    *ngFor="let val of values"
+  >
+    <div class="card h-100" style="width: 20rem">
+      <div class="card-body">
+        <h5 class="card-title">Nazwa przedmiotu</h5>
+        <mat-card-subtitle class="mb-1">Ubrania</mat-card-subtitle>
+        <mat-card-subtitle>Typ: sztuki</mat-card-subtitle>
+        <mat-divider class="mb-2"></mat-divider>
+        <p class="card-text">Obecnie: 0</p>
+        <p class="card-text">Maksymalnie: 10</p>
+      </div>
+
+      <div class="card-footer">
+        <p>Podaruj:</p>
+        <p-slider
+          [(ngModel)]="val.value"
+          [min]="0"
+          [max]="10"
+          styleClass="ms-1 me-1"
+        ></p-slider>
+        <div class="">
+          <p-inputNumber
+            [(ngModel)]="val.value"
+            mode="decimal"
+            [min]="0"
+            [max]="10"
+            class="p-inputtext-sm mt-3"
+            styleClass="number-input justify-content-center"
+            suffix=" szt"
+          >
+          </p-inputNumber>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END CARD -->
+</div>
+<!-- PAGINATOR -->
+<div class="mt-5 mb-5 paginator">
+  <p-paginator
+    [rows]="10"
+    [totalRecords]="120"
+    [rowsPerPageOptions]="[10, 20, 30]"
+  ></p-paginator>
+</div>
+<!-- END PAGINATOR -->

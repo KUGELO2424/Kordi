@@ -1,1 +1,132 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Barlow&display=swap');
+
+*{
+  font-family:Barlow;
+  margin:0;
+  padding:0;
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  box-sizing:border-box;
+}
+
+body{
+  height: 100%;
+  font-size:16px;
+  line-height:1.625;
+  color:#666;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale
+}
+
+.bg-master {
+  background-color: #E9E8E7!important;
+}
+
+.bg-sec {
+  background-color: #454553!important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 8px 0;
+}
+
+p {
+  margin: 0;
+}
+
+a{
+  color: #FF9E00;
+  text-decoration: none !important;
+  cursor: pointer;
+}
+
+a:hover {
+  color: #FF9E00;
+  text-decoration: none;
+}
+
+.my-btn-primary {
+  background-color: #6335CC !important;
+  color: white !important;
+}
+
+.my-btn-secondary {
+  background-color: #FF9E00 !important;
+  color: white !important;
+  width: 300px;
+  height: 60px;
+}
+
+.my-btn-primary:hover {
+  background-color: #4A2799 !important;
+  color: white !important;
+}
+
+.form {
+  min-width: 150px;
+  max-width: 400px;
+  width: 80%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.icon-color {
+  color: orange;
+}
+
+/* ========================= */
+/*          XXXXXXX          */
+/* ========================= */
+
+app-root {
+  background-color: #E9E8E7;
+}
+
+.content {
+  display: flex;
+  margin: 24px auto 32px;
+  padding: 0 16px;
+  max-width: 960px;
+  flex-direction: column;
+  align-items: center;
+  min-height: 39vh;
+}
+
+.link-color, 
+.link-color:hover {
+  color: #ff9100;
+  text-decoration: none;
+}
+
+
+/* ========================= */
+/*        ADDITIONAL         */ 
+/* ========================= */
+
+/* textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="search"]:focus,
+input[type="color"]:focus,
+input[type="checkbox"]:focus,
+.uneditable-input:focus {   
+  border-color: #FF9E00;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #FF9E00;
+  outline: 0 none;
+} */
+

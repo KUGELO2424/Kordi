@@ -1,0 +1,16 @@
+.number-input input {
+    width: 50% !important;
+    flex: none
+}
+
+.p-paginator {
+    background: white;
+}
+
+.p-dropdown {
+    background: white;
+}
+
+.paginator {
+    margin-bottom: 150px !important;
+}

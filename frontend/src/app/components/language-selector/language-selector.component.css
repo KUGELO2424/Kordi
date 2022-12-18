@@ -1,0 +1,15 @@
+
+.flag {
+    width: 16px;
+    box-sizing: border-box;
+}
+
+.dropdown > button{
+  background-color: #454553;
+  border: none;
+  padding: 0;
+}
+
+.dropdown > button > span{
+  color: white;
+}

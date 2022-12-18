@@ -1,0 +1,91 @@
+{
+    "navbar": {
+        "search": "Browse",
+        "add": "Add a collection",
+        "profile": "Profile",
+        "login": "Log in",
+        "signup": "Sign up"
+    },
+    "footer": {
+        "find_us": "Find us here:",
+        "collections": "COLLECTIONS",
+        "create": "Create collection",
+        "serach": "Browse collections",
+        "signup": "Sign up",
+        "popular_categories": "POPULAR CATEGORIES",
+        "clothes": "Clothes",
+        "food": "Food",
+        "animals": "Animals",
+        "contact": "Contact"
+    },
+    "login": {
+        "login": "Log in",
+        "username": "Username",
+        "password": "Password",
+        "no_account": "No account?",
+        "signup": "Sign up",
+        "firstname": "Firstname",
+        "lastname": "Lastname",
+        "email": "Email",
+        "phone": "Phone",
+        "verification_type": "Select the type of account verification",
+        "account_exists": "Already have an account?",
+        "create": "Sign up",
+        "invalid": "Incorrect username or password",
+        "username_inv": "Username must be at least 3 characters long",
+        "firstname_inv": "First name must be at least 2 characters long",
+        "lastname_inv": "Last name must be at least 2 characters long",
+        "email_inv": "Please enter a valid email address",
+        "phone_inv": "Please enter a valid phone number",
+        "password_inv": "Password must be at least 6 characters long",
+        "error_occured": "An unexpected error has occurred. Please try again in a moment.",
+        "signup_success": "User account has been created successfully. Log in to verify it"
+    },
+    "verify": {
+        "welcome": "Welcome in Kordi!",
+        "to_be_able": "To be able to take full advantage of our website, you still need to verify your account.",
+        "send_again": "Send again",
+        "send_again_info": "Click to resend the email.",
+        "info": "An e-mail with an activation link has been sent to your <b>{{email}}</b> e-mail address. Click on the link provided to validate your account.",
+        "info_phone": "An activation code has been sent to your <b>{{phone}}</b> phone number. Enter it below to verify your account.",
+        "verify": "Verify",
+        "activation_code": "Activation code"
+    },
+    "collections": {
+        "search_input": "Search",
+        "search_button": "Search",
+        "filter": "Filtration",
+        "localization": "Locations",
+        "click": "Click here",
+        "progress": "Collection progress",
+        "city": "City",
+        "street": "Street",
+        "item": "Item name",
+        "filtr_options": "Filter options",
+        "choose_category": "Choose category:"
+    },
+    "home": {
+        "welcome": "Welcome in",
+        "welcome_text_1": "Need in-kind assistance? Create your own collection, tell your story and get help from people in the Kordi community!",
+        "welcome_text_2": "Do you own unnecessary items? Do you want to support others in need? On our site you will find many collections created by individuals or organizations!",
+        "create_collection": "Create a collection",
+        "search_collection": "Browse collections",
+        "search_by_category_1": "Search for",
+        "search_by_category_2": "by item category!",
+        "welcome_text_3": "Who can set up a collection on",
+        "person": "Individual",
+        "organization": "Organization",
+        "person_text": "Any private person of age with an email address or phone number can create their own collection on our portal. Thanks to Kordi, it will be easier for you to reach more people who can support your collection. Start collecting now!",
+        "organization_text": "Are you active in an organization and need a medium to reach more people? Just create an account on Kordi and start collecting today!"
+    },
+    "category": {
+        "food": "Food",
+        "clothes": "Clothes",
+        "animals": "Animals",
+        "children": "For children",
+        "electronic": "Electronic",
+        "medicine": "Medicines",
+        "other": "Other"
+    }
+    
+}

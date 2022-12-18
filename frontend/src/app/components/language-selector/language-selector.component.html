@@ -1,0 +1,19 @@
+<div class="dropdown">
+  <button
+    class="btn btn-secondary dropdown-toggle"
+    type="button"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+  >
+    <img [src]="language.img" class="flag" />
+    <span class="ms-2 mat-select-value">{{ language.label }}</span>
+  </button>
+  <ul class="dropdown-menu">
+    <li *ngFor="let opt of languages" [value]="opt.value">
+      <a (click)="selectLanguage(opt.value)">
+        <img [src]="opt.img" class="flag ms-2" />
+        <span class="ms-2">{{ opt.label }}</span>
+      </a>
+    </li>
+  </ul>
+</div>
