@@ -64,6 +64,9 @@
         "filtr_options": "Filter options",
         "choose_category": "Choose category:"
     },
+    "collection": {
+        "search_location": "Search location"
+    },
     "home": {
         "welcome": "Welcome in",
         "welcome_text_1": "Need in-kind assistance? Create your own collection, tell your story and get help from people in the Kordi community!",

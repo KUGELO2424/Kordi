@@ -64,6 +64,9 @@
         "filtr_options": "Opcje filtrowania",
         "choose_category": "Wybierz kategorię:"
     },
+    "collection": {
+        "search_location": "Szukaj lokalizacji"
+    },
     "home": {
         "welcome": "Witaj w",
         "welcome_text_1": "Potrzebujesz pomocy rzeczowej? Stwórz własną zbiórkę, opisz swoją historię i otrzymaj pomoc od ludzi ze społeczności Kordi!",

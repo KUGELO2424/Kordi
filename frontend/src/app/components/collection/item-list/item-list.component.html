@@ -41,7 +41,7 @@
   <!-- END CARD -->
 </div>
 <!-- PAGINATOR -->
-<div class="mt-5 mb-5 paginator">
+<div class="mt-5 mb-1 paginator">
   <p-paginator
     [rows]="10"
     [totalRecords]="120"
@@ -49,3 +49,12 @@
   ></p-paginator>
 </div>
 <!-- END PAGINATOR -->
+<p-confirmPopup></p-confirmPopup>
+<div class="text-center mb-3 mt-3">
+  <button
+    (click)="confirm($event)"
+    class="btn my-btn-primary btn-lm donate-button"
+  >
+    Podaruj przedmioty
+  </button>
+</div>

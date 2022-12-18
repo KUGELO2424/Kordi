@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 
 @Component({
-  selector: 'app-collection',
-  templateUrl: './collection.component.html',
-  styleUrls: ['./collection.component.css']
+  selector: 'app-item-list',
+  templateUrl: './item-list.component.html',
+  styleUrls: ['./item-list.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
-export class CollectionComponent implements OnInit {
+export class ItemListComponent implements OnInit {
+
+  values: any[] = [{value: 0}, {value:0}, {value:0}, {value:0}, {value:0}, {value:0}, {value:0}];
 
   constructor(private confirmationService: ConfirmationService) { }
 
@@ -25,6 +28,6 @@ export class CollectionComponent implements OnInit {
           console.log("CANCLE")
         }
     });
-}
+  }
 
 }

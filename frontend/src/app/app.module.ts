@@ -15,8 +15,10 @@ import { SignupComponent } from './components/signup/signup.component';
 import { VerificationComponent } from './components/verification/verification.component';
 import { CollectionListComponent } from './components/collection-list/collection-list.component';
 import { LanguageSelectorComponent } from './components/language-selector/language-selector.component';
-import { CollectionComponent } from './components/collection/collection.component';
-import { ItemListComponent } from './components/item-list/item-list.component';
+import { CollectionInfoComponent } from './components/collection/collection-info/collection-info.component';
+import { ItemListComponent } from './components/collection/item-list/item-list.component';
+import { LocationListComponent } from './components/collection/location-list/location-list.component';
+import { CommentListComponent } from './components/collection/comment-list/comment-list.component';
 
 import { ConfirmationService } from 'primeng/api';
 
@@ -32,6 +34,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 
+
 import { TableModule } from 'primeng/table';
 import { SliderModule } from 'primeng/slider';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -39,8 +42,8 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { PaginatorModule } from 'primeng/paginator';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ButtonModule } from 'primeng/button';
-
-
+import { AvatarModule } from 'primeng/avatar';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 
 const routes: Routes = [
@@ -49,7 +52,7 @@ const routes: Routes = [
   {path: 'signup', component: SignupComponent},
   {path: 'verify', component: VerificationComponent},
   {path: 'collections', component: CollectionListComponent},
-  {path: 'collections/1', component: CollectionComponent},
+  {path: 'collections/1', component: CollectionInfoComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', redirectTo: '/home', pathMatch: 'full'},
 ];
@@ -63,8 +66,10 @@ const routes: Routes = [
     VerificationComponent,
     CollectionListComponent,
     LanguageSelectorComponent,
-    CollectionComponent,
-    ItemListComponent
+    CollectionInfoComponent,
+    ItemListComponent,
+    CommentListComponent,
+    LocationListComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -91,7 +96,9 @@ const routes: Routes = [
     ProgressBarModule,
     PaginatorModule,
     ConfirmPopupModule,
-    ButtonModule
+    ButtonModule,
+    AvatarModule,
+    InputTextareaModule
   ],
   providers: [ConfirmationService],
   bootstrap: [AppComponent]

@@ -1,0 +1,40 @@
+<!-- SEARCH INPUT -->
+<div class="row justify-content-center d-flex align-items-center">
+  <div class="col-10 col-sm-10 col-md-8 col-lg-8 col-xl-8 mt-4">
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label>{{ "collection.search_location" | translate }}</mat-label>
+      <input matInput [(ngModel)]="searchLocation" />
+      <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+  </div>
+  <div class="col-5 col-sm-5 col-md-2 col-lg-2 col-xl-2">
+    <div class="d-flex justify-content-md-center">
+      <button
+        type="submit"
+        class="btn my-btn-primary btn-lg"
+        style="padding-left: 2rem; padding-right: 2rem"
+      >
+        {{ "collections.search_button" | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+<!-- END SEARCH INPUT -->
+<div class="row row-cols-auto d-flex justify-content-center">
+  <div *ngFor="let id of [1, 2, 3, 4, 5, 6, 7, 8, 9]" class="col">
+    <div class="p-2 bd-highlight location d-flex align-items-center">
+      <p>Łódź, piotrkowska 53</p>
+      <a
+        href="https://www.google.pl/maps/place/Piotrkowska 53,Lodz"
+        target="_blank"
+        ><button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-map"
+          class="p-button-rounded p-button-help p-button-text"
+        ></button
+      ></a>
+    </div>
+  </div>
+</div>

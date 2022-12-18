@@ -77,28 +77,9 @@
               </mat-panel-title>
               <mat-panel-description> </mat-panel-description>
             </mat-expansion-panel-header>
-            <div *ngFor="let id of [1, 2, 3]">
-              <div class="d-flex flex-row bd-highlight mb-1">
-                <div
-                  class="p-2 bd-highlight location d-flex align-items-center"
-                >
-                  <p>Łódź, piotrkowska 53</p>
-                </div>
-                <div class="p-2 bd-highlight">
-                  <a
-                    href="https://www.google.pl/maps/place/Piotrkowska 53,Lodz"
-                    target="_blank"
-                    ><button
-                      pButton
-                      pRipple
-                      type="button"
-                      icon="pi pi-map"
-                      class="p-button-rounded p-button-help p-button-text"
-                    ></button
-                  ></a>
-                </div>
-              </div>
-            </div>
+            <!-- LOCATION LIST -->
+            <app-location-list></app-location-list>
+            <!-- END LOCATION LIST -->
           </mat-expansion-panel>
         </mat-accordion>
       </div>
@@ -120,14 +101,24 @@
           </mat-expansion-panel>
         </mat-accordion>
       </div>
-      <p-confirmPopup></p-confirmPopup>
-      <button
-        (click)="confirm($event)"
-        class="btn my-btn-primary btn-lm mt-3"
-        style="padding-left: 2rem; padding-right: 2rem"
-      >
-        Podaruj przedmioty
-      </button>
+
+      <!-- COMMENTS -->
+      <div class="row justify-content-center mt-3">
+        <mat-accordion>
+          <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title
+                ><i class="fa fa-comment me-3 icon-color"></i>
+                Komentarze
+              </mat-panel-title>
+              <mat-panel-description> </mat-panel-description>
+            </mat-expansion-panel-header>
+            <!-- COMMENT LIST -->
+            <app-comment-list></app-comment-list>
+            <!-- END COMMENT LIST -->
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
     </div>
   </section>
 </div>
