@@ -94,7 +94,8 @@
     "user": {
         "badcredentials": "Podano nieporawne hasło",
         "notfound": "Taki użytkownik nie istnieje",
-        "cannotbeempty": "Nazwa użytkownika i hasło nie mogę być puste"
+        "cannotbeempty": "Nazwa użytkownika i hasło nie mogę być puste",
+        "error": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie później"
     }
     
 }

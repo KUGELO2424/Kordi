@@ -20,7 +20,6 @@ export class LoginComponent implements OnInit {
     username: new UntypedFormControl(''),
     password: new UntypedFormControl(''),
   });
-  invalidLogin = false
 
   constructor(private router: Router, private loginService: AuthService, private translate: TranslateService) {
       const navigation = this.router.getCurrentNavigation();
@@ -44,15 +43,19 @@ export class LoginComponent implements OnInit {
       return
     }
     this.loginService.authenticate(username, password).subscribe({
-      next: (data) => {
+      next: () => {
         this.router.navigateByUrl("/")
-        this.invalidLogin = false
       },
       error: (error) => {
-        this.invalidLogin = true
-        this.errorMessage = [
-          {severity:'error', detail: this.translate.instant(error.error.error)}
-        ]
+        if (error.error.error === undefined) {
+          this.errorMessage = [
+            {severity:'error', detail: this.translate.instant("user.error")}
+          ]
+        } else {
+          this.errorMessage = [
+            {severity:'error', detail: this.translate.instant(error.error.error)}
+          ]
+        }
       }
     })
 

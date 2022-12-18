@@ -94,7 +94,8 @@
     "user": {
         "badcredentials": "Wrong password",
         "notfound": "User not found",
-        "cannotbeempty": "Username and password cannot be empty"
+        "cannotbeempty": "Username and password cannot be empty",
+        "error": "Some error occured. Please try again later"
     }
     
 }

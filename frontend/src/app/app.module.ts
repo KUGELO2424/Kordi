@@ -45,6 +45,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { MessagesModule } from 'primeng/messages';
 import { LogoutComponent } from './components/logout/logout.component';
+import { TokenInterceptorService } from './services/token-interceptor.service';
 
 const routes: Routes = [
   {path: 'home', component: HomePageComponent},
@@ -103,7 +104,7 @@ const routes: Routes = [
     InputTextareaModule,
     MessagesModule
   ],
-  providers: [ConfirmationService],
+  providers: [ConfirmationService, {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
