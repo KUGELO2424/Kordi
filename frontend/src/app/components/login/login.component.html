@@ -51,24 +51,10 @@
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-md-8 col-lg-6 col-xl-6"></div>
         <div class="col-md-8 col-lg-6 col-xl-6">
-          <div
-            class="alert alert-danger alert-dismissible mt-3"
-            data-auto-dismiss
-            role="alert"
-            *ngIf="error"
-          >
-            {{ "login.invalid" | translate }}
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="alert"
-              aria-label="Close"
-              (click)="clearError()"
-            ></button>
-          </div>
-          <div class="alert alert-success mt-3" role="alert" *ngIf="message">
-            {{ message }}
-          </div>
+          <p-messages
+            [(value)]="errorMessage"
+            [enableService]="false"
+          ></p-messages>
         </div>
       </div>
     </div>

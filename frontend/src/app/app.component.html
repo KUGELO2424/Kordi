@@ -45,19 +45,25 @@
               >{{ "navbar.profile" | translate }}</a
             >
           </li>
-          <li class="nav-item pl-1">
+          <li class="nav-item pl-1" *ngIf="!isAuthenticated()">
             <a class="nav-link" routerLink="/login"
               ><i class="fa fa-sign-in fa-fw me-1"></i
               >{{ "navbar.login" | translate }}</a
             >
           </li>
-          <li class="nav-item pl-1 me-5">
+          <li class="nav-item pl-1" *ngIf="!isAuthenticated()">
             <a class="nav-link" routerLink="/signup"
               ><i class="fa-solid fa-user-plus fa-fw me-1"></i
               >{{ "navbar.signup" | translate }}</a
             >
           </li>
-          <li class="nav-item pl-1 nav-item-lang">
+          <li class="nav-item pl-1" *ngIf="isAuthenticated()">
+            <a class="nav-link" routerLink="/logout"
+              ><i class="fa-solid fa-right-from-bracket me-1"></i
+              >{{ "navbar.logout" | translate }}</a
+            >
+          </li>
+          <li class="nav-item pl-1 nav-item-lang ms-5">
             <app-language-selector></app-language-selector>
           </li>
         </ul>

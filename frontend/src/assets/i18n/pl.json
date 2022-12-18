@@ -4,7 +4,8 @@
         "add": "Dodaj zbiórkę",
         "profile": "Profil",
         "login": "Zaloguj",
-        "signup": "Zarejestruj"
+        "signup": "Zarejestruj",
+        "logout": "Wyloguj"
     },
     "footer": {
         "find_us": "Znajdziesz nas też tutaj:",
@@ -89,6 +90,11 @@
         "electronic": "Elektronika",
         "medicine": "Lekarstwa",
         "other": "Inne"
+    },
+    "user": {
+        "badcredentials": "Podano nieporawne hasło",
+        "notfound": "Taki użytkownik nie istnieje",
+        "cannotbeempty": "Nazwa użytkownika i hasło nie mogę być puste"
     }
     
 }

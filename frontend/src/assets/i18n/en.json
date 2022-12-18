@@ -4,7 +4,8 @@
         "add": "Add a collection",
         "profile": "Profile",
         "login": "Log in",
-        "signup": "Sign up"
+        "signup": "Sign up",
+        "logout": "Logout"
     },
     "footer": {
         "find_us": "Find us here:",
@@ -89,6 +90,11 @@
         "electronic": "Electronic",
         "medicine": "Medicines",
         "other": "Other"
+    },
+    "user": {
+        "badcredentials": "Wrong password",
+        "notfound": "User not found",
+        "cannotbeempty": "Username and password cannot be empty"
     }
     
 }

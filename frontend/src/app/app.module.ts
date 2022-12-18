@@ -34,7 +34,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 
-
 import { TableModule } from 'primeng/table';
 import { SliderModule } from 'primeng/slider';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -44,11 +43,13 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-
+import { MessagesModule } from 'primeng/messages';
+import { LogoutComponent } from './components/logout/logout.component';
 
 const routes: Routes = [
   {path: 'home', component: HomePageComponent},
   {path: 'login', component: LoginComponent},
+  {path: 'logout', component: LogoutComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'verify', component: VerificationComponent},
   {path: 'collections', component: CollectionListComponent},
@@ -69,7 +70,8 @@ const routes: Routes = [
     CollectionInfoComponent,
     ItemListComponent,
     CommentListComponent,
-    LocationListComponent
+    LocationListComponent,
+    LogoutComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -98,7 +100,8 @@ const routes: Routes = [
     ConfirmPopupModule,
     ButtonModule,
     AvatarModule,
-    InputTextareaModule
+    InputTextareaModule,
+    MessagesModule
   ],
   providers: [ConfirmationService],
   bootstrap: [AppComponent]
