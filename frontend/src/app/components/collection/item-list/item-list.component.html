@@ -1,6 +1,7 @@
 <div
   class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 row justify-content-md-center"
 >
+  <!-- ITEM CARD -->
   <div
     class="col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"
     *ngFor="let val of values"
@@ -40,6 +41,7 @@
   </div>
   <!-- END CARD -->
 </div>
+
 <!-- PAGINATOR -->
 <div class="mt-5 mb-1 paginator">
   <p-paginator
@@ -48,8 +50,11 @@
     [rowsPerPageOptions]="[10, 20, 30]"
   ></p-paginator>
 </div>
-<!-- END PAGINATOR -->
+
+<!-- CONFIRM POPUP -->
 <p-confirmPopup></p-confirmPopup>
+
+<!-- BUTTON -->
 <div class="text-center mb-3 mt-3">
   <button
     (click)="confirm($event)"

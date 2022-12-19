@@ -93,6 +93,7 @@
                   </mat-error>
                 </mat-form-field>
 
+                <!-- Verification type -->
                 <h5>{{ "login.verification_type" | translate }}</h5>
                 <mat-button-toggle-group formControlName="verificationType">
                   <mat-button-toggle value="PHONE">{{
@@ -103,6 +104,7 @@
                   }}</mat-button-toggle>
                 </mat-button-toggle-group>
 
+                <!-- Button -->
                 <div class="text-center text-lg-start mt-4 pt-2">
                   <button
                     [disabled]="form.invalid"
@@ -124,6 +126,7 @@
           </mat-card>
         </div>
       </div>
+      <!-- Error -->
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-md-8 col-lg-6 col-xl-6"></div>
         <div class="col-md-8 col-lg-6 col-xl-6">

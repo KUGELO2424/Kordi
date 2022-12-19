@@ -1,6 +1,8 @@
+<!-- INPUT -->
 <span class="p-float-label">
   <textarea class="w-75 ms-4" rows="5" cols="40" pInputTextarea></textarea>
 </span>
+<!-- SEARCH BUTTON -->
 <button
   (click)="addComment()"
   class="btn my-btn-primary btn-lm mt-3 ms-4"
@@ -8,6 +10,7 @@
 >
   Dodaj komenatrz
 </button>
+<!-- COMMENT LIST -->
 <div *ngFor="let id of [1, 2, 3]" class="card-body p-4">
   <div class="d-flex flex-start">
     <p-avatar

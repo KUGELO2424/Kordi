@@ -1,6 +1,7 @@
 <div class="content">
   <section class="mt-5">
     <div class="container-fluid align-middle">
+      <!-- CARD -->
       <mat-card class="example-card p-5">
         <mat-card-header class="justify-content-center">
           <mat-card-title>{{ "verify.welcome" | translate }}</mat-card-title>
@@ -26,11 +27,11 @@
           <div class="col-md-9 col-lg-7 col-xl-7">
             <mat-card-content *ngIf="verificationType == 'PHONE'">
               <p
-                [innerHTML]="'verify.info_phone' | translate: { phone: phone }"
+                [innerHTML]="'verify.info_phone' | translate : { phone: phone }"
               ></p>
             </mat-card-content>
             <mat-card-content *ngIf="verificationType == 'EMAIL'">
-              <p [innerHTML]="'verify.info' | translate: { email: email }"></p>
+              <p [innerHTML]="'verify.info' | translate : { email: email }"></p>
             </mat-card-content>
             <mat-card-actions *ngIf="verificationType == 'PHONE'">
               <div class="d-flex justify-content-center">
