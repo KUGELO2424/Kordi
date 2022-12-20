@@ -1,16 +1,18 @@
 package pl.kucharski.Kordi.service.verification;
 
 import com.twilio.Twilio;
+import com.twilio.exception.ApiException;
 import com.twilio.rest.verify.v2.service.Verification;
 import com.twilio.rest.verify.v2.service.VerificationCheck;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pl.kucharski.Kordi.enums.VerificationStatus;
-import pl.kucharski.Kordi.model.user.UserDTO;
-import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.exception.UserVerifyException;
+import pl.kucharski.Kordi.model.user.User;
+import pl.kucharski.Kordi.model.user.UserDTO;
 
-import static pl.kucharski.Kordi.config.ErrorCodes.VERIFICATION_ERROR;
+import static pl.kucharski.Kordi.config.ErrorCodes.PHONE_VERIFICATION_CODE_NOT_VALID;
+import static pl.kucharski.Kordi.config.ErrorCodes.PHONE_VERIFICATION_ERROR;
 
 /**
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
@@ -57,15 +59,16 @@ public class PhoneVerificationService implements VerificationService{
         String phoneNumber = "+48" + user.getPhone();
 
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-        verificationCheck = VerificationCheck.creator(
-                        SERVICE_ID,
-                        token)
-                .setTo(phoneNumber).create();
-
+        try {
+            verificationCheck = VerificationCheck.creator(SERVICE_ID, token)
+                    .setTo(phoneNumber).create();
+        } catch (ApiException ex) {
+            throw new UserVerifyException(PHONE_VERIFICATION_CODE_NOT_VALID);
+        }
         if (verificationCheck.getValid()) {
             return VerificationStatus.VERIFIED;
         } else {
-            throw new UserVerifyException(VERIFICATION_ERROR);
+            throw new UserVerifyException(PHONE_VERIFICATION_ERROR);
         }
     }
 }

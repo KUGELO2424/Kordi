@@ -34,7 +34,6 @@ import static pl.kucharski.Kordi.config.ErrorCodes.PHONE_ALREADY_EXISTS;
 import static pl.kucharski.Kordi.config.ErrorCodes.USERNAME_ALREADY_EXISTS;
 import static pl.kucharski.Kordi.config.ErrorCodes.USER_ALREADY_VERIFIED;
 import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND;
-import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_VERIFIED;
 
 /**
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
@@ -72,9 +71,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
-        if (!user.isEnabled()) {
-            throw new DisabledException(USER_NOT_VERIFIED);
-        }
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 new ArrayList<>());
     }

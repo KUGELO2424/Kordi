@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,7 +43,6 @@ import static pl.kucharski.Kordi.config.ErrorCodes.EMAIL_NOT_VALID;
 import static pl.kucharski.Kordi.config.ErrorCodes.PHONE_ALREADY_EXISTS;
 import static pl.kucharski.Kordi.config.ErrorCodes.USERNAME_ALREADY_EXISTS;
 import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND;
-import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_VERIFIED;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -108,17 +106,6 @@ class UserServiceImplTest {
         UserNotFoundException thrown = assertThrows(UserNotFoundException.class,
                 () -> underTest.loadUserByUsername("testuser"));
         assertEquals(USER_NOT_FOUND, thrown.getMessage());
-    }
-
-    @Test
-    void shouldThrowWhenUserNotVerified() {
-        // given
-        given(userRepository.findUserByUsername("test123")).willReturn(Optional.of(NOT_VERIFIED_USER));
-
-        // when + then
-        DisabledException thrown = assertThrows(DisabledException.class,
-                () -> underTest.loadUserByUsername("test123"));
-        assertEquals(USER_NOT_VERIFIED, thrown.getMessage());
     }
 
     @Test

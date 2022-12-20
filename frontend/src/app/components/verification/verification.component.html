@@ -17,21 +17,12 @@
               alt="Phone verification"
               *ngIf="verificationType == 'PHONE'"
             />
-            <img
-              src="assets/img/email_verification.svg"
-              class="img-fluid mb-4"
-              alt="Phone verification"
-              *ngIf="verificationType == 'EMAIL'"
-            />
           </div>
           <div class="col-md-9 col-lg-7 col-xl-7">
             <mat-card-content *ngIf="verificationType == 'PHONE'">
               <p
                 [innerHTML]="'verify.info_phone' | translate : { phone: phone }"
               ></p>
-            </mat-card-content>
-            <mat-card-content *ngIf="verificationType == 'EMAIL'">
-              <p [innerHTML]="'verify.info' | translate : { email: email }"></p>
             </mat-card-content>
             <mat-card-actions *ngIf="verificationType == 'PHONE'">
               <div class="d-flex justify-content-center">
@@ -61,49 +52,12 @@
                 </button>
               </div>
             </mat-card-actions>
-            <mat-card-actions *ngIf="verificationType == 'EMAIL'">
-              <p>{{ "verify.send_again_info" | translate }}</p>
-              <button
-                class="btn my-btn-primary btn-lg"
-                style="padding-left: 2.5rem; padding-right: 2.5rem"
-                (click)="sendEmailAgain()"
-              >
-                {{ "verify.send_again" | translate }}
-              </button>
-            </mat-card-actions>
           </div>
-          <div
-            class="alert alert-danger alert-dismissible mt-3"
-            data-auto-dismiss
-            role="alert"
-            *ngIf="error"
-          >
-            {{ error }}
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="alert"
-              aria-label="Close"
-              (click)="clearError()"
-            ></button>
-          </div>
-          <div
-            class="alert alert-success alert-dismissible mt-3"
-            data-auto-dismiss
-            role="alert"
-            *ngIf="message"
-          >
-            {{ message }}
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="alert"
-              aria-label="Close"
-              (click)="clearMessage()"
-            ></button>
-          </div>
+          <p-messages [(value)]="messages" [enableService]="false"></p-messages>
         </div>
       </mat-card>
     </div>
   </section>
+  <!-- LOADING SPINNER -->
+  <app-loading-spinner></app-loading-spinner>
 </div>

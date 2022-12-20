@@ -20,3 +20,6 @@ spring:
 
 jwt:
   secret: testSecret
+
+allowed:
+  origins: http://localhost:4200

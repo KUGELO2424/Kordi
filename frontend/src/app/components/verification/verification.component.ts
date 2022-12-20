@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { UserData } from 'app/common/userData';
+import { AuthService } from 'app/services/auth.service';
+import { Message } from 'primeng/api';
 
 @Component({
   selector: 'app-verification',
@@ -10,58 +15,98 @@ export class VerificationComponent implements OnInit {
 
   code = "";
   verificationType = "PHONE";
-  email = "test@mail.pl";
-  phone = "******123";
-  error: string | undefined;
-  message: string | undefined;
+  user: UserData | undefined;
+
+  phone = "*********";
+  messages: Message[] = [];
 
   sendAgainTimeInSeconds: number = 60;
-
   sendCodeAgainTime: Date
   sendEmailAgainTime: Date
 
-  constructor() {
-    var now = new Date();
-    now.setDate(now.getDate() - 1);
-    this.sendCodeAgainTime = now;
-    this.sendEmailAgainTime = now;
+  constructor(private router: Router, private authService: AuthService, private translate: TranslateService) {
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras.state as {data: string};
+    if (state === undefined) {
+      this.router.navigateByUrl("/");
+    }
+    const username = state.data;
+    
+    authService.getUserByUsername(username).subscribe(data => {
+      this.user = data;
+      this.phone = "******" + this.user.phone.substring(6, 10);
+    })
+
+    this.setTime();
   }
 
   ngOnInit(): void {
   }
 
   verify() {
-    this.error = "Nie udało się zweryfikować konta.";
-  }
-  
-  sendEmailAgain() {
-    var now = new Date();
-    const diff = (now.getTime() - this.sendEmailAgainTime.getTime()) / 1000
-    if (diff < this.sendAgainTimeInSeconds) {
-      this.error = "Musisz poczekać " + Math.round(this.sendAgainTimeInSeconds - diff) + " sekund, by wysłać wiadomość email ponownie";
+    if (this.code == "" || this.code.length != 6) {
+      this.messages = [
+        {severity:'error', detail: this.translate.instant('phone.verification.code.wrong')}
+      ]
       return;
     }
-    this.message = "Wiadomość email została wysłana ponownie.";
-    this.sendEmailAgainTime = new Date();
+
+    this.authService.verifyByPhone(this.user!.phone, this.code).subscribe({
+      next: response => {
+        if (response.status == 'VERIFIED') {
+          const navigationExtras = {state: {data: this.translate.instant('login.verification_success')}};
+          this.router.navigateByUrl("/login", navigationExtras);
+        }
+      },
+      error: error => {
+        console.log(error);
+        this.messages = [
+          {severity:'error', detail: this.translate.instant(error.error.error)}
+        ]
+      }
+    })
   }
 
   sendCodeAgain() {
-    const now = new Date();
-    const diff = (now.getTime() - this.sendCodeAgainTime.getTime()) / 1000
-    if (diff < this.sendAgainTimeInSeconds) {
-      this.error = "Musisz poczekać " + Math.round(this.sendAgainTimeInSeconds - diff) + " sekund, by wysłać kod aktywacyjny ponownie";
+    if (!this.checkIfRequestCanBeSend()) {
       return;
     }
-    this.message = "Kod aktywacyjny został wysłany ponownie.";
-    this.sendCodeAgainTime = new Date();
+    this.authService.sendVerificationToken(this.user!.username).subscribe({
+      next: response => {
+        if (response.status == 'PENDING') {
+          this.messages = [
+            {severity:'success', detail: this.translate.instant("verify.activation_code_send")}
+          ]
+          this.sendCodeAgainTime = new Date();
+        }
+      },
+      error: error => {
+        console.log(error);
+        this.messages = [
+          {severity:'error', detail: this.translate.instant(error.error.error)}
+        ]
+      }
+    })
   }
 
-  clearError() {
-    this.error = undefined;
+  setTime() {
+    var now = new Date();
+    now.setDate(now.getDate() - 1);
+    this.sendCodeAgainTime = now;
+    this.sendEmailAgainTime = now;  
   }
 
-  clearMessage() {
-    this.message = undefined;
+  checkIfRequestCanBeSend() {
+    const now = new Date();
+    const diff = (now.getTime() - this.sendCodeAgainTime.getTime()) / 1000;
+    if (diff < this.sendAgainTimeInSeconds) {
+      const time = Math.round(this.sendAgainTimeInSeconds - diff);
+      this.messages = [
+        {severity:'error', detail: this.translate.instant('phone.verification.code.send.wait', time)}
+      ]
+      return false;
+    }
+    return true;
   }
 
 }

@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -11,6 +12,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import pl.kucharski.Kordi.enums.VerificationType;
+import pl.kucharski.Kordi.model.user.UserDTO;
+import pl.kucharski.Kordi.service.user.UserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +28,8 @@ import java.util.stream.Collectors;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 import static pl.kucharski.Kordi.config.ErrorCodes.USER_BAD_CREDENTIALS;
+import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_VERIFIED_EMAIL;
+import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_VERIFIED_PHONE;
 
 /**
  * Filter responsible for authentication
@@ -34,11 +40,15 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     private final AuthenticationManager authenticationManager;
     private final Algorithm tokenAlgorithm;
+    private final UserService userService;
 
 
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, Algorithm tokenAlgorithm) {
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager,
+                                      Algorithm tokenAlgorithm,
+                                      UserService userService) {
         this.authenticationManager = authenticationManager;
         this.tokenAlgorithm = tokenAlgorithm;
+        this.userService = userService;
     }
 
     /**
@@ -53,20 +63,16 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         Authentication authentication = null;
         try {
             authentication = authenticationManager.authenticate(authenticationToken);
+            UserDTO user = userService.getUserByUsername(username);
+            if (!user.isEnabled()) {
+                if (user.getVerificationType().equals(VerificationType.EMAIL)) {
+                    throw new DisabledException(USER_NOT_VERIFIED_EMAIL);
+                } else {
+                    throw new DisabledException(USER_NOT_VERIFIED_PHONE);
+                }
+            }
         } catch(Exception e) {
-            Map<String, String> error = new HashMap<>();
-            if (e.getMessage().equals("Bad credentials")) {
-                error.put("error", USER_BAD_CREDENTIALS);
-            } else {
-                error.put("error", e.getMessage());
-            }
-            response.setContentType(APPLICATION_JSON_VALUE);
-            response.setStatus(401);
-            try {
-                new ObjectMapper().writeValue(response.getOutputStream(), error);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            writeErrorToResponse(response, e);
         }
         return authentication;
     }
@@ -109,4 +115,21 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         response.setStatus(401);
         new ObjectMapper().writeValue(response.getOutputStream(), error);
     }
+
+    private void writeErrorToResponse(HttpServletResponse response, Exception e) {
+        Map<String, String> error = new HashMap<>();
+        if (e.getMessage().equals("Bad credentials")) {
+            error.put("error", USER_BAD_CREDENTIALS);
+        } else {
+            error.put("error", e.getMessage());
+        }
+        response.setContentType(APPLICATION_JSON_VALUE);
+        response.setStatus(401);
+        try {
+            new ObjectMapper().writeValue(response.getOutputStream(), error);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 }

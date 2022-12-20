@@ -12,10 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
@@ -30,7 +27,6 @@ import pl.kucharski.Kordi.service.verification.EmailTokenService;
 import pl.kucharski.Kordi.service.verification.PhoneVerificationService;
 
 import javax.mail.internet.MimeMessage;
-import java.util.Objects;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
@@ -53,6 +49,7 @@ import static pl.kucharski.Kordi.config.ErrorCodes.USER_ALREADY_VERIFIED;
 import static pl.kucharski.Kordi.config.ErrorCodes.USER_BAD_CREDENTIALS;
 import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND;
 import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND_WITH_GIVEN_TOKEN;
+import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_VERIFIED_EMAIL;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = KordiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -64,6 +61,7 @@ class UserControllerTest {
     private static final int END_OFFSET_RESPONSE_TOKEN = 202;
     private static final String TOKEN_TO_VERIFY = "qwerty123456";
     private static final String LOGIN_USERNAME = "gelo2424";
+    private static final String NOT_EXISTING_LOGIN_USERNAME = "not-exising-username";
     private static final String LOGIN_PASSWORD = "qwerty";
     private static final String USER_PHONE = "198321555";
     private static final String NOT_VERIFIED_USERNAME = "test";
@@ -141,18 +139,7 @@ class UserControllerTest {
     }
 
     @Test
-    public void shouldReturnUnauthorizedOnUsersGetWhenNoAuthHeader()
-            throws Exception {
-
-        mvc.perform(get("/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                ).andExpect(status().isUnauthorized())
-                .andExpect(status().reason(containsString("Full authentication is required to access this resource")));
-    }
-
-    @Test
-    public void shouldReturnUnauthorizedOnInvalidCredentials()
-            throws Exception {
+    public void shouldReturnUnauthorizedOnInvalidCredentials() throws Exception {
         mvc.perform(post("/login")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                         .param("username", LOGIN_USERNAME)
@@ -162,9 +149,18 @@ class UserControllerTest {
     }
 
     @Test
+    public void shouldReturnUnauthorizedIfUserNotEnabled() throws Exception {
+        mvc.perform(post("/login")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param("username", NOT_VERIFIED_USERNAME)
+                        .param("password", LOGIN_PASSWORD))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.error", is(USER_NOT_VERIFIED_EMAIL)));
+    }
+
+    @Test
     @WithMockUser
-    public void shouldReturnUsers()
-            throws Exception {
+    public void shouldReturnUsers() throws Exception {
 
         mvc.perform(get("/users")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -173,6 +169,26 @@ class UserControllerTest {
                 .andExpect(jsonPath("$[0].username", is("gelo2424")))
                 .andExpect(jsonPath("$[1].username", is("adam")))
                 .andExpect(jsonPath("$[2].username", is("jan")));
+    }
+
+    @Test
+    @WithMockUser
+    public void shouldReturnUser() throws Exception {
+
+        mvc.perform(get("/users/" + LOGIN_USERNAME)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username", is(LOGIN_USERNAME)));
+    }
+
+    @Test
+    @WithMockUser
+    public void shouldThrowUserNotFound() throws Exception {
+        mvc.perform(get("/users/" + NOT_EXISTING_LOGIN_USERNAME)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound());
     }
 
     @Test

@@ -13,7 +13,6 @@ export class LoadingInterceptorService implements HttpInterceptor{
   constructor(private loadingService: LoaderService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('=========== caught ===========')
     this.totalRequests++;
     this.loadingService.setLoading(true);
     return next.handle(req).pipe(

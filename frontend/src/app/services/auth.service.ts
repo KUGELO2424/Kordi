@@ -1,7 +1,9 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { UserData } from 'app/common/userData';
 import { environment } from 'environments/environment';
 import { BehaviorSubject, map, Subject } from 'rxjs';
+import { UserToRegister } from '../common/userToRegister';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,7 @@ export class AuthService {
   private registerUrl = environment.baseUrl + '/register';
   private sendTokenUrl = environment.baseUrl + '/sendToken';
   private verifyUrl = environment.baseUrl + '/verify';
+  private getUserUrl = environment.baseUrl + '/users';
   
   username: Subject<string> = new BehaviorSubject<string>("");
 
@@ -41,6 +44,22 @@ export class AuthService {
         return userData;
       })
     );
+  }
+
+  register(user: UserToRegister) {
+    return this.httpClient.post<UserToRegister>(this.registerUrl, user)
+  }
+
+  verifyByPhone(phone: string, token: string) {
+    return this.httpClient.get<any>(`${this.verifyUrl}?phone=${phone}&token=${token}`)
+  }
+
+  sendVerificationToken(username: string) {
+    return this.httpClient.post<any>(`${this.sendTokenUrl}?username=${username}`, "");
+  }
+
+  getUserByUsername(username: string) {
+    return this.httpClient.get<UserData>(`${this.getUserUrl}/${username}`);
   }
 
   isUserLoggedIn() {

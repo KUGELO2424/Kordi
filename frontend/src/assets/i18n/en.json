@@ -40,7 +40,9 @@
         "phone_inv": "Please enter a valid phone number",
         "password_inv": "Password must be at least 6 characters long",
         "error_occured": "An unexpected error has occurred. Please try again in a moment.",
-        "signup_success": "User account has been created successfully. Log in to verify it"
+        "signup_success_phone": "Konto użytkownika zostało założone pomyślnie. Zaloguj się by dokończyć weryfikację konta",
+        "signup_success_email": "Konto użytkownika zostało założone pomyślnie. Kliknij w link aktywacyjny wysłany na podany adres email by zweryfikować konto",
+        "verification_success": "The account has been verified successfully. You can log in now"
     },
     "verify": {
         "welcome": "Welcome in Kordi!",
@@ -50,7 +52,8 @@
         "info": "An e-mail with an activation link has been sent to your <b>{{email}}</b> e-mail address. Click on the link provided to validate your account.",
         "info_phone": "An activation code has been sent to your <b>{{phone}}</b> phone number. Enter it below to verify your account.",
         "verify": "Verify",
-        "activation_code": "Activation code"
+        "activation_code": "Activation code",
+        "activation_code_send": "The activation code has been resent"
     },
     "collections": {
         "search_input": "Search",
@@ -92,10 +95,23 @@
         "other": "Other"
     },
     "user": {
-        "badcredentials": "Wrong password",
-        "notfound": "User not found",
-        "cannotbeempty": "Username and password cannot be empty",
-        "error": "Some error occured. Please try again later"
+        "bad.credentials": "Wrong password",
+        "not.found": "User not found",
+        "cannot.be.empty": "Username and password cannot be empty",
+        "error": "Some error occured. Please try again later",
+        "username.exists": "Username is already in use",
+        "email.exists": "Email address is already in use",
+        "phone.exists": "Phone number is already in use",
+        "not.verified.email": "The account has not been verified. An email with an activation link has been sent to your email address"
+    },
+    "email": {
+        "send.failed.connection": "We are sorry but the email could not be sent",
+        "send.failed": "We are sorry but the email could not be sent"
+    },
+    "phone": {
+        "verification.code.not.valid": "The entered code is not valid. The account may have already been activated or the code has expired",
+        "verification.error": "The given code is invalid",
+        "verification.code.wrong": "The given code is invalid",
+        "verification.code.send.wait": "You must wait {{time}} seconds to resend the activation code"
     }
-    
 }

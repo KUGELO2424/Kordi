@@ -2,6 +2,7 @@ package pl.kucharski.Kordi.security;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import pl.kucharski.Kordi.service.user.UserService;
+import pl.kucharski.Kordi.service.user.UserServiceImpl;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -31,8 +34,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
 
-    public WebSecurityConfig(UserDetailsService userDetailsService) {
+    private final ApplicationContext applicationContext;
+
+    public WebSecurityConfig(UserDetailsService userDetailsService, ApplicationContext applicationContext) {
         this.userDetailsService = userDetailsService;
+        this.applicationContext = applicationContext;
     }
 
     @Override
@@ -44,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login", "/register", "/verify", "/sendToken").permitAll()
+                .antMatchers("/login", "/register", "/verify", "/sendToken", "/users/**").permitAll()
                 .antMatchers("/swagger-ui/**", "/swagger-ui**", "/v3/api-docs/**", "/v3/api-docs**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated()
@@ -59,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean(), tokenGenerationAlgorithm()));
+        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean(), tokenGenerationAlgorithm(), (UserService) applicationContext.getBean("userServiceImpl")));
         http.addFilterBefore(new CustomAuthorizationFilter(tokenGenerationAlgorithm()), UsernamePasswordAuthenticationFilter.class);
     }
 

@@ -23,6 +23,7 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
+import static pl.kucharski.Kordi.config.ErrorCodes.PHONE_VERIFICATION_ERROR;
 import static pl.kucharski.Kordi.config.ErrorCodes.VERIFICATION_ERROR;
 
 class PhoneVerificationServiceTest {
@@ -119,7 +120,7 @@ class PhoneVerificationServiceTest {
         // WHEN + THEN
         UserVerifyException thrown = assertThrows(UserVerifyException.class,
                 () ->underTest.verify(NOT_VERIFIED_USER_DTO, VALID_TOKEN));
-        assertEquals(VERIFICATION_ERROR, thrown.getMessage());
+        assertEquals(PHONE_VERIFICATION_ERROR, thrown.getMessage());
 
     }
 

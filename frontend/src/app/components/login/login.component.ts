@@ -13,8 +13,7 @@ import { Message } from 'primeng/api';
 export class LoginComponent implements OnInit {
 
   errorMessage: Message[] = [];
-  error: string | null | undefined;
-  message: string | undefined;
+  successMessage: Message[] = [];
 
   form: UntypedFormGroup = new UntypedFormGroup({
     username: new UntypedFormControl(''),
@@ -25,7 +24,9 @@ export class LoginComponent implements OnInit {
       const navigation = this.router.getCurrentNavigation();
       const state = navigation?.extras.state as {data: string};
       if (state !== undefined) {
-        this.message = state.data;
+        this.successMessage = [
+          {severity:'success', detail: this.translate.instant(state.data)}
+        ]
       }
   }
 
@@ -33,12 +34,12 @@ export class LoginComponent implements OnInit {
   }
 
   submit() {
-    this.message = "";
+    this.successMessage = [];
     const username = this.form.controls['username'].value
     const password = this.form.controls['password'].value
     if (username == '' || password == '') {
       this.errorMessage = [
-        {severity:'error', detail: this.translate.instant("user.cannotbeempty")}
+        {severity:'error', detail: this.translate.instant("user.cannot.be.empty")}
       ]
       return
     }
@@ -51,6 +52,9 @@ export class LoginComponent implements OnInit {
           this.errorMessage = [
             {severity:'error', detail: this.translate.instant("user.error")}
           ]
+        } else if (error.error.error === 'user.not.verified.phone') {
+          const navigationExtras = {state: {data: username}};
+          this.router.navigateByUrl("/verify", navigationExtras);
         } else {
           this.errorMessage = [
             {severity:'error', detail: this.translate.instant(error.error.error)}

@@ -40,7 +40,9 @@
         "phone_inv": "Proszę wprowadź poprawny numer telefonu",
         "password_inv": "Hasło musi zawierać przynajmniej 6 znaków",
         "error_occured": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie za chwilę.",
-        "signup_success": "Konto użytkownika zostało założone pomyślnie. Zaloguj się by je zweryfikować"
+        "signup_success_phone": "Konto użytkownika zostało założone pomyślnie. Zaloguj się by dokończyć weryfikację konta",
+        "signup_success_email": "The user account has been created successfully. Click on the activation link sent to the email address provided to verify your account",
+        "verification_success": "Konto zostało zweryfikowane pomyślne. Możesz się teraz zalogować"
     },
     "verify": {
         "welcome": "Witaj w Kordi!",
@@ -50,7 +52,8 @@
         "info": "Na twój adres email <b>{{email}}</b> została wysłana wiadomość z linkiem aktywacyjnym. Kliknij w otrzymany link by zweyfikować konto.",
         "info_phone": "Na twój numer telefonu <b>{{phone}}</b> został wysłany kod aktywacyjny. Wpisz go poniżej by zweryfikować konto.",
         "verify": "Zweryfikuj",
-        "activation_code": "Kod aktywacyjny"
+        "activation_code": "Kod aktywacyjny",
+        "activation_code_send": "Kod aktywacyjny został wysłany ponownie"
     },
     "collections": {
         "search_input": "Szukaj",
@@ -92,10 +95,24 @@
         "other": "Inne"
     },
     "user": {
-        "badcredentials": "Podano nieporawne hasło",
-        "notfound": "Taki użytkownik nie istnieje",
-        "cannotbeempty": "Nazwa użytkownika i hasło nie mogę być puste",
-        "error": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie później"
+        "bad.credentials": "Podano nieporawne hasło",
+        "not.found": "Taki użytkownik nie istnieje",
+        "cannot.be.empty": "Nazwa użytkownika i hasło nie mogę być puste",
+        "error": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie później",
+        "username.exists": "Nazwa użytkownika jest już zajęta",
+        "email.exists": "Adres email jest już zajęty",
+        "phone.exists": "Numer telefonu jest już zajęty",
+        "not.verified.email": "Konto nie zostało zweryfikowane. Na twój adres email została wysłania wiadomość z linkiem aktywacynym"
+    },
+    "email": {
+        "send.failed.connection": "Przepraszamy ale nie udało się wysłać wiadomości email",
+        "send.failed": "Przepraszamy ale nie udało się wysłać wiadomości email"
+    },
+    "phone": {
+        "verification.code.not.valid": "Podany kod jest nie ważny. Konto mogło zostać już aktywowane bądź kod wygasł.",
+        "verification.error": "Podany kod jest nieprawidłowy",
+        "verification.code.wrong": "Podany kod jest nieprawidłowy",
+        "verification.code.send.wait": "Musisz poczekać {{time}} sekund, by wysłać kod aktywacyjny ponownie"
     }
     
 }

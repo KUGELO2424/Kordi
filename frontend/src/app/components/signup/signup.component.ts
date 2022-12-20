@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, UntypedFormControl, UntypedFormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { NavigationExtras, Router } from '@angular/router';
+import { NavigationBehaviorOptions, NavigationExtras, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { UserToRegister } from 'app/common/userToRegister';
+import { AuthService } from 'app/services/auth.service';
+import { Message } from 'primeng/api';
 
 @Component({
   selector: 'app-signup',
@@ -11,8 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class SignupComponent implements OnInit {
 
   hide = true;
-  error: string | undefined;
-  authError: string | undefined;
+  errorMessage: Message[] = [];
 
   form: UntypedFormGroup = new UntypedFormGroup({
     username: new UntypedFormControl('', [Validators.required, Validators.minLength(3)]),
@@ -24,7 +26,7 @@ export class SignupComponent implements OnInit {
     verificationType: new UntypedFormControl('EMAIL')
   });
 
-  constructor(private router: Router, private translate: TranslateService) { }
+  constructor(private router: Router, private translate: TranslateService, private authService: AuthService) { }
 
   ngOnInit(): void {
   }
@@ -35,27 +37,40 @@ export class SignupComponent implements OnInit {
   }
 
   submit(formData: UntypedFormGroup, formDirective: FormGroupDirective): void {
-    const username = formData.value.username;
-    const password = formData.value.password;
-    const firstname = formData.value.firstname;
-    const lastname = formData.value.lastname;
-    const email = formData.value.email;
-    const phone = formData.value.phone;
-    const verificationType = formData.value.verificationType;
-    console.log("REGISTER USER with " + verificationType);
-    if (username == "Test") {
-      this.authError = this.translate.instant("login.error_occured");
-    } else {
-      const navigationExtras: NavigationExtras = {state: {data: this.translate.instant('login.signup_success')}};
-      this.router.navigateByUrl("/login", navigationExtras);
-      formDirective.resetForm();
-      this.form.reset();
-    }
-  } 
+    let user = new UserToRegister();
+    user.username = formData.value.username;
+    user.password = formData.value.password;
+    user.firstName = formData.value.firstname;
+    user.lastName = formData.value.lastname;
+    user.email = formData.value.email;
+    user.phone = formData.value.phone;
+    user.verificationType = formData.value.verificationType;
 
-  clearError() {
-    this.error = undefined;
-    this.authError = undefined;
-  }
+    this.authService.register(user).subscribe({
+      next: response => {
+        let navigationExtras;
+        if (user.verificationType == 'EMAIL') {
+          navigationExtras = {state: {data: this.translate.instant('login.signup_success_email')}};
+        } else {
+          navigationExtras = {state: {data: this.translate.instant('login.signup_success_phone')}};
+        }
+        this.router.navigateByUrl("/login", navigationExtras);
+        formDirective.resetForm();
+        this.form.reset();
+      },
+      error: error => {
+        console.log(error);
+        if (error.error.error === undefined) {
+          this.errorMessage = [
+            {severity:'error', detail: this.translate.instant("user.error")}
+          ]
+        } else {
+          this.errorMessage = [
+            {severity:'error', detail: this.translate.instant(error.error.error)}
+          ]
+        }
+      }
+    })
+  } 
 
 }

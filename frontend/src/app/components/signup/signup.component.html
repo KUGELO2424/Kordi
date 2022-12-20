@@ -130,23 +130,14 @@
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-md-8 col-lg-6 col-xl-6"></div>
         <div class="col-md-8 col-lg-6 col-xl-6">
-          <div
-            class="alert alert-danger alert-dismissible mt-3"
-            data-auto-dismiss
-            role="alert"
-            *ngIf="authError"
-          >
-            {{ authError }}
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="alert"
-              aria-label="Close"
-              (click)="clearError()"
-            ></button>
-          </div>
+          <p-messages
+            [(value)]="errorMessage"
+            [enableService]="false"
+          ></p-messages>
         </div>
       </div>
     </div>
   </section>
+  <!-- LOADING SPINNER -->
+  <app-loading-spinner></app-loading-spinner>
 </div>

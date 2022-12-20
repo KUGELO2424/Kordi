@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import pl.kucharski.Kordi.enums.VerificationStatus;
+import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.exception.InvalidPasswordException;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
+import pl.kucharski.Kordi.model.collection.CollectionDTO;
 import pl.kucharski.Kordi.model.email.EmailToken;
 import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.model.user.UserDTO;
@@ -52,8 +55,26 @@ public class UserController {
      * @return list of users or empty list if no users
      */
     @GetMapping("/users")
-    public ResponseEntity<?> getUser() {
+    public ResponseEntity<?> getUsers() {
         return ResponseEntity.ok(userService.getUsers());
+    }
+
+    /**
+     * Get user by username
+     *
+     * @param username username of user
+     * @return list of users or empty list if no users
+     */
+    @GetMapping("/users/{username}")
+    public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
+        try {
+            UserDTO user = userService.getUserByUsername(username);
+            return ResponseEntity.ok(user);
+        } catch (UserNotFoundException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    ex.getMessage());
+        }
     }
 
     /**
