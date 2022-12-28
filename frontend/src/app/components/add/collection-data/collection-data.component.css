@@ -1,0 +1,15 @@
+.full-width {
+    width: 100%;
+}
+
+.datepicker .mat-input-element {
+    width: 82%;
+}
+
+.datepicker input {
+    margin-bottom: 10px;
+}
+
+.p-fileupload .p-fileupload-buttonbar {
+    background-color: transparent;
+}

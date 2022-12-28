@@ -1,0 +1,63 @@
+<div class="d-flex justify-content-center mt-5">
+  <form role="form" [formGroup]="form" class="form" #formDirective="ngForm">
+    <!-- TITLE -->
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Nazwa zbiórki</mat-label>
+      <input type="text" matInput formControlName="title" />
+      <mat-error *ngIf="checkValidation('title')">
+        Nazwa zbiórki musi zawierać od 3 do 30 znaków
+      </mat-error>
+    </mat-form-field>
+    <!-- DESC -->
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Opis zbiórki</mat-label>
+      <textarea matInput matInput formControlName="description"></textarea>
+      <mat-hint align="end"
+        >{{ form.value.description.length }} /
+        {{ descriptionMaxLength }}</mat-hint
+      >
+      <mat-error *ngIf="checkValidation('description')">
+        Opis musi zawierać od 3 do 500 znaków
+      </mat-error>
+    </mat-form-field>
+    <!-- END DATE -->
+    <mat-form-field
+      appearance="outline"
+      class="full-width datepicker"
+      tabindex="-1"
+    >
+      <mat-label>Data zakończenia zbiórki</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="endDate"
+        [min]="currentDate"
+      />
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- IMAGE -->
+    <h5 class="mt-5">Zdjęcie zbiórki</h5>
+    <p-fileUpload
+      name="demo[]"
+      url="./upload.php"
+      (onRemove)="onRemove($event)"
+      (onSelect)="onSelect($event)"
+      [multiple]="false"
+      accept=".jpg,.png,.jpeg"
+      [maxFileSize]="500000"
+      [showCancelButton]="false"
+      [showUploadButton]="false"
+      class="mt-5"
+      chooseLabel="Dodaj"
+      invalidFileSizeMessageDetail="Maksymalny rozmiar pliku to 500kB"
+      [files]="images"
+    >
+    </p-fileUpload>
+  </form>
+</div>

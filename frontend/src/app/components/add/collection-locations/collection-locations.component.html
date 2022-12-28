@@ -1,0 +1,111 @@
+<div class="d-flex justify-content-center mt-5">
+  <div class="card col-lg-10 col-md-10 col-sm-12 col-12">
+    <p-toolbar styleClass="mb-2 gap-2">
+      <ng-template pTemplate="left">
+        <button
+          pButton
+          pRipple
+          type="submit"
+          class="btn my-btn-primary btn-sm"
+          style="padding-left: 1.5rem; padding-right: 1.5rem"
+          (click)="addNewLocation()"
+        >
+          Dodaj lokalizację
+        </button>
+      </ng-template>
+    </p-toolbar>
+
+    <p-table
+      #dt
+      [value]="locations"
+      [rows]="5"
+      [paginator]="true"
+      [tableStyle]="{ 'min-width': '30rem' }"
+      [rowHover]="false"
+      dataKey="id"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+          <h5 class="m-0">Zarządzaj lokalizacjami zbiórki</h5>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr class="thead-color">
+          <th style="min-width: 7rem">Miasto</th>
+          <th>Ulica</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-location let-i="index">
+        <tr>
+          <td>{{ location.city }}</td>
+          <td>{{ location.street }}</td>
+          <td>
+            <button
+              pButton
+              pRipple
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-warning"
+              (click)="deleteLocation(locations.indexOf(location))"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+          Dodano {{ locations ? locations.length : 0 }} lokalizacji
+        </div>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <p-dialog
+    [(visible)]="locationDialog"
+    [style]="{ width: '450px' }"
+    header="Nowa lokalizacja"
+    [modal]="true"
+    styleClass="p-fluid"
+  >
+    <ng-template pTemplate="content">
+      <form role="form" [formGroup]="form" class="form" #formDirective="ngForm">
+        <!-- CITY -->
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Miasto</mat-label>
+          <input type="text" matInput formControlName="city" />
+          <mat-error *ngIf="checkValidation('city')">
+            Miasto musi zawiera od 1 do 30 znaków
+          </mat-error>
+        </mat-form-field>
+
+        <!-- STREET -->
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Ulica</mat-label>
+          <input type="text" matInput formControlName="street" />
+          <mat-error *ngIf="checkValidation('street')">
+            Ulica musi zawiera od 1 do 50 znaków
+          </mat-error>
+        </mat-form-field>
+      </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <button
+        pButton
+        pRipple
+        label="Anuluj"
+        icon="pi pi-times"
+        class="p-button-text"
+        (click)="hideDialog()"
+      ></button>
+      <button
+        pButton
+        pRipple
+        label="Dodaj"
+        icon="pi pi-check"
+        class="p-button-text"
+        (click)="saveLocation()"
+        [disabled]="form.invalid"
+      ></button>
+    </ng-template>
+  </p-dialog>
+</div>

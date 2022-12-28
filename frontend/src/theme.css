@@ -812,8 +812,8 @@ p-chips.p-chips-clearable .p-chips-clear-icon {
 }
 
 .p-dropdown {
-  background: #E9E8E7;
-  border: 1px solid rgba(0, 0, 0, 0.38);
+  background: #fff;
+  border: 1px solid #cdcccb;
   transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
   border-radius: 4px;
 }
@@ -1064,14 +1064,7 @@ p-dropdown.ng-dirty.ng-invalid > .p-dropdown {
   z-index: 1;
 }
 
-.p-inputgroup-addon:first-child,
-.p-inputgroup button:first-child,
-.p-inputgroup input:first-child,
-.p-inputgroup > .p-inputwrapper:first-child > .p-component,
-.p-inputgroup > .p-inputwrapper:first-child > .p-component > .p-inputtext {
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
+
 
 .p-inputgroup .p-float-label:first-child input {
   border-top-left-radius: 4px;
@@ -1645,18 +1638,18 @@ p-radiobutton.ng-dirty.ng-invalid > .p-radiobutton > .p-radiobutton-box {
   color: rgba(0, 0, 0, 0.6);
 }
 .p-selectbutton .p-button.p-highlight {
-  background: #e0e0e1;
+  background: #4A2799;
   border-color: #e0e0e1;
-  color: rgba(0, 0, 0, 0.87);
+  color: #eee
 }
 .p-selectbutton .p-button.p-highlight .p-button-icon-left,
 .p-selectbutton .p-button.p-highlight .p-button-icon-right {
   color: rgba(0, 0, 0, 0.6);
 }
 .p-selectbutton .p-button.p-highlight:hover {
-  background: #d9d8d9;
-  border-color: #d9d8d9;
-  color: rgba(0, 0, 0, 0.87);
+  background: #6335CC;
+  border-color: #6335CC;
+  color: #eee
 }
 .p-selectbutton .p-button.p-highlight:hover .p-button-icon-left,
 .p-selectbutton .p-button.p-highlight:hover .p-button-icon-right {
@@ -2184,13 +2177,13 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .p-button.p-button-warning, .p-buttonset.p-button-warning > .p-button, .p-splitbutton.p-button-warning > .p-button {
-  color: #212529;
-  background: #FBC02D;
+  color: #eee;
+  background: #ED4023;
   border: 0 none;
 }
 .p-button.p-button-warning:enabled:hover, .p-buttonset.p-button-warning > .p-button:enabled:hover, .p-splitbutton.p-button-warning > .p-button:enabled:hover {
-  background: rgba(251, 192, 45, 0.92);
-  color: #212529;
+  background: #F16D55;
+  color: #eee;
   border-color: transparent;
 }
 .p-button.p-button-warning:enabled:focus, .p-buttonset.p-button-warning > .p-button:enabled:focus, .p-splitbutton.p-button-warning > .p-button:enabled:focus {
@@ -2724,7 +2717,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   border-radius: 0;
 }
 .p-datatable .p-datatable-header {
-  background: #ffffff;
+  background: #E9E8E7;
   color: rgba(0, 0, 0, 0.87);
   border: 1px solid #e4e4e4;
   border-width: 0 0 1px 0;
@@ -2732,7 +2725,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   font-weight: 500;
 }
 .p-datatable .p-datatable-footer {
-  background: #ffffff;
+  background: #E9E8E7;
   color: rgba(0, 0, 0, 0.87);
   border: 1px solid #e4e4e4;
   border-width: 0 0 1px 0;
@@ -2746,7 +2739,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   border-width: 0 0 1px 0;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.87);
-  background: #ffffff;
+  background: #D8D7D6;
   transition: none;
 }
 .p-datatable .p-datatable-tfoot > tr > td {
@@ -2772,7 +2765,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   margin-left: 0.5rem;
 }
 .p-datatable .p-sortable-column:not(.p-highlight):hover {
-  background: rgba(0, 0, 0, 0.04);
+  background: #D8D7D6;
   color: rgba(0, 0, 0, 0.87);
 }
 .p-datatable .p-sortable-column:not(.p-highlight):hover .p-sortable-column-icon {
@@ -2797,7 +2790,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   outline: 0 none;
 }
 .p-datatable .p-datatable-tbody > tr {
-  background: #ffffff;
+  background: #E9E8E7;
   color: rgba(0, 0, 0, 0.87);
   transition: none;
 }
@@ -4390,7 +4383,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .p-toolbar {
-  background: #ffffff;
+  background: #E9E8E7;
   border: 1px solid #e0e0e0;
   padding: 1rem;
   border-radius: 4px;
@@ -4616,9 +4609,9 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .p-fileupload .p-fileupload-buttonbar {
-  background: #ffffff;
+  background: transparent;
   padding: 1rem;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #cdcccb;
   color: rgba(0, 0, 0, 0.87);
   border-bottom: 0 none;
   border-top-right-radius: 4px;
@@ -4633,9 +4626,9 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   box-shadow: none;
 }
 .p-fileupload .p-fileupload-content {
-  background: #ffffff;
+  background: transparent;
   padding: 2rem 1rem;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #cdcccb;
   color: rgba(0, 0, 0, 0.87);
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
@@ -6426,7 +6419,7 @@ p-autocomplete.ng-dirty.ng-invalid .p-autocomplete .p-autocomplete-multiple-cont
   min-width: auto;
 }
 .p-button:enabled:focus {
-  background: rgba(103, 58, 183, 0.76);
+  background: rgba(103, 58, 183, 1);
 }
 .p-button:enabled:active {
   background: rgba(103, 58, 183, 0.68);
@@ -7485,12 +7478,14 @@ p-multiselect.ng-dirty.ng-invalid .p-multiselect:not(.p-disabled).p-focus {
 }
 
 .p-selectbutton .p-button:focus {
-  background: #e0e0e1;
-  border-color: #e0e0e1;
+  background: #4A2799;
+  border-color: #4A2799;
+  color: #eee
 }
 .p-selectbutton .p-button:focus.p-highlight {
-  background: #d9d8d9;
-  border-color: #d9d8d9;
+  background: #4A2799;
+  border-color: #4A2799;
+  color: #eee
 }
 
 .p-slidemenu .p-menuitem-link:focus {

@@ -22,9 +22,13 @@ import { LocationListComponent } from './components/collection/location-list/loc
 import { CommentListComponent } from './components/collection/comment-list/comment-list.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { AddCollectionComponent } from './components/add/add-collection/add-collection.component';
+import { CollectionLocationsComponent } from './components/add/collection-locations/collection-locations.component';
+import { CollectionItemsComponent } from './components/add/collection-items/collection-items.component';
+import { CollectionDataComponent } from './components/add/collection-data/collection-data.component';
 
 // SERVICES
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { LoadingInterceptorService } from './services/loading-interceptor.service';
 
@@ -40,6 +44,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 // PRIMENG MODULES
 import { TableModule } from 'primeng/table';
@@ -53,7 +59,13 @@ import { AvatarModule } from 'primeng/avatar';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { MessagesModule } from 'primeng/messages';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-
+import { StepsModule } from 'primeng/steps';
+import { FileUploadModule } from 'primeng/fileupload';
+import { DialogModule } from 'primeng/dialog';
+import { ToolbarModule } from 'primeng/toolbar';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { ConfirmDialogModule } from 'primeng/confirmdialog'
+import { ToastModule } from 'primeng/toast';
 
 const routes: Routes = [
   {path: 'home', component: HomePageComponent},
@@ -63,8 +75,19 @@ const routes: Routes = [
   {path: 'verify', component: VerificationComponent},
   {path: 'collections', component: CollectionListComponent},
   {path: 'collections/1', component: CollectionInfoComponent},
+  {
+    path: 'add-collection',
+    component: AddCollectionComponent,
+    children: [
+      { path: '', redirectTo: 'info', pathMatch: 'full'},
+      { path: 'info', component: CollectionDataComponent },
+      { path: 'locations', component: CollectionLocationsComponent },
+      { path: 'items', component: CollectionItemsComponent },
+    ],
+  },
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', redirectTo: '/home', pathMatch: 'full'},
+  
 ];
 
 @NgModule({
@@ -81,7 +104,11 @@ const routes: Routes = [
     CommentListComponent,
     LocationListComponent,
     LogoutComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    AddCollectionComponent,
+    CollectionLocationsComponent,
+    CollectionItemsComponent,
+    CollectionDataComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -102,6 +129,8 @@ const routes: Routes = [
     MatCheckboxModule,
     MatDividerModule,
     MatListModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     TableModule,
     SliderModule,
     InputNumberModule,
@@ -112,10 +141,17 @@ const routes: Routes = [
     AvatarModule,
     InputTextareaModule,
     MessagesModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    StepsModule,
+    FileUploadModule,
+    DialogModule,
+    ToolbarModule,
+    SelectButtonModule,
+    ConfirmDialogModule,
+    ToastModule
   ],
   providers: [
-    ConfirmationService, 
+    ConfirmationService, MessageService,
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true}, 
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptorService, multi: true}
   ],

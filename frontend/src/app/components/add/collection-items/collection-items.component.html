@@ -1,0 +1,134 @@
+<div class="d-flex justify-content-center mt-5">
+  <div class="card col-lg-10 col-md-10 col-sm-12 col-12">
+    <p-toolbar styleClass="mb-2 gap-2">
+      <ng-template pTemplate="left">
+        <button
+          pButton
+          pRipple
+          type="submit"
+          class="btn my-btn-primary btn-sm"
+          style="padding-left: 1.5rem; padding-right: 1.5rem"
+          (click)="addNewItem()"
+        >
+          Dodaj przedmiot
+        </button>
+      </ng-template>
+    </p-toolbar>
+
+    <p-table
+      #dt
+      [value]="items"
+      [rows]="5"
+      [paginator]="true"
+      [tableStyle]="{ 'min-width': '40rem' }"
+      [rowHover]="false"
+      dataKey="id"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+          <h5 class="m-0">Zarządzaj przedmiotami zbiórki</h5>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr class="thead-color">
+          <th>Nazwa</th>
+          <th>Kategoria</th>
+          <th>Typ</th>
+          <th>Maksymalna ilość</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item>
+        <tr>
+          <td>{{ item.name }}</td>
+          <td>{{ item.category | translate }}</td>
+          <td>{{ item.type | translate }}</td>
+          <td>{{ item.maxAmount }}</td>
+          <td>
+            <button
+              pButton
+              pRipple
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-warning"
+              (click)="deleteItem(items.indexOf(item))"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+          Dodano {{ items ? items.length : 0 }} przedmiotów
+        </div>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <p-dialog
+    [(visible)]="itemDialog"
+    [style]="{ width: '450px', height: '650px' }"
+    header="Nowy przedmiot"
+    [modal]="true"
+    styleClass="p-fluid"
+  >
+    <ng-template pTemplate="content">
+      <form role="form" [formGroup]="form" class="form" #formDirective="ngForm">
+        <!-- NAME -->
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Nazwa</mat-label>
+          <input type="text" matInput formControlName="name" />
+          <mat-error *ngIf="checkValidation('name')">
+            Nazwa musi zawiera od 1 do 30 znaków
+          </mat-error>
+        </mat-form-field>
+
+        <!-- CATEGORY -->
+        <p-dropdown
+          [options]="itemCategory"
+          formControlName="category"
+          placeholder="Wybierz kategorię"
+          optionLabel="category"
+          optionValue="value"
+          [showClear]="true"
+          styleClass="mb-4"
+        ></p-dropdown>
+
+        <!-- TYPE -->
+        <h5>Określ rodzaj przedmiotu i jego ilość</h5>
+        <p-selectButton
+          [options]="itemTypes"
+          formControlName="type"
+          optionLabel="type"
+          optionValue="value"
+          styleClass="mb-2"
+          (onChange)="changeItemType($event)"
+        ></p-selectButton>
+
+        <!-- MAX AMOUNT -->
+        <p-inputNumber
+          formControlName="maxAmount"
+          suffix=" {{ sufix }}"
+        ></p-inputNumber>
+      </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <button
+        pButton
+        pRipple
+        label="Anuluj"
+        icon="pi pi-times"
+        class="p-button-text"
+        (click)="hideDialog()"
+      ></button>
+      <button
+        pButton
+        pRipple
+        label="Dodaj"
+        icon="pi pi-check"
+        class="p-button-text"
+        (click)="saveItem()"
+        [disabled]="form.invalid"
+      ></button>
+    </ng-template>
+  </p-dialog>
+</div>

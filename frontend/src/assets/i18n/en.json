@@ -113,5 +113,10 @@
         "verification.error": "The given code is invalid",
         "verification.code.wrong": "The given code is invalid",
         "verification.code.send.wait": "You must wait {{time}} seconds to resend the activation code"
+    },
+    "item": {
+        "weight": "Weight",
+        "amount": "Amount",
+        "unlimited": "Unlimited"
     }
 }

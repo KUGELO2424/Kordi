@@ -1,0 +1,12 @@
+.card-transparent {
+    border: none;
+    background-color: transparent;
+}
+
+.content {
+    max-width: 1200px;
+}
+
+section {
+    width: 100%;
+}

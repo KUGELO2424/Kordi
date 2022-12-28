@@ -113,6 +113,11 @@
         "verification.error": "Podany kod jest nieprawidłowy",
         "verification.code.wrong": "Podany kod jest nieprawidłowy",
         "verification.code.send.wait": "Musisz poczekać {{time}} sekund, by wysłać kod aktywacyjny ponownie"
+    },
+    "item": {
+        "weight": "Waga",
+        "amount": "Sztuki",
+        "unlimited": "Bez limitu"
     }
     
 }

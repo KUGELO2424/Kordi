@@ -43,6 +43,7 @@ import static pl.kucharski.Kordi.CollectionData.YESTERDAY;
 import static pl.kucharski.Kordi.CollectionData.createCollectionDTOWithId;
 import static pl.kucharski.Kordi.CollectionData.createCollectionDTOWithoutId;
 import static pl.kucharski.Kordi.CollectionData.createCollectionWithId;
+import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_END_DATE_INVALID;
 import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_NOT_FOUND;
 
 @ExtendWith(MockitoExtension.class)
@@ -72,14 +73,6 @@ class CollectionServiceImplTest {
         COLLECTION_WITH_ID = createCollectionWithId();
         COLLECTION_DTO_WITH_ID = createCollectionDTOWithId();
         COLLECTION_DTO_WITHOUT_ID = createCollectionDTOWithoutId();
-    }
-
-    @BeforeAll
-    static void setUpContext() {
-        Authentication authentication = mock(Authentication.class);
-        SecurityContext securityContext = mock(SecurityContext.class);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
     }
 
     @AfterAll
@@ -216,6 +209,10 @@ class CollectionServiceImplTest {
     @Test
     void shouldSaveCollection() {
         // given
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
         when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(USERNAME);
         given(userRepository.findUserByUsername(USERNAME)).willReturn(Optional.of(USER));
         given(collectionRepository.save(any())).willReturn(COLLECTION_WITH_ID);
@@ -226,6 +223,23 @@ class CollectionServiceImplTest {
         // then
         assertEquals(COLLECTION_DTO_WITH_ID, savedCollectionDTO);
         SecurityContextHolder.clearContext();
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentIfEndDateIsInThePast() {
+        // given
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(USERNAME);
+        given(userRepository.findUserByUsername(USERNAME)).willReturn(Optional.of(USER));
+        COLLECTION_DTO_WITHOUT_ID.setEndTime(YESTERDAY);
+
+        // when + then
+        IllegalArgumentException exception =
+                assertThrows(IllegalArgumentException.class, () -> underTest.saveCollection(COLLECTION_DTO_WITHOUT_ID));
+        assertEquals(COLLECTION_END_DATE_INVALID, exception.getMessage());
     }
 
     @Test

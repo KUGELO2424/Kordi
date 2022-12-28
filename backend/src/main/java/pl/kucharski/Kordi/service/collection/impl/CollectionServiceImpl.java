@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_END_DATE_INVALID;
 import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_NOT_FOUND;
 import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND;
 
@@ -88,6 +89,9 @@ public class CollectionServiceImpl implements CollectionService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
+        if (collectionDTO.getEndTime() != null && collectionDTO.getEndTime().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException(COLLECTION_END_DATE_INVALID);
+        }
         collectionDTO.setUserId(user.getId());
         Collection collection = collectionMapper.mapToCollection(collectionDTO);
         Collection savedCollection = collectionRepository.save(collection);

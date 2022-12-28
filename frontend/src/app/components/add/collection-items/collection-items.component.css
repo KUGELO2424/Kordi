@@ -1,0 +1,15 @@
+p-toolbar {
+    background-color: #E9E8E7;
+}
+
+p-paginator {
+    background-color: #E9E8E7;
+}
+
+.my-input {
+    padding: 1em 1em;
+}
+
+.my-input:focus {
+    border: none;
+}
