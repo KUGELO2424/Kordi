@@ -3,6 +3,7 @@ package pl.kucharski.Kordi.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,6 +37,7 @@ import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_VERIFIED_PHONE;
  *
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
  */
+@Slf4j
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
@@ -59,6 +61,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             throws AuthenticationException{
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        log.info("Authentication attempt with credentials: {}", username);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authentication = null;
         try {
@@ -66,12 +69,15 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             UserDTO user = userService.getUserByUsername(username);
             if (!user.isEnabled()) {
                 if (user.getVerificationType().equals(VerificationType.EMAIL)) {
+                    log.warn("User {} not verified", username);
                     throw new DisabledException(USER_NOT_VERIFIED_EMAIL);
                 } else {
+                    log.warn("User {} not verified", username);
                     throw new DisabledException(USER_NOT_VERIFIED_PHONE);
                 }
             }
         } catch(Exception e) {
+            log.warn("Cannot authenticate user");
             writeErrorToResponse(response, e);
         }
         return authentication;
@@ -84,6 +90,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain chain, Authentication authentication)
             throws IOException {
+        log.info("Authentication was successful. Generating JWT token...");
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils
                 .commaSeparatedStringToAuthorityList("ROLE_USER");
         User user = (User) authentication.getPrincipal();
@@ -99,6 +106,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         Map<String, String> token = new HashMap<>();
         token.put("access_token", accessToken);
         response.setContentType(APPLICATION_JSON_VALUE);
+        log.info("Returning generated token");
         new ObjectMapper().writeValue(response.getOutputStream(), token);
     }
 

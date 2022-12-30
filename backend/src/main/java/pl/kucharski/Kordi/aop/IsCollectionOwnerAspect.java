@@ -1,6 +1,7 @@
 package pl.kucharski.Kordi.aop;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -23,6 +24,7 @@ import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND;
 /**
  * An aspect that check if logged user is collection owner.
  */
+@Slf4j
 @Aspect
 @Component
 @RequiredArgsConstructor
@@ -34,11 +36,13 @@ public class IsCollectionOwnerAspect {
     @Around("@annotation(IsCollectionOwner) && args(collectionId,..)")
     public Object isCollectionOwnerAdvice(ProceedingJoinPoint joinPoint, long collectionId) throws Throwable {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("Checking if user {} is owner of collection with id {}", username, collectionId);
         Collection collection = collectionRepository.findById(collectionId)
                 .orElseThrow(() ->  new CollectionNotFoundException(COLLECTION_NOT_FOUND));
         User user = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         if (!Objects.equals(collection.getUserId(), user.getId())) {
+            log.warn("User {} is not an owner of collection with id {}", username, collectionId);
             throw new NotOwnerOfCollectionException(CURRENT_USER_NOT_AN_OWNER);
         }
         return joinPoint.proceed();

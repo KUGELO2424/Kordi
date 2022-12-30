@@ -1,5 +1,6 @@
 package pl.kucharski.Kordi.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,7 @@ import java.net.URI;
  *
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
  */
+@Slf4j
 @RestController
 public class CollectionController {
 
@@ -58,6 +60,7 @@ public class CollectionController {
             @RequestParam(value = "pageSize",
                     defaultValue = PaginationConstants.DEFAULT_PAGE_SIZE,
                     required = false) int pageSize) {
+        log.info("Request to get all collections for user {}", username);
         return ResponseEntity.ok(collectionService.getCollectionsByUser(username, PageRequest.of(pageNo, pageSize)));
     }
 
@@ -71,9 +74,12 @@ public class CollectionController {
     @GetMapping("/collections/{collectionId}")
     ResponseEntity<?> getCollectionById(@PathVariable("collectionId") Long collectionId) {
         try {
+            log.info("Request to get collection by id, collectionId: {}", collectionId);
             CollectionDTO collection = collectionService.getCollectionById(collectionId);
+            log.info("Returning collection: {}", collection);
             return ResponseEntity.ok(collection);
         } catch (CollectionNotFoundException ex) {
+            log.warn("Collection with id {} not found", collectionId);
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     ex.getMessage());
@@ -103,6 +109,8 @@ public class CollectionController {
             @RequestParam(value = "pageSize",
                 defaultValue = PaginationConstants.DEFAULT_PAGE_SIZE,
                 required = false) int pageSize) {
+        log.info("Request to get collections with search params, title:{}, city:{}, street:{}, itemName:{}",
+                title, city, street, itemName);
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         return ResponseEntity.ok(collectionService.getCollectionsWithFiltering(title, city, street, itemName, pageable));
     }
@@ -120,9 +128,11 @@ public class CollectionController {
     ResponseEntity<?> saveCollection(
             @RequestBody @Valid CollectionDTO collection) {
         try {
+            log.info("Request to save collection: {}", collection);
             CollectionDTO savedCollection = collectionService.saveCollection(collection);
             return ResponseEntity.created(URI.create("/collections/" + savedCollection.getId())).body(savedCollection);
         } catch (UserNotFoundException ex) {
+            log.warn("Logged user not found in database");
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     ex.getMessage());
@@ -141,6 +151,7 @@ public class CollectionController {
     ResponseEntity<?> updateCollection(
             @RequestBody CollectionUpdateDTO collectionToUpdate) {
         try {
+            log.info("Request to update collection: {}", collectionToUpdate);
             CollectionDTO updatedCollection = collectionService.updateCollection(
                     collectionToUpdate.getId(),
                     collectionToUpdate.getTitle(),
@@ -148,6 +159,7 @@ public class CollectionController {
                     collectionToUpdate.getEndTime());
             return ResponseEntity.ok(updatedCollection);
         } catch (CollectionNotFoundException ex) {
+            log.warn("Collection with id {} not found", collectionToUpdate.getId());
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     ex.getMessage());
@@ -166,9 +178,11 @@ public class CollectionController {
     @PostMapping("/collections/{collectionId}/addresses")
     ResponseEntity<?> addAddressToCollection(@PathVariable long collectionId, @RequestBody AddressDTO address) {
         try {
+            log.info("Request to add new address: {} to collection with id {}", address, collectionId);
             addressService.addCollectionAddress(collectionId, address);
             return ResponseEntity.ok("New address added to collection with id " + collectionId);
         } catch (CollectionNotFoundException ex) {
+            log.warn("Collection with id {} not found", collectionId);
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     ex.getMessage());
@@ -187,6 +201,7 @@ public class CollectionController {
     @DeleteMapping("/collections/{collectionId}/addresses")
     ResponseEntity<?> removeAddressFromCollection(@PathVariable long collectionId, @RequestBody AddressDTO address) {
         try {
+            log.info("Request to remove address: {} from collection with id {}", address, collectionId);
             addressService.removeCollectionAddress(collectionId, address);
             return ResponseEntity.ok("Address removed from collection with id " + collectionId);
         } catch (CollectionNotFoundException ex) {

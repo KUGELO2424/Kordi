@@ -1,5 +1,6 @@
 package pl.kucharski.Kordi.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ import java.util.List;
  *
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
  */
+@Slf4j
 @RestController
 @RequestMapping("/collections")
 public class CommentController {
@@ -49,6 +51,7 @@ public class CommentController {
     @PostMapping("/{collectionId}/comments")
     ResponseEntity<?> addComment(@PathVariable("collectionId") Long collectionId, @RequestBody CreateCommentDTO comment){
         try {
+            log.info("Request to add comment: {} to collection with id {}", comment, collectionId);
             CommentDTO addedComment = commentService.addComment(collectionId, comment);
             return ResponseEntity.created(
                     URI.create("/collections/" + collectionId + "/comments/" + addedComment.getId())
@@ -70,6 +73,7 @@ public class CommentController {
     @DeleteMapping("/{collectionId}/comments/{commentId}")
     ResponseEntity<?> removeComment(@PathVariable("collectionId") Long collectionId, @PathVariable("commentId") Long commentId){
         try {
+            log.info("Request to remove comment with id {} from collection with id {}", commentId, collectionId);
             commentService.removeComment(collectionId, commentId);
             return ResponseEntity.ok("Comment with id " + commentId + " deleted");
         } catch (CollectionNotFoundException | CommentNotFoundException ex) {
@@ -93,6 +97,7 @@ public class CommentController {
                                                        defaultValue = PaginationConstants.DEFAULT_PAGE_SIZE,
                                                        required = false) int pageSize){
         try {
+            log.info("Request to get all comments from collection with id {}", collectionId);
             List<CommentDTO> comments = commentService.getAllComments(collectionId, PageRequest.of(pageNo, pageSize));
             return ResponseEntity.ok(comments);
         } catch (CollectionNotFoundException ex) {

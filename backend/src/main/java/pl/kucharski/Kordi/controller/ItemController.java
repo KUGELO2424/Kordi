@@ -1,5 +1,6 @@
 package pl.kucharski.Kordi.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,7 @@ import java.util.List;
  *
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
  */
+@Slf4j
 @RestController
 @RequestMapping("/collections")
 public class ItemController {
@@ -52,9 +54,11 @@ public class ItemController {
     ResponseEntity<?> addNewItemToCollection(@PathVariable("collectionId") Long collectionId,
                                              @RequestBody @Valid CollectionItemDTO item) {
         try {
+            log.info("Request to add item {} to collection with id {}", item, collectionId);
             itemService.addCollectionItem(collectionId, item);
             return ResponseEntity.ok().body("Item added to collection with id " + collectionId);
         } catch (CollectionNotFoundException ex) {
+            log.warn("Collection with id {} not found", collectionId);
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     ex.getMessage());
@@ -77,6 +81,7 @@ public class ItemController {
                                            @PathVariable("itemId") Long itemId,
                                            @RequestBody @Valid CollectionItemUpdateDTO item) {
         try {
+            log.info("Request to update item {} with id {} from collection with id {}", item, itemId, collectionId);
             CollectionItemDTO updatedItem =
                     itemService.updateCollectionItem(collectionId, itemId, item.getCurrentAmount(), item.getMaxAmount());
             return ResponseEntity.ok(updatedItem);
@@ -103,6 +108,7 @@ public class ItemController {
                                  @PathVariable("itemId") Long itemId,
                                  @RequestBody SubmittedItemDTO item) {
         try {
+            log.info("Request to submit item {}", item);
             CollectionItemDTO updatedItem = itemService.submitItem(collectionId, itemId, item);
             return ResponseEntity.ok(updatedItem);
         } catch (CollectionItemException ex) {
@@ -122,6 +128,7 @@ public class ItemController {
     @GetMapping("/{collectionId}/submittedItems")
     ResponseEntity<?> getSubmittedItems(@PathVariable("collectionId") Long collectionId) {
         try {
+            log.info("Request to get submitted items from collection with id {}", collectionId);
             List<SubmittedItemDTO> submittedItems = itemService.getSubmittedItems(collectionId);
             return ResponseEntity.ok(submittedItems);
         } catch (CollectionNotFoundException ex) {
@@ -142,6 +149,7 @@ public class ItemController {
     ResponseEntity<?> getSubmittedItems(@PathVariable("collectionId") Long collectionId,
                                         @PathVariable("itemId") Long itemId) {
         try {
+            log.info("Request to get submitted items from collection with id {} for item with id {}", collectionId, itemId);
             List<SubmittedItemDTO> submittedItems = itemService.getSubmittedItemsForSpecificItem(collectionId, itemId);
             return ResponseEntity.ok(submittedItems);
         } catch (CollectionNotFoundException | CollectionItemNotFoundException ex) {
@@ -156,6 +164,7 @@ public class ItemController {
      */
     @GetMapping("/categories")
     ResponseEntity<?> getAllCategories() {
+        log.info("Request to get all categories");
         return ResponseEntity.ok(Arrays.stream(ItemCategory.values()).toList());
     }
 

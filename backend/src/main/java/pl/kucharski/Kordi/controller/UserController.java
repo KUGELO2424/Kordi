@@ -1,5 +1,6 @@
 package pl.kucharski.Kordi.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,7 @@ import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND_WITH_GIVEN_TOK
  *
  * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
  */
+@Slf4j
 @RestController
 public class UserController {
 
@@ -56,6 +58,7 @@ public class UserController {
      */
     @GetMapping("/users")
     public ResponseEntity<?> getUsers() {
+        log.info("Request to get all users");
         return ResponseEntity.ok(userService.getUsers());
     }
 
@@ -68,6 +71,7 @@ public class UserController {
     @GetMapping("/users/{username}")
     public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
         try {
+            log.info("Request to get user by username {}", username);
             UserDTO user = userService.getUserByUsername(username);
             return ResponseEntity.ok(user);
         } catch (UserNotFoundException ex) {
@@ -90,6 +94,7 @@ public class UserController {
     public ResponseEntity<?> saveUser(@RequestBody @Valid UserRegistrationDTO user) {
         VerificationStatus result;
         try {
+            log.info("Request to save user {}", user);
             result = userService.saveUser(user);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
@@ -111,6 +116,7 @@ public class UserController {
     public ResponseEntity<?> sendVerificationTokenAgain(@RequestParam("username") String username) {
         VerificationStatus result;
         try {
+            log.info("Request to send verification token for user {}", username);
             UserDTO userDTO = userService.getUserByUsername(username);
             result = userService.sendVerificationToken(userDTO);
         } catch (UserNotFoundException ex) {
@@ -136,6 +142,7 @@ public class UserController {
     public ResponseEntity<?> verifyUser(@RequestParam("token") String token,
                                         @RequestParam(value = "phone", required = false) String phone) {
         try {
+            log.info("Request to verify user with token {} and phone number {}", token, phone);
             VerificationStatus result;
             if (phone != null) {
                 result = verifyUserOnPhoneVerification(token, phone);
@@ -164,6 +171,7 @@ public class UserController {
                                                  @RequestParam("oldPassword") String oldPassword) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         try {
+            log.info("Request to update password for user {}", username);
             userService.updatePassword(username, oldPassword, newPassword);
             return ResponseEntity.ok().body("Password has been updated");
         } catch (InvalidPasswordException ex) {
@@ -175,11 +183,13 @@ public class UserController {
     }
 
     private VerificationStatus verifyUserOnPhoneVerification(String token, String phone) {
+        log.info("Verifying user with phone verification");
         UserDTO user = userService.getUserByPhone(phone);
         return userService.verifyToken(user, token);
     }
 
     private VerificationStatus verifyUserOnEmailVerification(String token) {
+        log.info("Verifying user with email verification");
         EmailToken emailToken = tokenService.getToken(token).orElseThrow(() -> {
             throw new UserNotFoundException(USER_NOT_FOUND_WITH_GIVEN_TOKEN);
         });
