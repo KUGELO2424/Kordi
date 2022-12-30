@@ -44,14 +44,44 @@ TWILIO_AUTH_TOKEN=test
 TWILIO_SERVICE_ID=test
 ```
 
+**Step 4:**
+Project use mailing for verifing user by email address. To use email verification add enviromental variables to configuration.properties file locally with proper values.
+Example values in configuration.properties that could be used for mail server
+```
+MAIL_HOST=localhost
+MAIL_PORT=1025
+MAIL_USER=test
+MAIL_PASSWORD=test
+```
+
 ## Technologies
 
 * Java 11
-* Spring (Security, Data)
-* Maven
+* Spring 5.3.20 (Security, Data, Boot)
+* Maven 3.8.1
 * Junit 5
-* Lombok
-* MapStruct
+* Lombok 1.18.24
+* SPringdoc 1.6.11
+* MapStruct 1.5.2
+* Twilio 8.31.1
 * MySQL
-* TypeScript
-* Angular
+* TypeScript 4.6.2
+* Angular 14
+* Bootstrap 5.2.2
+* PrimeNG 14
+
+## Demo
+### Home
+![11](https://user-images.githubusercontent.com/55559640/210115968-a012e748-8315-4b32-8117-41bec39f5afb.PNG)
+### Login
+![12](https://user-images.githubusercontent.com/55559640/210115972-6e6a4c2d-1f80-401a-b7ea-8eb7d4e0ac5e.PNG)
+### Signup
+![13](https://user-images.githubusercontent.com/55559640/210115988-1db67021-2c6d-4c40-8b70-b28fa48709aa.PNG)
+### Add new collection
+![14](https://user-images.githubusercontent.com/55559640/210116026-c452a5ce-ec87-4433-b900-6b16ba80acd6.PNG)
+### Collection list
+![15](https://user-images.githubusercontent.com/55559640/210116022-d3600ad2-7636-45b9-afa1-66265465736a.PNG)
+### Collection
+![16](https://user-images.githubusercontent.com/55559640/210116020-fc7fd605-fba5-4b77-8342-5bdd3732693e.PNG)
+### Collection locations & items
+![17](https://user-images.githubusercontent.com/55559640/210116015-b35607bb-d308-435c-8679-c5e6e01d2b56.PNG)
