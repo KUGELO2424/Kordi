@@ -10,7 +10,7 @@
           style="padding-left: 1.5rem; padding-right: 1.5rem"
           (click)="addNewItem()"
         >
-          Dodaj przedmiot
+          {{ "add-collection.item.add" | translate }}
         </button>
       </ng-template>
     </p-toolbar>
@@ -26,15 +26,15 @@
     >
       <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
-          <h5 class="m-0">Zarządzaj przedmiotami zbiórki</h5>
+          <h5 class="m-0">{{ "add-collection.item.manage" | translate }}</h5>
         </div>
       </ng-template>
       <ng-template pTemplate="header">
         <tr class="thead-color">
-          <th>Nazwa</th>
-          <th>Kategoria</th>
-          <th>Typ</th>
-          <th>Maksymalna ilość</th>
+          <th>{{ "add-collection.item.name" | translate }}</th>
+          <th>{{ "add-collection.item.category" | translate }}</th>
+          <th>{{ "add-collection.item.type" | translate }}</th>
+          <th>{{ "add-collection.item.max" | translate }}</th>
           <th></th>
         </tr>
       </ng-template>
@@ -57,7 +57,9 @@
       </ng-template>
       <ng-template pTemplate="summary">
         <div class="flex align-items-center justify-content-between">
-          Dodano {{ items ? items.length : 0 }} przedmiotów
+          {{
+            "add-collection.item.added" | translate : { number: items.length }
+          }}
         </div>
       </ng-template>
     </p-table>
@@ -74,10 +76,10 @@
       <form role="form" [formGroup]="form" class="form" #formDirective="ngForm">
         <!-- NAME -->
         <mat-form-field class="full-width" appearance="outline">
-          <mat-label>Nazwa</mat-label>
+          <mat-label>{{ "add-collection.item.name" | translate }}</mat-label>
           <input type="text" matInput formControlName="name" />
           <mat-error *ngIf="checkValidation('name')">
-            Nazwa musi zawiera od 1 do 30 znaków
+            {{ "add-collection.item.name.error" | translate }}
           </mat-error>
         </mat-form-field>
 
@@ -85,7 +87,7 @@
         <p-dropdown
           [options]="itemCategory"
           formControlName="category"
-          placeholder="Wybierz kategorię"
+          placeholder="{{ 'add-collection.item.category.text' | translate }}"
           optionLabel="category"
           optionValue="value"
           [showClear]="true"
@@ -93,7 +95,7 @@
         ></p-dropdown>
 
         <!-- TYPE -->
-        <h5>Określ rodzaj przedmiotu i jego ilość</h5>
+        <h5>{{ "add-collection.item.type.text" | translate }}</h5>
         <p-selectButton
           [options]="itemTypes"
           formControlName="type"
@@ -115,7 +117,7 @@
       <button
         pButton
         pRipple
-        label="Anuluj"
+        label="{{ 'add-collection.cancle' | translate }}"
         icon="pi pi-times"
         class="p-button-text"
         (click)="hideDialog()"
@@ -123,7 +125,7 @@
       <button
         pButton
         pRipple
-        label="Dodaj"
+        label="{{ 'add-collection.add' | translate }}"
         icon="pi pi-check"
         class="p-button-text"
         (click)="saveItem()"

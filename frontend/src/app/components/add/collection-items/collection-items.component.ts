@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, UntypedFormControl, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { ItemCategory, NewItem, ItemType } from 'app/common/itemToAdd';
+import { TranslateService } from '@ngx-translate/core';
+import { ItemCategory, Item, ItemType } from 'app/common/itemToAdd';
 import { AddCollectionStateService } from 'app/services/add-collection-state.service';
 import { Table } from 'primeng/table';
 
@@ -15,9 +16,9 @@ export class CollectionItemsComponent implements OnInit {
 
   itemDialog: boolean;
 
-  items: NewItem[] = [];
+  items: Item[] = [];
 
-  item: NewItem;
+  item: Item;
 
   submitted: boolean;
 
@@ -36,21 +37,23 @@ export class CollectionItemsComponent implements OnInit {
     maxAmount: new UntypedFormControl('', [Validators.required, Validators.min(1)]),
   });
 
-  constructor(private stateService: AddCollectionStateService) {
-    this.itemTypes = [
-      {type: 'Waga', value: ItemType.WEIGHT},
-      {type: 'Sztuki', value: ItemType.AMOUNT},
-      {type: 'Bez limitu', value: ItemType.UNLIMITED},
-    ]
-    this.itemCategory = [
-      {category: 'Zwierzęta', value: ItemCategory.ANIMALS},
-      {category: 'Dla dzieci', value: ItemCategory.CHILDREN},
-      {category: 'Ubrania', value: ItemCategory.CLOTHES},
-      {category: 'Elektronika', value: ItemCategory.ELECTRONIC},
-      {category: 'Żywność', value: ItemCategory.FOOD},
-      {category: 'Leki', value: ItemCategory.MEDICINE},
-      {category: 'Inne', value: ItemCategory.OTHER},
-    ]
+  constructor(private stateService: AddCollectionStateService, private translate: TranslateService) {
+    this.translate.get('add-collection.locations').subscribe(() => {
+      this.itemTypes = [
+        {type: this.translate.instant('item.weight'), value: ItemType.WEIGHT},
+        {type: this.translate.instant('item.amount'), value: ItemType.AMOUNT},
+        {type: this.translate.instant('item.unlimited'), value: ItemType.UNLIMITED},
+      ]
+      this.itemCategory = [
+        {category: this.translate.instant('category.animals'), value: ItemCategory.ANIMALS},
+        {category: this.translate.instant('category.children'), value: ItemCategory.CHILDREN},
+        {category: this.translate.instant('category.clothes'), value: ItemCategory.CLOTHES},
+        {category: this.translate.instant('category.electronic'), value: ItemCategory.ELECTRONIC},
+        {category: this.translate.instant('category.food'), value: ItemCategory.FOOD},
+        {category: this.translate.instant('category.medicine'), value: ItemCategory.MEDICINE},
+        {category: this.translate.instant('category.other'), value: ItemCategory.OTHER},
+      ]
+    })
     this.form.get('maxAmount')?.disable();
   }
 
@@ -75,7 +78,7 @@ export class CollectionItemsComponent implements OnInit {
   }
 
   saveItem() {
-    this.item = new NewItem();
+    this.item = new Item();
     this.item.id = this.createId();
     this.item.name = this.form.value.name;
     this.item.type = this.form.value.type;
@@ -120,7 +123,7 @@ export class CollectionItemsComponent implements OnInit {
       this.sufix = " kg";
     } else if (itemType === ItemType.AMOUNT) {
       this.form.get('maxAmount')?.enable();
-      this.sufix = " szt"
+      this.sufix = this.translate.instant('item.suffix')
     } else {
       this.form.get('maxAmount')?.disable();
       this.sufix = ""

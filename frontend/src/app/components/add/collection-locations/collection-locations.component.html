@@ -10,7 +10,7 @@
           style="padding-left: 1.5rem; padding-right: 1.5rem"
           (click)="addNewLocation()"
         >
-          Dodaj lokalizację
+          {{ "add-collection.location.add" | translate }}
         </button>
       </ng-template>
     </p-toolbar>
@@ -26,13 +26,17 @@
     >
       <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
-          <h5 class="m-0">Zarządzaj lokalizacjami zbiórki</h5>
+          <h5 class="m-0">
+            {{ "add-collection.location.manage" | translate }}
+          </h5>
         </div>
       </ng-template>
       <ng-template pTemplate="header">
         <tr class="thead-color">
-          <th style="min-width: 7rem">Miasto</th>
-          <th>Ulica</th>
+          <th style="min-width: 7rem">
+            {{ "add-collection.location.city" | translate }}
+          </th>
+          <th>{{ "add-collection.location.street" | translate }}</th>
           <th></th>
         </tr>
       </ng-template>
@@ -53,7 +57,10 @@
       </ng-template>
       <ng-template pTemplate="summary">
         <div class="flex align-items-center justify-content-between">
-          Dodano {{ locations ? locations.length : 0 }} lokalizacji
+          {{
+            "add-collection.location.added"
+              | translate : { number: locations.length }
+          }}
         </div>
       </ng-template>
     </p-table>
@@ -62,7 +69,7 @@
   <p-dialog
     [(visible)]="locationDialog"
     [style]="{ width: '450px' }"
-    header="Nowa lokalizacja"
+    header="{{ 'add-collection.location.new' | translate }}"
     [modal]="true"
     styleClass="p-fluid"
   >
@@ -70,19 +77,23 @@
       <form role="form" [formGroup]="form" class="form" #formDirective="ngForm">
         <!-- CITY -->
         <mat-form-field class="full-width" appearance="outline">
-          <mat-label>Miasto</mat-label>
+          <mat-label>{{
+            "add-collection.location.city" | translate
+          }}</mat-label>
           <input type="text" matInput formControlName="city" />
           <mat-error *ngIf="checkValidation('city')">
-            Miasto musi zawiera od 1 do 30 znaków
+            {{ "add-collection.location.city.error" | translate }}
           </mat-error>
         </mat-form-field>
 
         <!-- STREET -->
         <mat-form-field class="full-width" appearance="outline">
-          <mat-label>Ulica</mat-label>
+          <mat-label>{{
+            "add-collection.location.street" | translate
+          }}</mat-label>
           <input type="text" matInput formControlName="street" />
           <mat-error *ngIf="checkValidation('street')">
-            Ulica musi zawiera od 1 do 50 znaków
+            {{ "add-collection.location.street.error" | translate }}
           </mat-error>
         </mat-form-field>
       </form>
@@ -92,7 +103,7 @@
       <button
         pButton
         pRipple
-        label="Anuluj"
+        label="{{ 'add-collection.cancle' | translate }}"
         icon="pi pi-times"
         class="p-button-text"
         (click)="hideDialog()"
@@ -100,7 +111,7 @@
       <button
         pButton
         pRipple
-        label="Dodaj"
+        label="{{ 'add-collection.add' | translate }}"
         icon="pi pi-check"
         class="p-button-text"
         (click)="saveLocation()"

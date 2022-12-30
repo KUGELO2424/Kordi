@@ -3,7 +3,7 @@
   <section class="mt-5 w-100">
     <div class="d-flex justify-content-center mt-1 mb-4">
       <p class="fs-4 me-2 pt-2">
-        Uzupełnij formularz poniżej a następnie kliknij
+        {{ "add-collection.text" | translate }}
       </p>
 
       <button
@@ -14,7 +14,7 @@
         style="padding-left: 1.5rem; padding-right: 1.5rem"
         (click)="addCollection()"
       >
-        Utwórz zbiórkę
+        {{ "add-collection.create" | translate }}
       </button>
     </div>
     <div class="d-flex justify-content-center mt-1 mb-4">
@@ -64,4 +64,6 @@
       <router-outlet (activate)="routedComponent = $event"></router-outlet>
     </div>
   </section>
+  <!-- LOADING SPINNER -->
+  <app-loading-spinner></app-loading-spinner>
 </div>

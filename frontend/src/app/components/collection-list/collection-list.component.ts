@@ -26,7 +26,7 @@ export class CollectionListComponent implements OnInit {
 
   categoriesForm = this.formBuilder.group({
     food: false,
-    cloths: false,
+    clothes: false,
     animals: false,
     children: false,
     electronic: false,

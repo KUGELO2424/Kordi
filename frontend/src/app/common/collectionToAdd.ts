@@ -1,12 +1,11 @@
-import { ItemToAdd, NewItem } from "./itemToAdd";
-import { Location, LocationToAdd } from "./location";
+import { ItemToAdd } from "./itemToAdd";
+import { LocationToAdd } from "./location";
 
 export class CollectionToAdd {
     title: string;
     description: string;
-    endDate: Date;
-    userId: number;
+    endTime: Date;
     addresses: LocationToAdd[];
     items: ItemToAdd[];
-    image: Blob;
+    image: string;
 }
