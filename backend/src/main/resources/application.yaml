@@ -10,10 +10,10 @@ spring:
     hibernate:
       ddl-auto: validate
   mail:
-    host: localhost
-    port: 1025
-    username: kordi
-    password: kordi
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USER}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:

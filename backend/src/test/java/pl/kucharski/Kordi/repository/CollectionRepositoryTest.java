@@ -31,6 +31,7 @@ class CollectionRepositoryTest {
     private static final Pageable paging_with_title_sort = PageRequest.of(0, 10, Sort.by("title"));
     private static final Pageable paging_with_start_time_sort = PageRequest.of(0, 10, Sort.by("startTime"));
     private static final LocalDateTime CURRENT_TIME = LocalDateTime.now();
+    private static final List<ItemCategory> categories = List.of(ItemCategory.CLOTHES);
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private static final LocalDateTime start_time_01 = LocalDateTime.parse("2022-06-28 15:15", formatter);
@@ -98,7 +99,8 @@ class CollectionRepositoryTest {
         String title = "Oliwii";
 
         // when
-        List<Collection> collections = underTest.findByTitleContaining(title, paging);
+        List<Collection> collections =
+                underTest.findWithFiltering(title, "", "", "", 0, List.of(), paging);
 
         // then
         Assertions.assertEquals(2, collections.size());
@@ -112,7 +114,8 @@ class CollectionRepositoryTest {
         String street = "Piotrkowska";
 
         // when
-        List<Collection> collections = underTest.findByTitleAndAddress(title, city, street, paging);
+        List<Collection> collections =
+                underTest.findWithFiltering(title, city, street, "", 0, List.of(), paging);
 
         // then
         Assertions.assertEquals(1, collections.size());
@@ -127,7 +130,8 @@ class CollectionRepositoryTest {
         String street = "";
 
         // when
-        List<Collection> collections = underTest.findByTitleAndAddress(title, city, street, paging);
+        List<Collection> collections =
+                underTest.findWithFiltering(title, city, street, "", 0, List.of(), paging);
 
         // then
         Assertions.assertEquals(1, collections.size());
@@ -142,7 +146,8 @@ class CollectionRepositoryTest {
         String itemName = "Buty";
 
         // when
-        List<Collection> collections = underTest.findByTitleAndAddressAndItem(title, city, street, itemName, paging);
+        List<Collection> collections =
+                underTest.findWithFiltering(title, city, street, itemName, 0, List.of(), paging);
 
         // then
         Assertions.assertEquals(1, collections.size());
@@ -158,11 +163,44 @@ class CollectionRepositoryTest {
         String itemName = "Buty";
 
         // when
-        List<Collection> collections = underTest.findByTitleAndAddressAndItem(title, city, street, itemName, paging);
+        List<Collection> collections =
+                underTest.findWithFiltering(title, city, street, itemName, 0, List.of(), paging);
 
         // then
         Assertions.assertEquals(1, collections.size());
         Assertions.assertEquals("Zbiórka dla Bartka", collections.get(0).getTitle());
+    }
+
+    @Test
+    void shouldFindCollectionsByItemCategories() {
+        // given
+        String title = "";
+        String city = "";
+        String street = "";
+        String itemName = "";
+
+        // when
+        List<Collection> collections =
+                underTest.findWithFiltering(title, city, street, itemName, categories.size(), categories, paging);
+
+        // then
+        Assertions.assertEquals(2, collections.size());
+    }
+
+    @Test
+    void shouldFindCollectionsByItemCategoriesAndItemName() {
+        // given
+        String title = "";
+        String city = "";
+        String street = "";
+        String itemName = "Buty";
+
+        // when
+        List<Collection> collections =
+                underTest.findWithFiltering(title, city, street, itemName, categories.size(), categories, paging);
+
+        // then
+        Assertions.assertEquals(1, collections.size());
     }
 
     @Test
@@ -171,7 +209,8 @@ class CollectionRepositoryTest {
         String title = "";
 
         // when
-        List<Collection> collections = underTest.findByTitleContaining(title, paging_with_title_sort);
+        List<Collection> collections =
+                underTest.findWithFiltering(title, "", "", "", 0, List.of(), paging_with_title_sort);
 
         // then
         Assertions.assertEquals(4, collections.size());
@@ -187,7 +226,8 @@ class CollectionRepositoryTest {
         String title = "";
 
         // when
-        List<Collection> collections = underTest.findByTitleContaining(title, paging_with_start_time_sort);
+        List<Collection> collections =
+                underTest.findWithFiltering(title, "", "", "", 0, List.of(), paging_with_start_time_sort);
 
         // then
         Assertions.assertEquals(4, collections.size());

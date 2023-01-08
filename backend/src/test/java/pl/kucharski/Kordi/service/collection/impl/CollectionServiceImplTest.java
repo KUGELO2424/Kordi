@@ -2,7 +2,6 @@ package pl.kucharski.Kordi.service.collection.impl;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
+import pl.kucharski.Kordi.enums.ItemCategory;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.model.address.AddressMapper;
 import pl.kucharski.Kordi.model.collection.Collection;
@@ -126,11 +126,12 @@ class CollectionServiceImplTest {
     void shouldReturnCollectionsByTitle() {
         // given
         given(collectionRepository
-                .findByTitleContaining("Zbiórka", PAGING))
+                .findWithFiltering("Zbiórka", "", "", "", 0, List.of(), PAGING))
                 .willReturn(List.of(COLLECTION_WITH_ID));
 
         // when
-        List<CollectionDTO> collections = underTest.getCollectionsWithFiltering("Zbiórka", "", "", "", PAGING);
+        List<CollectionDTO> collections =
+                underTest.getCollectionsWithFiltering("Zbiórka", "", "", "", List.of(), PAGING);
 
         // then
         Assertions.assertEquals(1, collections.size());
@@ -141,11 +142,12 @@ class CollectionServiceImplTest {
     void shouldReturnCollectionsByTitleAndAddress() {
         // given
         given(collectionRepository
-                .findByTitleAndAddress("Zbiórka", "Warszawa", "", PAGING))
+                .findWithFiltering("Zbiórka", "Warszawa", "", "", 0, List.of(), PAGING))
                 .willReturn(List.of(COLLECTION_WITH_ID));
 
         // when
-        List<CollectionDTO> collections = underTest.getCollectionsWithFiltering("Zbiórka", "Warszawa", "", "", PAGING);
+        List<CollectionDTO> collections = underTest.getCollectionsWithFiltering(
+                "Zbiórka", "Warszawa", "", "", List.of(), PAGING);
 
         // then
         Assertions.assertEquals(1, collections.size());
@@ -156,11 +158,29 @@ class CollectionServiceImplTest {
     void shouldReturnCollectionsByTitleAndAddressAndItemName() {
         // given
         given(collectionRepository
-                .findByTitleAndAddressAndItem("Zbiórka", "Warszawa", "", "Buty", PAGING))
+                .findWithFiltering("Zbiórka", "Warszawa", "", "Buty", 0, List.of(), PAGING))
                 .willReturn(List.of(COLLECTION_WITH_ID));
 
         // when
-        List<CollectionDTO> collections = underTest.getCollectionsWithFiltering("Zbiórka", "Warszawa", "", "Buty", PAGING);
+        List<CollectionDTO> collections = underTest.getCollectionsWithFiltering(
+                "Zbiórka", "Warszawa", "", "Buty", List.of(), PAGING);
+
+        // then
+        Assertions.assertEquals(1, collections.size());
+        assertEquals(COLLECTION_DTO_WITH_ID, collections.get(0));
+    }
+
+    @Test
+    void shouldReturnCollectionsByTitleAndAddressAndItemNameAndItemCategory() {
+        // given
+        given(collectionRepository
+                .findWithFiltering("Zbiórka", "Warszawa", "", "Buty", 1,
+                        List.of(ItemCategory.CLOTHES), PAGING))
+                .willReturn(List.of(COLLECTION_WITH_ID));
+
+        // when
+        List<CollectionDTO> collections = underTest.getCollectionsWithFiltering(
+                "Zbiórka", "Warszawa", "", "Buty", List.of(ItemCategory.CLOTHES), PAGING);
 
         // then
         Assertions.assertEquals(1, collections.size());
@@ -171,11 +191,12 @@ class CollectionServiceImplTest {
     void shouldReturnCollectionsByAddress() {
         // given
         given(collectionRepository
-                .findByTitleAndAddress("", "Warszawa", "",  PAGING))
+                .findWithFiltering("", "Warszawa", "", "", 0, List.of(), PAGING))
                 .willReturn(List.of(COLLECTION_WITH_ID));
 
         // when
-        List<CollectionDTO> collections = underTest.getCollectionsWithFiltering("", "Warszawa", "", "", PAGING);
+        List<CollectionDTO> collections = underTest.getCollectionsWithFiltering(
+                "", "Warszawa", "", "", List.of(), PAGING);
 
         // then
         Assertions.assertEquals(1, collections.size());
@@ -186,11 +207,12 @@ class CollectionServiceImplTest {
     void shouldReturnCollectionsByItemName() {
         // given
         given(collectionRepository
-                .findByTitleAndAddressAndItem("", "", "", "Buty", PAGING))
+                .findWithFiltering("", "", "", "Buty", 0, List.of(), PAGING))
                 .willReturn(List.of(COLLECTION_WITH_ID));
 
         // when
-        List<CollectionDTO> collections = underTest.getCollectionsWithFiltering("", "", "", "Buty", PAGING);
+        List<CollectionDTO> collections = underTest.getCollectionsWithFiltering(
+                "", "", "", "Buty", List.of(), PAGING);
 
         // then
         Assertions.assertEquals(1, collections.size());
@@ -200,7 +222,8 @@ class CollectionServiceImplTest {
     @Test
     void shouldReturnEmptyCollectionOnFiltering() {
         // when
-        List<CollectionDTO> collections = underTest.getCollectionsWithFiltering("Zbiórka", "", "", "", PAGING);
+        List<CollectionDTO> collections = underTest.getCollectionsWithFiltering(
+                "Zbiórka", "", "", "", List.of(), PAGING);
 
         // then
         Assertions.assertEquals(0, collections.size());

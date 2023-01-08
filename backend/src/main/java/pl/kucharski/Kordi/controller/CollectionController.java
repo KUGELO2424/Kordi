@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import pl.kucharski.Kordi.config.PaginationConstants;
+import pl.kucharski.Kordi.enums.ItemCategory;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.model.address.AddressDTO;
@@ -25,6 +26,7 @@ import pl.kucharski.Kordi.service.collection.CollectionService;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 /**
  * Collection controller responsible for basic collection management
@@ -103,16 +105,18 @@ public class CollectionController {
             @RequestParam(value = "city", defaultValue = "", required = false) String city,
             @RequestParam(value = "street", defaultValue = "", required = false) String street,
             @RequestParam(value = "itemName", defaultValue = "", required = false) String itemName,
+            @RequestParam(value = "categories", defaultValue = "", required = false) List<ItemCategory> categories,
             @RequestParam(value = "pageNo",
                 defaultValue = PaginationConstants.DEFAULT_PAGE_NUMBER,
                 required = false) int pageNo,
             @RequestParam(value = "pageSize",
                 defaultValue = PaginationConstants.DEFAULT_PAGE_SIZE,
                 required = false) int pageSize) {
-        log.info("Request to get collections with search params, title:{}, city:{}, street:{}, itemName:{}",
-                title, city, street, itemName);
+        log.info("Request to get collections with search params, title:{}, city:{}, street:{}, itemName:{}, categories:{}",
+                title, city, street, itemName, categories);
         Pageable pageable = PageRequest.of(pageNo, pageSize);
-        return ResponseEntity.ok(collectionService.getCollectionsWithFiltering(title, city, street, itemName, pageable));
+        return ResponseEntity
+                .ok(collectionService.getCollectionsWithFiltering(title, city, street, itemName, categories, pageable));
     }
 
     /**

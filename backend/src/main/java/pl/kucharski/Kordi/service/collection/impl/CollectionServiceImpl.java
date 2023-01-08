@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.aop.IsCollectionOwner;
+import pl.kucharski.Kordi.enums.ItemCategory;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.model.collection.Collection;
@@ -61,19 +62,13 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     /**
-     * @see CollectionService#getCollectionsWithFiltering(String, String, String, String, Pageable)
+     * @see CollectionService#getCollectionsWithFiltering(String, String, String, String, List, Pageable)
      */
     @Override
-    public List<CollectionDTO> getCollectionsWithFiltering(String title, String city, String street, String itemName, Pageable pageable) {
-        List<Collection> collections;
-        if (itemName.isEmpty() && city.isEmpty() && street.isEmpty()) {
-            collections = collectionRepository.findByTitleContaining(title, pageable);
-        } else if (itemName.isEmpty()) {
-            collections = collectionRepository.findByTitleAndAddress(title, city, street, pageable);
-        } else {
-            collections = collectionRepository.findByTitleAndAddressAndItem(title, city, street, itemName, pageable);
-        }
-
+    public List<CollectionDTO> getCollectionsWithFiltering(String title, String city, String street, String itemName,
+                                                           List<ItemCategory> categories, Pageable pageable) {
+        List<Collection> collections =
+                collectionRepository.findWithFiltering(title,city,street,itemName, categories.size(), categories, pageable);
         return collections
                 .stream()
                 .map(collectionMapper::mapToCollectionDTO)

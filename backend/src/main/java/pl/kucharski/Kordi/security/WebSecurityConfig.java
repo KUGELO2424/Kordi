@@ -63,7 +63,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         )
                 );
         http.cors();
-
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean(), tokenGenerationAlgorithm(), (UserService) applicationContext.getBean("userServiceImpl")));
         http.addFilterBefore(new CustomAuthorizationFilter(tokenGenerationAlgorithm()), UsernamePasswordAuthenticationFilter.class);
