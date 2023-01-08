@@ -1,4 +1,5 @@
 import { Item } from "./itemToAdd";
+import { Location } from "./location";
 
 export class Collection {
     id: number;

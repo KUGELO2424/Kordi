@@ -45,3 +45,7 @@ mat-form-field button {
     border: none;
     background-color: white;
 }
+
+.word-break {
+    word-break: break-all;
+}
