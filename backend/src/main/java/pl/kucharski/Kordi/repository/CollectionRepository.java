@@ -1,5 +1,6 @@
 package pl.kucharski.Kordi.repository;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,6 +30,6 @@ public interface CollectionRepository extends JpaRepository<Collection, Long> {
                     "AND (a.street LIKE CONCAT('%',?3,'%') OR ?3 LIKE '') " +
                     "AND (i.name LIKE CONCAT('%', ?4, '%') OR ?4 LIKE '')" +
                     "AND (?5 < 1 OR ((i.category IN ?6)))")
-    List<Collection> findWithFiltering(String title, String city, String street, String itemName,
+    Page<Collection> findWithFiltering(String title, String city, String street, String itemName,
                                        int listSize, List<ItemCategory> categories, Pageable pageable);
 }

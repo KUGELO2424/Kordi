@@ -17,7 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pl.kucharski.Kordi.service.user.UserService;
-import pl.kucharski.Kordi.service.user.UserServiceImpl;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -50,7 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login", "/register", "/verify", "/sendToken", "/users/**").permitAll()
+                .antMatchers("/login", "/register", "/verify", "/sendToken").permitAll()
+                .antMatchers(HttpMethod.GET, "/collections**", "/collections/**").permitAll()
                 .antMatchers("/swagger-ui/**", "/swagger-ui**", "/v3/api-docs/**", "/v3/api-docs**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated()

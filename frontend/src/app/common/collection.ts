@@ -12,5 +12,5 @@ export class Collection {
     userLastname: string;
     addresses: Location[];
     items: Item[];
-    image: Blob;
+    image: string;
 }

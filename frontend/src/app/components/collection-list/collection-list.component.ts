@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Collection } from 'app/common/collection';
 import { ItemCategory } from 'app/common/itemToAdd';
 import { CollectionService } from 'app/services/collection.service';
@@ -18,6 +19,10 @@ export class CollectionListComponent implements OnInit {
   searchCity = "";
   searchStreet = "";
   searchItem = "";
+
+  pageNumber: number = 0;
+  pageSize: number = 10;
+  totalRecords: number = 10;
 
   categories = [
     { value: 'food', label: 'Jedzenie'}, 
@@ -39,18 +44,19 @@ export class CollectionListComponent implements OnInit {
     other: false,
   });
 
-  constructor(private formBuilder: UntypedFormBuilder, private collectionService: CollectionService) { }
+  constructor(private formBuilder: UntypedFormBuilder, private collectionService: CollectionService, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.search();
   }
 
   search() {
-    this.collectionService.searchCollection(this.searchItem, this.searchCity, this.searchStreet, this.searchItem, 
-      this.getChoosenCategoriesAsString()).subscribe({
+    this.collectionService.searchCollection(this.searchTerm, this.searchCity, this.searchStreet, this.searchItem, 
+      this.getChoosenCategoriesAsString(), this.pageNumber, this.pageSize).subscribe({
         next: (data) => {
-          this.collections = data;
-          console.log(this.collections);
+          this.collections = data.content;
+          this.pageSize = data.size;
+          this.totalRecords = data.totalElements;
         },
         error: (error) => {
           console.log(error);
@@ -62,15 +68,25 @@ export class CollectionListComponent implements OnInit {
     let categorires = "";
     Object.keys(this.categoriesForm.controls).forEach((key, index) => {
       if (this.categoriesForm.controls[key].value) {
-        let category = Object.keys(ItemCategory)[index];
         if (categorires == "") {
-          categorires = categorires.concat(category)
+          categorires = categorires.concat(key.toLocaleUpperCase())
         } else {
-          categorires = categorires.concat("," + category)
+          categorires = categorires.concat("," + key.toLocaleUpperCase())
         }
       }
     });
-   return categorires;
+    return categorires;
+  }
+
+  getImageFromBase64(dataURI: string) {
+    let objectURL = 'data:image/jpeg;base64,' + dataURI;
+    return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+  }
+  
+  changePage(event: any) {
+    this.pageSize = event.rows;
+    this.pageNumber = event.page;
+    this.search();
   }
 
 }

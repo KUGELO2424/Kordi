@@ -9,6 +9,8 @@ import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -53,7 +55,7 @@ class CollectionServiceImplTest {
     private final AddressMapper addressMapper = Mappers.getMapper(AddressMapper.class);
     private final CollectionItemMapper itemMapper = Mappers.getMapper(CollectionItemMapper.class);
     private final CollectionMapper collectionMapper = new CollectionMapperImpl(addressMapper, itemMapper);
-    
+
     private static Collection COLLECTION_WITH_ID;
     private static CollectionDTO COLLECTION_DTO_WITH_ID;
     private static CollectionDTO COLLECTION_DTO_WITHOUT_ID;
@@ -127,15 +129,15 @@ class CollectionServiceImplTest {
         // given
         given(collectionRepository
                 .findWithFiltering("Zbiórka", "", "", "", 0, List.of(), PAGING))
-                .willReturn(List.of(COLLECTION_WITH_ID));
+                .willReturn(new PageImpl<>(List.of(COLLECTION_WITH_ID)));
 
         // when
-        List<CollectionDTO> collections =
+        Page<CollectionDTO> collections =
                 underTest.getCollectionsWithFiltering("Zbiórka", "", "", "", List.of(), PAGING);
 
         // then
-        Assertions.assertEquals(1, collections.size());
-        assertEquals(COLLECTION_DTO_WITH_ID, collections.get(0));
+        Assertions.assertEquals(1, collections.getContent().size());
+        assertEquals(COLLECTION_DTO_WITH_ID, collections.getContent().get(0));
     }
 
     @Test
@@ -143,15 +145,15 @@ class CollectionServiceImplTest {
         // given
         given(collectionRepository
                 .findWithFiltering("Zbiórka", "Warszawa", "", "", 0, List.of(), PAGING))
-                .willReturn(List.of(COLLECTION_WITH_ID));
+                .willReturn(new PageImpl<>(List.of(COLLECTION_WITH_ID)));
 
         // when
-        List<CollectionDTO> collections = underTest.getCollectionsWithFiltering(
+        Page<CollectionDTO> collections = underTest.getCollectionsWithFiltering(
                 "Zbiórka", "Warszawa", "", "", List.of(), PAGING);
 
         // then
-        Assertions.assertEquals(1, collections.size());
-        assertEquals(COLLECTION_DTO_WITH_ID, collections.get(0));
+        Assertions.assertEquals(1, collections.getContent().size());
+        assertEquals(COLLECTION_DTO_WITH_ID, collections.getContent().get(0));
     }
 
     @Test
@@ -159,15 +161,15 @@ class CollectionServiceImplTest {
         // given
         given(collectionRepository
                 .findWithFiltering("Zbiórka", "Warszawa", "", "Buty", 0, List.of(), PAGING))
-                .willReturn(List.of(COLLECTION_WITH_ID));
+                .willReturn(new PageImpl<>(List.of(COLLECTION_WITH_ID)));
 
         // when
-        List<CollectionDTO> collections = underTest.getCollectionsWithFiltering(
+        Page<CollectionDTO> collections = underTest.getCollectionsWithFiltering(
                 "Zbiórka", "Warszawa", "", "Buty", List.of(), PAGING);
 
         // then
-        Assertions.assertEquals(1, collections.size());
-        assertEquals(COLLECTION_DTO_WITH_ID, collections.get(0));
+        Assertions.assertEquals(1, collections.getContent().size());
+        assertEquals(COLLECTION_DTO_WITH_ID, collections.getContent().get(0));
     }
 
     @Test
@@ -176,15 +178,15 @@ class CollectionServiceImplTest {
         given(collectionRepository
                 .findWithFiltering("Zbiórka", "Warszawa", "", "Buty", 1,
                         List.of(ItemCategory.CLOTHES), PAGING))
-                .willReturn(List.of(COLLECTION_WITH_ID));
+                .willReturn(new PageImpl<>(List.of(COLLECTION_WITH_ID)));
 
         // when
-        List<CollectionDTO> collections = underTest.getCollectionsWithFiltering(
+        Page<CollectionDTO> collections = underTest.getCollectionsWithFiltering(
                 "Zbiórka", "Warszawa", "", "Buty", List.of(ItemCategory.CLOTHES), PAGING);
 
         // then
-        Assertions.assertEquals(1, collections.size());
-        assertEquals(COLLECTION_DTO_WITH_ID, collections.get(0));
+        Assertions.assertEquals(1, collections.getContent().size());
+        assertEquals(COLLECTION_DTO_WITH_ID, collections.getContent().get(0));
     }
 
     @Test
@@ -192,15 +194,15 @@ class CollectionServiceImplTest {
         // given
         given(collectionRepository
                 .findWithFiltering("", "Warszawa", "", "", 0, List.of(), PAGING))
-                .willReturn(List.of(COLLECTION_WITH_ID));
+                .willReturn(new PageImpl<>(List.of(COLLECTION_WITH_ID)));
 
         // when
-        List<CollectionDTO> collections = underTest.getCollectionsWithFiltering(
+        Page<CollectionDTO> collections = underTest.getCollectionsWithFiltering(
                 "", "Warszawa", "", "", List.of(), PAGING);
 
         // then
-        Assertions.assertEquals(1, collections.size());
-        assertEquals(COLLECTION_DTO_WITH_ID, collections.get(0));
+        Assertions.assertEquals(1, collections.getContent().size());
+        assertEquals(COLLECTION_DTO_WITH_ID, collections.getContent().get(0));
     }
 
     @Test
@@ -208,25 +210,25 @@ class CollectionServiceImplTest {
         // given
         given(collectionRepository
                 .findWithFiltering("", "", "", "Buty", 0, List.of(), PAGING))
-                .willReturn(List.of(COLLECTION_WITH_ID));
+                .willReturn(new PageImpl<>(List.of(COLLECTION_WITH_ID)));
 
         // when
-        List<CollectionDTO> collections = underTest.getCollectionsWithFiltering(
+        Page<CollectionDTO> collections = underTest.getCollectionsWithFiltering(
                 "", "", "", "Buty", List.of(), PAGING);
 
         // then
-        Assertions.assertEquals(1, collections.size());
-        assertEquals(COLLECTION_DTO_WITH_ID, collections.get(0));
+        Assertions.assertEquals(1, collections.getContent().size());
+        assertEquals(COLLECTION_DTO_WITH_ID, collections.getContent().get(0));
     }
 
     @Test
     void shouldReturnEmptyCollectionOnFiltering() {
         // when
-        List<CollectionDTO> collections = underTest.getCollectionsWithFiltering(
+        Page<CollectionDTO> collections = underTest.getCollectionsWithFiltering(
                 "Zbiórka", "", "", "", List.of(), PAGING);
 
         // then
-        Assertions.assertEquals(0, collections.size());
+        Assertions.assertEquals(0, collections.getContent().size());
     }
 
     @Test

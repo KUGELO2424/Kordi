@@ -1,5 +1,7 @@
 package pl.kucharski.Kordi.service.collection.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -65,14 +67,16 @@ public class CollectionServiceImpl implements CollectionService {
      * @see CollectionService#getCollectionsWithFiltering(String, String, String, String, List, Pageable)
      */
     @Override
-    public List<CollectionDTO> getCollectionsWithFiltering(String title, String city, String street, String itemName,
+    public Page<CollectionDTO> getCollectionsWithFiltering(String title, String city, String street, String itemName,
                                                            List<ItemCategory> categories, Pageable pageable) {
-        List<Collection> collections =
-                collectionRepository.findWithFiltering(title,city,street,itemName, categories.size(), categories, pageable);
-        return collections
-                .stream()
-                .map(collectionMapper::mapToCollectionDTO)
-                .collect(Collectors.toList());
+
+        Page<Collection> collectionsPage = collectionRepository.findWithFiltering(title, city, street, itemName, categories.size(), categories, pageable);
+        if (collectionsPage == null) {
+            return Page.empty();
+        }
+        List<CollectionDTO> collections = collectionsPage.stream().map(collectionMapper::mapToCollectionDTO).toList();
+
+        return new PageImpl<>(collections, pageable, collectionsPage.getTotalElements());
     }
 
     /**

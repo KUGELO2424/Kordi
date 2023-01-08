@@ -128,6 +128,15 @@
         <div
           class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 row justify-content-center"
         >
+          <div *ngIf="collections.length == 0">
+            <img
+              src="assets/img/no_content.svg"
+              class="img-fluid mb-4"
+              alt="No collections"
+            />
+            <p class="fs-4 text-center">Nie znaleziono żadnych zbiórek</p>
+          </div>
+
           <!-- CARD -->
           <div
             class="col d-flex flex-column justify-content-center"
@@ -136,14 +145,23 @@
             <div class="card h-100" style="width: 20rem">
               <a class="card-link" routerLink="/collections/1">
                 <div class="card-icon">
-                  <img src="assets/img/temp_collection.jpg" class="img-fluid" />
+                  <img
+                    [src]="getImageFromBase64(collection.image)"
+                    class="img-fluid collection-image"
+                    *ngIf="collection.image"
+                  />
+                  <img
+                    src="assets/img/no_photo.svg"
+                    class="img-fluid collection-image"
+                    *ngIf="collection.image == null"
+                  />
                 </div>
                 <div class="card-body">
                   <h5 class="card-title word-break">
-                    {{ collection.title.substr(0, 25)
-                    }}<span *ngIf="collection.description.length > 25"
-                      >...</span
-                    >
+                    <b>
+                      {{ collection.title.substr(0, 25)
+                      }}<span *ngIf="collection.title.length > 25">...</span>
+                    </b>
                   </h5>
                   <p class="card-text word-break">
                     {{ collection.description.substr(0, 150)
@@ -158,7 +176,7 @@
                   <mat-expansion-panel>
                     <mat-expansion-panel-header>
                       <mat-panel-title>
-                        {{ "collections.localization" | translate }}
+                        <b>{{ "collections.localization" | translate }}</b>
                       </mat-panel-title>
                       <mat-panel-description class="d-flex justify-content-end">
                         {{ "collections.click" | translate }}
@@ -174,7 +192,9 @@
                         >{{ address.city }}, {{ address.street }}</span
                       >
                     </p>
-                    <p *ngIf="collection.addresses.length > 3">...</p>
+                    <p *ngIf="collection.addresses.length > 3">
+                      + {{ collection.addresses.length - 3 }} lokalizacje
+                    </p>
                   </mat-expansion-panel>
                 </mat-accordion>
                 <div class="card-footer">
@@ -195,9 +215,10 @@
       <!-- PAGINATOR -->
       <div class="mt-5">
         <p-paginator
-          [rows]="10"
-          [totalRecords]="120"
+          [rows]="pageSize"
+          [totalRecords]="totalRecords"
           [rowsPerPageOptions]="[5, 10, 15, 20, 25, 30]"
+          (onPageChange)="changePage($event)"
         ></p-paginator>
       </div>
       <!-- END PAGINATOR -->

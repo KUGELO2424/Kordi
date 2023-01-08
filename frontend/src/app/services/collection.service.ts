@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Collection } from 'app/common/collection';
+import { CollectionListResponse } from 'app/common/collectionListsResponse';
 import { CollectionToAdd } from 'app/common/collectionToAdd';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
@@ -19,7 +20,7 @@ export class CollectionService {
     return this.httpClient.post<Collection>(this.addUrl, collection)
   }
 
-  searchCollection(title: string, city: string, street: string, itemName: string, categories: string): Observable<Collection[]> {
-    return this.httpClient.get<Collection[]>(`${this.getUrl}?title=${title}&city=${city}&street=${street}&itemName=${itemName}&categories=${categories}`);
+  searchCollection(title: string, city: string, street: string, itemName: string, categories: string, pageNumber: number, pageSize: number): Observable<CollectionListResponse> {
+    return this.httpClient.get<CollectionListResponse>(`${this.getUrl}?title=${title}&city=${city}&street=${street}&itemName=${itemName}&categories=${categories}&pageNo=${pageNumber}&pageSize=${pageSize}`);
   }
 }

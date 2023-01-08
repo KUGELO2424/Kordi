@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -99,11 +100,11 @@ class CollectionRepositoryTest {
         String title = "Oliwii";
 
         // when
-        List<Collection> collections =
+        Page<Collection> collections =
                 underTest.findWithFiltering(title, "", "", "", 0, List.of(), paging);
 
         // then
-        Assertions.assertEquals(2, collections.size());
+        Assertions.assertEquals(2, collections.getContent().size());
     }
 
     @Test
@@ -114,12 +115,12 @@ class CollectionRepositoryTest {
         String street = "Piotrkowska";
 
         // when
-        List<Collection> collections =
+        Page<Collection> collections =
                 underTest.findWithFiltering(title, city, street, "", 0, List.of(), paging);
 
         // then
-        Assertions.assertEquals(1, collections.size());
-        Assertions.assertEquals("Zbiórka dla Oliwii", collections.get(0).getTitle());
+        Assertions.assertEquals(1, collections.getContent().size());
+        Assertions.assertEquals("Zbiórka dla Oliwii", collections.getContent().get(0).getTitle());
     }
 
     @Test
@@ -130,11 +131,11 @@ class CollectionRepositoryTest {
         String street = "";
 
         // when
-        List<Collection> collections =
+        Page<Collection> collections =
                 underTest.findWithFiltering(title, city, street, "", 0, List.of(), paging);
 
         // then
-        Assertions.assertEquals(1, collections.size());
+        Assertions.assertEquals(1, collections.getContent().size());
     }
 
     @Test
@@ -146,12 +147,12 @@ class CollectionRepositoryTest {
         String itemName = "Buty";
 
         // when
-        List<Collection> collections =
+        Page<Collection> collections =
                 underTest.findWithFiltering(title, city, street, itemName, 0, List.of(), paging);
 
         // then
-        Assertions.assertEquals(1, collections.size());
-        Assertions.assertEquals("Zbiórka dla Bartka", collections.get(0).getTitle());
+        Assertions.assertEquals(1, collections.getContent().size());
+        Assertions.assertEquals("Zbiórka dla Bartka", collections.getContent().get(0).getTitle());
     }
 
     @Test
@@ -163,12 +164,12 @@ class CollectionRepositoryTest {
         String itemName = "Buty";
 
         // when
-        List<Collection> collections =
+        Page<Collection> collections =
                 underTest.findWithFiltering(title, city, street, itemName, 0, List.of(), paging);
 
         // then
-        Assertions.assertEquals(1, collections.size());
-        Assertions.assertEquals("Zbiórka dla Bartka", collections.get(0).getTitle());
+        Assertions.assertEquals(1, collections.getContent().size());
+        Assertions.assertEquals("Zbiórka dla Bartka", collections.getContent().get(0).getTitle());
     }
 
     @Test
@@ -180,11 +181,11 @@ class CollectionRepositoryTest {
         String itemName = "";
 
         // when
-        List<Collection> collections =
+        Page<Collection> collections =
                 underTest.findWithFiltering(title, city, street, itemName, categories.size(), categories, paging);
 
         // then
-        Assertions.assertEquals(2, collections.size());
+        Assertions.assertEquals(2, collections.getContent().size());
     }
 
     @Test
@@ -196,11 +197,11 @@ class CollectionRepositoryTest {
         String itemName = "Buty";
 
         // when
-        List<Collection> collections =
+        Page<Collection> collections =
                 underTest.findWithFiltering(title, city, street, itemName, categories.size(), categories, paging);
 
         // then
-        Assertions.assertEquals(1, collections.size());
+        Assertions.assertEquals(1, collections.getContent().size());
     }
 
     @Test
@@ -209,15 +210,15 @@ class CollectionRepositoryTest {
         String title = "";
 
         // when
-        List<Collection> collections =
+        Page<Collection> collections =
                 underTest.findWithFiltering(title, "", "", "", 0, List.of(), paging_with_title_sort);
 
         // then
-        Assertions.assertEquals(4, collections.size());
-        Assertions.assertEquals("Dary dary dla Oliwii", collections.get(0).getTitle());
-        Assertions.assertEquals("Pomoc dla Plamy", collections.get(1).getTitle());
-        Assertions.assertEquals("Zbiórka dla Bartka", collections.get(2).getTitle());
-        Assertions.assertEquals("Zbiórka dla Oliwii", collections.get(3).getTitle());
+        Assertions.assertEquals(4, collections.getContent().size());
+        Assertions.assertEquals("Dary dary dla Oliwii", collections.getContent().get(0).getTitle());
+        Assertions.assertEquals("Pomoc dla Plamy", collections.getContent().get(1).getTitle());
+        Assertions.assertEquals("Zbiórka dla Bartka", collections.getContent().get(2).getTitle());
+        Assertions.assertEquals("Zbiórka dla Oliwii", collections.getContent().get(3).getTitle());
     }
 
     @Test
@@ -226,15 +227,15 @@ class CollectionRepositoryTest {
         String title = "";
 
         // when
-        List<Collection> collections =
+        Page<Collection> collections =
                 underTest.findWithFiltering(title, "", "", "", 0, List.of(), paging_with_start_time_sort);
 
         // then
-        Assertions.assertEquals(4, collections.size());
-        Assertions.assertEquals(start_time_01, collections.get(0).getStartTime());
-        Assertions.assertEquals(start_time_02, collections.get(1).getStartTime());
-        Assertions.assertEquals(start_time_03, collections.get(2).getStartTime());
-        Assertions.assertEquals(start_time_04, collections.get(3).getStartTime());
+        Assertions.assertEquals(4, collections.getContent().size());
+        Assertions.assertEquals(start_time_01, collections.getContent().get(0).getStartTime());
+        Assertions.assertEquals(start_time_02, collections.getContent().get(1).getStartTime());
+        Assertions.assertEquals(start_time_03, collections.getContent().get(2).getStartTime());
+        Assertions.assertEquals(start_time_04, collections.getContent().get(3).getStartTime());
     }
 
     @Test

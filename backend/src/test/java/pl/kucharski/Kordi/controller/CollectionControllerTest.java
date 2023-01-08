@@ -113,7 +113,7 @@ class CollectionControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(4)));
+                .andExpect(jsonPath("$.content", hasSize(4)));
     }
 
     @Test
@@ -123,9 +123,9 @@ class CollectionControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(2)))
-                .andExpect(jsonPath("$[0].title", is(TITLE_OF_COLLECTION_OF_EXISTING_USER)))
-                .andExpect(jsonPath("$[1].title", is(TITLE_02_OF_COLLECTION_OF_EXISTING_USER)));
+                .andExpect(jsonPath("$.content", hasSize(2)))
+                .andExpect(jsonPath("$.content[0].title", is(TITLE_OF_COLLECTION_OF_EXISTING_USER)))
+                .andExpect(jsonPath("$.content[1].title", is(TITLE_02_OF_COLLECTION_OF_EXISTING_USER)));
 
     }
 
@@ -136,9 +136,9 @@ class CollectionControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(1)))
-                .andExpect(jsonPath("$[0].title", containsString(TITLE_FOR_SEARCH)))
-                .andExpect(jsonPath("$[0].addresses[0].city", is(CITY_FOR_SEARCH)));
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(jsonPath("$.content[0].title", containsString(TITLE_FOR_SEARCH)))
+                .andExpect(jsonPath("$.content[0].addresses[0].city", is(CITY_FOR_SEARCH)));
     }
 
     @Test
@@ -148,9 +148,9 @@ class CollectionControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(1)))
-                .andExpect(jsonPath("$[0].title", containsString(TITLE_FOR_SEARCH)))
-                .andExpect(jsonPath("$[0].items[0].name", is(ITEM_FOR_SEARCH)));
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(jsonPath("$.content[0].title", containsString(TITLE_FOR_SEARCH)))
+                .andExpect(jsonPath("$.content[0].items[0].name", is(ITEM_FOR_SEARCH)));
     }
 
     @Test

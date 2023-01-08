@@ -49,3 +49,11 @@ mat-form-field button {
 .word-break {
     word-break: break-all;
 }
+
+.card-icon {
+    background-color: #eee;
+}
+
+.collection-image {
+    height: 210px;
+}

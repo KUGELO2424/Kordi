@@ -33,6 +33,8 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 @Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
+    private final List<String> WHITE_LIST_URLS = List.of("/collections");
+
     private final Algorithm tokenAlgorithm;
 
     public CustomAuthorizationFilter(Algorithm tokenAlgorithm)   {
@@ -70,5 +72,14 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
         } else {
             filterChain.doFilter(request, response);
         }
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        if (request.getMethod().equals("GET")) {
+            return WHITE_LIST_URLS.contains(path);
+        }
+        return false;
     }
 }
