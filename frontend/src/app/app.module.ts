@@ -66,6 +66,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ConfirmDialogModule } from 'primeng/confirmdialog'
 import { ToastModule } from 'primeng/toast';
+import { AuthGuardService } from './services/auth-guard.service';
 
 const routes: Routes = [
   {path: 'home', component: HomePageComponent},
@@ -77,6 +78,7 @@ const routes: Routes = [
   {path: 'collections/1', component: CollectionInfoComponent},
   {
     path: 'add-collection',
+    canActivate:[AuthGuardService],
     component: AddCollectionComponent,
     children: [
       { path: '', redirectTo: 'info', pathMatch: 'full'},

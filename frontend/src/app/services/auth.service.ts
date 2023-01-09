@@ -14,6 +14,7 @@ export class AuthService {
   private registerUrl = environment.baseUrl + '/register';
   private sendTokenUrl = environment.baseUrl + '/sendToken';
   private verifyUrl = environment.baseUrl + '/verify';
+  private validateUrl = environment.baseUrl + '/validate';
   private getUserUrl = environment.baseUrl + '/users';
   
   username: Subject<string> = new BehaviorSubject<string>("");
@@ -60,6 +61,10 @@ export class AuthService {
 
   getUserByUsername(username: string) {
     return this.httpClient.get<UserData>(`${this.getUserUrl}/${username}`);
+  }
+
+  validate(username: string, token: string) {
+    return this.httpClient.post<any>(`${this.validateUrl}?username=${username}&token=${token}`, "");
   }
 
   isUserLoggedIn() {

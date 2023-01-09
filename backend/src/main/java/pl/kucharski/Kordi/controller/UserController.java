@@ -1,5 +1,10 @@
 package pl.kucharski.Kordi.controller;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,10 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import pl.kucharski.Kordi.enums.VerificationStatus;
-import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.exception.InvalidPasswordException;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
-import pl.kucharski.Kordi.model.collection.CollectionDTO;
 import pl.kucharski.Kordi.model.email.EmailToken;
 import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.model.user.UserDTO;
@@ -44,11 +47,13 @@ public class UserController {
     private final UserService userService;
     private final EmailTokenService tokenService;
     private final UserMapper userMapper;
+    private final Algorithm tokenAlgorithm;
 
-    public UserController(UserService userService, EmailTokenService tokenService, UserMapper userMapper) {
+    public UserController(UserService userService, EmailTokenService tokenService, UserMapper userMapper, Algorithm tokenAlgorithm) {
         this.userService = userService;
         this.tokenService = tokenService;
         this.userMapper = userMapper;
+        this.tokenAlgorithm = tokenAlgorithm;
     }
 
     /**
@@ -158,6 +163,24 @@ public class UserController {
     }
 
     /**
+     * Check if token with given username is valid
+     *
+     * @param username username of logged user
+     * @param token JWT token of logged user
+     * @return 200 if token is valid<br>
+     *         400 if token not valid or param not given
+     */
+    @PostMapping("/validate")
+    public ResponseEntity<?> validate(@RequestParam(value = "username") String username, @RequestParam("token") String token) {
+        String tokenWithoutBearer = token.substring(7);
+        boolean validationResult = validateToken(username, tokenWithoutBearer);
+        if (validationResult) {
+            return ResponseEntity.ok(Collections.singletonMap("status", "Token valid"));
+        }
+        return ResponseEntity.badRequest().body("Token not valid");
+    }
+
+    /**
      * Update user password
      *
      * @param newPassword new password to set
@@ -196,6 +219,17 @@ public class UserController {
         User user = emailToken.getUser();
         UserDTO userDTO = userMapper.mapToUserDTO(user);
         return userService.verifyToken(userDTO, token);
+    }
+
+    private boolean validateToken(String username, String token) {
+        try {
+            JWTVerifier verifier = JWT.require(tokenAlgorithm)
+                    .build();
+            DecodedJWT decodedJWT = verifier.verify(token);
+            return decodedJWT.getSubject().equals(username);
+        } catch (JWTVerificationException exception){
+            return false;
+        }
     }
 
 }
