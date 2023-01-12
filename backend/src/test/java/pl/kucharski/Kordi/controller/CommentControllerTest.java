@@ -51,9 +51,9 @@ class CommentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(2)))
-                .andExpect(jsonPath("$[0].content", is(COMMENT_CONTENT_01)))
-                .andExpect(jsonPath("$[1].content", is(COMMENT_CONTENT_02)));
+                .andExpect(jsonPath("$.content", hasSize(2)))
+                .andExpect(jsonPath("$.content[0].content", is(COMMENT_CONTENT_02)))
+                .andExpect(jsonPath("$.content[1].content", is(COMMENT_CONTENT_01)));
     }
 
     @Test
@@ -99,7 +99,8 @@ class CommentControllerTest {
     @Test
     @WithMockUser(username = "ewa")
     void shouldRemoveCommentFromCollectionIfUserIsOwner() throws Exception {
-        int numOfComments = commentRepository.getAllByCollectionId(EXISTING_COLLECTION_V2_ID, PageRequest.of(0, 10)).size();
+        int numOfComments =
+                commentRepository.getAllByCollectionId(EXISTING_COLLECTION_V2_ID, PageRequest.of(0, 10)).getContent().size();
 
         mvc.perform(delete("/collections/" + EXISTING_COLLECTION_V2_ID + "/comments/" + 3)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -110,7 +111,7 @@ class CommentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(numOfComments - 1)));
+                .andExpect(jsonPath("$.content.*", hasSize(numOfComments - 1)));
     }
 
     @Test

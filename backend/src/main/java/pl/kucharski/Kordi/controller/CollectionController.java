@@ -78,7 +78,7 @@ public class CollectionController {
         try {
             log.info("Request to get collection by id, collectionId: {}", collectionId);
             CollectionDTO collection = collectionService.getCollectionById(collectionId);
-            log.info("Returning collection: {}", collection);
+            log.info("Returning collection: {}", collection.getId());
             return ResponseEntity.ok(collection);
         } catch (CollectionNotFoundException ex) {
             log.warn("Collection with id {} not found", collectionId);

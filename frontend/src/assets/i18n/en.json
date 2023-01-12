@@ -60,16 +60,35 @@
         "search_button": "Search",
         "filter": "Filtration",
         "localization": "Locations",
+        "localization_2": "locations",
         "click": "Click here",
         "progress": "Collection progress",
         "city": "City",
         "street": "Street",
         "item": "Item name",
         "filtr_options": "Filter options",
-        "choose_category": "Choose category:"
+        "choose_category": "Choose category:",
+        "not_found": "No collections found"
     },
     "collection": {
-        "search_location": "Search location"
+        "search_location": "Search location",
+        "search_item": "Search item",
+        "share": "Share",
+        "people_donate": "<b>{{num}} people</b> donated items",
+        "progress": "Collection progress:",
+        "last_donates": "Last donates",
+        "locations": "Locations",
+        "items": "Item list",
+        "comments": "Comments",
+        "current": "Currently:",
+        "max": "Maximum:",
+        "donate": "Donate:",
+        "donate_button": "Donate items",
+        "create_time": "Created",
+        "type": "Type:",
+        "add_comment":"Add comment",
+        "comment": "Write a comment",
+        "comment.error.msg": "Your comment cannot be longer than 250 characters"
     },
     "home": {
         "welcome": "Welcome in",

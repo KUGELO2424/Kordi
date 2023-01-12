@@ -1,38 +1,106 @@
+<!-- SEARCH INPUT -->
+<div class="row justify-content-center d-flex align-items-center">
+  <div class="col-10 col-sm-10 col-md-8 col-lg-8 col-xl-8 mt-4">
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label>{{ "collection.search_item" | translate }}</mat-label>
+      <input matInput [(ngModel)]="searchItem" />
+      <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+  </div>
+  <div class="col-5 col-sm-5 col-md-2 col-lg-2 col-xl-2">
+    <div class="d-flex justify-content-center">
+      <button
+        type="submit"
+        class="btn my-btn-primary btn-lg"
+        style="padding-left: 2rem; padding-right: 2rem"
+        (click)="search()"
+      >
+        {{ "collections.search_button" | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ITEM LIST -->
 <div
-  class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 row justify-content-center"
+  class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 row justify-content-center mt-3"
+  id="itemList"
 >
   <!-- ITEM CARD -->
   <div
     class="col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"
-    *ngFor="let val of values"
+    *ngFor="
+      let item of items
+        | paginate
+          : {
+              itemsPerPage: pageSize,
+              currentPage: page + 1,
+              totalItems: totalRecords
+            };
+      let i = index
+    "
   >
     <div class="card h-100" style="width: 20rem">
       <div class="card-body">
-        <h5 class="card-title">Nazwa przedmiotu</h5>
-        <mat-card-subtitle class="mb-1">Ubrania</mat-card-subtitle>
-        <mat-card-subtitle>Typ: sztuki</mat-card-subtitle>
+        <h5 class="card-title">{{ item.name }}</h5>
+        <mat-card-subtitle class="mb-1">{{
+          "category." + item.category.toLocaleLowerCase() | translate
+        }}</mat-card-subtitle>
+        <mat-card-subtitle
+          >{{ "collection.type" | translate }}
+          {{
+            "item." + item.type.toLocaleLowerCase() | translate
+          }}</mat-card-subtitle
+        >
         <mat-divider class="mb-2"></mat-divider>
-        <p class="card-text">Obecnie: 0</p>
-        <p class="card-text">Maksymalnie: 10</p>
+        <p class="card-text">
+          {{ "collection.current" | translate }} {{ item.currentAmount }}
+          <span *ngIf="item.type.toString() == 'AMOUNT'">{{
+            "item.suffix" | translate
+          }}</span>
+          <span *ngIf="item.type.toString() == 'WEIGHT'"> kg</span>
+        </p>
+        <p class="card-text">
+          {{ "collection.max" | translate }} {{ item.maxAmount }}
+          <span *ngIf="item.type.toString() == 'AMOUNT'">{{
+            "item.suffix" | translate
+          }}</span>
+          <span *ngIf="item.type.toString() == 'WEIGHT'"> kg</span>
+        </p>
+        <p-progressBar
+          [value]="((item.currentAmount + item.value) / item.maxAmount) * 100"
+        ></p-progressBar>
       </div>
 
       <div class="card-footer">
-        <p>Podaruj:</p>
+        <p>{{ "collection.donate" | translate }}</p>
         <p-slider
-          [(ngModel)]="val.value"
-          [min]="0"
-          [max]="10"
+          [(ngModel)]="item.value"
+          [min]="item.currentAmount"
+          [max]="item.maxAmount"
           styleClass="ms-1 me-1"
         ></p-slider>
         <div class="">
           <p-inputNumber
-            [(ngModel)]="val.value"
+            *ngIf="item.type.toString() == 'AMOUNT'"
+            [(ngModel)]="item.value"
             mode="decimal"
-            [min]="0"
-            [max]="10"
+            [min]="item.currentAmount"
+            [max]="item.maxAmount"
             class="p-inputtext-sm mt-3"
             styleClass="number-input justify-content-center"
-            suffix=" szt"
+            suffix="{{ 'item.suffix' | translate }}"
+          >
+          </p-inputNumber>
+          <p-inputNumber
+            *ngIf="item.type.toString() == 'WEIGHT'"
+            [(ngModel)]="item.value"
+            mode="decimal"
+            [min]="item.currentAmount"
+            [max]="item.maxAmount"
+            class="p-inputtext-sm mt-3"
+            styleClass="number-input justify-content-center"
+            suffix=" kg"
           >
           </p-inputNumber>
         </div>
@@ -45,9 +113,9 @@
 <!-- PAGINATOR -->
 <div class="mt-5 mb-1 paginator">
   <p-paginator
-    [rows]="10"
-    [totalRecords]="120"
-    [rowsPerPageOptions]="[10, 20, 30]"
+    [rows]="pageSize"
+    [totalRecords]="totalRecords"
+    (onPageChange)="page = $event.page; scroll()"
   ></p-paginator>
 </div>
 
@@ -57,9 +125,15 @@
 <!-- BUTTON -->
 <div class="text-center mb-3 mt-3">
   <button
-    (click)="confirm($event)"
-    class="btn my-btn-primary btn-lm donate-button"
+    (click)="clearItemsValue()"
+    class="btn my-btn-secondary btn-sm reset-button me-2 mt-2"
   >
-    Podaruj przedmioty
+    Reset
+  </button>
+  <button
+    (click)="confirm($event)"
+    class="btn my-btn-primary btn-lg donate-button mt-2"
+  >
+    {{ "collection.donate_button" | translate }}
   </button>
 </div>

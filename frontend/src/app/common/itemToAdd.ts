@@ -5,6 +5,7 @@ export class Item {
     category: ItemCategory;
     currentAmount: number;
     maxAmount: number;
+    value: number;
 }
 
 export class ItemToAdd {

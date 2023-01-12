@@ -1,5 +1,6 @@
 package pl.kucharski.Kordi.service.collection;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.exception.CommentNotFoundException;
@@ -37,7 +38,9 @@ public interface CommentService {
      * Get all comments from collection
      *
      * @param collectionId id of collection
+     * @param pageable pagination information
+     * @return Page of found comments. If no comments found, return empty list
      * @throws CollectionNotFoundException if no collection with given id
      */
-    List<CommentDTO> getAllComments(Long collectionId, Pageable pageable);
+    Page<CommentDTO> getAllComments(Long collectionId, Pageable pageable);
 }

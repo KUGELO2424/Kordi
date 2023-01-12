@@ -25,6 +25,7 @@
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
     "bootstrap": "^5.2.2",
+    "ngx-pagination": "^6.0.3",
     "primeng": "^14.2.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

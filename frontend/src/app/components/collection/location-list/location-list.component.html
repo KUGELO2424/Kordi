@@ -13,6 +13,7 @@
         type="submit"
         class="btn my-btn-primary btn-lg"
         style="padding-left: 2rem; padding-right: 2rem"
+        (click)="search()"
       >
         {{ "collections.search_button" | translate }}
       </button>
@@ -22,11 +23,13 @@
 
 <!-- LOCATION LIST -->
 <div class="row row-cols-auto d-flex justify-content-center">
-  <div *ngFor="let id of [1, 2, 3, 4, 5, 6, 7, 8, 9]" class="col">
+  <div *ngFor="let location of locations" class="col">
     <div class="p-2 bd-highlight location d-flex align-items-center">
-      <p>Łódź, piotrkowska 53</p>
+      <p>{{ location.city }}, {{ location.street }}</p>
       <a
-        href="https://www.google.pl/maps/place/Piotrkowska 53,Lodz"
+        href="https://www.google.pl/maps/place/{{ location.street }},{{
+          location.city
+        }}"
         target="_blank"
         ><button
           pButton

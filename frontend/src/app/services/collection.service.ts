@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Collection } from 'app/common/collection';
 import { CollectionListResponse } from 'app/common/collectionListsResponse';
 import { CollectionToAdd } from 'app/common/collectionToAdd';
+import { CommentListResponse } from 'app/common/commentListResponse';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 
@@ -22,5 +23,13 @@ export class CollectionService {
 
   searchCollection(title: string, city: string, street: string, itemName: string, categories: string, pageNumber: number, pageSize: number): Observable<CollectionListResponse> {
     return this.httpClient.get<CollectionListResponse>(`${this.getUrl}?title=${title}&city=${city}&street=${street}&itemName=${itemName}&categories=${categories}&pageNo=${pageNumber}&pageSize=${pageSize}`);
+  }
+
+  getCollectionById(id: string): Observable<Collection> {
+    return this.httpClient.get<Collection>(`${this.getUrl}/${id}`);
+  }
+
+  getCommentsFromCollection(id: string, pageNumber: number, pageSize: number): Observable<CommentListResponse> {
+    return this.httpClient.get<CommentListResponse>(`${this.getUrl}/${id}/comments?pageNo=${pageNumber}&pageSize=${pageSize}`);
   }
 }

@@ -124,7 +124,7 @@
       </div>
       <!-- END ROW TOP PANEL -->
       <!-- ROW CONTENT PANEL -->
-      <div class="row justify-content-center">
+      <div class="row justify-content-center" id="collectionList">
         <div
           class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 row justify-content-center"
         >
@@ -134,7 +134,9 @@
               class="img-fluid mb-4"
               alt="No collections"
             />
-            <p class="fs-4 text-center">Nie znaleziono żadnych zbiórek</p>
+            <p class="fs-4 text-center">
+              {{ "collections.not_found" | translate }}
+            </p>
           </div>
 
           <!-- CARD -->
@@ -143,7 +145,10 @@
             *ngFor="let collection of collections"
           >
             <div class="card h-100" style="width: 20rem">
-              <a class="card-link" routerLink="/collections/1">
+              <a
+                class="card-link"
+                routerLink="/collections/{{ collection.id }}"
+              >
                 <div class="card-icon">
                   <img
                     [src]="getImageFromBase64(collection.image)"
@@ -193,7 +198,8 @@
                       >
                     </p>
                     <p *ngIf="collection.addresses.length > 3">
-                      + {{ collection.addresses.length - 3 }} lokalizacje
+                      + {{ collection.addresses.length - 3 }}
+                      {{ "collections.localization_2" | translate }}
                     </p>
                   </mat-expansion-panel>
                 </mat-accordion>

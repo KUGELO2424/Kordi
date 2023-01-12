@@ -1,5 +1,7 @@
 package pl.kucharski.Kordi.service.collection.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,12 +78,17 @@ public class CommentServiceImpl implements CommentService {
      * @see CommentService#getAllComments(Long, Pageable)
      */
     @Override
-    public List<CommentDTO> getAllComments(Long collectionId, Pageable pageable) {
+    public Page<CommentDTO> getAllComments(Long collectionId, Pageable pageable) {
         if (!collectionRepository.existsById(collectionId)) {
             throw new CollectionNotFoundException(COLLECTION_NOT_FOUND);
         }
-        return commentRepository.getAllByCollectionId(collectionId, pageable).stream()
+        Page<Comment> commentsPage = commentRepository.getAllByCollectionId(collectionId, pageable);
+        if (commentsPage == null) {
+            return Page.empty();
+        }
+        List<CommentDTO> comments = commentsPage.stream()
                 .map(commentMapper::mapToCommentDTO)
                 .collect(Collectors.toList());
+        return new PageImpl<>(comments, pageable, commentsPage.getTotalElements());
     }
 }

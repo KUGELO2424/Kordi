@@ -5,3 +5,7 @@ section {
 .content {
     max-width: 1100px;
 }
+
+.collection-image {
+    height: 340px;
+}

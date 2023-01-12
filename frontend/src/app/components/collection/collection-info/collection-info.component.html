@@ -1,26 +1,26 @@
 <div class="content min-vw-25">
   <section class="mt-5">
     <div class="container-fluid align-middle">
-      <h1 class="display-5 text-center mb-5">Nazwa zbiórki</h1>
+      <h1 class="display-5 text-center mb-5">{{ collection.title }}</h1>
       <div class="row justify-content-center">
         <!-- PHOTO + DESC -->
         <div class="col-11 col-sm-11 col-md-9 col-lg-8 col-xl-8 mb-1">
           <mat-card>
-            <img mat-card-image src="assets/img/temp_collection.jpg" />
+            <img
+              mat-card-image
+              class="collection-image"
+              [src]="getImageFromBase64(collection.image)"
+              *ngIf="collection.image"
+            />
+            <img
+              mat-card-image
+              src="assets/img/no_photo.svg"
+              class="collection-image"
+              *ngIf="collection.image == null"
+            />
             <mat-card-content>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-                non imperdiet tortor, in cursus magna. Maecenas eleifend orci
-                turpis, laoreet placerat sem facilisis ac. Maecenas non metus
-                nec lacus commodo consectetur. Donec non ipsum ullamcorper,
-                vehicula nibh at, lobortis risus. Vivamus facilisis lorem at mi
-                pulvinar aliquet vitae ut nunc. Integer convallis, nulla nec
-                lacinia consequat, erat mauris convallis sem, a viverra dui elit
-                in nulla. Aenean et risus vitae leo accumsan accumsan. Duis ac
-                gravida tortor. Sed facilisis gravida velit, sit amet fringilla
-                nunc placerat gravida. Nam et dui at magna bibendum
-                pellentesque. Nullam at leo a nibh vehicula convallis. Ut quis
-                ipsum urna. Vivamus et suscipit erat, at pulvinar diam.
+                {{ collection.description }}
               </p>
             </mat-card-content>
           </mat-card>
@@ -31,10 +31,18 @@
           class="col-11 col-sm-11 col-md-9 col-lg-4 col-xl-4 justify-content-center"
         >
           <mat-card class="example-card">
-            <mat-card-title>Jan Kowalski</mat-card-title>
-            <mat-card-subtitle>Utworzono 11.10.2022</mat-card-subtitle>
+            <mat-card-title
+              >{{ collection.userFirstname }}
+              {{ collection.userLastname }}</mat-card-title
+            >
+            <mat-card-subtitle
+              >{{ "collection.create_time" | translate }}
+              {{
+                collection.startTime | date : "dd/MM/yyyy"
+              }}</mat-card-subtitle
+            >
             <mat-card-content>
-              <p>Postęp zbiórki:</p>
+              <p>{{ "collection.progress" | translate }}</p>
               <p-progressBar [value]="88"></p-progressBar>
             </mat-card-content>
             <mat-card-content class="mt-4">
@@ -42,17 +50,23 @@
                 class="btn my-btn-primary btn-lg"
                 style="padding-left: 2rem; padding-right: 2rem"
               >
-                Udostępnij
+                {{ "collection.share" | translate }}
               </button>
             </mat-card-content>
             <mat-card-content class="mt-4">
               <i class="fa-solid fa-users icon-color me-2"></i>
-              <b>12 osób</b> podarowało przedmioty
+              <span
+                [innerHTML]="
+                  'collection.people_donate' | translate : { num: 12 }
+                "
+              ></span>
             </mat-card-content>
             <mat-divider></mat-divider>
             <mat-card-content class="mt-4">
               <mat-list>
-                <div mat-subheader>Ostatnie darowizny</div>
+                <div mat-subheader>
+                  {{ "collection.last_donates" | translate }}
+                </div>
                 <mat-list-item *ngFor="let id of [1, 2, 3]">
                   <mat-icon mat-list-icon
                     ><i class="fa-regular fa-circle-user"></i
@@ -73,12 +87,14 @@
             <mat-expansion-panel-header>
               <mat-panel-title
                 ><i class="fa-solid fa-location-dot me-3 icon-color"></i>
-                Lokalizacje
+                {{ "collection.locations" | translate }}
               </mat-panel-title>
               <mat-panel-description> </mat-panel-description>
             </mat-expansion-panel-header>
             <!-- LOCATION LIST -->
-            <app-location-list></app-location-list>
+            <app-location-list
+              [locationsData]="collection.addresses"
+            ></app-location-list>
           </mat-expansion-panel>
         </mat-accordion>
       </div>
@@ -89,13 +105,13 @@
           <mat-expansion-panel hideToggle>
             <mat-expansion-panel-header>
               <mat-panel-title
-                ><i class="fa-solid fa-list me-3 icon-color"></i> Lista
-                przedmiotów
+                ><i class="fa-solid fa-list me-3 icon-color"></i
+                >{{ "collection.items" | translate }}
               </mat-panel-title>
               <mat-panel-description> </mat-panel-description>
             </mat-expansion-panel-header>
             <!-- ITEM LIST -->
-            <app-item-list></app-item-list>
+            <app-item-list [itemsData]="collection.items"></app-item-list>
           </mat-expansion-panel>
         </mat-accordion>
       </div>
@@ -107,15 +123,19 @@
             <mat-expansion-panel-header>
               <mat-panel-title
                 ><i class="fa fa-comment me-3 icon-color"></i>
-                Komentarze
+                {{ "collection.comments" | translate }}
               </mat-panel-title>
               <mat-panel-description> </mat-panel-description>
             </mat-expansion-panel-header>
             <!-- COMMENT LIST -->
-            <app-comment-list></app-comment-list>
+            <app-comment-list
+              [collectionId]="collection.id.toString()"
+            ></app-comment-list>
           </mat-expansion-panel>
         </mat-accordion>
       </div>
     </div>
   </section>
+  <!-- LOADING SPINNER -->
+  <app-loading-spinner></app-loading-spinner>
 </div>

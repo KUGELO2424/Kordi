@@ -7,6 +7,8 @@ import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.exception.CommentNotFoundException;
@@ -143,15 +145,15 @@ class CommentServiceImplTest {
     void shouldReturnListOfComments() {
         // given
         COLLECTION_WITH_ID.setComments(COMMENTS_WITH_ID);
-        given(commentRepository.getAllByCollectionId(1L, CollectionData.PAGING)).willReturn(COMMENTS_WITH_ID);
+        given(commentRepository.getAllByCollectionId(1L, CollectionData.PAGING)).willReturn(new PageImpl<>(COMMENTS_WITH_ID));
         given(collectionRepository.existsById(1L)).willReturn(true);
 
         // when
-        List<CommentDTO> comments = underTest.getAllComments(1L, CollectionData.PAGING);
+        Page<CommentDTO> comments = underTest.getAllComments(1L, CollectionData.PAGING);
 
         // then
         assertNotNull(comments);
-        assertEquals(1, comments.size());
+        assertEquals(1, comments.getContent().size());
     }
 
 }

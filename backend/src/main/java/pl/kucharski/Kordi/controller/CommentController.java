@@ -1,7 +1,9 @@
 package pl.kucharski.Kordi.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -98,7 +100,8 @@ public class CommentController {
                                                        required = false) int pageSize){
         try {
             log.info("Request to get all comments from collection with id {}", collectionId);
-            List<CommentDTO> comments = commentService.getAllComments(collectionId, PageRequest.of(pageNo, pageSize));
+            Page<CommentDTO> comments = commentService
+                    .getAllComments(collectionId, PageRequest.of(pageNo, pageSize, Sort.by("createdTime").descending()));
             return ResponseEntity.ok(comments);
         } catch (CollectionNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());

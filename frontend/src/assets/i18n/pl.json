@@ -60,16 +60,35 @@
         "search_button": "Wyszukaj",
         "filter": "Filtruj",
         "localization": "Lokalizacje",
+        "localization_2": "lokalizacje",
         "click": "Kliknij tutaj",
         "progress": "Postęp zbiórki",
         "city": "Miasto",
         "street": "Ulica",
         "item": "Nazwa przedmiotu",
         "filtr_options": "Opcje filtrowania",
-        "choose_category": "Wybierz kategorię:"
+        "choose_category": "Wybierz kategorię:",
+        "not_found": "Nie znaleziono żadnych zbiórek"
     },
     "collection": {
-        "search_location": "Szukaj lokalizacji"
+        "search_location": "Szukaj lokalizacji",
+        "search_item": "Szukaj przedmiotu",
+        "share": "Udostępnij",
+        "people_donate": "<b>{{num}} osób</b> podarowało przedmioty",
+        "progress": "Postęp zbiórki:",
+        "last_donates": "Ostatnie darowizny",
+        "locations": "Lokalizacje",
+        "items": "Lista przedmiotów",
+        "comments": "Komentarze",
+        "current": "Obecnie:",
+        "max": "Maksymalnie:",
+        "donate": "Podaruj:",
+        "donate_button": "Podaruj przedmioty",
+        "create_time": "Utworzono",
+        "type": "Typ:",
+        "add_comment": "Dodaj komentarz",
+        "comment": "Napisz komentarz",
+        "comment.error.msg": "Twój komenatrz nie może być dłuższy niż 250 znaków"
     },
     "home": {
         "welcome": "Witaj w",

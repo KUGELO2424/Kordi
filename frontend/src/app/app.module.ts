@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxTranslateModule } from './translate/translate.module';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 // COMPONENTS
 import { AppComponent } from './app.component';
@@ -67,6 +68,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { ConfirmDialogModule } from 'primeng/confirmdialog'
 import { ToastModule } from 'primeng/toast';
 import { AuthGuardService } from './services/auth-guard.service';
+import { DividerModule } from 'primeng/divider';
 
 const routes: Routes = [
   {path: 'home', component: HomePageComponent},
@@ -75,7 +77,7 @@ const routes: Routes = [
   {path: 'signup', component: SignupComponent},
   {path: 'verify', component: VerificationComponent},
   {path: 'collections', component: CollectionListComponent},
-  {path: 'collections/1', component: CollectionInfoComponent},
+  {path: 'collections/:id', component: CollectionInfoComponent},
   {
     path: 'add-collection',
     canActivate:[AuthGuardService],
@@ -150,7 +152,9 @@ const routes: Routes = [
     ToolbarModule,
     SelectButtonModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    NgxPaginationModule,
+    DividerModule
   ],
   providers: [
     ConfirmationService, MessageService,
