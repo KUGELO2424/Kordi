@@ -9,6 +9,9 @@ import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.exception.CollectionItemException;
 import pl.kucharski.Kordi.exception.CollectionItemNotFoundException;
@@ -29,7 +32,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static pl.kucharski.Kordi.CollectionData.USER;
+import static pl.kucharski.Kordi.CollectionData.USERNAME;
 import static pl.kucharski.Kordi.CollectionData.createCollectionWithId;
 import static pl.kucharski.Kordi.CollectionData.createItemDTOWithId;
 import static pl.kucharski.Kordi.CollectionData.createSecondItemDTOWithId;
@@ -138,10 +144,16 @@ class CollectionItemServiceImplTest {
     @Test
     void shouldSubmitItem() {
         // given
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(USERNAME);
         COLLECTION_WITH_ID.addItem(itemMapper.mapToCollectionItem(COLLECTION_ITEM_DTO));
         given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
-        given(userRepository.findById(1L)).willReturn(Optional.of(USER));
+        given(userRepository.findUserByUsername(USER.getUsername())).willReturn(Optional.of(USER));
         assertEquals(3, COLLECTION_WITH_ID.getItems().get(0).getCurrentAmount());
+        given(userRepository.findUserByUsername(USER.getUsername())).willReturn(Optional.of(USER));
 
         // when
         CollectionItemDTO itemDTO =
@@ -152,13 +164,42 @@ class CollectionItemServiceImplTest {
     }
 
     @Test
+    void shouldSubmitItems() {
+        // given
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(USERNAME);
+        COLLECTION_WITH_ID.addItem(itemMapper.mapToCollectionItem(COLLECTION_ITEM_DTO));
+        given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
+        given(userRepository.findUserByUsername(USER.getUsername())).willReturn(Optional.of(USER));
+        assertEquals(3, COLLECTION_WITH_ID.getItems().get(0).getCurrentAmount());
+        given(userRepository.findUserByUsername(USER.getUsername())).willReturn(Optional.of(USER));
+        List<SubmittedItemDTO> itemsToSubmit = List.of(ITEM_TO_SUBMIT, ITEM_TO_SUBMIT);
+
+        // when
+        List<CollectionItemDTO> itemsDTO =
+                underTest.submitItems(COLLECTION_WITH_ID.getId(), itemsToSubmit);
+
+        // then
+        assertEquals(2, itemsDTO.size());
+        assertEquals(5, itemsDTO.get(1).getCurrentAmount());
+    }
+
+    @Test
     void shouldThrowCollectionItemExceptionWhenCurrentAmountEqualsMaxOnSubmitItem() {
         // given
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(USERNAME);
         COLLECTION_ITEM_DTO.setCurrentAmount(10);
         COLLECTION_WITH_ID.addItem(itemMapper.mapToCollectionItem(COLLECTION_ITEM_DTO));
         given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
-        given(userRepository.findById(1L)).willReturn(Optional.of(USER));
         assertEquals(10, COLLECTION_WITH_ID.getItems().get(0).getCurrentAmount());
+        given(userRepository.findUserByUsername(USER.getUsername())).willReturn(Optional.of(USER));
 
         // when + then
         CollectionItemException exception =
@@ -170,7 +211,13 @@ class CollectionItemServiceImplTest {
     @Test
     void shouldThrowCollectionNotFoundOnSubmitItem() {
         // given
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(USERNAME);
         given(collectionRepository.findById(1L)).willReturn(Optional.empty());
+        given(userRepository.findUserByUsername(USER.getUsername())).willReturn(Optional.of(USER));
 
         // when + then
         CollectionNotFoundException exception =
@@ -182,8 +229,13 @@ class CollectionItemServiceImplTest {
     @Test
     void shouldThrowCollectionItemNotFoundOnSubmitItem() {
         // given
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(USERNAME);
         given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
-        given(userRepository.findById(1L)).willReturn(Optional.of(USER));
+        given(userRepository.findUserByUsername(USER.getUsername())).willReturn(Optional.of(USER));
 
         // when + then
         CollectionItemNotFoundException exception =

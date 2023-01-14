@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import pl.kucharski.Kordi.enums.ItemCategory;
@@ -93,23 +94,21 @@ public class ItemController {
     }
 
     /**
-     * Submit new item
+     * Submit items
      * @param collectionId id of collection for which you want to submit item
-     * @param itemId id of item that you want to submit
-     * @param item data of item to submit
+     * @param items items to submit
      *
      * @return updated item after submitting
      * status 404 if collection not found<br>
      * status 404 if item not found<br>
      * status 400 if new values are incorrect
      */
-    @PostMapping("/{collectionId}/items/{itemId}/submit")
+    @PostMapping("/{collectionId}/items/submit")
     ResponseEntity<?> submitItem(@PathVariable("collectionId") Long collectionId,
-                                 @PathVariable("itemId") Long itemId,
-                                 @RequestBody SubmittedItemDTO item) {
+                                 @RequestBody List<SubmittedItemDTO> items) {
         try {
-            log.info("Request to submit item {}", item);
-            CollectionItemDTO updatedItem = itemService.submitItem(collectionId, itemId, item);
+            log.info("Request to submit items {}", items);
+            List<CollectionItemDTO> updatedItem = itemService.submitItems(collectionId, items);
             return ResponseEntity.ok(updatedItem);
         } catch (CollectionItemException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
@@ -119,17 +118,23 @@ public class ItemController {
     }
 
     /**
-     * Get all submitted items from collection
+     * Get submitted items from collection
      * @param collectionId id of collection with submitted items
-     *
+     * @param numberOfSubmittedItems number of last submitted items to get from collection
      * @return list of submitted items
      * status 404 if collection not found<br>
      */
     @GetMapping("/{collectionId}/submittedItems")
-    ResponseEntity<?> getSubmittedItems(@PathVariable("collectionId") Long collectionId) {
+    ResponseEntity<?> getSubmittedItems(@PathVariable("collectionId") Long collectionId,
+                                        @RequestParam(value = "numberOfSubmittedItems", required = false) Integer numberOfSubmittedItems) {
         try {
             log.info("Request to get submitted items from collection with id {}", collectionId);
-            List<SubmittedItemDTO> submittedItems = itemService.getSubmittedItems(collectionId);
+            List<SubmittedItemDTO> submittedItems;
+            if (numberOfSubmittedItems == null) {
+                submittedItems = itemService.getSubmittedItems(collectionId);
+            } else {
+                submittedItems = itemService.getLastSubmittedItems(collectionId, numberOfSubmittedItems);
+            }
             return ResponseEntity.ok(submittedItems);
         } catch (CollectionNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());

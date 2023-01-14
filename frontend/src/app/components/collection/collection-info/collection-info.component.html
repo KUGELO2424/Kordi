@@ -1,7 +1,7 @@
 <div class="content min-vw-25">
   <section class="mt-5">
     <div class="container-fluid align-middle">
-      <h1 class="display-5 text-center mb-5">{{ collection.title }}</h1>
+      <h1 class="display-5 text-center mb-5">{{ collection?.title }}</h1>
       <div class="row justify-content-center">
         <!-- PHOTO + DESC -->
         <div class="col-11 col-sm-11 col-md-9 col-lg-8 col-xl-8 mb-1">
@@ -9,18 +9,18 @@
             <img
               mat-card-image
               class="collection-image"
-              [src]="getImageFromBase64(collection.image)"
-              *ngIf="collection.image"
+              [src]="getImageFromBase64(collection!.image)"
+              *ngIf="collection?.image"
             />
             <img
               mat-card-image
               src="assets/img/no_photo.svg"
               class="collection-image"
-              *ngIf="collection.image == null"
+              *ngIf="collection?.image == null"
             />
             <mat-card-content>
               <p>
-                {{ collection.description }}
+                {{ collection?.description }}
               </p>
             </mat-card-content>
           </mat-card>
@@ -32,13 +32,13 @@
         >
           <mat-card class="example-card">
             <mat-card-title
-              >{{ collection.userFirstname }}
-              {{ collection.userLastname }}</mat-card-title
+              >{{ collection?.userFirstname }}
+              {{ collection?.userLastname }}</mat-card-title
             >
             <mat-card-subtitle
               >{{ "collection.create_time" | translate }}
               {{
-                collection.startTime | date : "dd/MM/yyyy"
+                collection?.startTime | date : "dd/MM/yyyy"
               }}</mat-card-subtitle
             >
             <mat-card-content>
@@ -57,7 +57,7 @@
               <i class="fa-solid fa-users icon-color me-2"></i>
               <span
                 [innerHTML]="
-                  'collection.people_donate' | translate : { num: 12 }
+                  'collection.people_donate' | translate : { num: numOfpeople }
                 "
               ></span>
             </mat-card-content>
@@ -67,12 +67,16 @@
                 <div mat-subheader>
                   {{ "collection.last_donates" | translate }}
                 </div>
-                <mat-list-item *ngFor="let id of [1, 2, 3]">
+                <mat-list-item
+                  *ngFor="let item of submittedItems | slice : 0 : 3"
+                >
                   <mat-icon mat-list-icon
                     ><i class="fa-regular fa-circle-user"></i
                   ></mat-icon>
-                  <div mat-line>Adam</div>
-                  <div mat-line>5kg, 3szt</div>
+                  <div mat-line>{{ item.username }}</div>
+                  <div mat-line>
+                    {{ getDonateString(item) }}
+                  </div>
                 </mat-list-item>
               </mat-list>
             </mat-card-content>
@@ -93,7 +97,7 @@
             </mat-expansion-panel-header>
             <!-- LOCATION LIST -->
             <app-location-list
-              [locationsData]="collection.addresses"
+              [locationsData]="collection?.addresses"
             ></app-location-list>
           </mat-expansion-panel>
         </mat-accordion>
@@ -111,7 +115,11 @@
               <mat-panel-description> </mat-panel-description>
             </mat-expansion-panel-header>
             <!-- ITEM LIST -->
-            <app-item-list [itemsData]="collection.items"></app-item-list>
+            <app-item-list
+              *ngIf="collection"
+              [itemsData]="collection.items"
+              [collectionId]="collection.id"
+            ></app-item-list>
           </mat-expansion-panel>
         </mat-accordion>
       </div>
@@ -129,6 +137,7 @@
             </mat-expansion-panel-header>
             <!-- COMMENT LIST -->
             <app-comment-list
+              *ngIf="collection"
               [collectionId]="collection.id.toString()"
             ></app-comment-list>
           </mat-expansion-panel>

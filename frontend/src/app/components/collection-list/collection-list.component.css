@@ -57,3 +57,8 @@ mat-form-field button {
 .collection-image {
     height: 180px;
 }
+
+.my-expansion-panel {
+    padding-left: 0px;
+    padding-right: 0px;
+}

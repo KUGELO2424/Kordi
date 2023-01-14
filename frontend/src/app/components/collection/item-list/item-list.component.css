@@ -14,3 +14,28 @@
 .donate-button {
     padding: 1rem 2rem 1rem 2rem;
 }
+
+.reset-button {
+    padding: 0.7rem 1.7rem 0.7rem 1.7rem;
+}
+
+.icon-disabled {
+    color: #E9E8E7;
+}
+
+.icon-check {
+    color: #4A2799
+}
+
+.category-icon {
+    color: #B4B8B8;
+}
+
+.opacity-full {
+    opacity: 1;
+}
+
+.mat-checkbox-inner-container {
+    height: 30px!important;
+    width: 30px!important;
+}

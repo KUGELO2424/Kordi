@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -312,8 +313,8 @@ class UserControllerTest {
     }
 
     @Test
+    @WithAnonymousUser
     public void shouldThrow400IfNoUserToVerify() throws Exception {
-
         mvc.perform(get("/verify")
                         .queryParam("token", "NotExistingToken"))
                 .andExpect(status().isNotFound())

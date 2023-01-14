@@ -35,6 +35,15 @@ public interface CollectionItemService {
     CollectionItemDTO updateCollectionItem(long collectionId, long itemId, int currentAmount, int maxAmount);
 
     /**
+     * Submit items
+     *
+     * @param items items to submit
+     * @throws CollectionNotFoundException if no collection with given id
+     * @throws CollectionItemNotFoundException if no collection item with given id in collection
+     */
+    List<CollectionItemDTO> submitItems(long collectionId, List<SubmittedItemDTO> items);
+
+    /**
      * Submit item
      *
      * @param item item to submit
@@ -50,6 +59,15 @@ public interface CollectionItemService {
      * @throws CollectionNotFoundException if collection not found
      */
     List<SubmittedItemDTO> getSubmittedItems(long collectionId);
+
+    /**
+     * Get last submitted items from specific collection
+     *
+     * @param collectionId id of collection
+     * @param numberOfSubmittedItems number of submitted items to get
+     * @throws CollectionNotFoundException if collection not found
+     */
+    List<SubmittedItemDTO> getLastSubmittedItems(long collectionId, int numberOfSubmittedItems);
 
     /**
      * Get all submitted items from specific item from collection

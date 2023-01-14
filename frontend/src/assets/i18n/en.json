@@ -88,7 +88,9 @@
         "type": "Type:",
         "add_comment":"Add comment",
         "comment": "Write a comment",
-        "comment.error.msg": "Your comment cannot be longer than 250 characters"
+        "comment.error.msg": "Your comment cannot be longer than 250 characters",
+        "collected": "Collected",
+        "overview_question": "Are you sure you want to go to the summary?"
     },
     "home": {
         "welcome": "Welcome in",
@@ -139,6 +141,11 @@
         "amount": "Amount",
         "unlimited": "Unlimited",
         "suffix": " pcs"
+    },
+    "suffix": {
+        "weight": "kg",
+        "amount": "pcs",
+        "unlimited": ""
     },
     "add-collection": {
         "text": "Complete the form below and then click",

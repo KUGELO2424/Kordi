@@ -1,5 +1,6 @@
 package pl.kucharski.Kordi.service.collection.impl;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.aop.IsCollectionOwner;
@@ -18,6 +19,7 @@ import pl.kucharski.Kordi.repository.CollectionRepository;
 import pl.kucharski.Kordi.repository.UserRepository;
 import pl.kucharski.Kordi.service.collection.CollectionItemService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,6 +56,7 @@ public class CollectionItemServiceImpl implements CollectionItemService {
         Collection collection = collectionRepository.findById(collectionId)
                 .orElseThrow(() -> new CollectionNotFoundException(COLLECTION_NOT_FOUND));
         collection.addItem(collectionItem);
+
     }
 
     /**
@@ -80,20 +83,40 @@ public class CollectionItemServiceImpl implements CollectionItemService {
     }
 
     /**
+     * @see CollectionItemService#submitItems(long, List)
+     */
+    @Override
+    @Transactional
+    public List<CollectionItemDTO> submitItems(long collectionId, List<SubmittedItemDTO> items) {
+        List<CollectionItemDTO> submittedItems = new ArrayList<>();
+        for (SubmittedItemDTO itemToSubmit : items) {
+            CollectionItemDTO submittedItem = submitItem(collectionId, itemToSubmit.getCollectionItemId(), itemToSubmit);
+            submittedItems.add(submittedItem);
+        }
+        return submittedItems;
+    }
+
+    /**
      * @see CollectionItemService#submitItem(long, long, SubmittedItemDTO)
      */
     @Override
     @Transactional
     public CollectionItemDTO submitItem(long collectionId, long itemId, SubmittedItemDTO itemToSubmit) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (username == null) {
+            throw new UserNotFoundException(USER_NOT_FOUND);
+        }
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         Collection foundCollection = collectionRepository.findById(collectionId)
                 .orElseThrow(() -> new CollectionNotFoundException(COLLECTION_NOT_FOUND));
-        userRepository.findById(itemToSubmit.getUserId())
-                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
         CollectionItem foundItem = foundCollection.getItems().stream()
                 .filter(item -> item.getId().equals(itemId))
                 .findFirst()
                 .orElseThrow(() -> new CollectionItemNotFoundException(COLLECTION_ITEM_NOT_FOUND));
 
+        itemToSubmit.setUserId(user.getId());
+        itemToSubmit.setUsername(username);
         itemToSubmit.setCollectionId(collectionId);
         itemToSubmit.setCollectionItemId(itemId);
         foundCollection.addSubmittedItem(submittedItemMapper.mapToSubmittedItem(itemToSubmit));
@@ -108,8 +131,25 @@ public class CollectionItemServiceImpl implements CollectionItemService {
     public List<SubmittedItemDTO> getSubmittedItems(long collectionId) {
         Collection foundCollection = collectionRepository.findById(collectionId)
                 .orElseThrow(() -> new CollectionNotFoundException(COLLECTION_NOT_FOUND));
+
         return foundCollection.getSubmittedItems().stream()
                 .map(submittedItemMapper::mapToSubmittedItemDTO)
+                .sorted((o1, o2) -> o2.getSubmitTime().compareTo(o1.getSubmitTime()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * @see CollectionItemService#getLastSubmittedItems(long, int)
+     */
+    @Override
+    public List<SubmittedItemDTO> getLastSubmittedItems(long collectionId, int numberOfSubmittedItems) {
+        Collection foundCollection = collectionRepository.findById(collectionId)
+                .orElseThrow(() -> new CollectionNotFoundException(COLLECTION_NOT_FOUND));
+
+        return foundCollection.getSubmittedItems().stream()
+                .map(submittedItemMapper::mapToSubmittedItemDTO)
+                .sorted((o1, o2) -> o2.getSubmitTime().compareTo(o1.getSubmitTime()))
+                .limit(numberOfSubmittedItems)
                 .collect(Collectors.toList());
     }
 

@@ -41,46 +41,150 @@
     "
   >
     <div class="card h-100" style="width: 20rem">
-      <div class="card-body">
+      <!-- CARD BODY -->
+      <div
+        class="card-body"
+        [ngStyle]="{ opacity: item.currentAmount == item.maxAmount ? 0.7 : 1 }"
+      >
         <h5 class="card-title">{{ item.name }}</h5>
-        <mat-card-subtitle class="mb-1">{{
-          "category." + item.category.toLocaleLowerCase() | translate
-        }}</mat-card-subtitle>
-        <mat-card-subtitle
-          >{{ "collection.type" | translate }}
-          {{
-            "item." + item.type.toLocaleLowerCase() | translate
-          }}</mat-card-subtitle
-        >
-        <mat-divider class="mb-2"></mat-divider>
-        <p class="card-text">
-          {{ "collection.current" | translate }} {{ item.currentAmount }}
-          <span *ngIf="item.type.toString() == 'AMOUNT'">{{
-            "item.suffix" | translate
-          }}</span>
-          <span *ngIf="item.type.toString() == 'WEIGHT'"> kg</span>
-        </p>
-        <p class="card-text">
-          {{ "collection.max" | translate }} {{ item.maxAmount }}
-          <span *ngIf="item.type.toString() == 'AMOUNT'">{{
-            "item.suffix" | translate
-          }}</span>
-          <span *ngIf="item.type.toString() == 'WEIGHT'"> kg</span>
-        </p>
-        <p-progressBar
-          [value]="((item.currentAmount + item.value) / item.maxAmount) * 100"
-        ></p-progressBar>
-      </div>
+        <div class="row">
+          <div class="col-9">
+            <div class="row">
+              <mat-card-subtitle class="mb-1"
+                >{{
+                  "category." + item.category.toLocaleLowerCase() | translate
+                }}
+              </mat-card-subtitle>
+            </div>
+            <div class="row">
+              <mat-card-subtitle
+                >{{ "collection.type" | translate }}
+                {{
+                  "item." + item.type.toLocaleLowerCase() | translate
+                }}</mat-card-subtitle
+              >
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="d-flex justify-content-center">
+              <i
+                *ngIf="
+                  item.category.toString().toLocaleLowerCase() == 'medicine'
+                "
+                class="fas fa-first-aid fa-xl mt-4 category-icon"
+              ></i>
+              <i
+                *ngIf="item.category.toString().toLocaleLowerCase() == 'food'"
+                class="fas fa-utensils fa-xl mt-4 category-icon"
+              ></i>
+              <i
+                *ngIf="
+                  item.category.toString().toLocaleLowerCase() == 'clothes'
+                "
+                class="fas fa-tshirt fa-xl mt-4 category-icon"
+              ></i>
+              <i
+                *ngIf="
+                  item.category.toString().toLocaleLowerCase() == 'animals'
+                "
+                class="fas fa-paw fa-xl mt-4 category-icon"
+              ></i>
+              <i
+                *ngIf="
+                  item.category.toString().toLocaleLowerCase() == 'children'
+                "
+                class="fas fa-child fa-xl mt-4 category-icon"
+              ></i>
+              <i
+                *ngIf="
+                  item.category.toString().toLocaleLowerCase() == 'electronic'
+                "
+                class="fas fa-mobile-alt fa-xl mt-4 category-icon"
+              ></i>
+              <i
+                *ngIf="item.category.toString().toLocaleLowerCase() == 'other'"
+                class="fas fa-lightbulb fa-xl mt-4 category-icon"
+              ></i>
+            </div>
+          </div>
+        </div>
 
-      <div class="card-footer">
+        <mat-divider class="mb-2"></mat-divider>
+
+        <!-- CARD CONTENT IF NOT UNLIMITED TYPE -->
+        <div *ngIf="item.type.toString().toLocaleLowerCase() !== 'unlimited'">
+          <p class="card-text">
+            {{ "collection.current" | translate }} {{ item.currentAmount }}
+            <span *ngIf="item.type.toString() == 'AMOUNT'">{{
+              "item.suffix" | translate
+            }}</span>
+            <span *ngIf="item.type.toString() == 'WEIGHT'"> kg</span>
+          </p>
+          <p class="card-text">
+            {{ "collection.max" | translate }} {{ item.maxAmount }}
+            <span *ngIf="item.type.toString() == 'AMOUNT'">{{
+              "item.suffix" | translate
+            }}</span>
+            <span *ngIf="item.type.toString() == 'WEIGHT'"> kg</span>
+          </p>
+
+          <div class="row">
+            <div class="col-10 pt-2 pe-0">
+              <p-progressBar
+                [value]="
+                  ((item.currentAmount + item.value) / item.maxAmount) * 100
+                "
+              ></p-progressBar>
+            </div>
+            <div class="col-1">
+              <i
+                class="far fa-check-circle fa-lg"
+                [ngClass]="
+                  item.currentAmount + item.value == item.maxAmount
+                    ? 'icon-check'
+                    : 'icon-disabled'
+                "
+              ></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END CARD BODY -->
+      <!-- CARD FOOTER IF ITEM COLLECTED -->
+      <div class="card-footer" *ngIf="item.currentAmount == item.maxAmount">
+        <h5 class="card-title text-center pb-3 pt-3 icon-color">
+          {{ "collection.collected" | translate }}
+        </h5>
+      </div>
+      <!-- CARD FOOTER IF ITEM UNLIMITED -->
+      <div
+        class="card-footer"
+        *ngIf="item.type.toString().toLocaleLowerCase() === 'unlimited'"
+      >
+        <p>{{ "collection.donate" | translate }}</p>
+        <div class="field-checkbox d-flex justify-content-center mb-3">
+          <mat-checkbox
+            class="my-checkbox"
+            [(ngModel)]="item.value"
+            color="primary"
+          ></mat-checkbox>
+        </div>
+      </div>
+      <!-- CARD FOOTER IF ITEM NOT UNLIMITED -->
+      <div
+        class="card-footer"
+        *ngIf="
+          item.currentAmount != item.maxAmount &&
+          item.type.toString().toLocaleLowerCase() !== 'unlimited'
+        "
+      >
         <p>{{ "collection.donate" | translate }}</p>
         <p-slider
           [(ngModel)]="item.value"
-          [min]="item.currentAmount"
-          [max]="item.maxAmount"
+          [max]="item.maxAmount - item.currentAmount"
           styleClass="ms-1 me-1"
         ></p-slider>
-        <div class="">
+        <div class="d-flex justify-content-center">
           <p-inputNumber
             *ngIf="item.type.toString() == 'AMOUNT'"
             [(ngModel)]="item.value"

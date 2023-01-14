@@ -1,7 +1,8 @@
 import { ViewportScroller } from '@angular/common';
 import { Component, ElementRef, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Item } from 'app/common/itemToAdd';
+import { Item, ItemCategory } from 'app/common/itemToAdd';
 import { ConfirmationService } from 'primeng/api';
 
 @Component({
@@ -12,6 +13,7 @@ import { ConfirmationService } from 'primeng/api';
 })
 export class ItemListComponent implements OnInit {
 
+  @Input() collectionId: number;
   @Input() itemsData: Item[];
   items: Item[];
 
@@ -21,13 +23,15 @@ export class ItemListComponent implements OnInit {
   totalRecords: number;
   page: number = 0;
 
+  category = ItemCategory;
+
   constructor(private confirmationService: ConfirmationService, private scroller: ViewportScroller, 
-    private translate: TranslateService) { }
+    private translate: TranslateService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.items = this.itemsData;
     this.totalRecords = this.items.length;
     this.clearItemsValue();
@@ -36,13 +40,19 @@ export class ItemListComponent implements OnInit {
   confirm(event: Event) {
     this.confirmationService.confirm({
         target: event.target ? event.target : undefined,
-        message: 'Czy na pewno chcesz przejść do podsumowania?',
+        acceptLabel: this.translate.instant("add-collection.yes"),
+        rejectLabel: this.translate.instant("add-collection.no"),
+        message: this.translate.instant("collection.overview_question"),
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
-            console.log("AKCEPT")
+          const navigationExtras = {
+            state: {
+              collectionId: this.collectionId,
+              items: this.items
+            }};
+          this.router.navigateByUrl("/collections/donate/overview", navigationExtras);
         },
         reject: () => {
-          console.log("CANCLE")
         }
     });
   }

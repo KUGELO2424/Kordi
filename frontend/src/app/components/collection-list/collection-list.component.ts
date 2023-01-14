@@ -1,3 +1,4 @@
+import { ViewportScroller } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
@@ -44,7 +45,8 @@ export class CollectionListComponent implements OnInit {
     other: false,
   });
 
-  constructor(private formBuilder: UntypedFormBuilder, private collectionService: CollectionService, private sanitizer: DomSanitizer) { }
+  constructor(private formBuilder: UntypedFormBuilder, private collectionService: CollectionService, 
+    private sanitizer: DomSanitizer, private scroller: ViewportScroller) { }
 
   ngOnInit(): void {
     this.search();
@@ -84,9 +86,17 @@ export class CollectionListComponent implements OnInit {
   }
   
   changePage(event: any) {
+    // Scroll if page has been changed
+    if (event.rows == this.pageSize && event.page != this.pageNumber) {
+      this.scroll();
+    }
     this.pageSize = event.rows;
     this.pageNumber = event.page;
     this.search();
+  }
+
+  scroll() {
+    this.scroller.scrollToAnchor("collectionList");
   }
 
 }

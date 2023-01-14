@@ -6,6 +6,7 @@ export class Item {
     currentAmount: number;
     maxAmount: number;
     value: number;
+    valueBool: boolean
 }
 
 export class ItemToAdd {

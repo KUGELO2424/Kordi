@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Collection } from 'app/common/collection';
 import { CollectionListResponse } from 'app/common/collectionListsResponse';
 import { CollectionToAdd } from 'app/common/collectionToAdd';
+import { SubmittedItem } from 'app/common/submittedItem';
 import { CommentListResponse } from 'app/common/commentListResponse';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
@@ -31,5 +32,13 @@ export class CollectionService {
 
   getCommentsFromCollection(id: string, pageNumber: number, pageSize: number): Observable<CommentListResponse> {
     return this.httpClient.get<CommentListResponse>(`${this.getUrl}/${id}/comments?pageNo=${pageNumber}&pageSize=${pageSize}`);
+  }
+
+  getSubmittedItemsFromCollection(id: string): Observable<SubmittedItem[]> {
+    return this.httpClient.get<SubmittedItem[]>(`${this.getUrl}/${id}/submittedItems`);
+  }
+
+  getLastNSubmittedItemsFromCollection(id: string, number: number): Observable<SubmittedItem[]> {
+    return this.httpClient.get<SubmittedItem[]>(`${this.getUrl}/${id}/submittedItems?numberOfSubmittedItems=${number}`);
   }
 }

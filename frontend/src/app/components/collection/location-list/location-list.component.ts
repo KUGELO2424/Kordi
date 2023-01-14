@@ -8,7 +8,7 @@ import { Location } from 'app/common/location';
 })
 export class LocationListComponent implements OnInit {
 
-  @Input() locationsData: Location[];
+  @Input() locationsData: Location[] | undefined;
   locations: Location[];
   searchLocation = "";
 
@@ -18,12 +18,12 @@ export class LocationListComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.locations = this.locationsData;
+    this.locations = this.locationsData!;
   }
 
   search() {
     this.locations = [];
-    for (let location of this.locationsData) {
+    for (let location of this.locationsData!) {
       if (location.city.toLocaleLowerCase().includes(this.searchLocation.toLocaleLowerCase()) 
        || location.street.toLocaleLowerCase().includes(this.searchLocation.toLocaleLowerCase())) {
         this.locations.push(location);

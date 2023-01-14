@@ -27,6 +27,7 @@ import { AddCollectionComponent } from './components/add/add-collection/add-coll
 import { CollectionLocationsComponent } from './components/add/collection-locations/collection-locations.component';
 import { CollectionItemsComponent } from './components/add/collection-items/collection-items.component';
 import { CollectionDataComponent } from './components/add/collection-data/collection-data.component';
+import { OverviewComponent } from './components/collection/overview/overview.component';
 
 // SERVICES
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -69,6 +70,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog'
 import { ToastModule } from 'primeng/toast';
 import { AuthGuardService } from './services/auth-guard.service';
 import { DividerModule } from 'primeng/divider';
+import { CheckboxModule } from 'primeng/checkbox';
 
 const routes: Routes = [
   {path: 'home', component: HomePageComponent},
@@ -78,6 +80,7 @@ const routes: Routes = [
   {path: 'verify', component: VerificationComponent},
   {path: 'collections', component: CollectionListComponent},
   {path: 'collections/:id', component: CollectionInfoComponent},
+  {path: 'collections/donate/overview', component: OverviewComponent},
   {
     path: 'add-collection',
     canActivate:[AuthGuardService],
@@ -112,7 +115,8 @@ const routes: Routes = [
     AddCollectionComponent,
     CollectionLocationsComponent,
     CollectionItemsComponent,
-    CollectionDataComponent
+    CollectionDataComponent,
+    OverviewComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -154,7 +158,8 @@ const routes: Routes = [
     ConfirmDialogModule,
     ToastModule,
     NgxPaginationModule,
-    DividerModule
+    DividerModule,
+    CheckboxModule,
   ],
   providers: [
     ConfirmationService, MessageService,

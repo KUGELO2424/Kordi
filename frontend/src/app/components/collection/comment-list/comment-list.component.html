@@ -1,17 +1,22 @@
 <!-- INPUT -->
-<span class="p-float-label">
-  <textarea class="w-75 ms-4" rows="5" cols="40" pInputTextarea></textarea>
-</span>
+<mat-form-field appearance="outline" id="commentList" class="ms-4 w-75">
+  <mat-label>{{ "collection.comment" | translate }}</mat-label>
+  <textarea matInput matInput [(ngModel)]="commentContent" rows="5"></textarea>
+  <mat-hint align="end">{{ commentContent.length }} / 250</mat-hint>
+  <mat-hint class="mat-error" *ngIf="isCommentContentInvalid()">{{
+    "collection.comment.error.msg" | translate
+  }}</mat-hint>
+</mat-form-field>
 <!-- SEARCH BUTTON -->
 <button
   (click)="addComment()"
-  class="btn my-btn-primary btn-lm mt-3 ms-4"
+  class="btn my-btn-primary btn-lm mt-1 ms-4 mb-4"
   style="padding-left: 2rem; padding-right: 2rem"
 >
-  Dodaj komenatrz
+  {{ "collection.add_comment" | translate }}
 </button>
 <!-- COMMENT LIST -->
-<div *ngFor="let id of [1, 2, 3]" class="card-body p-4">
+<div *ngFor="let comment of comments" class="card-body p-4">
   <div class="d-flex flex-start">
     <p-avatar
       icon="pi pi-user"
@@ -20,18 +25,25 @@
       shape="circle"
     ></p-avatar>
     <div>
-      <h6 class="fw-bold mb-1">Jan Kowalski</h6>
+      <h6 class="fw-bold mb-1">{{ comment.username }}</h6>
       <div class="d-flex align-items-center mb-3">
-        <p class="mb-0">Grudzień 15, 2022</p>
+        <p class="mb-0">
+          {{ comment.createdTime | date : "dd/MM/yyyy, HH:mm" }}
+        </p>
       </div>
       <p class="mb-0">
-        Contrary to popular belief, Lorem Ipsum is not simply random text. It
-        has roots in a piece of classical Latin literature from 45 BC, making it
-        over 2000 years old. Richard McClintock, a Latin professor at
-        Hampden-Sydney College in Virginia, looked up one of the more obscure
-        Latin words, consectetur, from a Lorem Ipsum passage, and going through
-        the cites.
+        {{ comment.content }}
       </p>
     </div>
   </div>
+  <p-divider></p-divider>
+</div>
+
+<!-- PAGINATOR -->
+<div class="mt-5 mb-1 paginator">
+  <p-paginator
+    [rows]="pageSize"
+    [totalRecords]="totalRecords"
+    (onPageChange)="changePage($event); scroll()"
+  ></p-paginator>
 </div>

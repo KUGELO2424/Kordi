@@ -258,19 +258,18 @@ public class CollectionData {
             "\"currentAmount\":\"20\"," +
             "\"maxAmount\":\"10\"}";
 
-    public static final String ITEM_DTO_TO_SUBMIT = "{" +
+    public static final String ITEMS_DTO_TO_SUBMIT = "[{" +
             "\"amount\":\"2\", " +
             "\"username\":\"test123\"," +
-            "\"userId\":\"1\"," +
+            "\"submitTime\":\"2022-06-21T10:00\"," +
             "\"collectionId\":\"1\"," +
-            "\"collectionItemId\":\"1\"}";
+            "\"collectionItemId\":\"1\"}]";
 
-    public static final String ITEM_DTO_TO_SUBMIT_WITH_WRONG_VALUES = "{" +
+    public static final String ITEMS_DTO_TO_SUBMIT_WITH_WRONG_VALUES = "[{" +
             "\"amount\":\"22\", " +
             "\"username\":\"test123\"," +
-            "\"userId\":\"1\"," +
             "\"collectionId\":\"1\"," +
-            "\"collectionItemId\":\"1\"}";
+            "\"collectionItemId\":\"1\"}]";
 
     public static final String ADDRESS_TO_ADD = "{" +
             "\"city\":\"NewCity\", " +
