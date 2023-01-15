@@ -144,11 +144,7 @@ class CollectionItemServiceImplTest {
     @Test
     void shouldSubmitItem() {
         // given
-        Authentication authentication = mock(Authentication.class);
-        SecurityContext securityContext = mock(SecurityContext.class);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
-        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(USERNAME);
+        mockSecurityContextHolder();
         COLLECTION_WITH_ID.addItem(itemMapper.mapToCollectionItem(COLLECTION_ITEM_DTO));
         given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
         given(userRepository.findUserByUsername(USER.getUsername())).willReturn(Optional.of(USER));
@@ -166,11 +162,7 @@ class CollectionItemServiceImplTest {
     @Test
     void shouldSubmitItems() {
         // given
-        Authentication authentication = mock(Authentication.class);
-        SecurityContext securityContext = mock(SecurityContext.class);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
-        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(USERNAME);
+        mockSecurityContextHolder();
         COLLECTION_WITH_ID.addItem(itemMapper.mapToCollectionItem(COLLECTION_ITEM_DTO));
         given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
         given(userRepository.findUserByUsername(USER.getUsername())).willReturn(Optional.of(USER));
@@ -190,11 +182,7 @@ class CollectionItemServiceImplTest {
     @Test
     void shouldThrowCollectionItemExceptionWhenCurrentAmountEqualsMaxOnSubmitItem() {
         // given
-        Authentication authentication = mock(Authentication.class);
-        SecurityContext securityContext = mock(SecurityContext.class);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
-        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(USERNAME);
+        mockSecurityContextHolder();
         COLLECTION_ITEM_DTO.setCurrentAmount(10);
         COLLECTION_WITH_ID.addItem(itemMapper.mapToCollectionItem(COLLECTION_ITEM_DTO));
         given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
@@ -211,11 +199,7 @@ class CollectionItemServiceImplTest {
     @Test
     void shouldThrowCollectionNotFoundOnSubmitItem() {
         // given
-        Authentication authentication = mock(Authentication.class);
-        SecurityContext securityContext = mock(SecurityContext.class);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
-        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(USERNAME);
+        mockSecurityContextHolder();
         given(collectionRepository.findById(1L)).willReturn(Optional.empty());
         given(userRepository.findUserByUsername(USER.getUsername())).willReturn(Optional.of(USER));
 
@@ -229,11 +213,7 @@ class CollectionItemServiceImplTest {
     @Test
     void shouldThrowCollectionItemNotFoundOnSubmitItem() {
         // given
-        Authentication authentication = mock(Authentication.class);
-        SecurityContext securityContext = mock(SecurityContext.class);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
-        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(USERNAME);
+        mockSecurityContextHolder();
         given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
         given(userRepository.findUserByUsername(USER.getUsername())).willReturn(Optional.of(USER));
 
@@ -277,5 +257,13 @@ class CollectionItemServiceImplTest {
         // then
         assertEquals(2, submittedItemsForFirstItem.size());
         assertEquals(0, submittedItemsForSecondItem.size());
+    }
+
+    private void mockSecurityContextHolder() {
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(USERNAME);
     }
 }

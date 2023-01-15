@@ -19,7 +19,7 @@ public interface CommentService {
      * Add new comment to collection
      *
      * @param collectionId id of collection
-     * @param comment comment to add
+     * @param comment content of comment
      * @throws CollectionNotFoundException if no collection with given id
      */
     CommentDTO addComment(Long collectionId, CreateCommentDTO comment);

@@ -9,6 +9,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.exception.CommentNotFoundException;
@@ -29,9 +32,14 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static pl.kucharski.Kordi.CollectionData.COMMENT_CONTENT;
+import static pl.kucharski.Kordi.CollectionData.COMMENT_TO_ADD;
 import static pl.kucharski.Kordi.CollectionData.USER;
+import static pl.kucharski.Kordi.CollectionData.USERNAME;
 
 @ExtendWith(MockitoExtension.class)
 @Transactional
@@ -65,8 +73,9 @@ class CommentServiceImplTest {
     @Test
     void shouldAddComment() {
         // given
+        mockSecurityContextHolder();
         given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
-        given(userRepository.findById(1L)).willReturn(Optional.of(USER));
+        given(userRepository.findUserByUsername(any())).willReturn(Optional.of(USER));
 
         // when
         underTest.addComment(1L, CREATE_COMMENT_DTO);
@@ -90,9 +99,9 @@ class CommentServiceImplTest {
     @Test
     void shouldThrowUserNotFound() {
         // given
+        mockSecurityContextHolder();
         given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
-        given(userRepository.findById(1L)).willReturn(Optional.empty());
-        given(userRepository.findById(1L)).willReturn(Optional.empty());
+        given(userRepository.findUserByUsername(any())).willReturn(Optional.empty());
 
         // when + then
         assertThrows(UserNotFoundException.class, () -> underTest.addComment(1L, CREATE_COMMENT_DTO));
@@ -154,6 +163,14 @@ class CommentServiceImplTest {
         // then
         assertNotNull(comments);
         assertEquals(1, comments.getContent().size());
+    }
+
+    private void mockSecurityContextHolder() {
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(USERNAME);
     }
 
 }

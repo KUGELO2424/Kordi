@@ -25,7 +25,6 @@ export class CommentListComponent implements OnInit {
     private messageService: MessageService, private translate: TranslateService) { }
 
   ngOnInit(): void {
-    console.log("NGINIT")
     this.searchComments();
   }
 

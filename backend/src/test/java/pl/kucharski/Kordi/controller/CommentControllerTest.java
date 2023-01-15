@@ -66,7 +66,7 @@ class CommentControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(value = "test")
     void shouldAddCommentToCollection() throws Exception {
         mvc.perform(post("/collections/" + EXISTING_COLLECTION_V2_ID + "/comments")
                         .contentType(MediaType.APPLICATION_JSON)

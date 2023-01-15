@@ -68,5 +68,5 @@ mat-form-field button {
 }
 
 .p-paginator {
-    background: transparent;
+    background: transparent!important;
 }

@@ -6,6 +6,7 @@ import { SubmittedItem } from 'app/common/submittedItem';
 import { ConfirmationService } from 'primeng/api';
 import { Location } from '@angular/common'
 import { CollectionService } from 'app/services/collection.service';
+import { AddCollectionStateService } from 'app/services/add-collection-state.service';
 
 @Component({
   selector: 'app-overview',
@@ -17,9 +18,10 @@ export class OverviewComponent implements OnInit {
   items: Item[];
   collectionId: string;
   itemsToSubmit: SubmittedItem[];
+  deleteState: boolean = true;
 
   constructor(private router: Router, private translate: TranslateService, private confirmationService: ConfirmationService, 
-    private location: Location, private collectionService: CollectionService) {
+    private location: Location, private collectionService: CollectionService, private stateService: AddCollectionStateService) {
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras.state as {collectionId: string, items: Item[]};
     if (state === undefined) {
@@ -31,6 +33,13 @@ export class OverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+  
+  ngOnDestroy(): void {
+    // If user go back by back button, do not delete state
+    if (this.deleteState) {
+      this.stateService.state$.next("");
+    }
+  }
 
   mapItemsToSubmittedItems() {
     let itemsToSubmit: SubmittedItem[] = [];
@@ -57,8 +66,11 @@ export class OverviewComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.collectionService.donateItem(this.collectionId, this.itemsToSubmit).subscribe({
-          next: (data) => {
-            console.log(data);
+          next: () => {
+            this.stateService.state$.next("");
+            let navigationExtras;
+            navigationExtras = {state: {data: "success"}};
+            this.router.navigateByUrl("/collections/" + this.collectionId, navigationExtras);
           },
           error: (error) => {
             console.log(error);
@@ -71,6 +83,8 @@ export class OverviewComponent implements OnInit {
   }
 
   back() {
+    // set this flag to keep state
+    this.deleteState = false;
     this.location.back();
   }
 }

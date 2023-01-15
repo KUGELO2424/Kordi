@@ -20,7 +20,23 @@
     </div>
   </div>
 </div>
-
+<!-- NO ITEMS -->
+<div *ngIf="items?.length == 0" class="w-100">
+  <div class="d-flex flex-column bd-highlight mb-3 mt-2">
+    <div class="p-2 bd-highlight d-flex justify-content-center">
+      <img
+        src="assets/img/no_items.svg"
+        class="img-fluid mb-4 mt-3 w-50"
+        alt="No items"
+      />
+    </div>
+    <div class="p-2 bd-highlight d-flex justify-content-center">
+      <p class="fs-4 text-center w-75">
+        {{ "collection.no_items" | translate }}
+      </p>
+    </div>
+  </div>
+</div>
 <!-- ITEM LIST -->
 <div
   class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 row justify-content-center mt-3"

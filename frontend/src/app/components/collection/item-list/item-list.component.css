@@ -3,8 +3,8 @@
     flex: none
 }
 
-.p-paginator {
-    background: white;
+:host ::ng-deep .p-paginator {
+    background: white !important;
 }
 
 .p-dropdown {

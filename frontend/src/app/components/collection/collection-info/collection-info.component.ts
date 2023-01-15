@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { dateInputsHaveChanged } from '@angular/material/datepicker/datepicker-input-base';
+import { ViewportScroller } from '@angular/common';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatExpansionPanel } from '@angular/material/expansion';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Collection } from 'app/common/collection';
 import { SubmittedItem } from 'app/common/submittedItem';
 import { CollectionService } from 'app/services/collection.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-collection',
@@ -13,14 +15,24 @@ import { CollectionService } from 'app/services/collection.service';
   styleUrls: ['./collection-info.component.css']
 })
 export class CollectionInfoComponent implements OnInit {
-
+  @ViewChild('itemPanel') itemPanel: MatExpansionPanel
   collection: Collection | undefined;
   submittedItems: SubmittedItem[] = [];
   numOfpeople: number = 0;
   collectionProgress: number = 0;
 
   constructor(private route: ActivatedRoute, private collectionService: CollectionService, private sanitizer: DomSanitizer,
-    private translate: TranslateService) { }
+    private translate: TranslateService, private scroller: ViewportScroller, private router: Router,
+    private messageService: MessageService) {
+      const navigation = this.router.getCurrentNavigation();
+      const state = navigation?.extras.state as {data: string};
+      if (state !== undefined) {
+        setTimeout(() => {
+          this.messageService.add({severity:'success', detail: this.translate.instant("collection.item_submitted")});
+        }, 300);
+        
+      }
+    }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
@@ -35,6 +47,7 @@ export class CollectionInfoComponent implements OnInit {
         this.collection = data;
         this.handleSubmittedItemsDetails(collectionId, 3)
         this.setCollectionProgress();
+        this.itemPanel.expanded = true
       },
       error: () => {
 

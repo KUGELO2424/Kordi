@@ -21,6 +21,24 @@
   </div>
 </div>
 
+<!-- NO LOCATIONS -->
+<div *ngIf="locations?.length == 0" class="w-100">
+  <div class="d-flex flex-column bd-highlight mb-3 mt-2">
+    <div class="p-2 bd-highlight d-flex justify-content-center">
+      <img
+        src="assets/img/no_location.svg"
+        class="img-fluid mb-4 mt-3 w-50"
+        alt="No locations"
+      />
+    </div>
+    <div class="p-2 bd-highlight d-flex justify-content-center">
+      <p class="fs-4 text-center w-75">
+        {{ "collection.no_locations" | translate }}
+      </p>
+    </div>
+  </div>
+</div>
+
 <!-- LOCATION LIST -->
 <div class="row row-cols-auto d-flex justify-content-center">
   <div *ngFor="let location of locations" class="col">

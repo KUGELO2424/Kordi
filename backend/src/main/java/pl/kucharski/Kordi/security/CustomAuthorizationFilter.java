@@ -78,7 +78,11 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
         if (request.getMethod().equals("GET")) {
-            return WHITE_LIST_URLS.contains(path);
+           for (String whiteListPath : WHITE_LIST_URLS) {
+               if (path.contains(whiteListPath)) {
+                   return true;
+               }
+           }
         }
         return false;
     }

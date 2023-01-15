@@ -1,5 +1,5 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, ElementRef, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Item, ItemCategory } from 'app/common/itemToAdd';
@@ -10,7 +10,7 @@ import { ConfirmationService } from 'primeng/api';
   selector: 'app-item-list',
   templateUrl: './item-list.component.html',
   styleUrls: ['./item-list.component.css'],
-  encapsulation: ViewEncapsulation.None
+
 })
 export class ItemListComponent implements OnInit {
 
@@ -30,6 +30,7 @@ export class ItemListComponent implements OnInit {
 
   ngOnInit(): void {
     this.state = this.stateService.state$.getValue() || {}
+    this.stateService.state$.next("");
     if (Object.keys(this.state).length === 0) {
       return;
     }

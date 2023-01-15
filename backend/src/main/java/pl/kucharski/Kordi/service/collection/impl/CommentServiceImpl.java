@@ -3,6 +3,7 @@ package pl.kucharski.Kordi.service.collection.impl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.aop.IsCollectionOwner;
@@ -14,6 +15,7 @@ import pl.kucharski.Kordi.model.comment.Comment;
 import pl.kucharski.Kordi.model.comment.CommentDTO;
 import pl.kucharski.Kordi.model.comment.CommentMapper;
 import pl.kucharski.Kordi.model.comment.CreateCommentDTO;
+import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.repository.CollectionRepository;
 import pl.kucharski.Kordi.repository.CommentRepository;
 import pl.kucharski.Kordi.repository.UserRepository;
@@ -48,12 +50,18 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     @Transactional
-    public CommentDTO addComment(Long collectionId, CreateCommentDTO commentDTO) {
-        Comment comment = commentMapper.mapToComment(commentDTO);
+    public CommentDTO addComment(Long collectionId, CreateCommentDTO commentDto) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (username == null) {
+            throw new UserNotFoundException(USER_NOT_FOUND);
+        }
         Collection foundCollection = collectionRepository.findById(collectionId)
                 .orElseThrow(() -> new CollectionNotFoundException(COLLECTION_NOT_FOUND));
-        userRepository.findById(commentDTO.getUserId())
+        User user = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
+        commentDto.setCollectionId(collectionId);
+        commentDto.setUserId(user.getId());
+        Comment comment = commentMapper.mapToComment(commentDto);
         foundCollection.addComment(comment);
         return commentMapper.mapToCommentDTO(commentRepository.save(comment));
     }

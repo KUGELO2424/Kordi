@@ -95,7 +95,10 @@
         "collected": "Collected",
         "overview_question": "Are you sure you want to go to the summary?",
         "no_comments": "Collection has no comments. You can add a comment first",
-        "comment_add": "The comment has been added"
+        "comment_add": "The comment has been added",
+        "no_items": "No items found",
+        "no_locations": "No locations found",
+        "item_submitted": "Items were donated successfully"
     },
     "home": {
         "welcome": "Welcome in",

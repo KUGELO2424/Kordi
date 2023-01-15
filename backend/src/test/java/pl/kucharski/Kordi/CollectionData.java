@@ -116,9 +116,7 @@ public class CollectionData {
 
     public static CreateCommentDTO createCommentDTO() {
         return CreateCommentDTO.builder()
-                .collectionId(1L)
                 .content(COMMENT_CONTENT)
-                .userId(1L)
                 .build();
     }
 
@@ -228,14 +226,10 @@ public class CollectionData {
             "\"endTime\":\"" + NEW_END_TIME + "\"}";
 
     public static final String COMMENT_TO_ADD = "{" +
-            "\"content\":\"" + COMMENT_CONTENT + "\", " +
-            "\"userId\":\"1\"," +
-            "\"collectionId\":\"2\"}";
+            "\"content\":\"" + COMMENT_CONTENT + "\"}";
 
     public static final String COMMENT_TO_ADD_WITH_WRONG_USERID = "{" +
-            "\"content\":\"" + COMMENT_CONTENT + "\", " +
-            "\"userId\":\"55\"," +
-            "\"collectionId\":\"2\"}";
+            "\"content\":\"" + COMMENT_CONTENT + "\"}";
 
     public static final String ITEM_DTO_TO_ADD = "{" +
             "\"name\":\"Koszulki\", " +

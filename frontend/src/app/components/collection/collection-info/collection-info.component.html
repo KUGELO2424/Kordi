@@ -129,7 +129,7 @@
       <!-- ITEMS -->
       <div class="row justify-content-center mt-3">
         <mat-accordion>
-          <mat-expansion-panel hideToggle>
+          <mat-expansion-panel hideToggle #itemPanel id="itemPanel">
             <mat-expansion-panel-header>
               <mat-panel-title
                 ><i class="fa-solid fa-list me-3 icon-color"></i
@@ -168,6 +168,8 @@
       </div>
     </div>
   </section>
+  <!-- MESSAGE -->
+  <p-toast></p-toast>
   <!-- LOADING SPINNER -->
   <app-loading-spinner></app-loading-spinner>
 </div>
