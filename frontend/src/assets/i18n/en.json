@@ -93,7 +93,9 @@
         "comment": "Write a comment",
         "comment.error.msg": "Your comment cannot be longer than 250 characters",
         "collected": "Collected",
-        "overview_question": "Are you sure you want to go to the summary?"
+        "overview_question": "Are you sure you want to go to the summary?",
+        "no_comments": "Collection has no comments. You can add a comment first",
+        "comment_add": "The comment has been added"
     },
     "home": {
         "welcome": "Welcome in",
@@ -194,5 +196,12 @@
         "location.new": "New Location",
         "location.city.error": "City must be between 1 and 30 characters",
         "location.city.street": "Street must be between 1 and 30 characters"
+    },
+    "overview": {
+        "title": "Donation summary",
+        "back_button": "Back to collection",
+        "name": "Name",
+        "category": "Category",
+        "amount": "How much do you donate"
     }
 }

@@ -4,6 +4,7 @@ import { Collection } from 'app/common/collection';
 import { CollectionListResponse } from 'app/common/collectionListsResponse';
 import { CollectionToAdd } from 'app/common/collectionToAdd';
 import { SubmittedItem } from 'app/common/submittedItem';
+import { Comment } from 'app/common/comment';
 import { CommentListResponse } from 'app/common/commentListResponse';
 import { environment } from 'environments/environment';
 import { Observable, of } from 'rxjs';
@@ -41,6 +42,14 @@ export class CollectionService {
 
   getLastNSubmittedItemsFromCollection(id: string, number: number): Observable<SubmittedItem[]> {
     return this.httpClient.get<SubmittedItem[]>(`${this.getUrl}/${id}/submittedItems?numberOfSubmittedItems=${number}`);
+  }
+
+  donateItem(id:string, items: SubmittedItem[]) {
+    return this.httpClient.post<SubmittedItem[]>(`${this.getUrl}/${id}/items/submit`, items);
+  }
+
+  addComment(id:string, comment: Comment) {
+    return this.httpClient.post<Comment>(`${this.getUrl}/${id}/comments`, comment);
   }
 
   getCollectionProgress(items: Item[]): Observable<number> {

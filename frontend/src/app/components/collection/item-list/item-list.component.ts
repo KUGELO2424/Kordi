@@ -3,6 +3,7 @@ import { Component, ElementRef, Input, OnInit, SimpleChanges, ViewChild, ViewEnc
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Item, ItemCategory } from 'app/common/itemToAdd';
+import { AddCollectionStateService } from 'app/services/add-collection-state.service';
 import { ConfirmationService } from 'primeng/api';
 
 @Component({
@@ -15,20 +16,26 @@ export class ItemListComponent implements OnInit {
 
   @Input() collectionId: number;
   @Input() itemsData: Item[];
+  
   items: Item[];
-
   searchItem: string = "";
-
   pageSize: number = 10;
   totalRecords: number;
   page: number = 0;
-
   category = ItemCategory;
+  state: any;
 
   constructor(private confirmationService: ConfirmationService, private scroller: ViewportScroller, 
-    private translate: TranslateService, private router: Router) { }
+    private translate: TranslateService, private router: Router, private stateService: AddCollectionStateService) { }
 
   ngOnInit(): void {
+    this.state = this.stateService.state$.getValue() || {}
+    if (Object.keys(this.state).length === 0) {
+      return;
+    }
+    if ("items" in this.state) {
+      this.items = this.state.items
+    }
   }
 
   ngOnChanges(): void {
@@ -49,12 +56,18 @@ export class ItemListComponent implements OnInit {
             state: {
               collectionId: this.collectionId,
               items: this.items
-            }};
+            }}; 
+          this.saveState();
           this.router.navigateByUrl("/collections/donate/overview", navigationExtras);
         },
         reject: () => {
         }
     });
+  }
+
+  saveState() {
+    this.state.items = this.items;
+    this.stateService.state$.next(this.state);
   }
 
   search() {
@@ -78,6 +91,15 @@ export class ItemListComponent implements OnInit {
 
   scroll() {
     this.scroller.scrollToAnchor("itemList");
+  }
+
+  isDonateButtonDisabled() {
+    for(let item of this.items) {
+      if(item.value > 0) {
+        return false;
+      }
+    }
+    return true;
   }
 
 }

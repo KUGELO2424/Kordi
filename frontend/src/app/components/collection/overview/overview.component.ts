@@ -4,6 +4,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Item } from 'app/common/itemToAdd';
 import { SubmittedItem } from 'app/common/submittedItem';
 import { ConfirmationService } from 'primeng/api';
+import { Location } from '@angular/common'
+import { CollectionService } from 'app/services/collection.service';
 
 @Component({
   selector: 'app-overview',
@@ -13,16 +15,19 @@ import { ConfirmationService } from 'primeng/api';
 export class OverviewComponent implements OnInit {
 
   items: Item[];
+  collectionId: string;
   itemsToSubmit: SubmittedItem[];
 
-  constructor(private router: Router, private translate: TranslateService, private confirmationService: ConfirmationService) {
+  constructor(private router: Router, private translate: TranslateService, private confirmationService: ConfirmationService, 
+    private location: Location, private collectionService: CollectionService) {
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras.state as {collectionId: string, items: Item[]};
-    this.items = state?.items;
-    this.mapItemsToSubmittedItems();
     if (state === undefined) {
-      this.router.navigateByUrl("/");
+      this.back();
     }
+    this.items = state?.items;
+    this.collectionId = state?.collectionId;
+    this.mapItemsToSubmittedItems();
   }
 
   ngOnInit(): void {}
@@ -40,6 +45,7 @@ export class OverviewComponent implements OnInit {
         itemsToSubmit.push(itemToSubmit);
       }
     }
+    this.itemsToSubmit = itemsToSubmit;
   }
 
   confirm(event: Event) {
@@ -50,9 +56,21 @@ export class OverviewComponent implements OnInit {
       message: "Czy na pewno chcesz przekazać te przedmioty jako darowiznę?",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
+        this.collectionService.donateItem(this.collectionId, this.itemsToSubmit).subscribe({
+          next: (data) => {
+            console.log(data);
+          },
+          error: (error) => {
+            console.log(error);
+          }
+        })
       },
       reject: () => {
       }
-  });
+   });
+  }
+
+  back() {
+    this.location.back();
   }
 }

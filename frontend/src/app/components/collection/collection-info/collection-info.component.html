@@ -35,15 +35,35 @@
               >{{ collection?.userFirstname }}
               {{ collection?.userLastname }}</mat-card-title
             >
-            <mat-card-subtitle
+            <mat-card-subtitle *ngIf="collection"
               >{{ "collection.create_time" | translate }}
-              {{
-                collection?.startTime | date : "dd/MM/yyyy"
-              }}</mat-card-subtitle
-            >
+              {{ collection.startTime | date : "dd/MM/yyyy" }}
+              <p
+                class="card-text"
+                *ngIf="
+                  collection?.endTime !== null && getDaysToEnd(collection) >= 0
+                "
+                [innerHTML]="
+                  'collections.end_time'
+                    | translate : { num: getDaysToEnd(collection) }
+                "
+              ></p>
+            </mat-card-subtitle>
             <mat-card-content>
               <p>{{ "collection.progress" | translate }}</p>
-              <p-progressBar [value]="collectionProgress"></p-progressBar>
+              <div class="row">
+                <div class="col-10 pt-2 pe-0">
+                  <p-progressBar [value]="collectionProgress"></p-progressBar>
+                </div>
+                <div class="col-1">
+                  <i
+                    class="far fa-check-circle fa-lg"
+                    [ngClass]="
+                      collectionProgress == 100 ? 'icon-check' : 'icon-disabled'
+                    "
+                  ></i>
+                </div>
+              </div>
             </mat-card-content>
             <mat-card-content class="mt-4">
               <button

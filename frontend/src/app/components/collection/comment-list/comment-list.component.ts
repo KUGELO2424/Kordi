@@ -3,6 +3,7 @@ import { CollectionService } from 'app/services/collection.service';
 import { Comment } from 'app/common/comment';
 import { TranslateService } from '@ngx-translate/core';
 import { ViewportScroller } from '@angular/common';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-comment-list',
@@ -20,10 +21,11 @@ export class CommentListComponent implements OnInit {
   pageSize: number = 10;
   totalRecords: number = 10;
 
-  constructor(private collectionService: CollectionService, 
-    private scroller: ViewportScroller) { }
+  constructor(private collectionService: CollectionService, private scroller: ViewportScroller, 
+    private messageService: MessageService, private translate: TranslateService) { }
 
   ngOnInit(): void {
+    console.log("NGINIT")
     this.searchComments();
   }
 
@@ -31,7 +33,7 @@ export class CommentListComponent implements OnInit {
     this.collectionService.getCommentsFromCollection(this.collectionId, this.page, this.pageSize).subscribe({
       next: (data) => {   
         this.comments = data.content;
-        this.page = data.size;
+        this.page = data.number;
         this.totalRecords = data.totalElements;
       },
       error: (error) => {
@@ -41,7 +43,18 @@ export class CommentListComponent implements OnInit {
   }
 
   addComment() {
-    console.log("ADD COMMENT");
+    let comment = new Comment();
+    comment.content = this.commentContent;
+    this.collectionService.addComment(this.collectionId, comment).subscribe({
+      next: (data) => {
+        this.messageService.add({severity:'success', detail: this.translate.instant("collection.comment_add")});
+        this.commentContent = "";
+        this.ngOnInit();
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
   }
 
   changePage(event: any) {

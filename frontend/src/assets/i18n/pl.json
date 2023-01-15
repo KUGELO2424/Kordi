@@ -93,7 +93,9 @@
         "comment": "Napisz komentarz",
         "comment.error.msg": "Twój komenatrz nie może być dłuższy niż 250 znaków",
         "collected": "Zebrano",
-        "overview_question": "Czy na pewno chcesz przejść do podsumowania?"
+        "overview_question": "Czy na pewno chcesz przejść do podsumowania?",
+        "no_comments": "Zbiórka nie posiada żadnych komentarzy. Możesz dodać komenatrz jako pierwszy",
+        "comment_add": "Komentarz został dodany"
     },
     "home": {
         "welcome": "Witaj w",
@@ -195,5 +197,12 @@
         "location.new": "Nowa lokalizacja",
         "location.city.error": "Miasto musi zawierać od 1 do 30 znaków",
         "location.city.street": "Ulica musi zawierać od 1 do 30 znaków"
-    } 
+    },
+    "overview": {
+        "title": "Podsumowanie darowizny",
+        "back_button": "Powrót do zbiórki",
+        "name": "Nazwa",
+        "category": "Kategoria",
+        "amount": "Ile przekazujesz"
+    }
 }

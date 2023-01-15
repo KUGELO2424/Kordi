@@ -82,4 +82,15 @@ export class CollectionInfoComponent implements OnInit {
     this.numOfpeople = usernames.length;
   }
 
+  getDaysToEnd(collection: Collection) {
+    const msInDay = 24 * 60 * 60 * 1000;
+    if (collection.endTime != null) {
+      let now = new Date().getTime();
+      let endTime = Date.parse(collection.endTime.toString());
+      let diffTime = endTime - now;
+      return Math.round((diffTime / msInDay));
+    }
+    return 0;
+  }
+
 }

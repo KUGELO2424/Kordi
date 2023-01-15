@@ -236,6 +236,7 @@
   </button>
   <button
     (click)="confirm($event)"
+    [disabled]="isDonateButtonDisabled()"
     class="btn my-btn-primary btn-lg donate-button mt-2"
   >
     {{ "collection.donate_button" | translate }}

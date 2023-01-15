@@ -9,12 +9,30 @@
 </mat-form-field>
 <!-- SEARCH BUTTON -->
 <button
+  [disabled]="commentContent.length < 1 || commentContent.length > 250"
   (click)="addComment()"
   class="btn my-btn-primary btn-lm mt-1 ms-4 mb-4"
   style="padding-left: 2rem; padding-right: 2rem"
 >
   {{ "collection.add_comment" | translate }}
 </button>
+<!-- NO COMMENTS -->
+<div *ngIf="comments?.length == 0" class="w-100">
+  <div class="d-flex flex-column bd-highlight mb-3">
+    <div class="p-2 bd-highlight d-flex justify-content-center">
+      <img
+        src="assets/img/no_comment.svg"
+        class="img-fluid mb-4 mt-3 w-50"
+        alt="No comments"
+      />
+    </div>
+    <div class="p-2 bd-highlight d-flex justify-content-center">
+      <p class="fs-4 text-center w-75">
+        {{ "collection.no_comments" | translate }}
+      </p>
+    </div>
+  </div>
+</div>
 <!-- COMMENT LIST -->
 <div *ngFor="let comment of comments" class="card-body p-4">
   <div class="d-flex flex-start">
@@ -38,6 +56,9 @@
   </div>
   <p-divider></p-divider>
 </div>
+
+<!-- MESSAGE -->
+<p-toast></p-toast>
 
 <!-- PAGINATOR -->
 <div class="mt-5 mb-1 paginator">

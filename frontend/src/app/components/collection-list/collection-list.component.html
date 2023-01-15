@@ -211,7 +211,7 @@
                     class="mb-3"
                   ></mat-progress-bar>
                   <p
-                    class="card-text word-break"
+                    class="card-text"
                     *ngIf="
                       collection.endTime !== null &&
                       getDaysToEnd(collection) >= 0
@@ -222,10 +222,7 @@
                         | translate : { num: getDaysToEnd(collection) }
                     }}
                   </p>
-                  <p
-                    class="card-text word-break"
-                    *ngIf="getDaysToEnd(collection) < 0"
-                  >
+                  <p class="card-text" *ngIf="getDaysToEnd(collection) < 0">
                     {{ "collections.completed" | translate }}
                   </p>
                 </div>
