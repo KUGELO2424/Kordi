@@ -17,6 +17,7 @@ export class CollectionInfoComponent implements OnInit {
   collection: Collection | undefined;
   submittedItems: SubmittedItem[] = [];
   numOfpeople: number = 0;
+  collectionProgress: number = 0;
 
   constructor(private route: ActivatedRoute, private collectionService: CollectionService, private sanitizer: DomSanitizer,
     private translate: TranslateService) { }
@@ -33,6 +34,7 @@ export class CollectionInfoComponent implements OnInit {
       next: (data) => {   
         this.collection = data;
         this.handleSubmittedItemsDetails(collectionId, 3)
+        this.setCollectionProgress();
       },
       error: () => {
 
@@ -45,6 +47,14 @@ export class CollectionInfoComponent implements OnInit {
       next: (data) => {
         this.submittedItems = data;
         this.countPeopleThatSubmittedItems();
+      }
+    })
+  }
+
+  setCollectionProgress() {
+    this.collectionService.getCollectionProgress(this.collection!.items).subscribe({
+      next: (data) => {
+        this.collectionProgress = data;
       }
     })
   }

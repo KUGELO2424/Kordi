@@ -62,3 +62,11 @@ mat-form-field button {
     padding-left: 0px;
     padding-right: 0px;
 }
+
+.my-card-footer {
+    height: 100px;
+}
+
+.p-paginator {
+    background: transparent;
+}

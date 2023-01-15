@@ -6,7 +6,8 @@ import { CollectionToAdd } from 'app/common/collectionToAdd';
 import { SubmittedItem } from 'app/common/submittedItem';
 import { CommentListResponse } from 'app/common/commentListResponse';
 import { environment } from 'environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { Item } from 'app/common/itemToAdd';
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +41,17 @@ export class CollectionService {
 
   getLastNSubmittedItemsFromCollection(id: string, number: number): Observable<SubmittedItem[]> {
     return this.httpClient.get<SubmittedItem[]>(`${this.getUrl}/${id}/submittedItems?numberOfSubmittedItems=${number}`);
+  }
+
+  getCollectionProgress(items: Item[]): Observable<number> {
+    let current = 0;
+    let max = 0;
+    for(let item of items) {
+      if (item.type.toString().toLocaleLowerCase() !== 'unlimited') {
+        current = current + item.currentAmount;
+        max = max + item.maxAmount;
+      }
+    }
+    return of((current / max) * 100);
   }
 }

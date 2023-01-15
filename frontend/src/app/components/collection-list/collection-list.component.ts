@@ -4,8 +4,9 @@ import { UntypedFormBuilder } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Collection } from 'app/common/collection';
-import { ItemCategory } from 'app/common/itemToAdd';
+import { Item, ItemCategory } from 'app/common/itemToAdd';
 import { CollectionService } from 'app/services/collection.service';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-collection-list',
@@ -59,6 +60,7 @@ export class CollectionListComponent implements OnInit {
           this.collections = data.content;
           this.pageSize = data.size;
           this.totalRecords = data.totalElements;
+          this.getCollectionsProgress();
         },
         error: (error) => {
           console.log(error);
@@ -86,10 +88,7 @@ export class CollectionListComponent implements OnInit {
   }
   
   changePage(event: any) {
-    // Scroll if page has been changed
-    if (event.rows == this.pageSize && event.page != this.pageNumber) {
-      this.scroll();
-    }
+    this.scroll();
     this.pageSize = event.rows;
     this.pageNumber = event.page;
     this.search();
@@ -97,6 +96,27 @@ export class CollectionListComponent implements OnInit {
 
   scroll() {
     this.scroller.scrollToAnchor("collectionList");
+  }
+
+  getCollectionsProgress() {
+    for(let collection of this.collections) {
+      this.collectionService.getCollectionProgress(collection.items).subscribe({
+        next: (data) => {
+          collection.progress = data;
+        }
+      })
+    }
+  }
+
+  getDaysToEnd(collection: Collection) {
+    const msInDay = 24 * 60 * 60 * 1000;
+    if (collection.endTime != null) {
+      let now = new Date().getTime();
+      let endTime = Date.parse(collection.endTime.toString());
+      let diffTime = endTime - now;
+      return Math.round((diffTime / msInDay));
+    }
+    return 0;
   }
 
 }

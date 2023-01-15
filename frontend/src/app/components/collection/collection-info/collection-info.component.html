@@ -43,7 +43,7 @@
             >
             <mat-card-content>
               <p>{{ "collection.progress" | translate }}</p>
-              <p-progressBar [value]="88"></p-progressBar>
+              <p-progressBar [value]="collectionProgress"></p-progressBar>
             </mat-card-content>
             <mat-card-content class="mt-4">
               <button
@@ -67,6 +67,9 @@
                 <div mat-subheader>
                   {{ "collection.last_donates" | translate }}
                 </div>
+                <p *ngIf="submittedItems.length == 0">
+                  {{ "collection.no_last_donates" | translate }}
+                </p>
                 <mat-list-item
                   *ngFor="let item of submittedItems | slice : 0 : 3"
                 >

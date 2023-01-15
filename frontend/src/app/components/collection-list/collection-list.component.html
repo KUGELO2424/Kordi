@@ -161,7 +161,7 @@
                     *ngIf="collection.image == null"
                   />
                 </div>
-                <div class="card-body">
+                <div class="card-body h-100">
                   <h5 class="card-title word-break">
                     <b>
                       {{ collection.title.substr(0, 25)
@@ -203,12 +203,31 @@
                     </p>
                   </mat-expansion-panel>
                 </mat-accordion>
-                <div class="card-footer">
+                <div class="card-footer my-card-footer">
                   <p>{{ "collections.progress" | translate }}</p>
                   <mat-progress-bar
                     mode="determinate"
-                    value="40"
+                    [value]="collection.progress"
+                    class="mb-3"
                   ></mat-progress-bar>
+                  <p
+                    class="card-text word-break"
+                    *ngIf="
+                      collection.endTime !== null &&
+                      getDaysToEnd(collection) >= 0
+                    "
+                  >
+                    {{
+                      "collections.end_time"
+                        | translate : { num: getDaysToEnd(collection) }
+                    }}
+                  </p>
+                  <p
+                    class="card-text word-break"
+                    *ngIf="getDaysToEnd(collection) < 0"
+                  >
+                    {{ "collections.completed" | translate }}
+                  </p>
                 </div>
               </div>
             </div>

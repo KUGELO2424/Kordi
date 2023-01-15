@@ -13,4 +13,5 @@ export class Collection {
     addresses: Location[];
     items: Item[];
     image: string;
+    progress: number;
 }
