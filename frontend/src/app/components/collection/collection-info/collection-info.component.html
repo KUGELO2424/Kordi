@@ -111,7 +111,7 @@
       <div class="row justify-content-center mt-3">
         <mat-accordion>
           <mat-expansion-panel hideToggle>
-            <mat-expansion-panel-header>
+            <mat-expansion-panel-header collapsedHeight="80px">
               <mat-panel-title
                 ><i class="fa-solid fa-location-dot me-3 icon-color"></i>
                 {{ "collection.locations" | translate }}
@@ -130,7 +130,7 @@
       <div class="row justify-content-center mt-3">
         <mat-accordion>
           <mat-expansion-panel hideToggle #itemPanel id="itemPanel">
-            <mat-expansion-panel-header>
+            <mat-expansion-panel-header collapsedHeight="80px">
               <mat-panel-title
                 ><i class="fa-solid fa-list me-3 icon-color"></i
                 >{{ "collection.items" | translate }}
@@ -150,13 +150,27 @@
       <!-- COMMENTS -->
       <div class="row justify-content-center mt-3">
         <mat-accordion>
-          <mat-expansion-panel hideToggle>
-            <mat-expansion-panel-header>
+          <mat-expansion-panel hideToggle [disabled]="isUserLoggedIn()">
+            <mat-expansion-panel-header collapsedHeight="80px">
               <mat-panel-title
                 ><i class="fa fa-comment me-3 icon-color"></i>
                 {{ "collection.comments" | translate }}
               </mat-panel-title>
-              <mat-panel-description> </mat-panel-description>
+              <mat-panel-description
+                class="disabled-description"
+                *ngIf="isUserLoggedIn()"
+              >
+                <button
+                  pButton
+                  type="button"
+                  class="p-button-text pe-2 ps-2"
+                  routerLink="/login"
+                >
+                  {{ "login.login" | translate }}</button
+                >{{
+                  "collection.comment_disabled" | translate
+                }}</mat-panel-description
+              >
             </mat-expansion-panel-header>
             <!-- COMMENT LIST -->
             <app-comment-list

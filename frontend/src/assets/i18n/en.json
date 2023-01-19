@@ -96,6 +96,8 @@
         "overview_question": "Are you sure you want to go to the summary?",
         "no_comments": "Collection has no comments. You can add a comment first",
         "comment_add": "The comment has been added",
+        "comment_disabled": "Log in to see comments",
+        "items_disabled": "to donate items",
         "no_items": "No items found",
         "no_locations": "No locations found",
         "item_submitted": "Items were donated successfully"

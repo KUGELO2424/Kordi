@@ -96,6 +96,8 @@
         "overview_question": "Czy na pewno chcesz przejść do podsumowania?",
         "no_comments": "Zbiórka nie posiada żadnych komentarzy. Możesz dodać komenatrz jako pierwszy",
         "comment_add": "Komentarz został dodany",
+        "comment_disabled": "by zobaczyć komentarze",
+        "items_disabled": "by podarować przedmioty",
         "no_items": "Nie znaleziono żadnych przedmiotów",
         "no_locations": "Nie znaleziono żadnych lokalizacji",
         "item_submitted": "Przedmioty zostały podarowane pomyślnie"

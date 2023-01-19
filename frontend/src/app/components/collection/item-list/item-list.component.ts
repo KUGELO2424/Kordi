@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Item, ItemCategory } from 'app/common/itemToAdd';
 import { AddCollectionStateService } from 'app/services/add-collection-state.service';
+import { AuthService } from 'app/services/auth.service';
 import { ConfirmationService } from 'primeng/api';
 
 @Component({
@@ -24,9 +25,16 @@ export class ItemListComponent implements OnInit {
   page: number = 0;
   category = ItemCategory;
   state: any;
+  searchTypes: any[] = [
+    {label: 'Wszystkie', 'value': 'all'},
+    {label: 'Zebrane', 'value': 'collected'},
+    {label: 'Nie zebrane', 'value': 'not-collected'}
+  ]
+  selectedSearchType: any = this.searchTypes[0];
 
   constructor(private confirmationService: ConfirmationService, private scroller: ViewportScroller, 
-    private translate: TranslateService, private router: Router, private stateService: AddCollectionStateService) { }
+    private translate: TranslateService, private router: Router, private stateService: AddCollectionStateService,
+    private authService: AuthService) { }
 
   ngOnInit(): void {
     this.state = this.stateService.state$.getValue() || {}
@@ -77,7 +85,13 @@ export class ItemListComponent implements OnInit {
       const category = this.translate.instant("category." + item.category.toString().toLocaleLowerCase());
       if (item.name.toLocaleLowerCase().includes(this.searchItem.toLocaleLowerCase()) 
        || category.toLocaleLowerCase().includes(this.searchItem.toLocaleLowerCase())) {
-        this.items.push(item);
+        if (this.selectedSearchType.value == 'collected' && item.currentAmount == item.maxAmount) {
+          this.items.push(item);
+        } else if (this.selectedSearchType.value == 'not-collected' && item.currentAmount != item.maxAmount) {
+          this.items.push(item);
+        } else if (this.selectedSearchType.value == 'all') {
+          this.items.push(item);
+        }
       }
     }
     this.page = 0;
@@ -101,6 +115,10 @@ export class ItemListComponent implements OnInit {
       }
     }
     return true;
+  }
+
+  isUserLoggedIn() {
+    return this.authService.isUserLoggedIn();
   }
 
 }

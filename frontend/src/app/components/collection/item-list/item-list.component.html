@@ -20,6 +20,19 @@
     </div>
   </div>
 </div>
+<div class="row justify-content-center d-flex align-items-center">
+  <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10">
+    <div class="d-flex justify-content-center">
+      <p-selectButton
+        [options]="searchTypes"
+        [(ngModel)]="selectedSearchType"
+        optionLabel="label"
+        (onChange)="search()"
+      ></p-selectButton>
+    </div>
+  </div>
+</div>
+
 <!-- NO ITEMS -->
 <div *ngIf="items?.length == 0" class="w-100">
   <div class="d-flex flex-column bd-highlight mb-3 mt-2">
@@ -183,6 +196,7 @@
             class="my-checkbox"
             [(ngModel)]="item.value"
             color="primary"
+            [disabled]="!isUserLoggedIn()"
           ></mat-checkbox>
         </div>
       </div>
@@ -194,14 +208,18 @@
           item.type.toString().toLocaleLowerCase() !== 'unlimited'
         "
       >
-        <p>{{ "collection.donate" | translate }}</p>
+        <p [ngClass]="{ 'disabled-text': !isUserLoggedIn() }">
+          {{ "collection.donate" | translate }}
+        </p>
         <p-slider
           [(ngModel)]="item.value"
           [max]="item.maxAmount - item.currentAmount"
           styleClass="ms-1 me-1"
+          [disabled]="!isUserLoggedIn()"
         ></p-slider>
         <div class="d-flex justify-content-center">
           <p-inputNumber
+            [disabled]="!isUserLoggedIn()"
             *ngIf="item.type.toString() == 'AMOUNT'"
             [(ngModel)]="item.value"
             mode="decimal"
@@ -213,6 +231,7 @@
           >
           </p-inputNumber>
           <p-inputNumber
+            [disabled]="!isUserLoggedIn()"
             *ngIf="item.type.toString() == 'WEIGHT'"
             [(ngModel)]="item.value"
             mode="decimal"
@@ -243,18 +262,34 @@
 <p-confirmPopup></p-confirmPopup>
 
 <!-- BUTTON -->
-<div class="text-center mb-3 mt-3">
+<div
+  class="text-center mb-3 mt-3 d-flex align-items-center justify-content-center"
+>
   <button
     (click)="clearItemsValue()"
     class="btn my-btn-secondary btn-sm reset-button me-2 mt-2"
   >
     Reset
   </button>
-  <button
-    (click)="confirm($event)"
-    [disabled]="isDonateButtonDisabled()"
-    class="btn my-btn-primary btn-lg donate-button mt-2"
-  >
-    {{ "collection.donate_button" | translate }}
-  </button>
+  <div *ngIf="isUserLoggedIn()">
+    <button
+      (click)="confirm($event)"
+      [disabled]="isDonateButtonDisabled()"
+      class="btn my-btn-primary btn-lg donate-button mt-2"
+    >
+      {{ "collection.donate_button" | translate }}
+    </button>
+  </div>
+  <div *ngIf="!isUserLoggedIn()" class="ms-3">
+    <button
+      pButton
+      type="button"
+      class="p-button-text pe-2 ps-2 mt-2"
+      routerLink="/login"
+    >
+      {{ "login.login" | translate }}
+    </button>
+
+    <p>{{ "collection.items_disabled" | translate }}</p>
+  </div>
 </div>

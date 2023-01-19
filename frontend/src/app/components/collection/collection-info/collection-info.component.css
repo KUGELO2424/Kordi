@@ -9,3 +9,15 @@ section {
 .collection-image {
     height: 340px;
 }
+
+.disabled-description {
+    color: black!important;
+}
+
+.icon-disabled {
+    color: #E9E8E7;
+}
+
+.icon-check {
+    color: #4A2799
+}

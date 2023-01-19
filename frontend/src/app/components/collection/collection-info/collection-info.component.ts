@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Collection } from 'app/common/collection';
 import { SubmittedItem } from 'app/common/submittedItem';
+import { AuthService } from 'app/services/auth.service';
 import { CollectionService } from 'app/services/collection.service';
 import { MessageService } from 'primeng/api';
 
@@ -22,8 +23,8 @@ export class CollectionInfoComponent implements OnInit {
   collectionProgress: number = 0;
 
   constructor(private route: ActivatedRoute, private collectionService: CollectionService, private sanitizer: DomSanitizer,
-    private translate: TranslateService, private scroller: ViewportScroller, private router: Router,
-    private messageService: MessageService) {
+    private translate: TranslateService, private router: Router, private messageService: MessageService, 
+    private authService: AuthService) {
       const navigation = this.router.getCurrentNavigation();
       const state = navigation?.extras.state as {data: string};
       if (state !== undefined) {
@@ -104,6 +105,10 @@ export class CollectionInfoComponent implements OnInit {
       return Math.round((diffTime / msInDay));
     }
     return 0;
+  }
+
+  isUserLoggedIn() {
+    return !this.authService.isUserLoggedIn();
   }
 
 }

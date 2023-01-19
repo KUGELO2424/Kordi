@@ -35,7 +35,15 @@
     opacity: 1;
 }
 
-.mat-checkbox-inner-container {
-    height: 30px;
-    width: 30px;
+:host ::ng-deep .mat-checkbox-inner-container {
+    height: 25px;
+    width: 25px;
+}
+
+:host ::ng-deep .p-inputtext-sm .p-inputtext {
+    width: 90px;
+}
+
+.disabled-text {
+    color: #B4B8B8;
 }
