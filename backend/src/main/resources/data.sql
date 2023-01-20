@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS collection (
     start_time DATETIME,
     end_time DATETIME,
     image LONGBLOB,
+    donates BIGINT,
     user_id BIGINT NOT NULL,
 	FOREIGN KEY (user_id) REFERENCES account(id)
 );
@@ -219,18 +220,18 @@ VALUES ('87251290-7859-4dcf-b3f0-8b4c2aa2e55b', 'qwerty123456', '2022-06-28 15:0
 --
 -- Dane collection
 --
-INSERT INTO collection (uuid, title, description, start_time, end_time, user_id)
+INSERT INTO collection (uuid, title, description, start_time, end_time, donates, user_id)
 VALUES ('87251290-7859-4dcf-b3f0-8b4c2aa2e55b', 'Zbiórka dla Bartka', 'Zbieramy ubrania dla chłopca',
-        '2022-06-28 15:15:00', null, 4);
-INSERT INTO collection (uuid, title, description, start_time, end_time, user_id)
+        '2022-06-28 15:15:00', null, 0, 4);
+INSERT INTO collection (uuid, title, description, start_time, end_time, donates, user_id)
 VALUES ('dc3d8821-a9d9-43d8-a5d8-695824bd0880', 'Zbiórka dla Oliwii', 'Zbieramy ubrania dziewczęce',
-        '2022-06-28 15:25:00', null,  4);
-INSERT INTO collection (uuid, title, description, start_time, end_time, user_id)
+        '2022-06-28 15:25:00', null, 0, 4);
+INSERT INTO collection (uuid, title, description, start_time, end_time, donates, user_id)
 VALUES ('4c1e22e9-85c2-4cae-add3-0e82e206e9ac', 'Dary dary dla Oliwii', 'zbieram dary', '2022-06-28 15:45:00',
-        null,  3);
-INSERT INTO collection (uuid, title, description, start_time, end_time, user_id)
+        null, 0, 3);
+INSERT INTO collection (uuid, title, description, start_time, end_time, donates, user_id)
 VALUES ('1603f612-fd7f-495d-9829-4b637d48c374', 'Pomoc dla Plamy', 'pomoc dla królika', '2022-06-28 15:55:00',
-        null,  3);
+        null, 0, 3);
 
 --
 -- Dane comments

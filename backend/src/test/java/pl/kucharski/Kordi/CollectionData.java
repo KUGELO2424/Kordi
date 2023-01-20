@@ -57,7 +57,7 @@ public class CollectionData {
 
     public static Collection createCollectionWithId() {
         return new Collection(1L, "New Collection", "desc",
-                CURRENT_TIME, null, USER, crateListOfAddresses(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                CURRENT_TIME, null, 0L, USER, crateListOfAddresses(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
     public static CollectionDTO createCollectionDTOWithId() {
@@ -68,6 +68,7 @@ public class CollectionData {
                 .startTime(CURRENT_TIME)
                 .userFirstname("Test")
                 .userLastname("test")
+                .donates(0L)
                 .addresses(List.of(ADDRESS_DTO))
                 .items(new ArrayList<>())
                 .build();

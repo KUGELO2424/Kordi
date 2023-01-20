@@ -32,6 +32,7 @@ public class CollectionDTO {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private byte[] image;
+    private Long donates;
     private Long userId;
     private String userFirstname;
     private String userLastname;

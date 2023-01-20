@@ -3,8 +3,10 @@ package pl.kucharski.Kordi.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,6 +29,7 @@ import pl.kucharski.Kordi.service.collection.CollectionService;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Collection controller responsible for basic collection management
@@ -111,10 +114,25 @@ public class CollectionController {
                 required = false) int pageNo,
             @RequestParam(value = "pageSize",
                 defaultValue = PaginationConstants.DEFAULT_PAGE_SIZE,
-                required = false) int pageSize) {
+                required = false) int pageSize,
+            @RequestParam(value = "sortBy",
+                    defaultValue = PaginationConstants.DEFAULT_SORT_BY,
+                    required = false) String sortBy,
+            @RequestParam(value = "sortDirection",
+                    defaultValue = PaginationConstants.DEFAULT_SORT_DIRECTION,
+                    required = false) String sortDirection) {
         log.info("Request to get collections with search params, title:{}, city:{}, street:{}, itemName:{}, categories:{}",
                 title, city, street, itemName, categories);
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Sort.Direction direction;
+        try {
+            direction = Sort.Direction.valueOf(sortDirection.toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    ex.getMessage());
+        }
+        Sort.Order order = new Sort.Order(direction, sortBy);
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(order));
         return ResponseEntity
                 .ok(collectionService.getCollectionsWithFiltering(title, city, street, itemName, categories, pageable));
     }

@@ -1,11 +1,14 @@
 package pl.kucharski.Kordi.service.collection.impl;
 
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import pl.kucharski.Kordi.aop.IsCollectionOwner;
 import pl.kucharski.Kordi.enums.ItemCategory;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
@@ -70,7 +73,15 @@ public class CollectionServiceImpl implements CollectionService {
     public Page<CollectionDTO> getCollectionsWithFiltering(String title, String city, String street, String itemName,
                                                            List<ItemCategory> categories, Pageable pageable) {
 
-        Page<Collection> collectionsPage = collectionRepository.findWithFiltering(title, city, street, itemName, categories.size(), categories, pageable);
+        Page<Collection> collectionsPage;
+        try {
+            collectionsPage = collectionRepository.findWithFiltering(title, city, street, itemName, categories.size(),
+                    categories, pageable);
+        } catch (InvalidDataAccessApiUsageException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    ex.getMessage());
+        }
         if (collectionsPage == null) {
             return Page.empty();
         }

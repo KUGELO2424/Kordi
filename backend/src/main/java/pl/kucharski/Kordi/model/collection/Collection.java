@@ -55,6 +55,9 @@ public class Collection extends BaseEntity {
     @Column(name = "image")
     private byte[] image;
 
+    @Column(name = "donates")
+    private Long donates;
+
     @ManyToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
@@ -80,7 +83,7 @@ public class Collection extends BaseEntity {
     @JoinColumn(name = "collection_id", insertable = false, updatable = false)
     private List<Comment> comments;
 
-    public Collection(Long id, String title, String description, LocalDateTime startTime, LocalDateTime endTime,
+    public Collection(Long id, String title, String description, LocalDateTime startTime, LocalDateTime endTime, Long donates,
                       User user, List<Address> addresses, List<CollectionItem> items,
                       List<SubmittedItem> submittedItems, List<Comment> comments) {
         super(id);
@@ -93,6 +96,7 @@ public class Collection extends BaseEntity {
         setItems(items);
         setSubmittedItems(submittedItems);
         setComments(comments);
+        setDonates(donates);
     }
 
     public Collection() {
@@ -141,5 +145,9 @@ public class Collection extends BaseEntity {
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
+    }
+
+    public void setDonates(Long donates) {
+        this.donates = donates;
     }
 }

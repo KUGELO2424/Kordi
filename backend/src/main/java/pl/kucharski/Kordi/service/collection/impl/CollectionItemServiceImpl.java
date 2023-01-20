@@ -120,6 +120,7 @@ public class CollectionItemServiceImpl implements CollectionItemService {
         itemToSubmit.setCollectionId(collectionId);
         itemToSubmit.setCollectionItemId(itemId);
         foundCollection.addSubmittedItem(submittedItemMapper.mapToSubmittedItem(itemToSubmit));
+        foundCollection.setDonates(foundCollection.getDonates() + 1);
         return updateCollectionItem(collectionId, itemId,
                 foundItem.getCurrentAmount() + itemToSubmit.getAmount(), foundItem.getMaxAmount());
     }
