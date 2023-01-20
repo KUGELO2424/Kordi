@@ -70,3 +70,15 @@ mat-form-field button {
 .p-paginator {
     background: transparent!important;
 }
+
+.expansion-top {
+    align-self: flex-start;
+}
+
+.icon-disabled {
+    color: #E9E8E7;
+}
+
+.icon-check {
+    color: #4A2799
+}

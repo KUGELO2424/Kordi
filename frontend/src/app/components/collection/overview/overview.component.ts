@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Item } from 'app/common/itemToAdd';
 import { SubmittedItem } from 'app/common/submittedItem';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, Message, MessageService } from 'primeng/api';
 import { Location } from '@angular/common'
 import { CollectionService } from 'app/services/collection.service';
 import { AddCollectionStateService } from 'app/services/add-collection-state.service';
@@ -19,9 +19,12 @@ export class OverviewComponent implements OnInit {
   collectionId: string;
   itemsToSubmit: SubmittedItem[];
   deleteState: boolean = true;
+  errorMessages: Message[];
+  errorOccured: boolean = false;
 
   constructor(private router: Router, private translate: TranslateService, private confirmationService: ConfirmationService, 
-    private location: Location, private collectionService: CollectionService, private stateService: AddCollectionStateService) {
+    private location: Location, private collectionService: CollectionService, private stateService: AddCollectionStateService,
+    private messageService: MessageService) {
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras.state as {collectionId: string, items: Item[]};
     if (state === undefined) {
@@ -73,7 +76,10 @@ export class OverviewComponent implements OnInit {
             this.router.navigateByUrl("/collections/" + this.collectionId, navigationExtras);
           },
           error: (error) => {
-            console.log(error);
+            this.errorOccured = true;
+            this.errorMessages = [
+              {severity:'error', detail: this.translate.instant("overview.error")}
+            ]
           }
         })
       },
@@ -83,7 +89,13 @@ export class OverviewComponent implements OnInit {
   }
 
   back() {
-    // set this flag to keep state
+    // if error on item submit, return to collection and reload items
+    if (this.errorOccured) {
+      this.deleteState = true;
+      this.router.navigateByUrl("collections/" + this.collectionId);
+      return;
+    }
+    // set this flag to false to keep state
     this.deleteState = false;
     this.location.back();
   }

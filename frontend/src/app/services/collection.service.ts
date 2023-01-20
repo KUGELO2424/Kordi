@@ -24,8 +24,9 @@ export class CollectionService {
     return this.httpClient.post<Collection>(this.addUrl, collection)
   }
 
-  searchCollection(title: string, city: string, street: string, itemName: string, categories: string, pageNumber: number, pageSize: number): Observable<CollectionListResponse> {
-    return this.httpClient.get<CollectionListResponse>(`${this.getUrl}?title=${title}&city=${city}&street=${street}&itemName=${itemName}&categories=${categories}&pageNo=${pageNumber}&pageSize=${pageSize}`);
+  searchCollection(title: string, city: string, street: string, itemName: string, categories: string, pageNumber: number, 
+    pageSize: number, sortBy: string, sortDirection: string): Observable<CollectionListResponse> {
+    return this.httpClient.get<CollectionListResponse>(`${this.getUrl}?title=${title}&city=${city}&street=${street}&itemName=${itemName}&categories=${categories}&pageNo=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&sortDirection=${sortDirection}`);
   }
 
   getCollectionById(id: string): Observable<Collection> {

@@ -69,8 +69,13 @@
         "street": "Ulica",
         "item": "Nazwa przedmiotu",
         "filtr_options": "Opcje filtrowania",
+        "sort_options": "Opcje sortowania",
         "choose_category": "Wybierz kategorię:",
-        "not_found": "Nie znaleziono żadnych zbiórek"
+        "not_found": "Nie znaleziono żadnych zbiórek",
+        "choose_sort": "Sortuj:",
+        "sort_popularity": "Popularność",
+        "sort_newest": "Najnowsze",
+        "sort_oldest": "Najstarsze"
     },
     "collection": {
         "search_location": "Szukaj lokalizacji",
@@ -105,7 +110,7 @@
     "home": {
         "welcome": "Witaj w",
         "welcome_text_1": "Potrzebujesz pomocy rzeczowej? Stwórz własną zbiórkę, opisz swoją historię i otrzymaj pomoc od ludzi ze społeczności Kordi!",
-        "welcome_text_2": "Posiadasz zbędne rzeczy? Chcesz wesprzeć innych w potrzebie? Na naszej stronie znajdziesz wiele zbiórek stworzonych przez osoby prywante bądź organizację!",
+        "welcome_text_2": "Posiadasz zbędne rzeczy? Chcesz wesprzeć innych w potrzebie? Na naszej stronie znajdziesz wiele zbiórek stworzonych przez osoby prywante bądź organizacje!",
         "create_collection": "Załóż zbiórkę",
         "search_collection": "Przeglądaj zbiórki",
         "search_by_category_1": "Szukaj",
@@ -208,6 +213,7 @@
         "back_button": "Powrót do zbiórki",
         "name": "Nazwa",
         "category": "Kategoria",
-        "amount": "Ile przekazujesz"
+        "amount": "Ile przekazujesz",
+        "error": "Niestety ale ktoś podarował już jeden z tych przedmiotów a przedmiot osiągnął maksymalny limit. Wróc do zbiórki i wybierz przedmioty jeszcze raz"
     }
 }

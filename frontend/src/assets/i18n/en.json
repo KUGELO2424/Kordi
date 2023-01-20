@@ -69,8 +69,13 @@
         "street": "Street",
         "item": "Item name",
         "filtr_options": "Filter options",
+        "sort_options": "Sort options",
         "choose_category": "Choose category:",
-        "not_found": "No collections found"
+        "not_found": "No collections found",
+        "choose_sort": "Sort by:",
+        "sort_popularity": "Popularity",
+        "sort_newest": "Latest",
+        "sort_oldest": "Oldest"
     },
     "collection": {
         "search_location": "Search location",
@@ -207,6 +212,7 @@
         "back_button": "Back to collection",
         "name": "Name",
         "category": "Category",
-        "amount": "How much do you donate"
+        "amount": "How much do you donate",
+        "error": "Unfortunately, someone has already donated one of these items and the item has reached its maximum limit. Go back to the collection and select the items again"
     }
 }

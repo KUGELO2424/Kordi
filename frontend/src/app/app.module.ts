@@ -71,6 +71,7 @@ import { ToastModule } from 'primeng/toast';
 import { AuthGuardService } from './services/auth-guard.service';
 import { DividerModule } from 'primeng/divider';
 import { CheckboxModule } from 'primeng/checkbox';
+import { DropdownModule } from 'primeng/dropdown';
 
 const routes: Routes = [
   {path: 'home', component: HomePageComponent},
@@ -160,6 +161,7 @@ const routes: Routes = [
     NgxPaginationModule,
     DividerModule,
     CheckboxModule,
+    DropdownModule
   ],
   providers: [
     ConfirmationService, MessageService,

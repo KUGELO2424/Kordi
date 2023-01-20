@@ -43,7 +43,8 @@ export class ItemListComponent implements OnInit {
       return;
     }
     if ("items" in this.state) {
-      this.items = this.state.items
+      this.itemsData = this.state.items
+      this.search();
     }
   }
 

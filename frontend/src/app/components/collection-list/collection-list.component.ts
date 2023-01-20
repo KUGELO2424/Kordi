@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { DomSanitizer } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 import { Collection } from 'app/common/collection';
 import { Item, ItemCategory } from 'app/common/itemToAdd';
 import { CollectionService } from 'app/services/collection.service';
@@ -26,6 +27,9 @@ export class CollectionListComponent implements OnInit {
   pageSize: number = 10;
   totalRecords: number = 10;
 
+  sortOptions: any[] = [];
+  selectedSort: any = { label: this.translate.instant('collections.sort_popularity'), field: 'donates', direction: 'desc'};
+
   categories = [
     { value: 'food', label: 'Jedzenie'}, 
     { value: 'clothes', label: 'Ubrania'},
@@ -47,7 +51,16 @@ export class CollectionListComponent implements OnInit {
   });
 
   constructor(private formBuilder: UntypedFormBuilder, private collectionService: CollectionService, 
-    private sanitizer: DomSanitizer, private scroller: ViewportScroller) { }
+    private sanitizer: DomSanitizer, private scroller: ViewportScroller, private translate: TranslateService) {
+      this.translate.get('add-collection.locations').subscribe(() => {
+        this.sortOptions = [
+          { label: this.translate.instant('collections.sort_popularity'), field: 'donates', direction: 'desc'},
+          { label: this.translate.instant('collections.sort_newest'), field: 'startTime', direction: 'desc'},
+          { label: this.translate.instant('collections.sort_oldest'), field: 'startTime', direction: 'asc'},
+        ]
+        this.selectedSort = this.sortOptions[0];
+      })
+    }
 
   ngOnInit(): void {
     this.search();
@@ -55,7 +68,8 @@ export class CollectionListComponent implements OnInit {
 
   search() {
     this.collectionService.searchCollection(this.searchTerm, this.searchCity, this.searchStreet, this.searchItem, 
-      this.getChoosenCategoriesAsString(), this.pageNumber, this.pageSize).subscribe({
+      this.getChoosenCategoriesAsString(), this.pageNumber, this.pageSize, this.selectedSort.field, this.selectedSort.direction)
+      .subscribe({
         next: (data) => {
           this.collections = data.content;
           this.pageSize = data.size;
