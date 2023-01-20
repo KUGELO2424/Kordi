@@ -21,3 +21,8 @@ section {
 .icon-check {
     color: #4A2799
 }
+
+:host ::ng-deep share-button {
+    margin-left: 30px;
+    margin-top: 15px;
+}

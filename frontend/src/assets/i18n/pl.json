@@ -105,7 +105,8 @@
         "items_disabled": "by podarować przedmioty",
         "no_items": "Nie znaleziono żadnych przedmiotów",
         "no_locations": "Nie znaleziono żadnych lokalizacji",
-        "item_submitted": "Przedmioty zostały podarowane pomyślnie"
+        "item_submitted": "Przedmioty zostały podarowane pomyślnie",
+        "share_collection": "Udostępnij zbiórkę wybierając jedną z opcji poniżej"
     },
     "home": {
         "welcome": "Witaj w",

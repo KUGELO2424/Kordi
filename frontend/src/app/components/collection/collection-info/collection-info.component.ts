@@ -21,9 +21,10 @@ export class CollectionInfoComponent implements OnInit {
   submittedItems: SubmittedItem[] = [];
   numOfpeople: number = 0;
   collectionProgress: number = 0;
+  display: boolean = false;
 
   constructor(private route: ActivatedRoute, private collectionService: CollectionService, private sanitizer: DomSanitizer,
-    private translate: TranslateService, private router: Router, private messageService: MessageService, 
+    private translate: TranslateService, public router: Router, private messageService: MessageService, 
     private authService: AuthService) {
       const navigation = this.router.getCurrentNavigation();
       const state = navigation?.extras.state as {data: string};

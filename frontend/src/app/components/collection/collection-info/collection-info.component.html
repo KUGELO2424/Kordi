@@ -65,14 +65,43 @@
                 </div>
               </div>
             </mat-card-content>
+            <!-- SHARE BLOCK -->
             <mat-card-content class="mt-4">
               <button
                 class="btn my-btn-primary btn-lg"
                 style="padding-left: 2rem; padding-right: 2rem"
+                (click)="display = true"
               >
                 {{ "collection.share" | translate }}
               </button>
+              <p-sidebar
+                [(visible)]="display"
+                position="right"
+                styleClass="p-sidebar-sm"
+              >
+                <p class="text-center">
+                  {{ "collection.share_collection" | translate }}
+                </p>
+                <share-buttons
+                  theme="circles-dark"
+                  [include]="[
+                    'copy',
+                    'facebook',
+                    'email',
+                    'messenger',
+                    'twitter',
+                    'whatsapp'
+                  ]"
+                  [showIcon]="true"
+                  [showText]="true"
+                  description="Kordi: {{ collection?.title }}"
+                  class="pt-2"
+                  styleClass="t"
+                >
+                </share-buttons>
+              </p-sidebar>
             </mat-card-content>
+            <!-- END SHARE BLOCK -->
             <mat-card-content class="mt-4">
               <i class="fa-solid fa-users icon-color me-2"></i>
               <span

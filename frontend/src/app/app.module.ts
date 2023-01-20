@@ -8,6 +8,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxTranslateModule } from './translate/translate.module';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 
 // COMPONENTS
 import { AppComponent } from './app.component';
@@ -72,6 +74,7 @@ import { AuthGuardService } from './services/auth-guard.service';
 import { DividerModule } from 'primeng/divider';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
+import { SidebarModule } from 'primeng/sidebar';
 
 const routes: Routes = [
   {path: 'home', component: HomePageComponent},
@@ -161,7 +164,10 @@ const routes: Routes = [
     NgxPaginationModule,
     DividerModule,
     CheckboxModule,
-    DropdownModule
+    DropdownModule,
+    ShareButtonsModule, 
+    ShareIconsModule,
+    SidebarModule
   ],
   providers: [
     ConfirmationService, MessageService,

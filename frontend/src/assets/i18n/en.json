@@ -75,7 +75,7 @@
         "choose_sort": "Sort by:",
         "sort_popularity": "Popularity",
         "sort_newest": "Latest",
-        "sort_oldest": "Oldest"
+        "sort_oldest": "Oldest",
     },
     "collection": {
         "search_location": "Search location",
@@ -105,7 +105,8 @@
         "items_disabled": "to donate items",
         "no_items": "No items found",
         "no_locations": "No locations found",
-        "item_submitted": "Items were donated successfully"
+        "item_submitted": "Items were donated successfully",
+        "share_collection": "Share the collection by choosing one of the options below"
     },
     "home": {
         "welcome": "Welcome in",
