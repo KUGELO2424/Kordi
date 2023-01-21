@@ -23,6 +23,7 @@ import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItemDTO;
 import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItemMapper;
 import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItemMapperImpl;
 import pl.kucharski.Kordi.repository.CollectionRepository;
+import pl.kucharski.Kordi.repository.SubmittedItemRepository;
 import pl.kucharski.Kordi.repository.UserRepository;
 
 import java.util.List;
@@ -61,12 +62,15 @@ class CollectionItemServiceImplTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private SubmittedItemRepository submittedItemRepository;
+
     @InjectMocks
     private CollectionItemServiceImpl underTest;
 
     @BeforeEach
     void setUp() {
-        underTest = new CollectionItemServiceImpl(collectionRepository, userRepository, itemMapper, submittedItemMapper);
+        underTest = new CollectionItemServiceImpl(collectionRepository, submittedItemRepository, userRepository, itemMapper, submittedItemMapper);
 
         COLLECTION_WITH_ID = createCollectionWithId();
         COLLECTION_ITEM_DTO = createItemDTOWithId();

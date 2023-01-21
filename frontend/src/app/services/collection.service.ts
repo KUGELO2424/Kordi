@@ -17,11 +17,12 @@ export class CollectionService {
 
   private addUrl = environment.baseUrl + '/collections';
   private getUrl = environment.baseUrl + '/collections';
+  private getUserCollections = environment.baseUrl + '/users';
 
   constructor(private httpClient: HttpClient) { }
 
   addCollection(collection: CollectionToAdd) {
-    return this.httpClient.post<Collection>(this.addUrl, collection)
+    return this.httpClient.post<any>(this.addUrl, collection)
   }
 
   searchCollection(title: string, city: string, street: string, itemName: string, categories: string, pageNumber: number, 
@@ -31,6 +32,11 @@ export class CollectionService {
 
   getCollectionById(id: string): Observable<Collection> {
     return this.httpClient.get<Collection>(`${this.getUrl}/${id}`);
+  }
+
+  getCollectionForLoggedUser(): Observable<Collection[]> {
+    let username = sessionStorage.getItem("username");
+    return this.httpClient.get<Collection[]>(`${this.getUserCollections}/${username}/collections`);
   }
 
   getCommentsFromCollection(id: string, pageNumber: number, pageSize: number): Observable<CommentListResponse> {

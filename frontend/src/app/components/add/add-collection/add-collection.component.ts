@@ -85,11 +85,10 @@ export class AddCollectionComponent implements OnInit {
           const collection = await this.prepareCollection();
           this.collectionService.addCollection(collection).subscribe({
             next: response => {
+              const collectionId = response.id;
               this.stateService.state$.next("");
-              this.messageService.add({
-                key: 'tc', severity:'success', 
-                summary: this.translate.instant('add-collection.success'), 
-                detail: this.translate.instant('add-collection.added')});
+              let navigationExtras = {state: {data: this.translate.instant('add-collection.added')}};
+              this.router.navigateByUrl("collections/" + collectionId, navigationExtras);
             },
             error: error => {
               this.messageService.add({

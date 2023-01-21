@@ -68,7 +68,7 @@ class CollectionControllerTest {
     @Test
     @WithMockUser
     void shouldReturnEmptyListOfCollectionsIfUserNotExists() throws Exception {
-        mvc.perform(get("/user/" + NOT_EXISTING_USERNAME + "/collections")
+        mvc.perform(get("/users/" + NOT_EXISTING_USERNAME + "/collections")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
@@ -78,7 +78,7 @@ class CollectionControllerTest {
     @Test
     @WithMockUser
     void shouldReturnListOfCollectionsOfUser() throws Exception {
-        mvc.perform(get("/user/" + EXISTING_USERNAME + "/collections")
+        mvc.perform(get("/users/" + EXISTING_USERNAME + "/collections")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())

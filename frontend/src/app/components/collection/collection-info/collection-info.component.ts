@@ -1,4 +1,3 @@
-import { ViewportScroller } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -30,7 +29,7 @@ export class CollectionInfoComponent implements OnInit {
       const state = navigation?.extras.state as {data: string};
       if (state !== undefined) {
         setTimeout(() => {
-          this.messageService.add({severity:'success', detail: this.translate.instant("collection.item_submitted")});
+          this.messageService.add({severity:'success', detail: state.data});
         }, 300);
         
       }
@@ -110,6 +109,10 @@ export class CollectionInfoComponent implements OnInit {
 
   isUserLoggedIn() {
     return !this.authService.isUserLoggedIn();
+  }
+
+  back() {
+    
   }
 
 }

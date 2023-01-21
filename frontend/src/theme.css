@@ -6140,8 +6140,8 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   color: #ffffff;
 }
 .p-badge.p-badge-warning {
-  background-color: #FBC02D;
-  color: #212529;
+  background-color: #FF9E00;
+  color: #fff;
 }
 .p-badge.p-badge-danger {
   background-color: #D32F2F;

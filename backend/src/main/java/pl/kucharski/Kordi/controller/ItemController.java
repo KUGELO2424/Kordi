@@ -1,6 +1,8 @@
 package pl.kucharski.Kordi.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import pl.kucharski.Kordi.config.PaginationConstants;
 import pl.kucharski.Kordi.enums.ItemCategory;
 import pl.kucharski.Kordi.exception.CollectionItemException;
 import pl.kucharski.Kordi.exception.CollectionItemNotFoundException;
@@ -139,6 +142,31 @@ public class ItemController {
         } catch (CollectionNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
         }
+    }
+
+    /**
+     * Get submitted items for user
+     * @param username username of user
+     * @return list of submitted items
+     */
+    @GetMapping("/submittedItems/{username}")
+    ResponseEntity<?> getSubmittedItems(@PathVariable("username") String username,
+                                        @RequestParam(value = "pageNo",
+                                                defaultValue = PaginationConstants.DEFAULT_PAGE_NUMBER,
+                                                required = false) int pageNo,
+                                        @RequestParam(value = "pageSize",
+                                                defaultValue = PaginationConstants.DEFAULT_PAGE_SIZE,
+                                                required = false) int pageSize,
+                                        @RequestParam(value = "sortBy",
+                                                defaultValue = PaginationConstants.DEFAULT_SORT_BY,
+                                                required = false) String sortBy,
+                                        @RequestParam(value = "sortDirection",
+                                                defaultValue = PaginationConstants.DEFAULT_SORT_DIRECTION,
+                                                required = false) String sortDirection) {
+        log.info("Request to get submitted items for user {}", username);
+        Pageable pageable = PaginationConstants.getPageable(pageNo, pageSize, sortBy, sortDirection);
+        Page<SubmittedItemDTO> submittedItems = itemService.getSubmittedItemsForUser(username, pageable);
+        return ResponseEntity.ok(submittedItems);
     }
 
     /**

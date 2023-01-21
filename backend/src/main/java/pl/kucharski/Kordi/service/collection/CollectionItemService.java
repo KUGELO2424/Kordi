@@ -1,5 +1,7 @@
 package pl.kucharski.Kordi.service.collection;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import pl.kucharski.Kordi.exception.CollectionItemNotFoundException;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.model.collection_item.CollectionItemDTO;
@@ -59,6 +61,14 @@ public interface CollectionItemService {
      * @throws CollectionNotFoundException if collection not found
      */
     List<SubmittedItemDTO> getSubmittedItems(long collectionId);
+
+    /**
+     * Get submitted items for user
+     *
+     * @param username user username
+     * @throws CollectionNotFoundException if collection not found
+     */
+    Page<SubmittedItemDTO> getSubmittedItemsForUser(String username, Pageable pageable);
 
     /**
      * Get last submitted items from specific collection

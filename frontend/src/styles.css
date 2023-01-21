@@ -60,8 +60,18 @@ a:hover {
   color: white !important;
 }
 
+.my-btn-danger {
+  background-color: #e84f34 !important;
+  color: white !important;
+}
+
 .my-btn-primary:hover {
   background-color: #4A2799 !important;
+  color: white !important;
+}
+
+.my-btn-danger:hover {
+  background-color: #ED4023 !important;
   color: white !important;
 }
 

@@ -63,6 +63,10 @@ export class AuthService {
     return this.httpClient.get<UserData>(`${this.getUserUrl}/${username}`);
   }
 
+  getLoggedUser() {
+    return this.httpClient.get<UserData>(`${this.getUserUrl}/me`);
+  }
+
   validate(username: string, token: string) {
     return this.httpClient.post<any>(`${this.validateUrl}?username=${username}&token=${token}`, "");
   }

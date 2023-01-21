@@ -1,5 +1,8 @@
 package pl.kucharski.Kordi.service.collection.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,10 +15,12 @@ import pl.kucharski.Kordi.model.collection.Collection;
 import pl.kucharski.Kordi.model.collection_item.CollectionItem;
 import pl.kucharski.Kordi.model.collection_item.CollectionItemDTO;
 import pl.kucharski.Kordi.model.collection_item.CollectionItemMapper;
+import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItem;
 import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItemDTO;
 import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItemMapper;
 import pl.kucharski.Kordi.model.user.User;
 import pl.kucharski.Kordi.repository.CollectionRepository;
+import pl.kucharski.Kordi.repository.SubmittedItemRepository;
 import pl.kucharski.Kordi.repository.UserRepository;
 import pl.kucharski.Kordi.service.collection.CollectionItemService;
 
@@ -33,13 +38,15 @@ import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND;
 public class CollectionItemServiceImpl implements CollectionItemService {
 
     private final CollectionRepository collectionRepository;
+    private final SubmittedItemRepository submittedItemRepository;
     private final UserRepository userRepository;
     private final CollectionItemMapper itemMapper;
     private final SubmittedItemMapper submittedItemMapper;
 
-    public CollectionItemServiceImpl(CollectionRepository collectionRepository, UserRepository userRepository, CollectionItemMapper itemMapper,
+    public CollectionItemServiceImpl(CollectionRepository collectionRepository, SubmittedItemRepository submittedItemRepository, UserRepository userRepository, CollectionItemMapper itemMapper,
                                      SubmittedItemMapper submittedItemMapper) {
         this.collectionRepository = collectionRepository;
+        this.submittedItemRepository = submittedItemRepository;
         this.userRepository = userRepository;
         this.itemMapper = itemMapper;
         this.submittedItemMapper = submittedItemMapper;
@@ -137,6 +144,20 @@ public class CollectionItemServiceImpl implements CollectionItemService {
                 .map(submittedItemMapper::mapToSubmittedItemDTO)
                 .sorted((o1, o2) -> o2.getSubmitTime().compareTo(o1.getSubmitTime()))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * @see CollectionItemService#getSubmittedItemsForUser(String, Pageable) 
+     */
+    @Override
+    public Page<SubmittedItemDTO> getSubmittedItemsForUser(String username, Pageable pageable) {
+        Page<SubmittedItem> submittedItemsPage = submittedItemRepository.findByUserUsername(username, pageable);
+        if (submittedItemsPage.isEmpty()) {
+            return Page.empty();
+        }
+
+        List<SubmittedItemDTO> submittedItems = submittedItemsPage.stream().map(submittedItemMapper::mapToSubmittedItemDTO).toList();
+        return new PageImpl<>(submittedItems, pageable, submittedItemsPage.getTotalElements());
     }
 
     /**

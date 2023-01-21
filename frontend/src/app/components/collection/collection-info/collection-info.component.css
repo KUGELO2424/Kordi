@@ -7,7 +7,7 @@ section {
 }
 
 .collection-image {
-    height: 340px;
+    height: 380px;
 }
 
 .disabled-description {
@@ -25,4 +25,8 @@ section {
 :host ::ng-deep share-button {
     margin-left: 30px;
     margin-top: 15px;
+}
+
+.my-button {
+    height: 50px;
 }

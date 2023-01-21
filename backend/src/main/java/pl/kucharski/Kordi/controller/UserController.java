@@ -87,6 +87,25 @@ public class UserController {
     }
 
     /**
+     * Get logged user
+     *
+     * @return currently logged user
+     */
+    @GetMapping("/users/me")
+    public ResponseEntity<?> getLoggedUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        try {
+            log.info("Request to get logged user");
+            UserDTO user = userService.getUserByUsername(username);
+            return ResponseEntity.ok(user);
+        } catch (UserNotFoundException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    ex.getMessage());
+        }
+    }
+
+    /**
      * Register new user in system, you can choose between EMAIL or PHONE verification.
      * After successful registration, token is sent to user email or phone, which is needed
      * to verify account by {@link UserController#verifyUser(String, String)}.

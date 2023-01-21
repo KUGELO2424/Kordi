@@ -15,6 +15,7 @@ public interface CollectionMapper {
     @Mapping(target = "userLastname", source = "user.lastName")
     CollectionDTO mapToCollectionDTO(Collection collection);
 
+    @Mapping(target = "donates", source = "donates", defaultValue = "0L")
     Collection mapToCollection(CollectionDTO collection);
 
 }

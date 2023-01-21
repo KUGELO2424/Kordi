@@ -79,7 +79,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         if (request.getMethod().equals("GET")) {
            for (String whiteListPath : WHITE_LIST_URLS) {
-               if (path.contains(whiteListPath)) {
+               if (path.startsWith(whiteListPath)) {
                    return true;
                }
            }

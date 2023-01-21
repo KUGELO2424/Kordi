@@ -14,7 +14,7 @@ section {
 }
 
 .col {
-    min-width: 350px;
+    min-width: 360px;
 }
 
 a {
@@ -55,7 +55,7 @@ mat-form-field button {
 }
 
 .collection-image {
-    height: 180px;
+    height: 220px;
 }
 
 .my-expansion-panel {
@@ -64,7 +64,7 @@ mat-form-field button {
 }
 
 .my-card-footer {
-    height: 100px;
+    height: 110px;
 }
 
 .p-paginator {

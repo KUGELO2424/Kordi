@@ -180,7 +180,7 @@
             class="col d-flex flex-column justify-content-center"
             *ngFor="let collection of collections"
           >
-            <div class="card h-100" style="width: 20rem">
+            <div class="card h-100" style="width: 21rem">
               <a
                 class="card-link"
                 routerLink="/collections/{{ collection.id }}"
@@ -200,8 +200,8 @@
                 <div class="card-body h-100">
                   <h5 class="card-title word-break">
                     <b>
-                      {{ collection.title.substr(0, 25)
-                      }}<span *ngIf="collection.title.length > 25">...</span>
+                      {{ collection.title.substr(0, 30)
+                      }}<span *ngIf="collection.title.length > 30">...</span>
                     </b>
                   </h5>
                   <p class="card-text word-break">

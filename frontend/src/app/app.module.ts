@@ -30,11 +30,13 @@ import { CollectionLocationsComponent } from './components/add/collection-locati
 import { CollectionItemsComponent } from './components/add/collection-items/collection-items.component';
 import { CollectionDataComponent } from './components/add/collection-data/collection-data.component';
 import { OverviewComponent } from './components/collection/overview/overview.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 // SERVICES
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { LoadingInterceptorService } from './services/loading-interceptor.service';
+import { AuthGuardService } from './services/auth-guard.service';
 
 // MAT MODULES
 import { MatInputModule } from '@angular/material/input';
@@ -70,11 +72,11 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ConfirmDialogModule } from 'primeng/confirmdialog'
 import { ToastModule } from 'primeng/toast';
-import { AuthGuardService } from './services/auth-guard.service';
 import { DividerModule } from 'primeng/divider';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { SidebarModule } from 'primeng/sidebar';
+import { BadgeModule } from 'primeng/badge';
 
 const routes: Routes = [
   {path: 'home', component: HomePageComponent},
@@ -82,6 +84,7 @@ const routes: Routes = [
   {path: 'logout', component: LogoutComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'verify', component: VerificationComponent},
+  {path: 'profile', component: ProfileComponent, canActivate:[AuthGuardService]},
   {path: 'collections', component: CollectionListComponent},
   {path: 'collections/:id', component: CollectionInfoComponent},
   {path: 'collections/donate/overview', component: OverviewComponent},
@@ -120,7 +123,8 @@ const routes: Routes = [
     CollectionLocationsComponent,
     CollectionItemsComponent,
     CollectionDataComponent,
-    OverviewComponent
+    OverviewComponent,
+    ProfileComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -167,7 +171,8 @@ const routes: Routes = [
     DropdownModule,
     ShareButtonsModule, 
     ShareIconsModule,
-    SidebarModule
+    SidebarModule,
+    BadgeModule
   ],
   providers: [
     ConfirmationService, MessageService,

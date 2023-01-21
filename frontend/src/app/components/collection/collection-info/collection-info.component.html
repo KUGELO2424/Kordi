@@ -1,7 +1,27 @@
 <div class="content min-vw-25">
-  <section class="mt-5">
+  <section class="mt-2">
     <div class="container-fluid align-middle">
-      <h1 class="display-5 text-center mb-5">{{ collection?.title }}</h1>
+      <div class="row mb-3">
+        <div
+          class="col-4 col-sm-4 col-md-2 col-lg-2 col-xl-2 d-flex justify-content-start align-items-center"
+        >
+          <button
+            pButton
+            type="button"
+            class="p-button-text mb-1 my-button"
+            (click)="back()"
+          >
+            {{ "collection.back_button" | translate }}
+          </button>
+        </div>
+        <div
+          class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 d-flex align-items-center justify-content-center"
+        >
+          <h1 class="display-5 text-center">{{ collection?.title }}</h1>
+        </div>
+        <div class="col-4 col-sm-4 col-md-2 col-lg-2 col-xl-2"></div>
+      </div>
+
       <div class="row justify-content-center">
         <!-- PHOTO + DESC -->
         <div class="col-11 col-sm-11 col-md-9 col-lg-8 col-xl-8 mb-1">

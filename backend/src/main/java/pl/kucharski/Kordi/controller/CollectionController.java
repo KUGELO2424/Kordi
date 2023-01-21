@@ -56,7 +56,7 @@ public class CollectionController {
      *
      * @return list of collections of given user
      */
-    @GetMapping("/user/{username}/collections")
+    @GetMapping("/users/{username}/collections")
     ResponseEntity<?> getAllUserCollections(
             @PathVariable("username") String username,
             @RequestParam(value = "pageNo",
@@ -123,16 +123,7 @@ public class CollectionController {
                     required = false) String sortDirection) {
         log.info("Request to get collections with search params, title:{}, city:{}, street:{}, itemName:{}, categories:{}",
                 title, city, street, itemName, categories);
-        Sort.Direction direction;
-        try {
-            direction = Sort.Direction.valueOf(sortDirection.toUpperCase(Locale.ROOT));
-        } catch (IllegalArgumentException ex) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    ex.getMessage());
-        }
-        Sort.Order order = new Sort.Order(direction, sortBy);
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(order));
+        Pageable pageable = PaginationConstants.getPageable(pageNo, pageSize, sortBy, sortDirection);
         return ResponseEntity
                 .ok(collectionService.getCollectionsWithFiltering(title, city, street, itemName, categories, pageable));
     }
@@ -150,7 +141,7 @@ public class CollectionController {
     ResponseEntity<?> saveCollection(
             @RequestBody @Valid CollectionDTO collection) {
         try {
-            log.info("Request to save collection: {}", collection);
+            log.info("Request to save collection: {}", collection.getTitle());
             CollectionDTO savedCollection = collectionService.saveCollection(collection);
             return ResponseEntity.created(URI.create("/collections/" + savedCollection.getId())).body(savedCollection);
         } catch (UserNotFoundException ex) {

@@ -197,7 +197,7 @@ CREATE TABLE IF NOT EXISTS submitted_item_archive (
 -- Dane user
 --
 INSERT INTO account (uuid, first_name, last_name, username, password, email, phone, enabled)
-VALUES ('9db1664b-246d-4763-b75a-a95e11655636', 'Grzegorz', 'Kucharski', 'gelo2424', '$2a$12$exSprWI2lA.TgHrkIQyfR.QAHfsOVaCPKBLBhMUOPruXUDdj3JcK6', 'gelo@gmail.com', '669649785', '1');
+VALUES ('9db1664b-246d-4763-b75a-a95e11655636', 'Grzegorz', 'Kucharski', 'gelo2424', '$2a$12$exSprWI2lA.TgHrkIQyfR.QAHfsOVaCPKBLBhMUOPruXUDdj3JcK6', 'gelo@gmail.com', '111666333', '1');
 INSERT INTO account (uuid, first_name, last_name, username, password, email, phone, enabled)
 VALUES ('10356aa8-3c10-478e-a095-c3aac109f3a4', 'Adam', 'Nowak', 'adam', '$2a$12$exSprWI2lA.TgHrkIQyfR.QAHfsOVaCPKBLBhMUOPruXUDdj3JcK6', 'adam@gmail.com', '123123123', '1');
 INSERT INTO account (uuid, first_name, last_name, username, password, email, phone, enabled)

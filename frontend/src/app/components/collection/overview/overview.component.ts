@@ -72,7 +72,7 @@ export class OverviewComponent implements OnInit {
           next: () => {
             this.stateService.state$.next("");
             let navigationExtras;
-            navigationExtras = {state: {data: "success"}};
+            navigationExtras = {state: {data: this.translate.instant("collection.item_submitted")}};
             this.router.navigateByUrl("/collections/" + this.collectionId, navigationExtras);
           },
           error: (error) => {

@@ -1,0 +1,74 @@
+<div class="content min-vw-25">
+  <section class="mt-5 w-100">
+    <mat-card class="">
+      <div class="row d-flex justify-content-center">
+        <div
+          class="col-10 col-sm-10 col-md-3 col-lg-3 col-xl-3 p-2 d-flex justify-content-center"
+        >
+          <p-avatar
+            icon="pi pi-user"
+            styleClass="mr-2 avatar"
+            size="xlarge"
+          ></p-avatar>
+        </div>
+        <div class="col-10 col-sm-10 col-md-8 col-lg-8 col-xl-8">
+          <mat-card-title
+            >{{ user?.firstName }} {{ user?.lastName }}</mat-card-title
+          >
+          <mat-card-subtitle>{{ user?.username }}</mat-card-subtitle>
+          <mat-card-content>Email: {{ user?.email }}</mat-card-content>
+          <mat-card-content
+            >{{ "profile.phone" | translate }}
+            {{ user?.phone }}</mat-card-content
+          >
+          <p-divider></p-divider>
+          <div class="row">
+            <div class="col d-flex justify-content-center">
+              <button
+                class="btn my-btn-primary btn-lg mt-2"
+                style="padding-left: 2rem; padding-right: 2rem"
+              >
+                {{ "profile.edit" | translate }}
+              </button>
+            </div>
+            <div class="col d-flex justify-content-center">
+              <button
+                class="btn my-btn-danger btn-lg mt-2"
+                style="padding-left: 2rem; padding-right: 2rem"
+              >
+                {{ "profile.delete" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+    <div class="row justify-content-center mt-3">
+      <mat-accordion>
+        <mat-expansion-panel hideToggle>
+          <mat-expansion-panel-header collapsedHeight="80px">
+            <mat-panel-title
+              ><i class="fa fa-comment me-3 icon-color"></i>
+              {{ "profile.collections" | translate }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <div class="row justify-content-center mt-3">
+      <mat-accordion>
+        <mat-expansion-panel hideToggle>
+          <mat-expansion-panel-header collapsedHeight="80px">
+            <mat-panel-title
+              ><i class="fa fa-comment me-3 icon-color"></i>
+              {{ "profile.items" | translate }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </section>
+  <!-- LOADING SPINNER -->
+  <app-loading-spinner></app-loading-spinner>
+</div>
