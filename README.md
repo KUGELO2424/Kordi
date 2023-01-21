@@ -93,6 +93,8 @@ MAIL_PASSWORD=test
 ![collections02](https://user-images.githubusercontent.com/55559640/213863139-a13fa8c4-806d-4d27-9af9-2d93d4e9ed9e.PNG)
 ### Collection
 ![collection01](https://user-images.githubusercontent.com/55559640/213863143-f68c8208-0a2a-4a21-9d84-657abf16234f.PNG)
+### Collection share buttons
+![collection04](https://user-images.githubusercontent.com/55559640/213864109-abde9eef-57af-488e-b0e1-a0997a0f13dd.PNG)
 ### Collection (locations & comments)
 ![collection02](https://user-images.githubusercontent.com/55559640/213863157-03b5ea3c-ec4e-4665-9e25-cf8c44ec98b5.PNG)
 ### Collection (items)
