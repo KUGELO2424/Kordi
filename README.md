@@ -79,6 +79,8 @@ MAIL_PASSWORD=test
 ![12](https://user-images.githubusercontent.com/55559640/210115972-6e6a4c2d-1f80-401a-b7ea-8eb7d4e0ac5e.PNG)
 ### Signup
 ![13](https://user-images.githubusercontent.com/55559640/210115988-1db67021-2c6d-4c40-8b70-b28fa48709aa.PNG)
+### Phone verification
+![verify](https://user-images.githubusercontent.com/55559640/213879484-900f8f8f-020f-4f1a-8139-f0d6484581f3.PNG)
 ### Add new collection (info)
 ![add01](https://user-images.githubusercontent.com/55559640/213863107-6509ba30-a18c-4285-be6f-8c1463ad5029.PNG)
 ### Add new collection (locations)
