@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -209,13 +210,14 @@ public class UserController {
      *         400 if old password does not match password
      */
     @PutMapping("/users/updatePassword")
+    @CrossOrigin("${allowed.origins}")
     public ResponseEntity<?> updatedUserPassword(@RequestParam("password") String newPassword,
                                                  @RequestParam("oldPassword") String oldPassword) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         try {
             log.info("Request to update password for user {}", username);
             userService.updatePassword(username, oldPassword, newPassword);
-            return ResponseEntity.ok().body("Password has been updated");
+            return ResponseEntity.ok(Collections.singletonMap("status", "Password has been updated"));
         } catch (InvalidPasswordException ex) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,

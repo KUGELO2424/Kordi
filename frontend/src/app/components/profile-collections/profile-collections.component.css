@@ -1,0 +1,16 @@
+:host ::ng-deep .table-white {
+    background-color: #fff!important;
+    text-align: center;
+}
+
+.open {
+    color: #61ac4a;
+}
+
+.closed {
+    color: #ED4023;
+}
+
+.cell {
+    padding: 0.5rem 1rem!important;
+}

@@ -129,6 +129,8 @@ public class CollectionServiceImpl implements CollectionService {
             } else {
                 collection.setEndTime(endTime);
             }
+        } else {
+            collection.setEndTime(null);
         }
         return collectionMapper.mapToCollectionDTO(collection);
     }

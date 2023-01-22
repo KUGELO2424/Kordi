@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,7 +29,6 @@ import pl.kucharski.Kordi.service.collection.CollectionService;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Collection controller responsible for basic collection management
@@ -66,7 +65,8 @@ public class CollectionController {
                     defaultValue = PaginationConstants.DEFAULT_PAGE_SIZE,
                     required = false) int pageSize) {
         log.info("Request to get all collections for user {}", username);
-        return ResponseEntity.ok(collectionService.getCollectionsByUser(username, PageRequest.of(pageNo, pageSize)));
+        return ResponseEntity.ok(collectionService
+                .getCollectionsByUser(username, PageRequest.of(pageNo, pageSize, Sort.by("startTime").descending())));
     }
 
     /**
@@ -160,6 +160,7 @@ public class CollectionController {
      * status 404 if collection not found<br>
      * status 403 if logged user is not an owner of collection
      */
+    @CrossOrigin("${allowed.origins}")
     @PatchMapping("/collections")
     ResponseEntity<?> updateCollection(
             @RequestBody CollectionUpdateDTO collectionToUpdate) {

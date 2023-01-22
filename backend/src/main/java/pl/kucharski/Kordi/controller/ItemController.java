@@ -158,7 +158,7 @@ public class ItemController {
                                                 defaultValue = PaginationConstants.DEFAULT_PAGE_SIZE,
                                                 required = false) int pageSize,
                                         @RequestParam(value = "sortBy",
-                                                defaultValue = PaginationConstants.DEFAULT_SORT_BY,
+                                                defaultValue = PaginationConstants.DEFAULT_SORT_BY_ITEM,
                                                 required = false) String sortBy,
                                         @RequestParam(value = "sortDirection",
                                                 defaultValue = PaginationConstants.DEFAULT_SORT_DIRECTION,

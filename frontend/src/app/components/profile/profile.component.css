@@ -6,3 +6,11 @@
 section {
     width: 1000px;
 }
+
+:host ::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 5px;
+}
+
+:host ::ng-deep .mat-expansion-panel-body {
+    padding: 0;
+}

@@ -1,0 +1,44 @@
+<p-table
+  [value]="collections"
+  [tableStyle]="{ 'min-width': '23rem' }"
+  responsiveLayout="stack"
+>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th>ID</th>
+      <th>{{ "profile.title" | translate }}</th>
+      <th>{{ "profile.date" | translate }}</th>
+      <th>{{ "profile.end_date" | translate }}</th>
+      <th>{{ "profile.status" | translate }}</th>
+      <th>{{ "profile.progress" | translate }}</th>
+      <th></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-collection let-columns="columns">
+    <tr ngClass="table-white">
+      <td class="cell">{{ collection.id }}</td>
+      <td class="cell">{{ collection.title }}</td>
+      <td class="cell">{{ collection.startTime | date : "dd/MM/yyyy" }}</td>
+      <td *ngIf="collection.endTime" class="cell">
+        {{ collection.endTime | date : "dd/MM/yyyy" }}
+      </td>
+      <td *ngIf="!collection.endTime" class="cell">-</td>
+      <td *ngIf="isActive(collection)" class="open cell">
+        {{ "profile.open" | translate }}
+      </td>
+      <td *ngIf="!isActive(collection)" class="closed cell">
+        {{ "profile.closed" | translate }}
+      </td>
+      <td class="cell">{{ getProgress(collection) }}%</td>
+      <td class="cell">
+        <button
+          class="btn my-btn-primary btn-sm mt-2 me-2"
+          style="padding-left: 2rem; padding-right: 2rem"
+          (click)="editCollection(collection.id)"
+        >
+          {{ "profile.collection_panel" | translate }}
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

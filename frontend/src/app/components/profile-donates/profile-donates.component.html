@@ -1,0 +1,24 @@
+<p-table [value]="submittedItems" [tableStyle]="{ 'min-width': '50rem' }">
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-item let-columns="columns">
+    <tr ngClass="table-white">
+      <td>{{ item.amount }}</td>
+      <td>{{ item.submitTime }}</td>
+      <td>
+        <button
+          class="btn my-btn-primary btn-sm mt-2 me-2"
+          style="padding-left: 2rem; padding-right: 2rem"
+          (click)="openCollection(item.collectionId)"
+        >
+          Zobacz zbiórkę
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

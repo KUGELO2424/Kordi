@@ -223,6 +223,31 @@
         "edit": "Edytuj profil",
         "delete": "Usuń konto",
         "collections": "Twoje zbiórki",
-        "items": "Twoje podarowane przedmioty"
+        "items": "Twoje podarowane przedmioty",
+        "old_pass": "Aktualne hasło",
+        "new_pass": "Nowe hasło",
+        "new_pass_again": "Powtórz nowe hasło",
+        "change_pass": "Zmień hasło",
+        "new_pass_not_match": "Podane nowe hasła nie pasują do siebie",
+        "title": "Tytuł",
+        "date": "Data utworzenia",
+        "end_date": "Data zakończenia",
+        "collection_panel": "Panel zbiórki",
+        "status": "Status",
+        "open": "Otwarta",
+        "closed": "Zakończona",
+        "progress": "Postęp"
+    },
+    "password": {
+        "old.password.not.match": "Podane aktualne hasło jest nieprawidłowe",
+        "too.short": "Nowe hasło musi mieć przynajmniej 6 znaków"
+    },
+    "panel": {
+        "heading": "Edycja zbiórki",
+        "delete": "Usuń zbiórkę",
+        "edit": "Zaaktualizuj dane",
+        "title": "Tytuł zbiórki",
+        "description": "Opis zbiórki",
+        "end_date": "Data zakończenia"
     }
 }

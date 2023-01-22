@@ -27,9 +27,81 @@
               <button
                 class="btn my-btn-primary btn-lg mt-2"
                 style="padding-left: 2rem; padding-right: 2rem"
+                (click)="showEditProfileDialog()"
               >
                 {{ "profile.edit" | translate }}
               </button>
+              <!-- EDIT PROFILE MODAL -->
+              <p-dialog
+                header="{{ 'profile.change_pass' | translate }}"
+                [(visible)]="displayEditProfile"
+                [modal]="true"
+                [style]="{ width: '50vw' }"
+                [draggable]="false"
+                [resizable]="false"
+                (onHide)="reset()"
+              >
+                <div class="d-flex flex-column bd-highlight mb-1">
+                  <!-- OLD PASSWORD -->
+                  <div class="bd-highlight">
+                    <mat-form-field
+                      class="form-field me-3"
+                      appearance="outline"
+                    >
+                      <mat-label>{{
+                        "profile.old_pass" | translate
+                      }}</mat-label>
+                      <input matInput type="text" [(ngModel)]="oldPassword" />
+                    </mat-form-field>
+                  </div>
+                  <!-- END OLD PASSWORD -->
+                  <!-- NEW PASSWORD -->
+                  <div class="bd-highlight">
+                    <mat-form-field
+                      class="form-field me-3"
+                      appearance="outline"
+                    >
+                      <mat-label>{{
+                        "profile.new_pass" | translate
+                      }}</mat-label>
+                      <input matInput type="text" [(ngModel)]="newPassword" />
+                    </mat-form-field>
+                  </div>
+                  <!-- END NEW PASSWORD -->
+                  <!-- NEW PASSWORD REPEAT -->
+                  <div class="bd-highlight">
+                    <mat-form-field
+                      class="form-field me-3"
+                      appearance="outline"
+                    >
+                      <mat-label>{{
+                        "profile.new_pass_again" | translate
+                      }}</mat-label>
+                      <input
+                        matInput
+                        type="text"
+                        [(ngModel)]="newPasswordRepeat"
+                      />
+                    </mat-form-field>
+                  </div>
+                  <!-- END NEW PASSWORD REPEAT -->
+                </div>
+                <p-messages
+                  [(value)]="errorMessages"
+                  [enableService]="false"
+                ></p-messages>
+                <ng-template pTemplate="footer">
+                  <button
+                    [disabled]="isUpdateDisabled()"
+                    class="btn my-btn-primary btn-lg mt-2"
+                    style="padding-left: 2rem; padding-right: 2rem"
+                    (click)="changePassword()"
+                  >
+                    {{ "profile.change_pass" | translate }}
+                  </button>
+                </ng-template>
+              </p-dialog>
+              <!-- END EDIT PROFILE MODAL -->
             </div>
             <div class="col d-flex justify-content-center">
               <button
@@ -44,6 +116,7 @@
       </div>
     </mat-card>
 
+    <!-- COLLECTION EXPANSION PANEL -->
     <div class="row justify-content-center mt-3">
       <mat-accordion>
         <mat-expansion-panel hideToggle>
@@ -53,10 +126,13 @@
               {{ "profile.collections" | translate }}
             </mat-panel-title>
           </mat-expansion-panel-header>
+          <app-profile-collections></app-profile-collections>
         </mat-expansion-panel>
       </mat-accordion>
     </div>
-    <div class="row justify-content-center mt-3">
+
+    <!-- SUBMITTED ITEMS EXPANSION PANEL -->
+    <div class="row justify-content-center mt-3 mb-5">
       <mat-accordion>
         <mat-expansion-panel hideToggle>
           <mat-expansion-panel-header collapsedHeight="80px">
@@ -65,10 +141,13 @@
               {{ "profile.items" | translate }}
             </mat-panel-title>
           </mat-expansion-panel-header>
+          <app-profile-donates></app-profile-donates>
         </mat-expansion-panel>
       </mat-accordion>
     </div>
   </section>
+  <!-- MESSAGE -->
+  <p-toast key="tl"></p-toast>
   <!-- LOADING SPINNER -->
   <app-loading-spinner></app-loading-spinner>
 </div>

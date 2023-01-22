@@ -222,6 +222,31 @@
         "edit": "Edit profile",
         "delete": "Delete account",
         "collections": "Your collections",
-        "items": "Your donated items"
+        "items": "Your donated items",
+        "old_pass": "Current password",
+        "new_pass": "New password",
+        "new_pass_again": "Repeat new password",
+        "change_pass": "Change password",
+        "new_pass_not_match": "The new passwords entered do not match",
+        "title": "Title",
+        "date": "Creation date",
+        "end_date": "End date",
+        "collection_panel": "Collection panel",
+        "status": "Status",
+        "open": "Open",
+        "closed": "Closed",
+        "progress": "Progress"
+    },
+    "password": {
+        "old.password.not.match": "The current password provided is incorrect",
+        "too.short": "The new password must be at least 6 characters long"
+    },
+    "panel": {
+        "heading": "Collection editor",
+        "delete": "Delete collection",
+        "edit": "Update collection",
+        "title": "Collection title",
+        "description": "Collection description",
+        "end_date": "Collection end date"
     }
 }

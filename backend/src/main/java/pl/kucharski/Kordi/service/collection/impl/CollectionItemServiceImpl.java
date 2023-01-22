@@ -1,11 +1,14 @@
 package pl.kucharski.Kordi.service.collection.impl;
 
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import pl.kucharski.Kordi.aop.IsCollectionOwner;
 import pl.kucharski.Kordi.exception.CollectionItemException;
 import pl.kucharski.Kordi.exception.CollectionItemNotFoundException;
@@ -151,7 +154,14 @@ public class CollectionItemServiceImpl implements CollectionItemService {
      */
     @Override
     public Page<SubmittedItemDTO> getSubmittedItemsForUser(String username, Pageable pageable) {
-        Page<SubmittedItem> submittedItemsPage = submittedItemRepository.findByUserUsername(username, pageable);
+        Page<SubmittedItem> submittedItemsPage;
+        try {
+            submittedItemsPage = submittedItemRepository.findByUserUsername(username, pageable);
+        } catch (InvalidDataAccessApiUsageException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    ex.getMessage());
+        }
         if (submittedItemsPage.isEmpty()) {
             return Page.empty();
         }
