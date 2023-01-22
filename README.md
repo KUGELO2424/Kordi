@@ -79,11 +79,27 @@ MAIL_PASSWORD=test
 ![12](https://user-images.githubusercontent.com/55559640/210115972-6e6a4c2d-1f80-401a-b7ea-8eb7d4e0ac5e.PNG)
 ### Signup
 ![13](https://user-images.githubusercontent.com/55559640/210115988-1db67021-2c6d-4c40-8b70-b28fa48709aa.PNG)
-### Add new collection
-![14](https://user-images.githubusercontent.com/55559640/210116026-c452a5ce-ec87-4433-b900-6b16ba80acd6.PNG)
+### Phone verification
+![verify](https://user-images.githubusercontent.com/55559640/213879484-900f8f8f-020f-4f1a-8139-f0d6484581f3.PNG)
+### Add new collection (info)
+![add01](https://user-images.githubusercontent.com/55559640/213863107-6509ba30-a18c-4285-be6f-8c1463ad5029.PNG)
+### Add new collection (locations)
+![add02](https://user-images.githubusercontent.com/55559640/213863117-5b071ae3-8c3a-4048-877d-9dca5b76c078.PNG)
+### Add new collection (add item)
+![add03](https://user-images.githubusercontent.com/55559640/213863122-76804920-987e-4784-8bac-02286a5b5d2c.PNG)
+### Add new collection (items)
+![add04](https://user-images.githubusercontent.com/55559640/213863127-9f304c5e-ee44-473e-b5bd-ecbd6ba9bb29.PNG)
+### Collection list (filter & sort)
+![collections01](https://user-images.githubusercontent.com/55559640/213863138-d45aac58-fe49-47c9-8aa5-7bb54c5d4a87.PNG)
 ### Collection list
-![15](https://user-images.githubusercontent.com/55559640/210116022-d3600ad2-7636-45b9-afa1-66265465736a.PNG)
+![collections02](https://user-images.githubusercontent.com/55559640/213863139-a13fa8c4-806d-4d27-9af9-2d93d4e9ed9e.PNG)
 ### Collection
-![16](https://user-images.githubusercontent.com/55559640/210116020-fc7fd605-fba5-4b77-8342-5bdd3732693e.PNG)
-### Collection locations & items
-![17](https://user-images.githubusercontent.com/55559640/210116015-b35607bb-d308-435c-8679-c5e6e01d2b56.PNG)
+![collection01](https://user-images.githubusercontent.com/55559640/213863143-f68c8208-0a2a-4a21-9d84-657abf16234f.PNG)
+### Collection share buttons
+![collection04](https://user-images.githubusercontent.com/55559640/213864109-abde9eef-57af-488e-b0e1-a0997a0f13dd.PNG)
+### Collection (locations & comments)
+![collection02](https://user-images.githubusercontent.com/55559640/213863157-03b5ea3c-ec4e-4665-9e25-cf8c44ec98b5.PNG)
+### Collection (items)
+![collection03](https://user-images.githubusercontent.com/55559640/213863160-fb745d97-6712-473e-b0a1-3a75596fdc3b.PNG)
+### Collection donate overview
+![overview](https://user-images.githubusercontent.com/55559640/213863162-160bf717-fb57-4ce7-90e5-ecb9726a5b7f.PNG)
