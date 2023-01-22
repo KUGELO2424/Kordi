@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'app/services/auth.service';
 import { Message } from 'primeng/api';
+import { Location } from '@angular/common'
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
     password: new UntypedFormControl(''),
   });
 
-  constructor(private router: Router, private loginService: AuthService, private translate: TranslateService) {
+  constructor(private router: Router, private loginService: AuthService, private translate: TranslateService, private location: Location) {
       const navigation = this.router.getCurrentNavigation();
       const state = navigation?.extras.state as {data: string};
       if (state !== undefined) {
@@ -45,7 +46,8 @@ export class LoginComponent implements OnInit {
     }
     this.loginService.authenticate(username, password).subscribe({
       next: () => {
-        this.router.navigateByUrl("/")
+        this.location.back();
+        // this.router.navigateByUrl("/")
       },
       error: (error) => {
         if (error.error.error === undefined) {

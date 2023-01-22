@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class AddCollectionStateService {
+export class StateService {
 
   state$ = new BehaviorSubject<any>(null);
 

@@ -127,7 +127,7 @@ const routes: Routes = [
     ProfileComponent
   ],
   imports: [
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'}),
     BrowserModule,
     HttpClientModule,
     FormsModule,

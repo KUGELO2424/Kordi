@@ -47,6 +47,10 @@ export class CollectionService {
     return this.httpClient.get<SubmittedItem[]>(`${this.getUrl}/${id}/submittedItems`);
   }
 
+  getSubmittedItemsForUser(id: string): Observable<SubmittedItem[]> {
+    return this.httpClient.get<SubmittedItem[]>(`${this.getUrl}/${id}/submittedItems`);
+  }
+
   getLastNSubmittedItemsFromCollection(id: string, number: number): Observable<SubmittedItem[]> {
     return this.httpClient.get<SubmittedItem[]>(`${this.getUrl}/${id}/submittedItems?numberOfSubmittedItems=${number}`);
   }

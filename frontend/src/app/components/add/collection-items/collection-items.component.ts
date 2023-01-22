@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, UntypedFormControl, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ItemCategory, Item, ItemType } from 'app/common/itemToAdd';
-import { AddCollectionStateService } from 'app/services/add-collection-state.service';
+import { StateService } from 'app/services/state.service';
 import { Table } from 'primeng/table';
 
 @Component({
@@ -37,7 +37,7 @@ export class CollectionItemsComponent implements OnInit {
     maxAmount: new UntypedFormControl('', [Validators.required, Validators.min(1)]),
   });
 
-  constructor(private stateService: AddCollectionStateService, private translate: TranslateService) {
+  constructor(private stateService: StateService, private translate: TranslateService) {
     this.translate.get('add-collection.locations').subscribe(() => {
       this.itemTypes = [
         {type: this.translate.instant('item.weight'), value: ItemType.WEIGHT},

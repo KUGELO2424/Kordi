@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AddCollectionStateService } from 'app/services/add-collection-state.service';
+import { StateService } from 'app/services/state.service';
 
 @Component({
   selector: 'app-collection-data',
@@ -24,7 +24,7 @@ export class CollectionDataComponent implements OnInit {
 
   currentDate = new Date(); 
 
-  constructor(private stateService: AddCollectionStateService) { }
+  constructor(private stateService: StateService) { }
 
   ngOnInit(): void {
     this.state = this.stateService.state$.getValue() || {}

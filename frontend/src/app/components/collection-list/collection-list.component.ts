@@ -1,13 +1,13 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Collection } from 'app/common/collection';
-import { Item, ItemCategory } from 'app/common/itemToAdd';
+import { CollectionListStateService } from 'app/services/collection-list-state.service';
 import { CollectionService } from 'app/services/collection.service';
-import { map } from 'rxjs';
+import { StateService } from 'app/services/state.service';
 
 @Component({
   selector: 'app-collection-list',
@@ -26,6 +26,8 @@ export class CollectionListComponent implements OnInit {
   pageNumber: number = 0;
   pageSize: number = 10;
   totalRecords: number = 10;
+
+  state: any;
 
   sortOptions: any[] = [];
   selectedSort: any = { label: this.translate.instant('collections.sort_popularity'), field: 'donates', direction: 'desc'};
@@ -50,8 +52,9 @@ export class CollectionListComponent implements OnInit {
     other: false,
   });
 
-  constructor(private formBuilder: UntypedFormBuilder, private collectionService: CollectionService, 
-    private sanitizer: DomSanitizer, private scroller: ViewportScroller, private translate: TranslateService) {
+  constructor(private formBuilder: UntypedFormBuilder, private collectionService: CollectionService, private router: Router,
+    private sanitizer: DomSanitizer, private scroller: ViewportScroller, private translate: TranslateService,
+    private stateService: CollectionListStateService) {
       this.translate.get('add-collection.locations').subscribe(() => {
         this.sortOptions = [
           { label: this.translate.instant('collections.sort_popularity'), field: 'donates', direction: 'desc'},
@@ -63,6 +66,13 @@ export class CollectionListComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    this.state = this.stateService.state$.getValue() || {}
+    this.stateService.state$.next("");
+    if (Object.keys(this.state).length !== 0) {
+      if ("filtr" in this.state) {
+        this.setFiltrAndSortOptions(this.state.filtr);
+      }
+    }
     this.search();
   }
 
@@ -131,6 +141,33 @@ export class CollectionListComponent implements OnInit {
       return Math.round((diffTime / msInDay));
     }
     return 0;
+  }
+
+  openCollection(collectionId: number) {
+    this.saveState();
+    this.router.navigateByUrl("/collections/" + collectionId);
+  }
+
+  saveState() {
+    const filtr = {
+      searchTerm: this.searchTerm,
+      city: this.searchCity,
+      street: this.searchStreet,
+      item: this.searchItem,
+      categories: this.categoriesForm,
+      sort: this.selectedSort
+    }
+    this.state.filtr = filtr
+    this.stateService.state$.next(this.state);
+  }
+
+  setFiltrAndSortOptions(filtr: any) {
+    this.searchTerm = filtr.searchTerm;
+    this.searchCity = filtr.city;
+    this.searchStreet = filtr.street;
+    this.searchItem = filtr.item;
+    this.categoriesForm = filtr.categories;
+    this.selectedSort = filtr.sort
   }
 
 }

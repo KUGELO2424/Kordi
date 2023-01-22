@@ -6,7 +6,7 @@ import { SubmittedItem } from 'app/common/submittedItem';
 import { ConfirmationService, Message, MessageService } from 'primeng/api';
 import { Location } from '@angular/common'
 import { CollectionService } from 'app/services/collection.service';
-import { AddCollectionStateService } from 'app/services/add-collection-state.service';
+import { StateService } from 'app/services/state.service';
 
 @Component({
   selector: 'app-overview',
@@ -23,7 +23,7 @@ export class OverviewComponent implements OnInit {
   errorOccured: boolean = false;
 
   constructor(private router: Router, private translate: TranslateService, private confirmationService: ConfirmationService, 
-    private location: Location, private collectionService: CollectionService, private stateService: AddCollectionStateService,
+    private location: Location, private collectionService: CollectionService, private stateService: StateService,
     private messageService: MessageService) {
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras.state as {collectionId: string, items: Item[]};

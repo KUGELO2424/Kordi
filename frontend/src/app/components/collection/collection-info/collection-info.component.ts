@@ -8,6 +8,7 @@ import { SubmittedItem } from 'app/common/submittedItem';
 import { AuthService } from 'app/services/auth.service';
 import { CollectionService } from 'app/services/collection.service';
 import { MessageService } from 'primeng/api';
+import { Location, ViewportScroller } from '@angular/common'
 
 @Component({
   selector: 'app-collection',
@@ -23,8 +24,8 @@ export class CollectionInfoComponent implements OnInit {
   display: boolean = false;
 
   constructor(private route: ActivatedRoute, private collectionService: CollectionService, private sanitizer: DomSanitizer,
-    private translate: TranslateService, public router: Router, private messageService: MessageService, 
-    private authService: AuthService) {
+    private translate: TranslateService, public router: Router, private messageService: MessageService, private scroller: ViewportScroller,
+    private authService: AuthService, private location: Location) {
       const navigation = this.router.getCurrentNavigation();
       const state = navigation?.extras.state as {data: string};
       if (state !== undefined) {
@@ -112,7 +113,7 @@ export class CollectionInfoComponent implements OnInit {
   }
 
   back() {
-    
+    this.location.back();
   }
 
 }

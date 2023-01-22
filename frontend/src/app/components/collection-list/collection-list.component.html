@@ -181,10 +181,7 @@
             *ngFor="let collection of collections"
           >
             <div class="card h-100" style="width: 21rem">
-              <a
-                class="card-link"
-                routerLink="/collections/{{ collection.id }}"
-              >
+              <a class="card-link" (click)="openCollection(collection.id)">
                 <div class="card-icon">
                   <img
                     [src]="getImageFromBase64(collection.image)"

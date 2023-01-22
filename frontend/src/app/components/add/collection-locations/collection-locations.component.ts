@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AddCollectionStateService } from 'app/services/add-collection-state.service';
+import { StateService } from 'app/services/state.service';
 import { Table } from 'primeng/table';
 import { Location } from '../../../common/location';
 @Component({
@@ -28,7 +28,7 @@ export class CollectionLocationsComponent implements OnInit {
     street: new UntypedFormControl('', [Validators.required, Validators.maxLength(50)]),
   });
 
-  constructor(private stateService: AddCollectionStateService) { }
+  constructor(private stateService: StateService) { }
 
   ngOnInit(): void {
     this.state = this.stateService.state$.getValue() || {}

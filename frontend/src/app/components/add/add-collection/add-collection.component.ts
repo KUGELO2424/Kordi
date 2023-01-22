@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { CollectionToAdd } from 'app/common/collectionToAdd';
 import { Item, ItemCategory, ItemToAdd, ItemType } from 'app/common/itemToAdd';
 import { LocationToAdd, Location} from 'app/common/location';
-import { AddCollectionStateService } from 'app/services/add-collection-state.service';
+import { StateService } from 'app/services/state.service';
 import { CollectionService } from 'app/services/collection.service';
 import { ConfirmationService, MenuItem, Message, MessageService } from 'primeng/api';
 import { ReplaySubject } from 'rxjs';
@@ -28,7 +28,7 @@ export class AddCollectionComponent implements OnInit {
   state: any;
 
   constructor(private router: Router, 
-    private stateService: AddCollectionStateService, 
+    private stateService: StateService, 
     private confirmationService: ConfirmationService, 
     private messageService: MessageService,
     private collectionService: CollectionService,

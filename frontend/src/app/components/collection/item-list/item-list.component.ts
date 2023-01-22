@@ -3,7 +3,7 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Item, ItemCategory } from 'app/common/itemToAdd';
-import { AddCollectionStateService } from 'app/services/add-collection-state.service';
+import { StateService } from 'app/services/state.service';
 import { AuthService } from 'app/services/auth.service';
 import { ConfirmationService } from 'primeng/api';
 
@@ -33,7 +33,7 @@ export class ItemListComponent implements OnInit {
   selectedSearchType: any = this.searchTypes[0];
 
   constructor(private confirmationService: ConfirmationService, private scroller: ViewportScroller, 
-    private translate: TranslateService, private router: Router, private stateService: AddCollectionStateService,
+    private translate: TranslateService, private router: Router, private stateService: StateService,
     private authService: AuthService) { }
 
   ngOnInit(): void {
