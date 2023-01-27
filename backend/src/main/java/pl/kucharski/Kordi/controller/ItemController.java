@@ -149,8 +149,8 @@ public class ItemController {
      * @param username username of user
      * @return list of submitted items
      */
-    @GetMapping("/submittedItems/{username}")
-    ResponseEntity<?> getSubmittedItems(@PathVariable("username") String username,
+    @GetMapping("/submittedItems")
+    ResponseEntity<?> getSubmittedItems(@RequestParam("username") String username,
                                         @RequestParam(value = "pageNo",
                                                 defaultValue = PaginationConstants.DEFAULT_PAGE_NUMBER,
                                                 required = false) int pageNo,

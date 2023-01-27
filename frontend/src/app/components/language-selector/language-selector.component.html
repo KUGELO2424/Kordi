@@ -8,7 +8,7 @@
     <img [src]="language.img" class="flag" />
     <span class="ms-2 mat-select-value">{{ language.label }}</span>
   </button>
-  <ul class="dropdown-menu">
+  <ul class="dropdown-menu my-dropdown">
     <li *ngFor="let opt of languages" [value]="opt.value">
       <a (click)="selectLanguage(opt.value)">
         <img [src]="opt.img" class="flag ms-2" />

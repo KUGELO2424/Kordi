@@ -1,3 +1,7 @@
 :host ::ng-deep .table-white {
     background-color: #fff!important;
 }
+
+:host ::ng-deep .p-paginator {
+    background: white !important;
+}

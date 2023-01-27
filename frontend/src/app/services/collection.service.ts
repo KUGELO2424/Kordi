@@ -9,6 +9,8 @@ import { CommentListResponse } from 'app/common/commentListResponse';
 import { environment } from 'environments/environment';
 import { Observable, of } from 'rxjs';
 import { Item } from 'app/common/itemToAdd';
+import { SubmittedItemListResponse } from 'app/common/submittedItemResponse';
+import { UpdateCollection } from 'app/common/updateCollection';
 
 @Injectable({
   providedIn: 'root'
@@ -47,8 +49,8 @@ export class CollectionService {
     return this.httpClient.get<SubmittedItem[]>(`${this.getUrl}/${id}/submittedItems`);
   }
 
-  getSubmittedItemsForUser(id: string): Observable<SubmittedItem[]> {
-    return this.httpClient.get<SubmittedItem[]>(`${this.getUrl}/${id}/submittedItems`);
+  getSubmittedItemsForUser(username: string, pageNumber: number, pageSize: number): Observable<SubmittedItemListResponse> {
+    return this.httpClient.get<SubmittedItemListResponse>(`${this.getUrl}/submittedItems?username=${username}&pageNo=${pageNumber}&pageSize=${pageSize}`);
   }
 
   getLastNSubmittedItemsFromCollection(id: string, number: number): Observable<SubmittedItem[]> {
@@ -61,6 +63,10 @@ export class CollectionService {
 
   addComment(id:string, comment: Comment) {
     return this.httpClient.post<Comment>(`${this.getUrl}/${id}/comments`, comment);
+  }
+
+  updateCollection(collectionToUpdate: UpdateCollection) {
+    return this.httpClient.patch<Collection>(`${this.addUrl}`, collectionToUpdate);
   }
 
   getCollectionProgress(items: Item[]): Observable<number> {

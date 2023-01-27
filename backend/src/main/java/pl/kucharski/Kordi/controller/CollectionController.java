@@ -160,8 +160,8 @@ public class CollectionController {
      * status 404 if collection not found<br>
      * status 403 if logged user is not an owner of collection
      */
-    @CrossOrigin("${allowed.origins}")
     @PatchMapping("/collections")
+    @CrossOrigin("http://localhost:4200")
     ResponseEntity<?> updateCollection(
             @RequestBody CollectionUpdateDTO collectionToUpdate) {
         try {

@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Collection } from 'app/common/collection';
-import { SubmittedItem } from 'app/common/submittedItem';
 import { UserData } from 'app/common/userData';
 import { AuthService } from 'app/services/auth.service';
 import { CollectionService } from 'app/services/collection.service';

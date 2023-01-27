@@ -13,3 +13,8 @@
 .dropdown > button > span{
   color: white;
 }
+
+.my-dropdown {
+  width: 100px;
+  position: absolute;
+}

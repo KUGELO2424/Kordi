@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { CollectionPanelComponent } from './collection-panel.component';
+import { CollectionPanelInfoComponent } from './collection-panel-info.component';
 
 describe('CollectionPanelComponent', () => {
-  let component: CollectionPanelComponent;
-  let fixture: ComponentFixture<CollectionPanelComponent>;
+  let component: CollectionPanelInfoComponent;
+  let fixture: ComponentFixture<CollectionPanelInfoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CollectionPanelComponent ]
+      declarations: [ CollectionPanelInfoComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CollectionPanelComponent);
+    fixture = TestBed.createComponent(CollectionPanelInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

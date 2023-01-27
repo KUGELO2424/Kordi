@@ -31,6 +31,12 @@ import { CollectionItemsComponent } from './components/add/collection-items/coll
 import { CollectionDataComponent } from './components/add/collection-data/collection-data.component';
 import { OverviewComponent } from './components/collection/overview/overview.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { ProfileCollectionsComponent } from './components/profile-collections/profile-collections.component';
+import { ProfileDonatesComponent } from './components/profile-donates/profile-donates.component';
+import { CollectionPanelInfoComponent } from './components/collection-panel/collection-panel-info/collection-panel-info.component';
+import { CollectionPanelItemsComponent } from './components/collection-panel/collection-panel-items/collection-panel-items.component';
+import { CollectionPanelLocationsComponent } from './components/collection-panel/collection-panel-locations/collection-panel-locations.component';
+import { CollectionPanelCommentsComponent } from './components/collection-panel/collection-panel-comments/collection-panel-comments.component';
 
 // SERVICES
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -78,6 +84,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { SidebarModule } from 'primeng/sidebar';
 import { BadgeModule } from 'primeng/badge';
 
+
 const routes: Routes = [
   {path: 'home', component: HomePageComponent},
   {path: 'login', component: LoginComponent},
@@ -86,8 +93,9 @@ const routes: Routes = [
   {path: 'verify', component: VerificationComponent},
   {path: 'profile', component: ProfileComponent, canActivate:[AuthGuardService]},
   {path: 'collections', component: CollectionListComponent},
+  {path: 'collections/:id/panel', component: CollectionPanelInfoComponent, canActivate:[AuthGuardService]},
   {path: 'collections/:id', component: CollectionInfoComponent},
-  {path: 'collections/donate/overview', component: OverviewComponent},
+  {path: 'collections/donate/overview', component: OverviewComponent, canActivate:[AuthGuardService]},
   {
     path: 'add-collection',
     canActivate:[AuthGuardService],
@@ -124,7 +132,13 @@ const routes: Routes = [
     CollectionItemsComponent,
     CollectionDataComponent,
     OverviewComponent,
-    ProfileComponent
+    ProfileComponent,
+    ProfileCollectionsComponent,
+    ProfileDonatesComponent,
+    CollectionPanelInfoComponent,
+    CollectionPanelItemsComponent,
+    CollectionPanelLocationsComponent,
+    CollectionPanelCommentsComponent
   ],
   imports: [
     RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'}),

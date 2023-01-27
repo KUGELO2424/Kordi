@@ -1,0 +1,150 @@
+<mat-card class="mb-3">
+  <div class="row row-cols-1">
+    <mat-card-title>{{ "panel.items_heading" | translate }}</mat-card-title>
+
+    <div class="card col-lg-12 col-md-12 col-sm-12 col-12 no-border">
+      <p-toolbar styleClass="mb-2 gap-2 white-bg">
+        <ng-template pTemplate="left">
+          <button
+            pButton
+            pRipple
+            type="submit"
+            class="btn my-btn-primary btn-sm"
+            style="padding-left: 1.5rem; padding-right: 1.5rem"
+            (click)="addNewItem()"
+          >
+            {{ "add-collection.item.add" | translate }}
+          </button>
+        </ng-template>
+      </p-toolbar>
+
+      <p-table
+        #dt
+        [value]="items"
+        [rows]="5"
+        [paginator]="true"
+        [tableStyle]="{ 'min-width': '40rem' }"
+        [rowHover]="false"
+        dataKey="id"
+      >
+        <ng-template pTemplate="caption">
+          <div class="flex align-items-center justify-content-between">
+            <h5 class="m-0">{{ "add-collection.item.manage" | translate }}</h5>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr class="thead-color">
+            <th>{{ "add-collection.item.name" | translate }}</th>
+            <th>{{ "add-collection.item.category" | translate }}</th>
+            <th>{{ "add-collection.item.type" | translate }}</th>
+            <th>{{ "add-collection.item.current" | translate }}</th>
+            <th>{{ "add-collection.item.max" | translate }}</th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr ngClass="table-white">
+            <td>{{ item.name }}</td>
+            <td>
+              {{ "category." + item.category.toLocaleLowerCase() | translate }}
+            </td>
+            <td>{{ "item." + item.type.toLocaleLowerCase() | translate }}</td>
+            <td *ngIf="item.type == 'UNLIMITED'">-</td>
+            <td *ngIf="item.type == 'UNLIMITED'">-</td>
+            <td *ngIf="item.type != 'UNLIMITED'">{{ item.currentAmount }}</td>
+            <td *ngIf="item.type != 'UNLIMITED'">{{ item.maxAmount }}</td>
+
+            <td>
+              <button
+                class="btn my-btn-primary btn-sm me-2"
+                style="padding-left: 2rem; padding-right: 2rem"
+                (click)="editItem(items.indexOf(item))"
+              >
+                {{ "panel.edit_item" | translate }}
+              </button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <div class="flex align-items-center justify-content-between">
+            {{ "panel.items_number" | translate }}{{ items.length }}
+          </div>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <p-dialog
+      [(visible)]="itemDialog"
+      [style]="{ width: '450px', height: '650px' }"
+      header="Nowy przedmiot"
+      [modal]="true"
+      styleClass="p-fluid"
+    >
+      <ng-template pTemplate="content">
+        <form
+          role="form"
+          [formGroup]="addForm"
+          class="form"
+          #formDirective="ngForm"
+        >
+          <!-- NAME -->
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>{{ "add-collection.item.name" | translate }}</mat-label>
+            <input type="text" matInput formControlName="name" />
+            <mat-error *ngIf="checkValidation('name')">
+              {{ "add-collection.item.name.error" | translate }}
+            </mat-error>
+          </mat-form-field>
+
+          <!-- CATEGORY -->
+          <p-dropdown
+            [options]="itemCategory"
+            formControlName="category"
+            placeholder="{{ 'add-collection.item.category.text' | translate }}"
+            optionLabel="category"
+            optionValue="value"
+            [showClear]="true"
+            styleClass="mb-4"
+          ></p-dropdown>
+
+          <!-- TYPE -->
+          <h5>{{ "add-collection.item.type.text" | translate }}</h5>
+          <p-selectButton
+            [options]="itemTypes"
+            formControlName="type"
+            optionLabel="type"
+            optionValue="value"
+            styleClass="mb-2"
+            (onChange)="changeItemType($event)"
+          ></p-selectButton>
+
+          <!-- MAX AMOUNT -->
+          <p-inputNumber
+            formControlName="maxAmount"
+            suffix="{{ sufix }}"
+          ></p-inputNumber>
+        </form>
+      </ng-template>
+
+      <ng-template pTemplate="footer">
+        <button
+          pButton
+          pRipple
+          label="{{ 'add-collection.cancle' | translate }}"
+          icon="pi pi-times"
+          class="p-button-text"
+          (click)="hideDialog()"
+        ></button>
+        <button
+          pButton
+          pRipple
+          label="{{ 'add-collection.add' | translate }}"
+          icon="pi pi-check"
+          class="p-button-text"
+          (click)="addItem()"
+          [disabled]="addForm.invalid"
+        ></button>
+      </ng-template>
+    </p-dialog>
+  </div>
+</mat-card>

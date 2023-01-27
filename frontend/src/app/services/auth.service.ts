@@ -71,6 +71,10 @@ export class AuthService {
     return this.httpClient.post<any>(`${this.validateUrl}?username=${username}&token=${token}`, "");
   }
 
+  updatePassword(oldPassword: string, newPassword: string) {
+    return this.httpClient.put<any>(`${this.getUserUrl}/updatePassword?oldPassword=${oldPassword}&password=${newPassword}`, "");
+  }
+
   isUserLoggedIn() {
     let user = sessionStorage.getItem("username");
     let token = sessionStorage.getItem("token");

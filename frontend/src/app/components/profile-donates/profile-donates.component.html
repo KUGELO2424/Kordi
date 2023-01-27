@@ -1,4 +1,8 @@
-<p-table [value]="submittedItems" [tableStyle]="{ 'min-width': '50rem' }">
+<p-table
+  [value]="submittedItems"
+  [tableStyle]="{ 'min-width': '50rem' }"
+  id="itemList"
+>
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th>ID</th>
@@ -22,3 +26,11 @@
     </tr>
   </ng-template>
 </p-table>
+<!-- PAGINATOR -->
+<div class="mt-5 mb-1 paginator">
+  <p-paginator
+    [rows]="pageSize"
+    [totalRecords]="totalRecords"
+    (onPageChange)="changePage($event)"
+  ></p-paginator>
+</div>

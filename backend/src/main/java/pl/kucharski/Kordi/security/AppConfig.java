@@ -13,6 +13,8 @@ public class AppConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins(allowedOrigins);
+        registry.addMapping("/**")
+                .allowedOrigins(allowedOrigins)
+                .allowedMethods("POST", "GET", "PUT", "PATCH", "DELETE", "OPTIONS");
     }
 }

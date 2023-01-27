@@ -23,6 +23,9 @@ export class CollectionInfoComponent implements OnInit {
   collectionProgress: number = 0;
   display: boolean = false;
 
+  collectionNotFound: boolean = false;
+  collectionNotFoundMessage: string;
+
   constructor(private route: ActivatedRoute, private collectionService: CollectionService, private sanitizer: DomSanitizer,
     private translate: TranslateService, public router: Router, private messageService: MessageService, private scroller: ViewportScroller,
     private authService: AuthService, private location: Location) {
@@ -51,8 +54,10 @@ export class CollectionInfoComponent implements OnInit {
         this.setCollectionProgress();
         this.itemPanel.expanded = true
       },
-      error: () => {
-
+      error: (error) => {
+        console.log(error);
+        this.collectionNotFound = true;
+        this.collectionNotFoundMessage = error.error.error;
       }
     })
   }

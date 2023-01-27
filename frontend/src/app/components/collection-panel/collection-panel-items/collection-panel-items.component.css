@@ -1,0 +1,24 @@
+:host ::ng-deep .table-white {
+    background-color: #fff!important;
+    text-align: center;
+}
+
+:host ::ng-deep .p-datatable-footer {
+    background-color: #fff!important;
+}
+
+:host ::ng-deep .p-datatable-header {
+    background-color: #fff!important;
+}
+
+:host ::ng-deep .p-paginator {
+    background: white !important;
+}
+
+:host ::ng-deep .p-toolbar {
+    background: white !important;
+}
+
+.no-border {
+    border: 0;
+}

@@ -8,7 +8,7 @@
     >
       {{ "collection.back_button" | translate }}
     </button>
-    <mat-card class="">
+    <mat-card class="mb-3">
       <div class="row row-cols-1">
         <mat-card-title>{{ "panel.heading" | translate }}</mat-card-title>
         <mat-card-subtitle>{{ collection?.title }}</mat-card-subtitle>
@@ -69,7 +69,7 @@
               "
               class="btn my-btn-primary btn-lg mt-2"
               style="padding-left: 2rem; padding-right: 2rem"
-              (click)="submit()"
+              (click)="confirm($event)"
             >
               {{ "panel.edit" | translate }}
             </button>
@@ -85,9 +85,22 @@
         </div>
       </div>
     </mat-card>
+    <app-collection-panel-items
+      *ngIf="collection"
+      [itemsData]="collection.items"
+      [collectionId]="collection.id"
+    ></app-collection-panel-items>
+    <app-collection-panel-locations
+      *ngIf="collection"
+    ></app-collection-panel-locations>
+    <app-collection-panel-comments
+      *ngIf="collection"
+    ></app-collection-panel-comments>
   </section>
   <!-- MESSAGE -->
   <p-toast></p-toast>
   <!-- LOADING SPINNER -->
   <app-loading-spinner></app-loading-spinner>
+  <!-- CONFIRM POPUP -->
+  <p-confirmPopup></p-confirmPopup>
 </div>

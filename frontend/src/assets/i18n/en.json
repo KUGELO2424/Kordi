@@ -107,7 +107,8 @@
         "no_locations": "No locations found",
         "item_submitted": "Items were donated successfully",
         "share_collection": "Share the collection by choosing one of the options below",
-        "back_button": "Back"
+        "back_button": "Back",
+        "notfound": "We are sorry, but the fundraiser has not been found"
     },
     "home": {
         "welcome": "Welcome in",
@@ -195,6 +196,7 @@
         "item.name": "Name",
         "item.category": "Category",
         "item.type": "Type",
+        "item.current": "Current quantity",
         "item.max": "Maximum quantity",
         "item.added": "Added {{number}} items",
         "item.name.error": "The name must contain between 1 and 30 characters",
@@ -243,10 +245,17 @@
     },
     "panel": {
         "heading": "Collection editor",
+        "items_heading": "Edit collection items",
+        "locations_heading": "Edit collection locations",
+        "comments_heading": "Edit collection comments",
         "delete": "Delete collection",
         "edit": "Update collection",
         "title": "Collection title",
         "description": "Collection description",
-        "end_date": "Collection end date"
+        "end_date": "Collection end date",
+        "collection_updated": "The collection has been updated",
+        "update_confirm": "Are you sure you want to update your collection?",
+        "edit_item": "Edit",
+        "items_number": "Number of items: "
     }
 }

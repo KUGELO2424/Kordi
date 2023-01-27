@@ -32,7 +32,7 @@ export class ProfileCollectionsComponent implements OnInit {
   }
 
   editCollection(id: number) {
-    this.router.navigateByUrl("/collections/" + id + "/edit")
+    this.router.navigateByUrl("/collections/" + id + "/panel")
   }
 
   getCollectionsProgress() {

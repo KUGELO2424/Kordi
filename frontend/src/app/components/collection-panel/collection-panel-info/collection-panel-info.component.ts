@@ -6,14 +6,15 @@ import { CollectionService } from 'app/services/collection.service';
 import { Location } from '@angular/common'
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { UpdateCollection } from 'app/common/updateCollection';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-collection-panel',
-  templateUrl: './collection-panel.component.html',
-  styleUrls: ['./collection-panel.component.css']
+  selector: 'app-collection-panel-info',
+  templateUrl: './collection-panel-info.component.html',
+  styleUrls: ['./collection-panel-info.component.css']
 })
-export class CollectionPanelComponent implements OnInit {
+export class CollectionPanelInfoComponent implements OnInit {
 
   collection: Collection | undefined;
   submittedItems: SubmittedItem[] = [];
@@ -27,7 +28,7 @@ export class CollectionPanelComponent implements OnInit {
   });
 
   constructor(private route: ActivatedRoute, private collectionService: CollectionService, private location: Location,
-    private messageService: MessageService) { }
+    private messageService: MessageService,  private translate: TranslateService, private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
@@ -61,19 +62,34 @@ export class CollectionPanelComponent implements OnInit {
   }
 
   submit() {
-    let collectionUpdate = new UpdateCollection();
-    collectionUpdate.id = this.collection!.id
-    collectionUpdate.title = this.form.value.title;
-    collectionUpdate.description = this.form.value.description;
-    collectionUpdate.endTime = this.form.value.endDate;
-    this.collectionService.updateCollection(collectionUpdate).subscribe({
-      next: (data) => {
-        this.messageService.add({severity:'success', detail:'Via MessageService'});
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    })
+    
+  }
+
+  confirm(event: Event) {
+    this.confirmationService.confirm({
+        target: event.target ? event.target : undefined,
+        acceptLabel: this.translate.instant("add-collection.yes"),
+        rejectLabel: this.translate.instant("add-collection.no"),
+        message: this.translate.instant("panel.update_confirm"),
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          let collectionUpdate = new UpdateCollection();
+          collectionUpdate.id = this.collection!.id
+          collectionUpdate.title = this.form.value.title;
+          collectionUpdate.description = this.form.value.description;
+          collectionUpdate.endTime = this.form.value.endDate;
+          this.collectionService.updateCollection(collectionUpdate).subscribe({
+            next: (data) => {
+              this.messageService.add({severity:'success', detail: this.translate.instant("panel.collection_updated")});
+            },
+            error: (error) => {
+              console.log(error);
+            }
+          })
+        },
+        reject: () => {
+        }
+    });
   }
 
   setCollectionProgress() {
