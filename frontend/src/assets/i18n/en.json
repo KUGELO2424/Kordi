@@ -108,7 +108,8 @@
         "item_submitted": "Items were donated successfully",
         "share_collection": "Share the collection by choosing one of the options below",
         "back_button": "Back",
-        "notfound": "We are sorry, but the fundraiser has not been found"
+        "notfound": "We are sorry, but the fundraiser has not been found",
+        "item.current.bigger.than.max": "The current amount cannot be greater than the maximum"
     },
     "home": {
         "welcome": "Welcome in",
@@ -188,6 +189,7 @@
         "end.date": "Collection end date",
         "photo": "Collection photo",
         "add": "Add",
+        "cancle": "Cancle",
         "file.max.size": "The maximum file size is 500kB",
         "title": "Collection name",
         "desc": "Collection description",
@@ -256,6 +258,16 @@
         "collection_updated": "The collection has been updated",
         "update_confirm": "Are you sure you want to update your collection?",
         "edit_item": "Edit",
-        "items_number": "Number of items: "
+        "items_number": "Number of items: ",
+        "item_updated": "The item has been updated",
+        "item_added": "The item has been added",
+        "new_item": "New item",
+        "edit_item_title": "Edit item",
+        "current": "Current quantity",
+        "max": "Max quantity",
+        "not_collected": "In the process of collecting",
+        "collected": "Collected",
+        "end_collect": "Finish collecting",
+        "start_collect": "Resume collecting"
     }
 }

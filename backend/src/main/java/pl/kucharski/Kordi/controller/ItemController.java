@@ -27,6 +27,7 @@ import pl.kucharski.Kordi.service.collection.CollectionItemService;
 
 import javax.validation.Valid;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -60,7 +61,7 @@ public class ItemController {
         try {
             log.info("Request to add item {} to collection with id {}", item, collectionId);
             itemService.addCollectionItem(collectionId, item);
-            return ResponseEntity.ok().body("Item added to collection with id " + collectionId);
+            return ResponseEntity.ok().body(Collections.singletonMap("status", "Item added to collection with id " + collectionId));
         } catch (CollectionNotFoundException ex) {
             log.warn("Collection with id {} not found", collectionId);
             throw new ResponseStatusException(

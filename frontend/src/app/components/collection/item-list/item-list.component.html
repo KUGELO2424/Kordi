@@ -188,7 +188,10 @@
       <!-- CARD FOOTER IF ITEM UNLIMITED -->
       <div
         class="card-footer"
-        *ngIf="item.type.toString().toLocaleLowerCase() === 'unlimited'"
+        *ngIf="
+          item.type.toString().toLocaleLowerCase() === 'unlimited' &&
+          item.currentAmount != item.maxAmount
+        "
       >
         <p>{{ "collection.donate" | translate }}</p>
         <div class="field-checkbox d-flex justify-content-center mb-3">

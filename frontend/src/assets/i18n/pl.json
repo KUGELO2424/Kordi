@@ -108,7 +108,8 @@
         "item_submitted": "Przedmioty zostały podarowane pomyślnie",
         "share_collection": "Udostępnij zbiórkę wybierając jedną z opcji poniżej",
         "back_button": "Powrót",
-        "notfound": "Przepraszamy ale zbiórka nie została odnaleziona"
+        "notfound": "Przepraszamy ale zbiórka nie została odnaleziona",
+        "item.current.bigger.than.max": "Obecna ilość nie może być większa niż maksymalna"
     },
     "home": {
         "welcome": "Witaj w",
@@ -257,6 +258,16 @@
         "collection_updated": "Zbiórka została zaaktualizowana",
         "update_confirm": "Czy na pewno chcesz zaaktualizowac zbiórkę?",
         "edit_item": "Edytuj",
-        "items_number": "Liczba przedmiotów: "
+        "items_number": "Liczba przedmiotów: ",
+        "item_updated": "Przedmiot został zaaktualizowany",
+        "item_added": "Przedmiot został dodany",
+        "new_item": "Nowy przedmiot",
+        "edit_item_title": "Edytuj przedmiot",
+        "current": "Obecna ilość",
+        "max": "Maksymalna ilość",
+        "not_collected": "W trakcie zbierania",
+        "collected": "Zebrany",
+        "end_collect": "Zakończ zbieranie",
+        "start_collect": "Wzów zbieranie"
     }
 }

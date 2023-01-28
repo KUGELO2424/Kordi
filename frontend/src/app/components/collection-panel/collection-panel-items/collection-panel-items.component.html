@@ -1,4 +1,4 @@
-<mat-card class="mb-3">
+<mat-card class="mb-3" id="itemList">
   <div class="row row-cols-1">
     <mat-card-title>{{ "panel.items_heading" | translate }}</mat-card-title>
 
@@ -11,7 +11,7 @@
             type="submit"
             class="btn my-btn-primary btn-sm"
             style="padding-left: 1.5rem; padding-right: 1.5rem"
-            (click)="addNewItem()"
+            (click)="addNewItemDialog()"
           >
             {{ "add-collection.item.add" | translate }}
           </button>
@@ -21,11 +21,12 @@
       <p-table
         #dt
         [value]="items"
-        [rows]="5"
+        [rows]="10"
         [paginator]="true"
         [tableStyle]="{ 'min-width': '40rem' }"
         [rowHover]="false"
         dataKey="id"
+        responsiveLayout="stack"
       >
         <ng-template pTemplate="caption">
           <div class="flex align-items-center justify-content-between">
@@ -49,18 +50,42 @@
               {{ "category." + item.category.toLocaleLowerCase() | translate }}
             </td>
             <td>{{ "item." + item.type.toLocaleLowerCase() | translate }}</td>
-            <td *ngIf="item.type == 'UNLIMITED'">-</td>
-            <td *ngIf="item.type == 'UNLIMITED'">-</td>
+            <td *ngIf="item.type == 'UNLIMITED'" colspan="2">
+              <span *ngIf="item.currentAmount != item.maxAmount">{{
+                "panel.not_collected" | translate
+              }}</span>
+              <span *ngIf="item.currentAmount == item.maxAmount">{{
+                "panel.collected" | translate
+              }}</span>
+            </td>
             <td *ngIf="item.type != 'UNLIMITED'">{{ item.currentAmount }}</td>
             <td *ngIf="item.type != 'UNLIMITED'">{{ item.maxAmount }}</td>
 
-            <td>
+            <td *ngIf="item.type != 'UNLIMITED'">
               <button
                 class="btn my-btn-primary btn-sm me-2"
                 style="padding-left: 2rem; padding-right: 2rem"
-                (click)="editItem(items.indexOf(item))"
+                (click)="editItem(item)"
               >
                 {{ "panel.edit_item" | translate }}
+              </button>
+            </td>
+            <td *ngIf="item.type == 'UNLIMITED'">
+              <button
+                *ngIf="item.currentAmount != item.maxAmount"
+                class="btn my-btn-primary btn-sm me-2"
+                style="padding-left: 2rem; padding-right: 2rem"
+                (click)="updateUnlimitedItem(item, true)"
+              >
+                {{ "panel.end_collect" | translate }}
+              </button>
+              <button
+                *ngIf="item.currentAmount == item.maxAmount"
+                class="btn my-btn-primary btn-sm me-2"
+                style="padding-left: 2rem; padding-right: 2rem"
+                (click)="updateUnlimitedItem(item, false)"
+              >
+                {{ "panel.start_collect" | translate }}
               </button>
             </td>
           </tr>
@@ -73,10 +98,11 @@
       </p-table>
     </div>
 
+    <!-- ADD NEW ITEM DIALOG -->
     <p-dialog
       [(visible)]="itemDialog"
       [style]="{ width: '450px', height: '650px' }"
-      header="Nowy przedmiot"
+      header="{{ 'panel.new_item' | translate }}"
       [modal]="true"
       styleClass="p-fluid"
     >
@@ -133,7 +159,7 @@
           label="{{ 'add-collection.cancle' | translate }}"
           icon="pi pi-times"
           class="p-button-text"
-          (click)="hideDialog()"
+          (click)="hideItemDialog()"
         ></button>
         <button
           pButton
@@ -146,5 +172,65 @@
         ></button>
       </ng-template>
     </p-dialog>
+
+    <!-- UPDATE ITEM DIALOG -->
+    <p-dialog
+      [(visible)]="itemUpdateDialog"
+      [style]="{ width: '600px', height: '500px' }"
+      header="{{ 'panel.edit_item_title' | translate }}"
+      [modal]="true"
+      styleClass="p-fluid"
+    >
+      <ng-template pTemplate="content">
+        <form
+          role="form"
+          [formGroup]="updateForm"
+          class="form"
+          #formDirective="ngForm"
+        >
+          <!-- CURRENT AMOUNT -->
+          <h5>{{ "panel.current" | translate }}</h5>
+          <p-inputNumber
+            formControlName="currentAmount"
+            suffix=" {{ itemSuffix }}"
+          ></p-inputNumber>
+          <!-- MAX AMOUNT -->
+          <h5 class="mt-2">{{ "panel.max" | translate }}</h5>
+          <p-inputNumber
+            formControlName="maxAmount"
+            suffix=" {{ itemSuffix }}"
+          ></p-inputNumber>
+        </form>
+      </ng-template>
+
+      <ng-template pTemplate="footer">
+        <!-- ERROR MESSAGE -->
+        <p-messages
+          [(value)]="errorMessages"
+          [enableService]="false"
+        ></p-messages>
+        <button
+          pButton
+          pRipple
+          label="{{ 'add-collection.cancle' | translate }}"
+          icon="pi pi-times"
+          class="p-button-text"
+          (click)="hideUpdateItemDialog()"
+        ></button>
+        <button
+          pButton
+          pRipple
+          label="{{ 'panel.edit_item' | translate }}"
+          icon="pi pi-check"
+          class="p-button-text"
+          (click)="updateItem()"
+          [disabled]="updateForm.invalid"
+        ></button>
+      </ng-template>
+    </p-dialog>
   </div>
 </mat-card>
+<!-- MESSAGE -->
+<p-toast></p-toast>
+<!-- LOADING SPINNER -->
+<app-loading-spinner></app-loading-spinner>

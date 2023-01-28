@@ -141,7 +141,7 @@ const routes: Routes = [
     CollectionPanelCommentsComponent
   ],
   imports: [
-    RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'}),
+    RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled',}),
     BrowserModule,
     HttpClientModule,
     FormsModule,

@@ -8,9 +8,10 @@ import { Comment } from 'app/common/comment';
 import { CommentListResponse } from 'app/common/commentListResponse';
 import { environment } from 'environments/environment';
 import { Observable, of } from 'rxjs';
-import { Item } from 'app/common/itemToAdd';
+import { Item, ItemToAdd } from 'app/common/itemToAdd';
 import { SubmittedItemListResponse } from 'app/common/submittedItemResponse';
 import { UpdateCollection } from 'app/common/updateCollection';
+import { ItemUpdate } from 'app/common/itemUpdate';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,10 @@ export class CollectionService {
 
   addCollection(collection: CollectionToAdd) {
     return this.httpClient.post<any>(this.addUrl, collection)
+  }
+
+  addItem(item: ItemToAdd, collectionId: string) {
+    return this.httpClient.post<any>(`${this.addUrl}/${collectionId}`, item)
   }
 
   searchCollection(title: string, city: string, street: string, itemName: string, categories: string, pageNumber: number, 
@@ -67,6 +72,10 @@ export class CollectionService {
 
   updateCollection(collectionToUpdate: UpdateCollection) {
     return this.httpClient.patch<Collection>(`${this.addUrl}`, collectionToUpdate);
+  }
+
+  updateCollectionItem(item: ItemUpdate, collectionId: string, itemId: string) {
+    return this.httpClient.patch<Collection>(`${this.addUrl}/${collectionId}/items/${itemId}`, item);
   }
 
   getCollectionProgress(items: Item[]): Observable<number> {
