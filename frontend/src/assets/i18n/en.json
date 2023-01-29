@@ -211,7 +211,7 @@
         "location.added": "Added {{number}} locations",
         "location.new": "New Location",
         "location.city.error": "City must be between 1 and 30 characters",
-        "location.city.street": "Street must be between 1 and 30 characters"
+        "location.city.street": "Street must be between 1 and 50 characters"
     },
     "overview": {
         "title": "Donation summary",
@@ -245,6 +245,9 @@
         "old.password.not.match": "The current password provided is incorrect",
         "too.short": "The new password must be at least 6 characters long"
     },
+    "address": {
+        "exists": "The given address already exists in the collection"
+    },
     "panel": {
         "heading": "Collection editor",
         "items_heading": "Edit collection items",
@@ -268,6 +271,13 @@
         "not_collected": "In the process of collecting",
         "collected": "Collected",
         "end_collect": "Finish collecting",
-        "start_collect": "Resume collecting"
+        "start_collect": "Resume collecting",
+        "locations_number": "Number of locations: ",
+        "location_added": "Location has been added",
+        "location_deleted": "Location has been deleted",
+        "no_comments": "The collection has no comments",
+        "open_collection": "Go to the collection page",
+        "comment_deleted": "The comment has been deleted",
+        "open_locations":" Show locations"
     }
 }

@@ -211,7 +211,7 @@
         "location.added": "Dodano {{number}} lokalizacji",
         "location.new": "Nowa lokalizacja",
         "location.city.error": "Miasto musi zawierać od 1 do 30 znaków",
-        "location.city.street": "Ulica musi zawierać od 1 do 30 znaków"
+        "location.street.error": "Ulica musi zawierać od 1 do 50 znaków"
     },
     "overview": {
         "title": "Podsumowanie darowizny",
@@ -245,6 +245,9 @@
         "old.password.not.match": "Podane aktualne hasło jest nieprawidłowe",
         "too.short": "Nowe hasło musi mieć przynajmniej 6 znaków"
     },
+    "address": {
+        "exists": "Podany adres istnieje już w zbiórce"
+    },
     "panel": {
         "heading": "Edycja zbiórki",
         "items_heading": "Edycja przedmiotów zbiórki",
@@ -268,6 +271,13 @@
         "not_collected": "W trakcie zbierania",
         "collected": "Zebrany",
         "end_collect": "Zakończ zbieranie",
-        "start_collect": "Wzów zbieranie"
+        "start_collect": "Wzów zbieranie",
+        "locations_number": "Liczba lokalizacji: ",
+        "location_added": "Lokalizacja została dodana",
+        "location_deleted": "Lokalizacja została usunięta",
+        "no_comments": "Zbiórka nie posiada żadnych komentarzy",
+        "open_collection": "Otwórz stronę zbiórki",
+        "comment_deleted": "Komenatrz został usunięty",
+        "open_locations":" Pokaż lokalizacje"
     }
 }

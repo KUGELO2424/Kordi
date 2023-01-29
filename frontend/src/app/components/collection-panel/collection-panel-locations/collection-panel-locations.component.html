@@ -1,1 +1,139 @@
-<p>collection-panel-locations works!</p>
+<mat-card class="mb-3" id="itemList">
+  <div class="row row-cols-1">
+    <mat-card-title>{{ "panel.locations_heading" | translate }}</mat-card-title>
+
+    <div class="card col-lg-12 col-md-12 col-sm-12 col-12 no-border">
+      <p-toolbar styleClass="mb-2 gap-2 white-bg">
+        <ng-template pTemplate="left">
+          <button
+            pButton
+            pRipple
+            type="submit"
+            class="btn my-btn-primary btn-sm"
+            style="padding-left: 1.5rem; padding-right: 1.5rem"
+            (click)="addNewLocationDialog()"
+          >
+            {{ "add-collection.location.add" | translate }}
+          </button>
+        </ng-template>
+      </p-toolbar>
+
+      <p-table
+        #dt
+        [value]="locations"
+        [rows]="10"
+        [paginator]="true"
+        [tableStyle]="{ 'min-width': '40rem' }"
+        [rowHover]="false"
+        dataKey="id"
+        responsiveLayout="stack"
+      >
+        <ng-template pTemplate="caption">
+          <div class="flex align-items-center justify-content-between">
+            <h5 class="m-0">
+              {{ "add-collection.location.manage" | translate }}
+            </h5>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr class="thead-color">
+            <th style="min-width: 7rem">
+              {{ "add-collection.location.city" | translate }}
+            </th>
+            <th>{{ "add-collection.location.street" | translate }}</th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-location>
+          <tr ngClass="table-white">
+            <td>{{ location.city }}</td>
+            <td>{{ location.street }}</td>
+            <td>
+              <button
+                pButton
+                pRipple
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-warning"
+                (click)="deleteLocation(location)"
+              ></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <div class="flex align-items-center justify-content-between">
+            {{ "panel.locations_number" | translate }}{{ locations.length }}
+          </div>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- ADD NEW ITEM DIALOG -->
+    <p-dialog
+      [(visible)]="locationDialog"
+      [style]="{ width: '450px' }"
+      header="{{ 'add-collection.location.new' | translate }}"
+      [modal]="true"
+      styleClass="p-fluid"
+    >
+      <ng-template pTemplate="content">
+        <form
+          role="form"
+          [formGroup]="form"
+          class="form"
+          #formDirective="ngForm"
+        >
+          <!-- CITY -->
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>{{
+              "add-collection.location.city" | translate
+            }}</mat-label>
+            <input type="text" matInput formControlName="city" />
+            <mat-error *ngIf="checkValidation('city')">
+              {{ "add-collection.location.city.error" | translate }}
+            </mat-error>
+          </mat-form-field>
+
+          <!-- STREET -->
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>{{
+              "add-collection.location.street" | translate
+            }}</mat-label>
+            <input type="text" matInput formControlName="street" />
+            <mat-error *ngIf="checkValidation('street')">
+              {{ "add-collection.location.street.error" | translate }}
+            </mat-error>
+          </mat-form-field>
+        </form>
+      </ng-template>
+
+      <ng-template pTemplate="footer">
+        <!-- ERROR MESSAGE -->
+        <p-messages
+          [(value)]="errorMessages"
+          [enableService]="false"
+        ></p-messages>
+        <button
+          pButton
+          pRipple
+          label="{{ 'add-collection.cancle' | translate }}"
+          icon="pi pi-times"
+          class="p-button-text"
+          (click)="hideDialog()"
+        ></button>
+        <button
+          pButton
+          pRipple
+          label="{{ 'add-collection.add' | translate }}"
+          icon="pi pi-check"
+          class="p-button-text"
+          (click)="saveLocation()"
+          [disabled]="form.invalid"
+        ></button>
+      </ng-template>
+    </p-dialog>
+  </div>
+</mat-card>
+<!-- MESSAGE -->
+<p-toast></p-toast>
+<!-- LOADING SPINNER -->
+<app-loading-spinner></app-loading-spinner>

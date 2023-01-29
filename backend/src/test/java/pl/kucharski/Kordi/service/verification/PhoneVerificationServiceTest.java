@@ -35,10 +35,10 @@ class PhoneVerificationServiceTest {
     private MockedStatic<VerificationCheck> verificationCheckMockedStatic;
     private MockedStatic<Twilio> twilioMockedStatic;
 
-    private static final User NOT_VERIFIED_USER = new User("Test", "test", "test123", "qwerty",
+    private static final User NOT_VERIFIED_USER = new User(null, "Test", "test", "test123", "qwerty",
             "test@mail.com", "110339332", false, VerificationType.PHONE);
 
-    private static final UserDTO NOT_VERIFIED_USER_DTO= new UserDTO("Test", "test", "test123",
+    private static final UserDTO NOT_VERIFIED_USER_DTO= new UserDTO(null, "Test", "test", "test123",
             "test@mail.com", "110339332", false, VerificationType.PHONE);
 
     private static final String VALID_TOKEN = "valid_token";

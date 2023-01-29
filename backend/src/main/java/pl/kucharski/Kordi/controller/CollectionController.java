@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import pl.kucharski.Kordi.config.PaginationConstants;
 import pl.kucharski.Kordi.enums.ItemCategory;
+import pl.kucharski.Kordi.exception.AddressAlreadyExistsInCollectionException;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.model.address.AddressDTO;
@@ -28,6 +29,7 @@ import pl.kucharski.Kordi.service.collection.CollectionService;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -194,11 +196,15 @@ public class CollectionController {
         try {
             log.info("Request to add new address: {} to collection with id {}", address, collectionId);
             addressService.addCollectionAddress(collectionId, address);
-            return ResponseEntity.ok("New address added to collection with id " + collectionId);
+            return ResponseEntity.ok(Collections.singletonMap("status", "New address added to collection with id " + collectionId));
         } catch (CollectionNotFoundException ex) {
             log.warn("Collection with id {} not found", collectionId);
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
+                    ex.getMessage());
+        } catch (AddressAlreadyExistsInCollectionException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
                     ex.getMessage());
         }
     }
@@ -217,7 +223,7 @@ public class CollectionController {
         try {
             log.info("Request to remove address: {} from collection with id {}", address, collectionId);
             addressService.removeCollectionAddress(collectionId, address);
-            return ResponseEntity.ok("Address removed from collection with id " + collectionId);
+            return ResponseEntity.ok(Collections.singletonMap("status", "Address removed from collection with id " + collectionId));
         } catch (CollectionNotFoundException ex) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,

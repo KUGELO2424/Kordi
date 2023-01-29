@@ -83,8 +83,8 @@ class CollectionControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.*", hasSize(2)))
-                .andExpect(jsonPath("$[0].title", is(TITLE_OF_COLLECTION_OF_EXISTING_USER)))
-                .andExpect(jsonPath("$[1].title", is(TITLE_02_OF_COLLECTION_OF_EXISTING_USER)));
+                .andExpect(jsonPath("$[0].title", is(TITLE_02_OF_COLLECTION_OF_EXISTING_USER)))
+                .andExpect(jsonPath("$[1].title", is(TITLE_OF_COLLECTION_OF_EXISTING_USER)));
     }
 
     @Test

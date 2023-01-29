@@ -24,6 +24,7 @@ import pl.kucharski.Kordi.model.comment.CreateCommentDTO;
 import pl.kucharski.Kordi.service.collection.CommentService;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -77,7 +78,7 @@ public class CommentController {
         try {
             log.info("Request to remove comment with id {} from collection with id {}", commentId, collectionId);
             commentService.removeComment(collectionId, commentId);
-            return ResponseEntity.ok("Comment with id " + commentId + " deleted");
+            return ResponseEntity.ok(Collections.singletonMap("status", "Comment with id " + commentId + " deleted"));
         } catch (CollectionNotFoundException | CommentNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
         }

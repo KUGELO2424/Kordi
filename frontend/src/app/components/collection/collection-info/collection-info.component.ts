@@ -26,6 +26,8 @@ export class CollectionInfoComponent implements OnInit {
   collectionNotFound: boolean = false;
   collectionNotFoundMessage: string;
 
+  isCollectionOwner: boolean = false;
+
   constructor(private route: ActivatedRoute, private collectionService: CollectionService, private sanitizer: DomSanitizer,
     private translate: TranslateService, public router: Router, private messageService: MessageService, private scroller: ViewportScroller,
     private authService: AuthService, private location: Location) {
@@ -43,6 +45,7 @@ export class CollectionInfoComponent implements OnInit {
     this.route.paramMap.subscribe(() => {
       this.handleCollectionDetails();
     })
+    this.isUserACollectionOwner();
   }
 
   handleCollectionDetails() {
@@ -115,6 +118,16 @@ export class CollectionInfoComponent implements OnInit {
 
   isUserLoggedIn() {
     return !this.authService.isUserLoggedIn();
+  }
+
+  isUserACollectionOwner() {
+    if (this.authService.isUserLoggedIn()) {
+      this.authService.getLoggedUser().subscribe({
+        next: (data) => {
+          this.isCollectionOwner = data.id == this.collection?.userId.toString()
+        }
+      })
+    }
   }
 
   back() {

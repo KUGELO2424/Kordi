@@ -12,6 +12,7 @@ import { Item, ItemToAdd } from 'app/common/itemToAdd';
 import { SubmittedItemListResponse } from 'app/common/submittedItemResponse';
 import { UpdateCollection } from 'app/common/updateCollection';
 import { ItemUpdate } from 'app/common/itemUpdate';
+import { LocationToAdd } from 'app/common/location';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,14 @@ export class CollectionService {
 
   addItem(item: ItemToAdd, collectionId: string) {
     return this.httpClient.post<any>(`${this.addUrl}/${collectionId}`, item)
+  }
+
+  addLocation(location: LocationToAdd, collectionId: string) {
+    return this.httpClient.post<any>(`${this.addUrl}/${collectionId}/addresses`, location)
+  }
+
+  deleteLocation(location: LocationToAdd, collectionId: string) {
+    return this.httpClient.delete<any>(`${this.addUrl}/${collectionId}/addresses`, {body: location})
   }
 
   searchCollection(title: string, city: string, street: string, itemName: string, categories: string, pageNumber: number, 
@@ -68,6 +77,10 @@ export class CollectionService {
 
   addComment(id:string, comment: Comment) {
     return this.httpClient.post<Comment>(`${this.getUrl}/${id}/comments`, comment);
+  }
+
+  deleteComment(collectionId: string, commentId: string) {
+    return this.httpClient.delete<any>(`${this.getUrl}/${collectionId}/comments/${commentId}`);
   }
 
   updateCollection(collectionToUpdate: UpdateCollection) {

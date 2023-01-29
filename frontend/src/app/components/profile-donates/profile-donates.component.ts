@@ -1,6 +1,8 @@
 import { ViewportScroller } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Item } from 'app/common/itemToAdd';
+import { Location } from 'app/common/location';
 import { SubmittedItem } from 'app/common/submittedItem';
 import { CollectionService } from 'app/services/collection.service';
 
@@ -16,6 +18,10 @@ export class ProfileDonatesComponent implements OnInit {
   pageSize: number = 10;
   totalRecords: number = 10;
   page: number = 0;
+
+  display: boolean = false;
+
+  locations: Location[] = [];
 
   constructor(private collectionService: CollectionService, private router: Router, private scroller: ViewportScroller) { }
 
@@ -33,6 +39,15 @@ export class ProfileDonatesComponent implements OnInit {
       },
       error: (error) => {
 
+      }
+    })
+  }
+
+  showLocations(item: SubmittedItem) {
+    this.display = true;
+    this.collectionService.getCollectionById(item.collectionId.toString()).subscribe({
+      next: (data) => {
+        this.locations = data.addresses;
       }
     })
   }

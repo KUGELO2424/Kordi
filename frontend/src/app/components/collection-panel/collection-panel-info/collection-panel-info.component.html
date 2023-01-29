@@ -8,6 +8,14 @@
     >
       {{ "collection.back_button" | translate }}
     </button>
+    <button
+      pButton
+      type="button"
+      class="p-button-text mb-1 my-button"
+      routerLink="/collections/{{ collection?.id }}"
+    >
+      {{ "panel.open_collection" | translate }}
+    </button>
     <mat-card class="mb-3">
       <div class="row row-cols-1">
         <mat-card-title>{{ "panel.heading" | translate }}</mat-card-title>
@@ -92,9 +100,12 @@
     ></app-collection-panel-items>
     <app-collection-panel-locations
       *ngIf="collection"
+      [locationsData]="collection.addresses"
+      [collectionId]="collection.id"
     ></app-collection-panel-locations>
     <app-collection-panel-comments
       *ngIf="collection"
+      [collectionId]="collection.id"
     ></app-collection-panel-comments>
   </section>
   <!-- MESSAGE -->

@@ -5,14 +5,22 @@
 >
   <ng-template pTemplate="header" let-columns>
     <tr>
-      <th>ID</th>
-      <th>Title</th>
+      <th>Nazwa</th>
+      <th>Ilość</th>
+      <th>Data</th>
+      <th></th>
       <th></th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-item let-columns="columns">
     <tr ngClass="table-white">
-      <td>{{ item.amount }}</td>
+      <td>{{ item.itemName }}</td>
+      <td>
+        {{ item.amount }}
+        {{
+          "suffix." + item.itemType.toString().toLocaleLowerCase() | translate
+        }}
+      </td>
       <td>{{ item.submitTime }}</td>
       <td>
         <button
@@ -20,12 +28,30 @@
           style="padding-left: 2rem; padding-right: 2rem"
           (click)="openCollection(item.collectionId)"
         >
-          Zobacz zbiórkę
+          {{ "panel.open_collection" | translate }}
+        </button>
+      </td>
+      <td>
+        <button
+          class="btn my-btn-primary btn-sm mt-2 me-2"
+          style="padding-left: 2rem; padding-right: 2rem"
+          (click)="showLocations(item)"
+        >
+          {{ "panel.open_locations" | translate }}
         </button>
       </td>
     </tr>
   </ng-template>
 </p-table>
+<!-- LOCATIONS SIDEBAR -->
+<p-sidebar [(visible)]="display" position="right" styleClass="p-sidebar-sm">
+  <h5 class="text-center mb-3">
+    {{ "collections.localization" | translate }}
+  </h5>
+  <p *ngFor="let location of locations">
+    {{ location.city }}, {{ location.street }}
+  </p>
+</p-sidebar>
 <!-- PAGINATOR -->
 <div class="mt-5 mb-1 paginator">
   <p-paginator

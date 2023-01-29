@@ -24,9 +24,11 @@ public class SubmittedItemDTO {
     private int amount;
     private LocalDateTime submitTime;
     private String username;
+    private String itemName;
+    private String itemType;
     private Long userId;
     private Long collectionId;
-    @NotBlank(message = AMOUNT_CANNOT_BE_EMPTY)
+    @NotBlank
     private Long collectionItemId;
 
 }

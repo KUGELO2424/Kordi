@@ -38,10 +38,10 @@ class EmailVerificationServiceTest {
     private VerificationService underTest;
 
 
-    private static final User NOT_VERIFIED_USER = new User("Test", "test", "test123", "qwerty",
+    private static final User NOT_VERIFIED_USER = new User(null, "Test", "test", "test123", "qwerty",
             "test@mail.com", "110339332", false, VerificationType.EMAIL);
 
-    private static final UserDTO NOT_VERIFIED_USER_DTO= new UserDTO("Test", "test", "test123",
+    private static final UserDTO NOT_VERIFIED_USER_DTO= new UserDTO(null, "Test", "test", "test123",
             "test@mail.com", "110339332", false, VerificationType.EMAIL);
 
     @BeforeEach

@@ -64,9 +64,9 @@ class UserServiceImplTest {
     private static final User VERIFIED_USER = new User("Test", "test", "test123", "qwerty",
             "test@mail.com", "110339332", true, VerificationType.EMAIL);
 
-    private static final UserDTO NOT_VERIFIED_USER_DTO= new UserDTO("Test", "test", "test123",
+    private static final UserDTO NOT_VERIFIED_USER_DTO= new UserDTO(null, "Test", "test", "test123",
             "test@mail.com", "110339332", false, VerificationType.EMAIL);
-    private static final UserDTO VERIFIED_USER_DTO= new UserDTO("Test", "test", "test123",
+    private static final UserDTO VERIFIED_USER_DTO= new UserDTO(null, "Test", "test", "test123",
             "test@mail.com", "110339332", true, VerificationType.EMAIL);
 
     private static final UserRegistrationDTO USER_TO_REGISTER_1 = new UserRegistrationDTO("Test",

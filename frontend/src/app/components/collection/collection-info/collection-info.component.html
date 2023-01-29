@@ -115,11 +115,19 @@
             <!-- SHARE BLOCK -->
             <mat-card-content class="mt-4">
               <button
-                class="btn my-btn-primary btn-lg"
+                class="btn my-btn-primary btn-lg me-2"
                 style="padding-left: 2rem; padding-right: 2rem"
                 (click)="display = true"
               >
                 {{ "collection.share" | translate }}
+              </button>
+              <button
+                *ngIf="isCollectionOwner"
+                class="btn my-btn-secondary btn-sm mt-2"
+                style="padding-left: 2rem; padding-right: 2rem"
+                routerLink="/collections/{{ collection?.id }}/panel"
+              >
+                {{ "panel.heading" | translate }}
               </button>
               <p-sidebar
                 [(visible)]="display"

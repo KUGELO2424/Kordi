@@ -3,6 +3,8 @@ export class SubmittedItem {
     submitTime: Date;
     username: string;
     userId: number;
+    itemName: string;
+    itemType: string;
     collectionId: number;
     collectionItemId: number;
 }

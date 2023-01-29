@@ -1,1 +1,46 @@
-<p>collection-panel-comments works!</p>
+<mat-card class="mb-3" id="commentList">
+  <div class="row row-cols-1">
+    <mat-card-title>{{ "panel.comments_heading" | translate }}</mat-card-title>
+    <!-- COMMENT LIST -->
+    <p *ngIf="comments?.length == 0">{{ "panel.no_comments" | translate }}</p>
+    <div *ngFor="let comment of comments" class="card-body p-4">
+      <div class="d-flex flex-start">
+        <p-avatar
+          icon="pi pi-user"
+          class="me-2"
+          size="large"
+          shape="circle"
+        ></p-avatar>
+        <div style="width: 100%">
+          <h6 class="fw-bold mb-1">{{ comment.username }}</h6>
+          <div class="d-flex align-items-center mb-3">
+            <p class="mb-0">
+              {{ comment.createdTime | date : "dd/MM/yyyy, HH:mm" }}
+            </p>
+          </div>
+          <p class="mb-0">
+            {{ comment.content }}
+          </p>
+        </div>
+        <div class="d-flex align-items-center justify-content-end">
+          <button
+            pButton
+            pRipple
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-warning"
+            (click)="deleteComment(comment)"
+          ></button>
+        </div>
+      </div>
+      <p-divider></p-divider>
+    </div>
+  </div>
+  <!-- PAGINATOR -->
+  <div class="mt-5 mb-1 paginator">
+    <p-paginator
+      [rows]="pageSize"
+      [totalRecords]="totalRecords"
+      (onPageChange)="changePage($event); scroll()"
+    ></p-paginator>
+  </div>
+</mat-card>
