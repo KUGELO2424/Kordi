@@ -5,9 +5,9 @@
 >
   <ng-template pTemplate="header" let-columns>
     <tr>
-      <th>Nazwa</th>
-      <th>Ilość</th>
-      <th>Data</th>
+      <th>{{ "profile.item_title" | translate }}</th>
+      <th>{{ "profile.quantity" | translate }}</th>
+      <th>{{ "profile.item_submit_date" | translate }}</th>
       <th></th>
       <th></th>
     </tr>
@@ -15,13 +15,14 @@
   <ng-template pTemplate="body" let-item let-columns="columns">
     <tr ngClass="table-white">
       <td>{{ item.itemName }}</td>
-      <td>
+      <td *ngIf="item.itemType.toString() == 'UNLIMITED'">-</td>
+      <td *ngIf="item.itemType.toString() != 'UNLIMITED'">
         {{ item.amount }}
         {{
           "suffix." + item.itemType.toString().toLocaleLowerCase() | translate
         }}
       </td>
-      <td>{{ item.submitTime }}</td>
+      <td>{{ item.submitTime | date : "dd/MM/yyyy" }}</td>
       <td>
         <button
           class="btn my-btn-primary btn-sm mt-2 me-2"

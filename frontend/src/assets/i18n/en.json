@@ -214,6 +214,7 @@
         "location.city.street": "Street must be between 1 and 50 characters"
     },
     "overview": {
+        "confirm": "Are you sure you want to donate these items?",
         "title": "Donation summary",
         "back_button": "Back to collection",
         "name": "Name",
@@ -239,7 +240,11 @@
         "status": "Status",
         "open": "Open",
         "closed": "Closed",
-        "progress": "Progress"
+        "progress": "Progress",
+        "item_title": "Item",
+        "quantity": "Quantity",
+        "item_submit_date": "Submit date",
+        "submitted_items": "See donates"
     },
     "password": {
         "old.password.not.match": "The current password provided is incorrect",

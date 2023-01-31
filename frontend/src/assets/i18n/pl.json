@@ -41,7 +41,7 @@
         "password_inv": "Hasło musi zawierać przynajmniej 6 znaków",
         "error_occured": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie za chwilę.",
         "signup_success_phone": "Konto użytkownika zostało założone pomyślnie. Zaloguj się by dokończyć weryfikację konta",
-        "signup_success_email": "The user account has been created successfully. Click on the activation link sent to the email address provided to verify your account",
+        "signup_success_email": "Konto użytkownika zostało założone pomyślnie. Kliknij link aktywacyjny wysłany na podany adres e-mail, aby zweryfikować swoje konto",
         "verification_success": "Konto zostało zweryfikowane pomyślne. Możesz się teraz zalogować"
     },
     "verify": {
@@ -214,6 +214,7 @@
         "location.street.error": "Ulica musi zawierać od 1 do 50 znaków"
     },
     "overview": {
+        "confirm": "Czy na pewno chcesz przekazać te przedmioty jako darowiznę?",
         "title": "Podsumowanie darowizny",
         "back_button": "Powrót do zbiórki",
         "name": "Nazwa",
@@ -239,7 +240,11 @@
         "status": "Status",
         "open": "Otwarta",
         "closed": "Zakończona",
-        "progress": "Postęp"
+        "progress": "Postęp",
+        "item_title": "Przedmiot",
+        "quantity": "Ilość",
+        "item_submit_date": "Data podarowania",
+        "submitted_items": "Zobacz dary"
     },
     "password": {
         "old.password.not.match": "Podane aktualne hasło jest nieprawidłowe",

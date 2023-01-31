@@ -1,0 +1,33 @@
+.icon-disabled {
+    color: #bfbfbf;
+}
+
+.icon-check {
+    color: #4A2799
+}
+
+.category-icon {
+    color: #B4B8B8;
+}
+
+.item-card {
+    border: 1px solid var(--surface-d);
+    border-radius: 3px;
+    margin: .3rem;
+    text-align: center;
+    padding: 2rem 0;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a .item-card:hover {
+    border: 1px solid #6335CC;
+    transition: 1s;
+}
+
+.choosen-item {
+    border: 1px solid #4A2799;
+}

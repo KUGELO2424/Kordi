@@ -81,6 +81,8 @@ export class AddCollectionComponent implements OnInit {
     } else {
       this.confirmationService.confirm({
         message: this.translate.instant('add-collection.create.text'),
+        acceptLabel: this.translate.instant('add-collection.yes'),
+        rejectLabel: this.translate.instant('add-collection.no'),
         accept: async () => {
           const collection = await this.prepareCollection();
           this.collectionService.addCollection(collection).subscribe({

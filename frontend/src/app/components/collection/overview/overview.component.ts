@@ -65,7 +65,7 @@ export class OverviewComponent implements OnInit {
       target: event.target ? event.target : undefined,
       acceptLabel: this.translate.instant("add-collection.yes"),
       rejectLabel: this.translate.instant("add-collection.no"),
-      message: "Czy na pewno chcesz przekazać te przedmioty jako darowiznę?",
+      message: this.translate.instant("overview.confirm"),
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.collectionService.donateItem(this.collectionId, this.itemsToSubmit).subscribe({

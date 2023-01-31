@@ -12,6 +12,7 @@
       <th>{{ "profile.status" | translate }}</th>
       <th>{{ "profile.progress" | translate }}</th>
       <th></th>
+      <th></th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-collection let-columns="columns">
@@ -32,11 +33,20 @@
       <td class="cell">{{ getProgress(collection) }}%</td>
       <td class="cell">
         <button
-          class="btn my-btn-primary btn-sm mt-2 me-2"
+          class="btn my-btn-primary btn-sm me-2"
           style="padding-left: 2rem; padding-right: 2rem"
           (click)="editCollection(collection.id)"
         >
           {{ "profile.collection_panel" | translate }}
+        </button>
+      </td>
+      <td class="cell">
+        <button
+          class="btn my-btn-primary btn-sm me-2"
+          style="padding-left: 2rem; padding-right: 2rem"
+          routerLink="/collections/{{ collection.id }}/panel/submitted"
+        >
+          {{ "profile.submitted_items" | translate }}
         </button>
       </td>
     </tr>

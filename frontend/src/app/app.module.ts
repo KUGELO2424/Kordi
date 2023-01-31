@@ -37,6 +37,7 @@ import { CollectionPanelInfoComponent } from './components/collection-panel/coll
 import { CollectionPanelItemsComponent } from './components/collection-panel/collection-panel-items/collection-panel-items.component';
 import { CollectionPanelLocationsComponent } from './components/collection-panel/collection-panel-locations/collection-panel-locations.component';
 import { CollectionPanelCommentsComponent } from './components/collection-panel/collection-panel-comments/collection-panel-comments.component';
+import { CollectionPanelSubmittedItemsComponent } from './components/collection-panel/collection-panel-submitted-items/collection-panel-submitted-items.component';
 
 // SERVICES
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -83,6 +84,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { SidebarModule } from 'primeng/sidebar';
 import { BadgeModule } from 'primeng/badge';
+import { KnobModule } from 'primeng/knob';
+import { CarouselModule } from 'primeng/carousel';
 
 
 const routes: Routes = [
@@ -94,6 +97,7 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate:[AuthGuardService]},
   {path: 'collections', component: CollectionListComponent},
   {path: 'collections/:id/panel', component: CollectionPanelInfoComponent, canActivate:[AuthGuardService]},
+  {path: 'collections/:id/panel/submitted', component: CollectionPanelSubmittedItemsComponent, canActivate:[AuthGuardService]},
   {path: 'collections/:id', component: CollectionInfoComponent},
   {path: 'collections/donate/overview', component: OverviewComponent, canActivate:[AuthGuardService]},
   {
@@ -138,7 +142,8 @@ const routes: Routes = [
     CollectionPanelInfoComponent,
     CollectionPanelItemsComponent,
     CollectionPanelLocationsComponent,
-    CollectionPanelCommentsComponent
+    CollectionPanelCommentsComponent,
+    CollectionPanelSubmittedItemsComponent
   ],
   imports: [
     RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled',}),
@@ -186,7 +191,9 @@ const routes: Routes = [
     ShareButtonsModule, 
     ShareIconsModule,
     SidebarModule,
-    BadgeModule
+    BadgeModule,
+    KnobModule,
+    CarouselModule
   ],
   providers: [
     ConfirmationService, MessageService,

@@ -50,7 +50,7 @@ export class CollectionPanelItemsComponent implements OnInit {
   });
 
   updateForm: UntypedFormGroup = new UntypedFormGroup({
-    currentAmount: new UntypedFormControl('', [Validators.required, Validators.min(1)]),
+    currentAmount: new UntypedFormControl('', [Validators.required, Validators.min(0)]),
     maxAmount: new UntypedFormControl('', [Validators.required, Validators.min(1)]),
   });
 

@@ -61,10 +61,6 @@ export class CollectionPanelInfoComponent implements OnInit {
     })
   }
 
-  submit() {
-    
-  }
-
   confirm(event: Event) {
     this.confirmationService.confirm({
         target: event.target ? event.target : undefined,
