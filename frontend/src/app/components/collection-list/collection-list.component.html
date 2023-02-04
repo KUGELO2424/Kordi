@@ -278,7 +278,12 @@
                         | translate : { num: getDaysToEnd(collection) }
                     }}
                   </p>
-                  <p class="card-text" *ngIf="getDaysToEnd(collection) < 0">
+                  <p
+                    class="card-text"
+                    *ngIf="
+                      getDaysToEnd(collection) < 0 || collection.progress == 100
+                    "
+                  >
                     {{ "collections.completed" | translate }}
                   </p>
                 </div>

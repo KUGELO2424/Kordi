@@ -52,7 +52,7 @@
                   matInput
                   [matDatepicker]="picker"
                   formControlName="endDate"
-                  [min]="currentDate"
+                  [min]="minDate"
                 />
                 <mat-hint>MM/DD/YYYY</mat-hint>
                 <mat-datepicker-toggle
@@ -109,7 +109,7 @@
     ></app-collection-panel-comments>
   </section>
   <!-- MESSAGE -->
-  <p-toast></p-toast>
+  <p-toast key="main"></p-toast>
   <!-- LOADING SPINNER -->
   <app-loading-spinner></app-loading-spinner>
   <!-- CONFIRM POPUP -->

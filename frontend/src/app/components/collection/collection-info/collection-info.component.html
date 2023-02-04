@@ -95,6 +95,16 @@
                     | translate : { num: getDaysToEnd(collection) }
                 "
               ></p>
+              <p
+                class="card-text"
+                *ngIf="
+                  (collection?.endTime !== null &&
+                    getDaysToEnd(collection) < 0) ||
+                  collectionProgress == 100
+                "
+              >
+                {{ "collection.ended" | translate }}
+              </p>
             </mat-card-subtitle>
             <mat-card-content>
               <p>{{ "collection.progress" | translate }}</p>
@@ -226,6 +236,7 @@
               *ngIf="collection"
               [itemsData]="collection.items"
               [collectionId]="collection.id"
+              [collection]="collection"
             ></app-item-list>
           </mat-expansion-panel>
         </mat-accordion>

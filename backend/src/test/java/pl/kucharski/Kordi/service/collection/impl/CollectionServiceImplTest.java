@@ -290,7 +290,7 @@ class CollectionServiceImplTest {
         CollectionDTO collectionDTO = underTest.updateCollection(1L, "", "", YESTERDAY);
 
         // then
-        assertEquals(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),
+        assertEquals(LocalDateTime.now().minusDays(1).truncatedTo(ChronoUnit.MINUTES),
                 collectionDTO.getEndTime().truncatedTo(ChronoUnit.MINUTES));
     }
 

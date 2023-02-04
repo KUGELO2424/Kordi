@@ -6,6 +6,7 @@ import { Item, ItemCategory } from 'app/common/itemToAdd';
 import { StateService } from 'app/services/state.service';
 import { AuthService } from 'app/services/auth.service';
 import { ConfirmationService } from 'primeng/api';
+import { Collection } from 'app/common/collection';
 
 @Component({
   selector: 'app-item-list',
@@ -16,6 +17,7 @@ import { ConfirmationService } from 'primeng/api';
 export class ItemListComponent implements OnInit {
 
   @Input() collectionId: number;
+  @Input() collection: Collection;
   @Input() itemsData: Item[];
   
   items: Item[];
@@ -27,6 +29,8 @@ export class ItemListComponent implements OnInit {
   state: any;
   searchTypes: any[] = [];
   selectedSearchType: any;
+
+  daysToEnd: number;
 
   constructor(private confirmationService: ConfirmationService, private scroller: ViewportScroller, 
     private translate: TranslateService, private router: Router, private stateService: StateService,
@@ -42,6 +46,7 @@ export class ItemListComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    this.daysToEnd = this.getDaysToEnd();
     this.state = this.stateService.state$.getValue() || {}
     this.stateService.state$.next("");
     if (Object.keys(this.state).length === 0) {
@@ -125,6 +130,17 @@ export class ItemListComponent implements OnInit {
 
   isUserLoggedIn() {
     return this.authService.isUserLoggedIn();
+  }
+
+  getDaysToEnd() {
+    const msInDay = 24 * 60 * 60 * 1000;
+    if (this.collection.endTime != null) {
+      let now = new Date().getTime();
+      let endTime = Date.parse(this.collection.endTime.toString());
+      let diffTime = endTime - now;
+      return Math.round((diffTime / msInDay));
+    }
+    return 999;
   }
 
 }

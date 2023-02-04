@@ -112,7 +112,9 @@
         "item.current.bigger.than.max": "The current amount cannot be greater than the maximum",
         "item_filtr_all": "All",
         "item_filtr_collected": "Collected",
-        "item_filtr_not_collected": "Not collected"
+        "item_filtr_not_collected": "Not collected",
+        "end_time": "Collection period has ended, no more items can be donated",
+        "ended": "The collection is over"
     },
     "home": {
         "welcome": "Welcome in",

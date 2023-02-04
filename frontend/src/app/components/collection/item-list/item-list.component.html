@@ -199,7 +199,7 @@
             class="my-checkbox"
             [(ngModel)]="item.value"
             color="primary"
-            [disabled]="!isUserLoggedIn()"
+            [disabled]="!isUserLoggedIn() || daysToEnd < 0"
           ></mat-checkbox>
         </div>
       </div>
@@ -218,11 +218,11 @@
           [(ngModel)]="item.value"
           [max]="item.maxAmount - item.currentAmount"
           styleClass="ms-1 me-1"
-          [disabled]="!isUserLoggedIn()"
+          [disabled]="!isUserLoggedIn() || daysToEnd < 0"
         ></p-slider>
         <div class="d-flex justify-content-center">
           <p-inputNumber
-            [disabled]="!isUserLoggedIn()"
+            [disabled]="!isUserLoggedIn() || daysToEnd < 0"
             *ngIf="item.type.toString() == 'AMOUNT'"
             [(ngModel)]="item.value"
             mode="decimal"
@@ -234,7 +234,7 @@
           >
           </p-inputNumber>
           <p-inputNumber
-            [disabled]="!isUserLoggedIn()"
+            [disabled]="!isUserLoggedIn() || daysToEnd < 0"
             *ngIf="item.type.toString() == 'WEIGHT'"
             [(ngModel)]="item.value"
             mode="decimal"
@@ -295,4 +295,10 @@
 
     <p>{{ "collection.items_disabled" | translate }}</p>
   </div>
+</div>
+<div
+  *ngIf="isUserLoggedIn() && daysToEnd < 0"
+  class="d-flex justify-content-center"
+>
+  <p>{{ "collection.end_time" | translate }}</p>
 </div>

@@ -112,7 +112,9 @@
         "item.current.bigger.than.max": "Obecna ilość nie może być większa niż maksymalna",
         "item_filtr_all": "Wszystkie",
         "item_filtr_collected": "Zebrane",
-        "item_filtr_not_collected": "Niezebrane"
+        "item_filtr_not_collected": "Niezebrane",
+        "end_time": "Czas zbiórki dobiegł końca, nie można podarować więcej przedmiotów",
+        "ended": "Zbiórka zakończona"
     },
     "home": {
         "welcome": "Witaj w",

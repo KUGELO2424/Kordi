@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Collection } from 'app/common/collection';
 import { SubmittedItem } from 'app/common/submittedItem';
 import { CollectionService } from 'app/services/collection.service';
@@ -8,6 +8,7 @@ import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms
 import { UpdateCollection } from 'app/common/updateCollection';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
+import { PanelStateService } from 'app/services/panel-state.service';
 
 @Component({
   selector: 'app-collection-panel-info',
@@ -19,8 +20,10 @@ export class CollectionPanelInfoComponent implements OnInit {
   collection: Collection | undefined;
   submittedItems: SubmittedItem[] = [];
   collectionProgress: number = 0;
-  currentDate = new Date(); 
+  minDate: Date;
   
+  state: any;
+
   form: UntypedFormGroup = new UntypedFormGroup({
     title: new UntypedFormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]),
     description: new UntypedFormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(500)]),
@@ -28,12 +31,26 @@ export class CollectionPanelInfoComponent implements OnInit {
   });
 
   constructor(private route: ActivatedRoute, private collectionService: CollectionService, private location: Location,
-    private messageService: MessageService,  private translate: TranslateService, private confirmationService: ConfirmationService) { }
+    private messageService: MessageService,  private translate: TranslateService, private confirmationService: ConfirmationService,
+    private stateService: PanelStateService, private router: Router) {
+      this.state = this.stateService.state$.getValue() || {}
+      this.stateService.state$.next("");
+      if (Object.keys(this.state).length !== 0) {
+        if ("message" in this.state) {
+          setTimeout(() => {
+            this.messageService.add({key: 'main', severity:'success', detail: this.state.message});
+          }, 300);
+        }
+      }
+    }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
       this.handleCollectionDetails();
     })
+    let today = new Date();
+    today.setDate(today.getDate()-1)
+    this.minDate = today;
   }
 
   handleCollectionDetails() {
@@ -76,7 +93,8 @@ export class CollectionPanelInfoComponent implements OnInit {
           collectionUpdate.endTime = this.form.value.endDate;
           this.collectionService.updateCollection(collectionUpdate).subscribe({
             next: (data) => {
-              this.messageService.add({severity:'success', detail: this.translate.instant("panel.collection_updated")});
+              console.log(data);
+              this.reloadComponent(this.translate.instant('panel.collection_updated'));
             },
             error: (error) => {
               console.log(error);
@@ -86,6 +104,14 @@ export class CollectionPanelInfoComponent implements OnInit {
         reject: () => {
         }
     });
+  }
+
+  reloadComponent(message: any) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.state.message = message
+    this.stateService.state$.next(this.state);
+    this.router.navigateByUrl('/collections/' + this.collection?.id + "/panel");
   }
 
   setCollectionProgress() {

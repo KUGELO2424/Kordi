@@ -125,7 +125,7 @@ public class CollectionServiceImpl implements CollectionService {
         }
         if (endTime != null) {
             if (endTime.isBefore(LocalDateTime.now())) {
-                collection.setEndTime(LocalDateTime.now());
+                collection.setEndTime(LocalDateTime.now().minusDays(1));
             } else {
                 collection.setEndTime(endTime);
             }
