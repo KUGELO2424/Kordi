@@ -286,6 +286,11 @@
         "no_comments": "The collection has no comments",
         "open_collection": "Go to the collection page",
         "comment_deleted": "The comment has been deleted",
-        "open_locations":" Show locations"
+        "open_locations":" Show locations",
+        "show_user": "Dane użytkownika",
+        "firstname": "Firstname:",
+        "lastname": "Lastname:",
+        "email": "Email:",
+        "phone": "Phone:"
     }
 }

@@ -107,6 +107,8 @@
       [tableStyle]="{ 'min-width': '50rem' }"
       id="itemList"
       class="mt-5"
+      [paginator]="true"
+      [rows]="10"
     >
       <ng-template pTemplate="header" let-columns>
         <tr>
@@ -119,7 +121,19 @@
       <ng-template pTemplate="body" let-item let-columns="columns">
         <tr ngClass="table-white">
           <td>{{ item.itemName }}</td>
-          <td>{{ item.username }}</td>
+          <td>
+            <div class="d-flex align-items-center">
+              {{ item.username }}
+              <button
+                pButton
+                type="button"
+                class="p-button-text my-button ms-2"
+                (click)="showUserDetails(item.username)"
+              >
+                {{ "panel.show_user" | translate }}
+              </button>
+            </div>
+          </td>
           <td *ngIf="item.itemType.toString() == 'UNLIMITED'">-</td>
           <td *ngIf="item.itemType.toString() != 'UNLIMITED'">
             {{ item.amount }}
@@ -132,13 +146,15 @@
         </tr>
       </ng-template>
     </p-table>
-    <!-- PAGINATOR -->
-    <!-- <div class="mt-5 mb-1 paginator">
-      <p-paginator
-        [rows]="pageSize"
-        [totalRecords]="totalRecords"
-        (onPageChange)="changePage($event)"
-      ></p-paginator>
-    </div> -->
   </section>
 </div>
+<p-sidebar [(visible)]="display" position="right" styleClass="p-sidebar-sm">
+  <h5 class="text-center mb-1">
+    {{ "panel.show_user" | translate }}
+  </h5>
+  <p class="text-muted text-center mb-3">{{ user?.username }}</p>
+  <p>{{ "panel.firstname" | translate }} {{ user?.firstName }}</p>
+  <p>{{ "panel.lastname" | translate }} {{ user?.lastName }}</p>
+  <p>{{ "panel.email" | translate }} {{ user?.email }}</p>
+  <p>{{ "panel.phone" | translate }} {{ user?.phone }}</p>
+</p-sidebar>

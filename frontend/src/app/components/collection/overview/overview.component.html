@@ -25,7 +25,7 @@
                 | translate
             }}
           </td>
-          <td *ngIf="item.value > 0 && item.value != true">
+          <td *ngIf="item.value > 0 && item.type.toString() != 'UNLIMITED'">
             {{ item.value }}
             {{
               "suffix." + item.type.toString().toLocaleLowerCase() | translate

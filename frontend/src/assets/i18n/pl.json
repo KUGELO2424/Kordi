@@ -286,6 +286,11 @@
         "no_comments": "Zbiórka nie posiada żadnych komentarzy",
         "open_collection": "Otwórz stronę zbiórki",
         "comment_deleted": "Komenatrz został usunięty",
-        "open_locations":" Pokaż lokalizacje"
+        "open_locations":" Pokaż lokalizacje",
+        "show_user": "Dane użytkownika",
+        "firstname": "Imię:",
+        "lastname": "Nazwisko:",
+        "email": "Email:",
+        "phone": "Telefon:"
     }
 }

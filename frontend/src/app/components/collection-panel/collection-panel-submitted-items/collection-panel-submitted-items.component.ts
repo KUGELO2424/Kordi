@@ -3,9 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { SubmittedItem } from 'app/common/submittedItem';
 import { CollectionService } from 'app/services/collection.service';
-import { Location } from '@angular/common'
+import { Location, ViewportScroller } from '@angular/common'
 import { Collection } from 'app/common/collection';
+import { UserData } from 'app/common/userData';
 import { Item } from 'app/common/itemToAdd';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-collection-panel-submitted-items',
@@ -20,9 +22,16 @@ export class CollectionPanelSubmittedItemsComponent implements OnInit {
   submittedItemsData: SubmittedItem[] = [];
   submittedItems: SubmittedItem[] = [];
   choosenItemId: string = '-1';
+  user: UserData | undefined;
+
+  display: boolean;
+
+  pageSize: number = 10;
+  totalRecords: number;
+  page: number = 0;
 
   constructor(private route: ActivatedRoute, private collectionService: CollectionService, private location: Location,
-    private translate: TranslateService) {
+    private translate: TranslateService, private authService: AuthService, private scroller: ViewportScroller) {
       this.responsiveOptions = [
         {
             breakpoint: '1024px',
@@ -63,6 +72,15 @@ export class CollectionPanelSubmittedItemsComponent implements OnInit {
     this.submittedItems = this.submittedItemsData;
   }
 
+  showUserDetails(username: string) {
+    this.display = true;
+    this.authService.getUserByUsername(username).subscribe({
+      next: (data) => {
+        this.user = data;
+      },
+    })
+  }
+
   handleCollectionDetails() {
     const collectionId: string = this.route.snapshot.paramMap.get('id')!;
     this.collectionService.getCollectionById(collectionId).subscribe({
@@ -88,6 +106,10 @@ export class CollectionPanelSubmittedItemsComponent implements OnInit {
 
   back() {
     this.location.back();
+  }
+
+  scroll() {
+    this.scroller.scrollToAnchor("itemList");
   }
 
 }
