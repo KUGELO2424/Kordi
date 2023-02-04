@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
@@ -17,9 +18,14 @@ export class HomePageComponent implements OnInit {
     { value: 'other', label: 'Inne'},
   ];
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
+  }
+
+  searchCollections(category: string) {
+    let navigationExtras = {state: {data: category}};
+    this.router.navigateByUrl("collections", navigationExtras);
   }
 
 }

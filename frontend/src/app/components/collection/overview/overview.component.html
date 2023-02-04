@@ -25,12 +25,13 @@
                 | translate
             }}
           </td>
-          <td *ngIf="item.value > 0">
+          <td *ngIf="item.value > 0 && item.value != true">
             {{ item.value }}
             {{
               "suffix." + item.type.toString().toLocaleLowerCase() | translate
             }}
           </td>
+          <td *ngIf="item.value > 0 && item.value == true">-</td>
         </tr>
       </ng-template>
     </p-table>

@@ -139,17 +139,17 @@
             {{ "footer.collections" | translate }}
           </h6>
           <p>
-            <a href="#!" class="text-reset">{{
+            <a routerLink="/add-collection" class="text-reset">{{
               "footer.create" | translate
             }}</a>
           </p>
           <p>
-            <a href="#!" class="text-reset">{{
+            <a routerLink="/collections" class="text-reset">{{
               "footer.serach" | translate
             }}</a>
           </p>
           <p>
-            <a href="#!" class="text-reset">{{
+            <a routerLink="/signup" class="text-reset">{{
               "footer.signup" | translate
             }}</a>
           </p>
@@ -163,15 +163,17 @@
             {{ "footer.popular_categories" | translate }}
           </h6>
           <p>
-            <a href="#!" class="text-reset">{{
+            <a (click)="searchCollections('clothes')" class="text-reset">{{
               "footer.clothes" | translate
             }}</a>
           </p>
           <p>
-            <a href="#!" class="text-reset">{{ "footer.food" | translate }}</a>
+            <a (click)="searchCollections('food')" class="text-reset">{{
+              "footer.food" | translate
+            }}</a>
           </p>
           <p>
-            <a href="#!" class="text-reset">{{
+            <a (click)="searchCollections('animals')" class="text-reset">{{
               "footer.animals" | translate
             }}</a>
           </p>

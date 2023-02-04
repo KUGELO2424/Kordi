@@ -55,6 +55,12 @@ export class CollectionListComponent implements OnInit {
   constructor(private formBuilder: UntypedFormBuilder, private collectionService: CollectionService, private router: Router,
     private sanitizer: DomSanitizer, private scroller: ViewportScroller, private translate: TranslateService,
     private stateService: CollectionListStateService) {
+      const navigation = this.router.getCurrentNavigation();
+      const state = navigation?.extras.state as {data: string};
+      if (state !== undefined) {
+        this.categoriesForm.controls[state.data].setValue(true);
+      }
+      
       this.translate.get('add-collection.locations').subscribe(() => {
         this.sortOptions = [
           { label: this.translate.instant('collections.sort_popularity'), field: 'donates', direction: 'desc'},

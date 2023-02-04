@@ -62,7 +62,7 @@
               >
                 <button
                   class="btn btn-outline-primary btn-sm w-100"
-                  routerLink="/collections"
+                  (click)="searchCollections(category.value)"
                 >
                   {{ "category." + category.value | translate }}
                 </button>

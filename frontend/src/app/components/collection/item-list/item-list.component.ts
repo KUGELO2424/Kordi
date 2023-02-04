@@ -25,16 +25,21 @@ export class ItemListComponent implements OnInit {
   page: number = 0;
   category = ItemCategory;
   state: any;
-  searchTypes: any[] = [
-    {label: 'Wszystkie', 'value': 'all'},
-    {label: 'Zebrane', 'value': 'collected'},
-    {label: 'Nie zebrane', 'value': 'not-collected'}
-  ]
-  selectedSearchType: any = this.searchTypes[0];
+  searchTypes: any[] = [];
+  selectedSearchType: any;
 
   constructor(private confirmationService: ConfirmationService, private scroller: ViewportScroller, 
     private translate: TranslateService, private router: Router, private stateService: StateService,
-    private authService: AuthService) { }
+    private authService: AuthService) {
+      this.translate.get('collection.item_filtr_all').subscribe(() => {
+        this.searchTypes = [
+          {label: this.translate.instant('collection.item_filtr_all'), 'value': 'all'},
+          {label: this.translate.instant('collection.item_filtr_collected'), 'value': 'collected'},
+          {label: this.translate.instant('collection.item_filtr_not_collected'), 'value': 'not-collected'}
+        ]
+      })
+      this.selectedSearchType = this.searchTypes[0];
+    }
 
   ngOnInit(): void {
     this.state = this.stateService.state$.getValue() || {}

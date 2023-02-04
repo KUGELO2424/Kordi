@@ -109,7 +109,10 @@
         "share_collection": "Udostępnij zbiórkę wybierając jedną z opcji poniżej",
         "back_button": "Powrót",
         "notfound": "Przepraszamy ale zbiórka nie została odnaleziona",
-        "item.current.bigger.than.max": "Obecna ilość nie może być większa niż maksymalna"
+        "item.current.bigger.than.max": "Obecna ilość nie może być większa niż maksymalna",
+        "item_filtr_all": "Wszystkie",
+        "item_filtr_collected": "Zebrane",
+        "item_filtr_not_collected": "Niezebrane"
     },
     "home": {
         "welcome": "Witaj w",

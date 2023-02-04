@@ -37,7 +37,6 @@ export class CollectionInfoComponent implements OnInit {
         setTimeout(() => {
           this.messageService.add({severity:'success', detail: state.data});
         }, 300);
-        
       }
     }
 
@@ -91,7 +90,10 @@ export class CollectionInfoComponent implements OnInit {
     const foundItem = this.collection?.items.find((item) => {
       return item.id == submittedItem.collectionItemId.toString();
     })
-    let result = this.translate.instant("category." + foundItem?.category.toLocaleLowerCase()) + " " + submittedItem.amount + this.translate.instant("suffix." + foundItem?.type.toLocaleLowerCase())
+    let category = this.translate.instant("category." + foundItem?.category.toLocaleLowerCase());
+    let amount = submittedItem.amount == 0 ? '' : submittedItem.amount;
+    let suffix = this.translate.instant("suffix." + foundItem?.type.toLocaleLowerCase());
+    let result = category + " " + amount + suffix
     return result
   }
 

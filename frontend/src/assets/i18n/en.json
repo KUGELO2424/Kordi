@@ -109,7 +109,10 @@
         "share_collection": "Share the collection by choosing one of the options below",
         "back_button": "Back",
         "notfound": "We are sorry, but the fundraiser has not been found",
-        "item.current.bigger.than.max": "The current amount cannot be greater than the maximum"
+        "item.current.bigger.than.max": "The current amount cannot be greater than the maximum",
+        "item_filtr_all": "All",
+        "item_filtr_collected": "Collected",
+        "item_filtr_not_collected": "Not collected"
     },
     "home": {
         "welcome": "Welcome in",
