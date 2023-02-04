@@ -86,6 +86,7 @@ import { SidebarModule } from 'primeng/sidebar';
 import { BadgeModule } from 'primeng/badge';
 import { KnobModule } from 'primeng/knob';
 import { CarouselModule } from 'primeng/carousel';
+import { UserOwnerGuardService } from './services/user-owner-guard.service';
 
 
 const routes: Routes = [
@@ -96,8 +97,8 @@ const routes: Routes = [
   {path: 'verify', component: VerificationComponent},
   {path: 'profile', component: ProfileComponent, canActivate:[AuthGuardService]},
   {path: 'collections', component: CollectionListComponent},
-  {path: 'collections/:id/panel', component: CollectionPanelInfoComponent, canActivate:[AuthGuardService]},
-  {path: 'collections/:id/panel/submitted', component: CollectionPanelSubmittedItemsComponent, canActivate:[AuthGuardService]},
+  {path: 'collections/:id/panel', component: CollectionPanelInfoComponent, canActivate:[AuthGuardService, UserOwnerGuardService]},
+  {path: 'collections/:id/panel/submitted', component: CollectionPanelSubmittedItemsComponent, canActivate:[AuthGuardService, UserOwnerGuardService]},
   {path: 'collections/:id', component: CollectionInfoComponent},
   {path: 'collections/donate/overview', component: OverviewComponent, canActivate:[AuthGuardService]},
   {

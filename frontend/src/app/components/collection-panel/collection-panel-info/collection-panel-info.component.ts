@@ -56,7 +56,7 @@ export class CollectionPanelInfoComponent implements OnInit {
   handleCollectionDetails() {
     const collectionId: string = this.route.snapshot.paramMap.get('id')!;
     this.collectionService.getCollectionById(collectionId).subscribe({
-      next: (data) => {   
+      next: (data) => {
         this.collection = data;
         this.form.controls['title'].setValue(this.collection.title);
         this.form.controls['description'].setValue(this.collection.description);
