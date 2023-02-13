@@ -68,11 +68,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             authentication = authenticationManager.authenticate(authenticationToken);
             UserDTO user = userService.getUserByUsername(username);
             if (!user.isEnabled()) {
+                log.warn("User {} not verified", username);
                 if (user.getVerificationType().equals(VerificationType.EMAIL)) {
-                    log.warn("User {} not verified", username);
+                    log.info("Sending email with verification link to user {} again", username);
+                    userService.sendVerificationToken(user);
                     throw new DisabledException(USER_NOT_VERIFIED_EMAIL);
                 } else {
-                    log.warn("User {} not verified", username);
                     throw new DisabledException(USER_NOT_VERIFIED_PHONE);
                 }
             }

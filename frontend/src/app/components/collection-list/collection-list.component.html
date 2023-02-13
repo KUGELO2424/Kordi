@@ -270,7 +270,8 @@
                     class="card-text"
                     *ngIf="
                       collection.endTime !== null &&
-                      getDaysToEnd(collection) >= 0
+                      getDaysToEnd(collection) >= 0 &&
+                      collection.progress != 100
                     "
                   >
                     {{

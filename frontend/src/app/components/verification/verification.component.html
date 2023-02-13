@@ -25,7 +25,7 @@
               ></p>
             </mat-card-content>
             <mat-card-actions *ngIf="verificationType == 'PHONE'">
-              <div class="d-flex justify-content-center">
+              <div class="d-flex justify-content-center mb-3">
                 <mat-form-field class="full-width" appearance="outline">
                   <mat-label>{{
                     "verify.activation_code" | translate
@@ -34,7 +34,7 @@
                 </mat-form-field>
                 <button
                   type="submit"
-                  class="btn my-btn-secondary btn-sm ms-3 mt-1"
+                  class="btn my-btn-secondary btn-sm ms-3"
                   style="padding-left: 2.5rem; padding-right: 2.5rem"
                   (click)="sendCodeAgain()"
                 >

@@ -17,3 +17,7 @@ mat-card-content {
     font-size: 18px;
     text-align: justify;
 }
+
+:host ::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 0;
+}

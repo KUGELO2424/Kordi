@@ -22,6 +22,9 @@ export class LoginComponent implements OnInit {
   });
 
   constructor(private router: Router, private loginService: AuthService, private translate: TranslateService, private location: Location) {
+      if (loginService.isUserLoggedIn()) {
+        this.router.navigateByUrl("/");
+      }
       const navigation = this.router.getCurrentNavigation();
       const state = navigation?.extras.state as {data: string};
       if (state !== undefined) {

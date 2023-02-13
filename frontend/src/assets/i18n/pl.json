@@ -256,7 +256,9 @@
         "item_title": "Przedmiot",
         "quantity": "Ilość",
         "item_submit_date": "Data podarowania",
-        "submitted_items": "Zobacz dary"
+        "submitted_items": "Zobacz dary",
+        "no_collections": "Nie posiadasz jeszcze żadnych zbiórek",
+        "no_donates": "Nie podarowałeś jeszcze żadnych przedmiotów"
     },
     "password": {
         "old.password.not.match": "Podane aktualne hasło jest nieprawidłowe",

@@ -1,4 +1,8 @@
+<p *ngIf="submittedItems.length === 0" class="ms-4">
+  {{ "profile.no_donates" | translate }}
+</p>
 <p-table
+  *ngIf="submittedItems.length > 0"
   [value]="submittedItems"
   [tableStyle]="{ 'min-width': '50rem' }"
   id="itemList"

@@ -1,4 +1,8 @@
+<p *ngIf="collections.length === 0" class="ms-4">
+  {{ "profile.no_collections" | translate }}
+</p>
 <p-table
+  *ngIf="collections.length > 0"
   [value]="collections"
   [tableStyle]="{ 'min-width': '23rem' }"
   responsiveLayout="stack"

@@ -27,7 +27,7 @@ export class VerificationComponent implements OnInit {
   constructor(private router: Router, private authService: AuthService, private translate: TranslateService) {
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras.state as {data: string};
-    if (state === undefined) {
+    if (state === undefined || authService.isUserLoggedIn()) {
       this.router.navigateByUrl("/");
     }
     const username = state.data;

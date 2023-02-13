@@ -26,7 +26,11 @@ export class SignupComponent implements OnInit {
     verificationType: new UntypedFormControl('EMAIL')
   });
 
-  constructor(private router: Router, private translate: TranslateService, private authService: AuthService) { }
+  constructor(private router: Router, private translate: TranslateService, private authService: AuthService) {
+    if (authService.isUserLoggedIn()) {
+      this.router.navigateByUrl("/");
+    }
+  }
 
   ngOnInit(): void {
   }

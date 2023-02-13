@@ -256,7 +256,9 @@
         "item_title": "Item",
         "quantity": "Quantity",
         "item_submit_date": "Submit date",
-        "submitted_items": "See donates"
+        "submitted_items": "See donates",
+        "no_collections": "You don't have any collections yet",
+        "no_donates": "You haven't donated any items yet"
     },
     "password": {
         "old.password.not.match": "The current password provided is incorrect",

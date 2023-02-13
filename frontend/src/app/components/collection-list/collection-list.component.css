@@ -47,7 +47,7 @@ mat-form-field button {
 }
 
 .word-break {
-    word-break: break-all;
+    word-break: break-word;
 }
 
 .card-icon {

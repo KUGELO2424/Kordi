@@ -15,7 +15,11 @@ export class VerificationEmailComponent implements OnInit {
   username: string = "";
 
   constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService, 
-    private translate: TranslateService, private messageService: MessageService) { }
+    private translate: TranslateService, private messageService: MessageService) {
+      if (authService.isUserLoggedIn()) {
+        this.router.navigateByUrl("/");
+      }
+    }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
