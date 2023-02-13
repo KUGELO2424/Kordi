@@ -53,7 +53,10 @@
         "info_phone": "Na twój numer telefonu <b>{{phone}}</b> został wysłany kod aktywacyjny. Wpisz go poniżej by zweryfikować konto.",
         "verify": "Zweryfikuj",
         "activation_code": "Kod aktywacyjny",
-        "activation_code_send": "Kod aktywacyjny został wysłany ponownie"
+        "activation_code_send": "Kod aktywacyjny został wysłany ponownie",
+        "email_success": "Twoje konto zostało zweryfikowane. Zaloguj się by zacząć korzystać z aplikacji Kordi!",
+        "sent": "Wiadomość została wysłana ponownie",
+        "not_send": "Nie udało się wysłać wiadomości"
     },
     "collections": {
         "search_input": "Szukaj",
@@ -150,9 +153,13 @@
         "phone.exists": "Numer telefonu jest już zajęty",
         "not.verified.email": "Konto nie zostało zweryfikowane. Na twój adres email została wysłania wiadomość z linkiem aktywacynym"
     },
+    "token": {
+        "expired": "Twój token wygasł, kliknij przycisk by wysłać wiadomość jeszcze raz."
+    },
     "email": {
         "send.failed.connection": "Przepraszamy ale nie udało się wysłać wiadomości email",
-        "send.failed": "Przepraszamy ale nie udało się wysłać wiadomości email"
+        "send.failed": "Przepraszamy ale nie udało się wysłać wiadomości email",
+        "already.confirmed": "Twoje konto zostało już zweryfikowane."
     },
     "phone": {
         "verification.code.not.valid": "Podany kod jest nie ważny. Konto mogło zostać już aktywowane bądź kod wygasł.",

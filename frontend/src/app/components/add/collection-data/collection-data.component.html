@@ -38,7 +38,10 @@
         matIconSuffix
         [for]="picker"
       ></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
+      <mat-datepicker
+        #picker
+        (opened)="this.picker.select(undefined)"
+      ></mat-datepicker>
     </mat-form-field>
 
     <!-- IMAGE -->

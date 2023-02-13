@@ -46,7 +46,7 @@ export class CommentListComponent implements OnInit {
     comment.content = this.commentContent;
     this.collectionService.addComment(this.collectionId, comment).subscribe({
       next: (data) => {
-        this.messageService.add({severity:'success', detail: this.translate.instant("collection.comment_add")});
+        this.messageService.add({key: 'comment', severity:'success', detail: this.translate.instant("collection.comment_add")});
         this.commentContent = "";
         this.ngOnInit();
       },

@@ -53,7 +53,10 @@
         "info_phone": "An activation code has been sent to your <b>{{phone}}</b> phone number. Enter it below to verify your account.",
         "verify": "Verify",
         "activation_code": "Activation code",
-        "activation_code_send": "The activation code has been resent"
+        "activation_code_send": "The activation code has been resent",
+        "email_success": "Your account has been verified. Log in to start using the Kordi app!",
+        "sent": "The message has been resent",
+        "not_send": "Failed to send message"
     },
     "collections": {
         "search_input": "Search",
@@ -150,9 +153,13 @@
         "phone.exists": "Phone number is already in use",
         "not.verified.email": "The account has not been verified. An email with an activation link has been sent to your email address"
     },
+    "token": {
+        "expired": "Your token has expired, click the button to send the message again."
+    },
     "email": {
         "send.failed.connection": "We are sorry but the email could not be sent",
-        "send.failed": "We are sorry but the email could not be sent"
+        "send.failed": "We are sorry but the email could not be sent",
+        "already.confirmed": "Your account has already been verified."
     },
     "phone": {
         "verification.code.not.valid": "The entered code is not valid. The account may have already been activated or the code has expired",

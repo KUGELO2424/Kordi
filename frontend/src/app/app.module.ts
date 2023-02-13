@@ -38,12 +38,14 @@ import { CollectionPanelItemsComponent } from './components/collection-panel/col
 import { CollectionPanelLocationsComponent } from './components/collection-panel/collection-panel-locations/collection-panel-locations.component';
 import { CollectionPanelCommentsComponent } from './components/collection-panel/collection-panel-comments/collection-panel-comments.component';
 import { CollectionPanelSubmittedItemsComponent } from './components/collection-panel/collection-panel-submitted-items/collection-panel-submitted-items.component';
+import { VerificationEmailComponent } from './components/verification-email/verification-email.component';
 
 // SERVICES
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { LoadingInterceptorService } from './services/loading-interceptor.service';
 import { AuthGuardService } from './services/auth-guard.service';
+import { UserOwnerGuardService } from './services/user-owner-guard.service';
 
 // MAT MODULES
 import { MatInputModule } from '@angular/material/input';
@@ -86,8 +88,6 @@ import { SidebarModule } from 'primeng/sidebar';
 import { BadgeModule } from 'primeng/badge';
 import { KnobModule } from 'primeng/knob';
 import { CarouselModule } from 'primeng/carousel';
-import { UserOwnerGuardService } from './services/user-owner-guard.service';
-
 
 const routes: Routes = [
   {path: 'home', component: HomePageComponent},
@@ -95,6 +95,7 @@ const routes: Routes = [
   {path: 'logout', component: LogoutComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'verify', component: VerificationComponent},
+  {path: 'verify/token/:token/user/:username', component: VerificationEmailComponent},
   {path: 'profile', component: ProfileComponent, canActivate:[AuthGuardService]},
   {path: 'collections', component: CollectionListComponent},
   {path: 'collections/:id/panel', component: CollectionPanelInfoComponent, canActivate:[AuthGuardService, UserOwnerGuardService]},
@@ -144,7 +145,8 @@ const routes: Routes = [
     CollectionPanelItemsComponent,
     CollectionPanelLocationsComponent,
     CollectionPanelCommentsComponent,
-    CollectionPanelSubmittedItemsComponent
+    CollectionPanelSubmittedItemsComponent,
+    VerificationEmailComponent
   ],
   imports: [
     RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled',}),

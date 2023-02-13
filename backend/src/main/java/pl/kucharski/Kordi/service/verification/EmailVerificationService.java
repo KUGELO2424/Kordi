@@ -1,5 +1,6 @@
 package pl.kucharski.Kordi.service.verification;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -31,8 +32,12 @@ import static pl.kucharski.Kordi.config.ErrorCodes.TOKEN_NOT_FOUND;
 @Transactional
 public class EmailVerificationService implements VerificationService{
 
+    @Value("${allowed.origins}")
+    private String origin;
+
     private final JavaMailSender mailSender;
     private final EmailTokenService emailTokenService;
+
 
     public EmailVerificationService(JavaMailSender mailSender, EmailTokenService emailTokenService) {
         this.mailSender = mailSender;
@@ -54,7 +59,7 @@ public class EmailVerificationService implements VerificationService{
                 user
         );
         emailTokenService.saveEmailToken(emailToken);
-        String link = "http://localhost:8080/verify?token=" + token;
+        String link = origin + "/verify/token/" + token + "/user/" + user.getUsername();
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");

@@ -1,0 +1,45 @@
+<div class="content">
+  <section class="mt-5">
+    <div class="container-fluid align-middle">
+      <!-- CARD -->
+      <mat-card class="example-card p-5">
+        <mat-card-header class="justify-content-center">
+          <mat-card-title>{{ "verify.welcome" | translate }}</mat-card-title>
+        </mat-card-header>
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-md-7 col-lg-5 col-xl-5 d-flex justify-content-center">
+            <img
+              src="assets/img/verified.svg"
+              class="img-fluid mb-4"
+              alt="Email verification"
+            />
+          </div>
+          <div class="col-md-9 col-lg-7 col-xl-7">
+            <mat-card-content *ngIf="errorMessage == ''">
+              <p>{{ "verify.email_success" | translate }}</p>
+            </mat-card-content>
+            <mat-card-content *ngIf="errorMessage != ''">
+              <p>{{ errorMessage | translate }}</p>
+            </mat-card-content>
+            <mat-card-actions *ngIf="errorMessage == 'token.expired'">
+              <div class="d-flex justify-content-start">
+                <button
+                  type="submit"
+                  class="btn my-btn-secondary btn-sm mt-1"
+                  style="padding-left: 2.5rem; padding-right: 2.5rem"
+                  (click)="sendAgain()"
+                >
+                  {{ "verify.send_again" | translate }}
+                </button>
+              </div>
+            </mat-card-actions>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </section>
+  <!-- MESSAGE -->
+  <p-toast></p-toast>
+  <!-- LOADING SPINNER -->
+  <app-loading-spinner></app-loading-spinner>
+</div>

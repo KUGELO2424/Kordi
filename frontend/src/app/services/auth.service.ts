@@ -55,6 +55,10 @@ export class AuthService {
     return this.httpClient.get<any>(`${this.verifyUrl}?phone=${phone}&token=${token}`)
   }
 
+  verifyByEmail(token: string) {
+    return this.httpClient.get<any>(`${this.verifyUrl}?token=${token}`)
+  }
+
   sendVerificationToken(username: string) {
     return this.httpClient.post<any>(`${this.sendTokenUrl}?username=${username}`, "");
   }
