@@ -107,6 +107,15 @@
               >
                 {{ "collection.ended" | translate }}
               </p>
+              <p
+                class="card-text"
+                *ngIf="
+                  (collection.endTime === null && collectionProgress != 100) ||
+                  (getDaysToEnd(collection) < 0 && collectionProgress != 100)
+                "
+              >
+                {{ "collections.in_progress" | translate }}
+              </p>
             </mat-card-subtitle>
             <mat-card-content>
               <p>{{ "collection.progress" | translate }}</p>

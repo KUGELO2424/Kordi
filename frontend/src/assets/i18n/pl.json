@@ -67,6 +67,7 @@
         "click": "Kliknij tutaj",
         "end_time": "Do końca pozostało {{num}} dni",
         "completed": "Zbiórka zakończona",
+        "in_progress": "Zbiórka trwa",
         "progress": "Postęp zbiórki:",
         "city": "Miasto",
         "street": "Ulica",

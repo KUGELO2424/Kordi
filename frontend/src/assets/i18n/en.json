@@ -67,6 +67,7 @@
         "click": "Click here",
         "end_time": "{{num}} days left until the end",
         "completed": "Collection completed",
+        "in_progress": "Collection in progress",
         "progress": "Collection progress:",
         "city": "City",
         "street": "Street",

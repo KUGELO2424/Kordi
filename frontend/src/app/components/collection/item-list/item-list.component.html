@@ -227,7 +227,7 @@
             [(ngModel)]="item.value"
             mode="decimal"
             [min]="item.currentAmount"
-            [max]="item.maxAmount"
+            [max]="item.maxAmount - item.currentAmount"
             class="p-inputtext-sm mt-3"
             styleClass="number-input justify-content-center"
             suffix="{{ 'item.suffix' | translate }}"

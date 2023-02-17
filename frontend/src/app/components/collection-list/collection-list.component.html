@@ -287,6 +287,17 @@
                   >
                     {{ "collections.completed" | translate }}
                   </p>
+                  <p
+                    class="card-text"
+                    *ngIf="
+                      (collection.endTime === null &&
+                        collection.progress != 100) ||
+                      (getDaysToEnd(collection) < 0 &&
+                        collection.progress != 100)
+                    "
+                  >
+                    {{ "collections.in_progress" | translate }}
+                  </p>
                 </div>
               </div>
             </div>
