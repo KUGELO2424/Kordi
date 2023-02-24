@@ -33,13 +33,13 @@
               >{{ "navbar.search" | translate }}</a
             >
           </li>
-          <li class="nav-item pl-1">
+          <li class="nav-item pl-1" *ngIf="isAuthenticated()">
             <a class="nav-link" routerLink="/add-collection"
               ><i class="fa-regular fa-calendar-plus me-2"></i
               >{{ "navbar.add" | translate }}</a
             >
           </li>
-          <li class="nav-item pl-1">
+          <li class="nav-item pl-1" *ngIf="isAuthenticated()">
             <a class="nav-link" routerLink="/profile"
               ><i class="fa-solid fa-user me-1"></i
               >{{ "navbar.profile" | translate }}</a
@@ -202,7 +202,7 @@
 
   <!-- Copyright -->
   <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05)">
-    © 2022 Copyright:
+    © 2023 Copyright:
     <a class="text-reset fw-bold" href="https://github.com/KUGELO2424"
       ><i class="fa-brands fa-github me-1"></i>KUGELO2424</a
     >
