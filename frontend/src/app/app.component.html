@@ -1,212 +1,214 @@
-<header>
-  <!--- Navbar --->
-  <nav class="navbar navbar-expand-lg">
-    <div class="container">
-      <a class="navbar-brand logo" routerLink="/home">
-        <img
-          src="/assets/logo2.png"
-          alt="Logo"
-          width="50"
-          height="45"
-          class="d-inline-block"
-        />
-        <span>KORDI</span>
-      </a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#nvbCollapse"
-        aria-controls="nvbCollapse"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+<div class="d-flex flex-column min-vh-100">
+  <div>
+    <!--- Navbar --->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand logo" routerLink="/home">
+          <img
+            src="/assets/logo2.png"
+            alt="Logo"
+            width="50"
+            height="45"
+            class="d-inline-block"
+          />
+          <span>KORDI</span>
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#nvbCollapse"
+          aria-controls="nvbCollapse"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <div class="collapse navbar-collapse" id="nvbCollapse">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item pl-1">
-            <a
-              class="nav-link active"
-              aria-current="page"
-              routerLink="/collections"
-              ><i class="fa-solid fa-magnifying-glass me-2"></i
-              >{{ "navbar.search" | translate }}</a
-            >
-          </li>
-          <li class="nav-item pl-1" *ngIf="isAuthenticated()">
-            <a class="nav-link" routerLink="/add-collection"
-              ><i class="fa-regular fa-calendar-plus me-2"></i
-              >{{ "navbar.add" | translate }}</a
-            >
-          </li>
-          <li class="nav-item pl-1" *ngIf="isAuthenticated()">
-            <a class="nav-link" routerLink="/profile"
-              ><i class="fa-solid fa-user me-1"></i
-              >{{ "navbar.profile" | translate }}</a
-            >
-          </li>
-          <li class="nav-item pl-1" *ngIf="!isAuthenticated()">
-            <a class="nav-link" routerLink="/login"
-              ><i class="fa fa-sign-in fa-fw me-1"></i
-              >{{ "navbar.login" | translate }}</a
-            >
-          </li>
-          <li class="nav-item pl-1" *ngIf="!isAuthenticated()">
-            <a class="nav-link" routerLink="/signup"
-              ><i class="fa-solid fa-user-plus fa-fw me-1"></i
-              >{{ "navbar.signup" | translate }}</a
-            >
-          </li>
-          <li class="nav-item pl-1" *ngIf="isAuthenticated()">
-            <a class="nav-link" routerLink="/logout"
-              ><i class="fa-solid fa-right-from-bracket me-1"></i
-              >{{ "navbar.logout" | translate }}</a
-            >
-          </li>
-          <li class="nav-item pl-1 nav-item-lang ms-5">
-            <app-language-selector></app-language-selector>
-          </li>
-        </ul>
+        <div class="collapse navbar-collapse" id="nvbCollapse">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item pl-1">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                routerLink="/collections"
+                ><i class="fa-solid fa-magnifying-glass me-2"></i
+                >{{ "navbar.search" | translate }}</a
+              >
+            </li>
+            <li class="nav-item pl-1" *ngIf="isAuthenticated()">
+              <a class="nav-link" routerLink="/add-collection"
+                ><i class="fa-regular fa-calendar-plus me-2"></i
+                >{{ "navbar.add" | translate }}</a
+              >
+            </li>
+            <li class="nav-item pl-1" *ngIf="isAuthenticated()">
+              <a class="nav-link" routerLink="/profile"
+                ><i class="fa-solid fa-user me-1"></i
+                >{{ "navbar.profile" | translate }}</a
+              >
+            </li>
+            <li class="nav-item pl-1" *ngIf="!isAuthenticated()">
+              <a class="nav-link" routerLink="/login"
+                ><i class="fa fa-sign-in fa-fw me-1"></i
+                >{{ "navbar.login" | translate }}</a
+              >
+            </li>
+            <li class="nav-item pl-1" *ngIf="!isAuthenticated()">
+              <a class="nav-link" routerLink="/signup"
+                ><i class="fa-solid fa-user-plus fa-fw me-1"></i
+                >{{ "navbar.signup" | translate }}</a
+              >
+            </li>
+            <li class="nav-item pl-1" *ngIf="isAuthenticated()">
+              <a class="nav-link" routerLink="/logout"
+                ><i class="fa-solid fa-right-from-bracket me-1"></i
+                >{{ "navbar.logout" | translate }}</a
+              >
+            </li>
+            <li class="nav-item pl-1 nav-item-lang ms-5">
+              <app-language-selector></app-language-selector>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
-  <!--# Navbar #-->
-</header>
-
-<content>
-  <router-outlet></router-outlet>
-</content>
-
-<!-- Footer -->
-<footer class="text-center text-lg-start bg-light text-muted mt-auto">
-  <!-- Section: Social media -->
-  <section
-    class="d-flex justify-content-center justify-content-lg-end p-4 border-bottom"
-  >
-    <!-- Left -->
-    <div class="me-5 d-none d-lg-block">
-      <span>{{ "footer.find_us" | translate }}</span>
-    </div>
-    <!-- Left -->
-
-    <!-- Right -->
-    <div class="social">
-      <a href="" class="me-4 text-reset">
-        <i class="fab fa-facebook-f"></i>
-      </a>
-      <a href="" class="me-4 text-reset">
-        <i class="fab fa-google"></i>
-      </a>
-      <a href="" class="me-4 text-reset">
-        <i class="fab fa-instagram"></i>
-      </a>
-      <a href="" class="me-4 text-reset">
-        <i class="fab fa-linkedin"></i>
-      </a>
-      <a href="" class="me-4 text-reset">
-        <i class="fab fa-github"></i>
-      </a>
-    </div>
-    <!-- Right -->
-  </section>
-  <!-- Section: Social media -->
-
-  <!-- Section: Links  -->
-  <section class="">
-    <div class="container text-center text-md-start mt-5">
-      <!-- Grid row -->
-      <div class="row mt-3">
-        <!-- Grid column -->
-        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
-          <!-- Content -->
-          <h6 class="text-uppercase fw-bold mb-4">
-            <img
-              src="/assets/logo2.png"
-              alt="Logo"
-              width="50"
-              height="45"
-              class="d-inline-block me-2"
-            />Kordi
-          </h6>
-          <p></p>
-        </div>
-        <!-- Grid column -->
-
-        <!-- Grid column -->
-        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
-          <!-- Links -->
-          <h6 class="text-uppercase fw-bold mb-4">
-            {{ "footer.collections" | translate }}
-          </h6>
-          <p>
-            <a routerLink="/add-collection" class="text-reset">{{
-              "footer.create" | translate
-            }}</a>
-          </p>
-          <p>
-            <a routerLink="/collections" class="text-reset">{{
-              "footer.serach" | translate
-            }}</a>
-          </p>
-          <p>
-            <a routerLink="/signup" class="text-reset">{{
-              "footer.signup" | translate
-            }}</a>
-          </p>
-        </div>
-        <!-- Grid column -->
-
-        <!-- Grid column -->
-        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
-          <!-- Links -->
-          <h6 class="text-uppercase fw-bold mb-4">
-            {{ "footer.popular_categories" | translate }}
-          </h6>
-          <p>
-            <a (click)="searchCollections('clothes')" class="text-reset">{{
-              "footer.clothes" | translate
-            }}</a>
-          </p>
-          <p>
-            <a (click)="searchCollections('food')" class="text-reset">{{
-              "footer.food" | translate
-            }}</a>
-          </p>
-          <p>
-            <a (click)="searchCollections('animals')" class="text-reset">{{
-              "footer.animals" | translate
-            }}</a>
-          </p>
-        </div>
-        <!-- Grid column -->
-
-        <!-- Grid column -->
-        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-          <!-- Links -->
-          <h6 class="text-uppercase fw-bold mb-4">
-            {{ "footer.contact" | translate }}
-          </h6>
-          <p><i class="fas fa-home me-3"></i> Łódź, 99-999, PL</p>
-          <p>
-            <i class="fas fa-envelope me-3"></i>
-            info@kordi.com
-          </p>
-          <p><i class="fas fa-phone me-3"></i> + 48 222 333 444</p>
-        </div>
-        <!-- Grid column -->
-      </div>
-      <!-- Grid row -->
-    </div>
-  </section>
-  <!-- Section: Links  -->
-
-  <!-- Copyright -->
-  <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05)">
-    © 2023 Copyright:
-    <a class="text-reset fw-bold" href="https://github.com/KUGELO2424"
-      ><i class="fa-brands fa-github me-1"></i>KUGELO2424</a
-    >
+    </nav>
+    <!--# Navbar #-->
   </div>
-  <!-- Copyright -->
-</footer>
-<!-- Footer -->
+
+  <div class="flex-grow-1 h-100">
+    <router-outlet></router-outlet>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer text-center text-lg-start bg-light text-muted mt-auto">
+    <!-- Section: Social media -->
+    <section
+      class="d-flex justify-content-center justify-content-lg-end p-4 border-bottom"
+    >
+      <!-- Left -->
+      <div class="me-5 d-none d-lg-block">
+        <span>{{ "footer.find_us" | translate }}</span>
+      </div>
+      <!-- Left -->
+
+      <!-- Right -->
+      <div class="social">
+        <a href="" class="me-4 text-reset">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="" class="me-4 text-reset">
+          <i class="fab fa-google"></i>
+        </a>
+        <a href="" class="me-4 text-reset">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="" class="me-4 text-reset">
+          <i class="fab fa-linkedin"></i>
+        </a>
+        <a href="" class="me-4 text-reset">
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+      <!-- Right -->
+    </section>
+    <!-- Section: Social media -->
+
+    <!-- Section: Links  -->
+    <section class="">
+      <div class="container text-center text-md-start mt-5">
+        <!-- Grid row -->
+        <div class="row mt-3">
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
+            <!-- Content -->
+            <h6 class="text-uppercase fw-bold mb-4">
+              <img
+                src="/assets/logo2.png"
+                alt="Logo"
+                width="50"
+                height="45"
+                class="d-inline-block me-2"
+              />Kordi
+            </h6>
+            <p></p>
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
+            <!-- Links -->
+            <h6 class="text-uppercase fw-bold mb-4">
+              {{ "footer.collections" | translate }}
+            </h6>
+            <p>
+              <a routerLink="/add-collection" class="text-reset">{{
+                "footer.create" | translate
+              }}</a>
+            </p>
+            <p>
+              <a routerLink="/collections" class="text-reset">{{
+                "footer.serach" | translate
+              }}</a>
+            </p>
+            <p>
+              <a routerLink="/signup" class="text-reset">{{
+                "footer.signup" | translate
+              }}</a>
+            </p>
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
+            <!-- Links -->
+            <h6 class="text-uppercase fw-bold mb-4">
+              {{ "footer.popular_categories" | translate }}
+            </h6>
+            <p>
+              <a (click)="searchCollections('clothes')" class="text-reset">{{
+                "footer.clothes" | translate
+              }}</a>
+            </p>
+            <p>
+              <a (click)="searchCollections('food')" class="text-reset">{{
+                "footer.food" | translate
+              }}</a>
+            </p>
+            <p>
+              <a (click)="searchCollections('animals')" class="text-reset">{{
+                "footer.animals" | translate
+              }}</a>
+            </p>
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+            <!-- Links -->
+            <h6 class="text-uppercase fw-bold mb-4">
+              {{ "footer.contact" | translate }}
+            </h6>
+            <p><i class="fas fa-home me-3"></i> Łódź, 99-999, PL</p>
+            <p>
+              <i class="fas fa-envelope me-3"></i>
+              info@kordi.com
+            </p>
+            <p><i class="fas fa-phone me-3"></i> + 48 222 333 444</p>
+          </div>
+          <!-- Grid column -->
+        </div>
+        <!-- Grid row -->
+      </div>
+    </section>
+    <!-- Section: Links  -->
+
+    <!-- Copyright -->
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05)">
+      © 2023 Copyright:
+      <a class="text-reset fw-bold" href="https://github.com/KUGELO2424"
+        ><i class="fa-brands fa-github me-1"></i>KUGELO2424</a
+      >
+    </div>
+    <!-- Copyright -->
+  </div>
+  <!-- Footer -->
+</div>

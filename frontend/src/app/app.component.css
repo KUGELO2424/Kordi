@@ -29,12 +29,12 @@ a.logo:hover {
   font-weight: 1000;
 }
 
-footer a:hover {
+.footer a:hover {
   color: #FF9E00 !important;
   transition: 0.375s;
 }
 
-footer {
+.footer {
   background-color: #E9E8E7 !important;
 }
 
