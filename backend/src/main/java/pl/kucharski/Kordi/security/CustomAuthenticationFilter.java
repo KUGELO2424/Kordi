@@ -35,7 +35,7 @@ import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_VERIFIED_PHONE;
 /**
  * Filter responsible for authentication
  *
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 @Slf4j
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {

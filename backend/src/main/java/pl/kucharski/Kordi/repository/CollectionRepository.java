@@ -11,7 +11,7 @@ import pl.kucharski.Kordi.model.collection.Collection;
 import java.util.List;
 
 /**
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 
 @Repository

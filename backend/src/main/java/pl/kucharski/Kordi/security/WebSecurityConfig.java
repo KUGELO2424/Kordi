@@ -21,7 +21,7 @@ import pl.kucharski.Kordi.service.user.UserService;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 
 @Configuration

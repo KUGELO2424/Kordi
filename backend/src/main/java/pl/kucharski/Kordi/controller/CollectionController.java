@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * Collection controller responsible for basic collection management
  *
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 @Slf4j
 @RestController

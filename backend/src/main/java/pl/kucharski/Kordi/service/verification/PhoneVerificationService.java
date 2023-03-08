@@ -15,7 +15,7 @@ import static pl.kucharski.Kordi.config.ErrorCodes.PHONE_VERIFICATION_CODE_NOT_V
 import static pl.kucharski.Kordi.config.ErrorCodes.PHONE_VERIFICATION_ERROR;
 
 /**
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 @Service
 public class PhoneVerificationService implements VerificationService{

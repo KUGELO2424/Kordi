@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
  * Entity that represents submitted collection item. It contains submit time and amount of donated item.
  * @see Collection
  *
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 
 @Getter

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
+import pl.kucharski.Kordi.enums.CollectionStatus;
 import pl.kucharski.Kordi.model.BaseEntity;
 import pl.kucharski.Kordi.model.address.Address;
 import pl.kucharski.Kordi.model.collection_item.CollectionItem;
@@ -12,15 +13,7 @@ import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItem;
 import pl.kucharski.Kordi.model.comment.Comment;
 import pl.kucharski.Kordi.model.user.User;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +24,7 @@ import java.util.Objects;
  * It contains list of items and submitted items by Users.
  * @see User
  *
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 
 @Getter
@@ -57,6 +50,10 @@ public class Collection extends BaseEntity {
 
     @Column(name = "donates")
     private Long donates;
+
+    @Column(columnDefinition="ENUM('IN_PROGRESS', 'COMPLETED', 'ARCHIVED')")
+    @Enumerated(EnumType.STRING)
+    private CollectionStatus status;
 
     @ManyToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)

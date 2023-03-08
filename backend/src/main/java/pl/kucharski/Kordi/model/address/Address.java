@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 
 @EqualsAndHashCode(callSuper = false)

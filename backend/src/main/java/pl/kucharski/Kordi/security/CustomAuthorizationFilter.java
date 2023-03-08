@@ -28,7 +28,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 /**
  * Filter responsible for authorization
  *
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 @Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {

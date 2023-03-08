@@ -39,7 +39,7 @@ import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND_WITH_GIVEN_TOK
 /**
  * User controller responsible for user management
  *
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 @Slf4j
 @RestController

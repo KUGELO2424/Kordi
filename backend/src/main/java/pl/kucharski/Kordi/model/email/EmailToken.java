@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * Entity that contains email verification token for specific user.
  * @see User
  *
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 
 @Getter

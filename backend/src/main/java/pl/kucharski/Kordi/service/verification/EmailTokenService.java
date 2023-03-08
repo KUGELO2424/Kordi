@@ -9,7 +9,7 @@ import java.util.Comparator;
 import java.util.Optional;
 
 /**
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 @Service
 public class EmailTokenService {

@@ -6,16 +6,19 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import pl.kucharski.Kordi.enums.CollectionStatus;
+import pl.kucharski.Kordi.enums.ItemType;
 import pl.kucharski.Kordi.model.address.AddressDTO;
 import pl.kucharski.Kordi.model.collection_item.CollectionItemDTO;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static pl.kucharski.Kordi.config.ErrorCodes.TITLE_CANNOT_BE_EMPTY;
+import static pl.kucharski.Kordi.config.ErrorCodes.*;
 
 @Getter
 @Setter
@@ -33,6 +36,8 @@ public class CollectionDTO {
     private LocalDateTime endTime;
     private byte[] image;
     private Long donates;
+    @NotNull(message = COLLECTION_STATUS_CANNOT_BE_EMPTY)
+    private CollectionStatus status;
     private Long userId;
     private String userFirstname;
     private String userLastname;

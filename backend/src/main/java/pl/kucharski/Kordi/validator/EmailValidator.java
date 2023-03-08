@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 /**
  * Class responsible for email pattern validation.
  *
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 
 @Service

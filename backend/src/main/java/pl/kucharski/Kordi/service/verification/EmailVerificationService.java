@@ -26,7 +26,7 @@ import static pl.kucharski.Kordi.config.ErrorCodes.TOKEN_EXPIRED;
 import static pl.kucharski.Kordi.config.ErrorCodes.TOKEN_NOT_FOUND;
 
 /**
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 @Service
 @Transactional

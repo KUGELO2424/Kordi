@@ -1,7 +1,7 @@
 package pl.kucharski.Kordi.exception;
 
 /**
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 
 public class UserRegisterException extends RuntimeException{

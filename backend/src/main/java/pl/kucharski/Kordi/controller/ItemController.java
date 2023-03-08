@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * Collection item controller responsible for item management
  *
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 @Slf4j
 @RestController

@@ -31,6 +31,7 @@ public class ErrorCodes {
     public static final String COLLECTION_ITEM_NOT_FOUND = "collection.item.notfound";
     public static final String COLLECTION_ITEM_CURRENT_BIGGER_THAN_MAX = "collection.item.current.bigger.than.max";
     public static final String COLLECTION_END_DATE_INVALID = "collection.end.date.invalid";
+    public static final String COLLECTION_STATUS_CANNOT_BE_EMPTY = "collection.status.empty";
     public static final String AMOUNT_CANNOT_BE_EMPTY = "collection.item.submit.amount.empty";
     public static final String ITEM_ID_CANNOT_BE_EMPTY = "collection.item.submit.itemId.empty";
 

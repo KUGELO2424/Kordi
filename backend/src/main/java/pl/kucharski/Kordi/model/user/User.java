@@ -15,7 +15,7 @@ import javax.persistence.Table;
 /**
  * Entity that represents account of app user.
  *
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 
 @Getter

@@ -19,7 +19,7 @@ import static pl.kucharski.Kordi.config.ErrorCodes.USERNAME_CANNOT_BE_EMPTY;
 import static pl.kucharski.Kordi.config.ErrorCodes.VERIFICATION_TYPE_CANNOT_BE_EMPTY;
 
 /**
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 
 @Getter

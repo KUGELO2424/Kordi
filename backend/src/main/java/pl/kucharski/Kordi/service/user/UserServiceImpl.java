@@ -36,7 +36,7 @@ import static pl.kucharski.Kordi.config.ErrorCodes.USER_ALREADY_VERIFIED;
 import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND;
 
 /**
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 
 @Service

@@ -5,7 +5,7 @@ import pl.kucharski.Kordi.exception.AddressAlreadyExistsInCollectionException;
 import pl.kucharski.Kordi.model.address.AddressDTO;
 
 /**
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 
 public interface CollectionAddressService {

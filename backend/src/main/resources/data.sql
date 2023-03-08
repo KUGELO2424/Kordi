@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS collection (
     end_time DATETIME,
     image LONGBLOB,
     donates BIGINT,
+    status ENUM('IN_PROGRESS', 'COMPLETED', 'ARCHIVED') NOT NULL,
     user_id BIGINT NOT NULL,
 	FOREIGN KEY (user_id) REFERENCES account(id)
 );
@@ -106,92 +107,6 @@ CREATE TABLE IF NOT EXISTS collection_comment (
 );
 
 
---
--- ARCHIWA
---
---
--- Struktura tabeli collection_archive
---
-CREATE TABLE IF NOT EXISTS collection_archive (
-	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(100) NOT NULL,
-    description VARCHAR(1000),
-    start_time DATETIME,
-    end_time DATETIME,
-    city VARCHAR(50) NOT NULL,
-	street VARCHAR(50),
-    user_id BIGINT NOT NULL,
-	FOREIGN KEY (user_id) REFERENCES account(id)
-);
-
---
--- Struktura tabeli address_archive
---
-CREATE TABLE IF NOT EXISTS address_archive (
-	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    city VARCHAR(100) NOT NULL,
-    street VARCHAR(100),
-	collection_id BIGINT NOT NULL
-);
-	
---
--- Struktura tabeli collection_item_archive
---
-CREATE TABLE IF NOT EXISTS collection_item_archive (
-	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    type ENUM('amount', 'weight', 'unlimited'),
-    current_amount INT,
-    max_amount INT,
-	collection_id BIGINT NOT NULL
-);
-
---
--- Struktura tabeli submitted_item_archive
---
-CREATE TABLE IF NOT EXISTS submitted_item_archive (
-	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    collection_id BIGINT NOT NULL,
-	user_id BIGINT NOT NULL,
-	item_id BIGINT NOT NULL,
-	amount INT NOT NULL,
-	submit_time DATETIME NOT NULL,
-	FOREIGN KEY (user_id) REFERENCES account(id)
-);
-
--- --
--- -- Wyzwalacz do collection
--- --
--- CREATE TRIGGER collection_delete
--- AFTER DELETE ON collection
--- FOR EACH ROW
--- INSERT INTO collection_archive VALUES (old.id, old.title, old.description, old.start_time, old.end_time, old.user_id);
---
---
--- --
--- -- Wyzwalacz do collection_item
--- --
--- CREATE TRIGGER collection_item_delete
--- AFTER DELETE ON collection_item
--- FOR EACH ROW
--- INSERT INTO collection_item_archive VALUES (old.id, old.name, old.type, old.current_amount, old.max_amount, old.collection_id);
---
--- --
--- -- Wyzwalacz do submitted_item
--- --
--- CREATE TRIGGER submitted_item_delete
--- AFTER DELETE ON submitted_item
--- FOR EACH ROW
--- INSERT INTO submitted_item_archive  VALUES (old.id, old.collection_id, old.user_id, old.item_id, old.amount, old.submit_time);
---
---
--- --
--- -- Wyzwalacz do address
--- --
--- CREATE TRIGGER address_delete
--- AFTER DELETE ON address
--- FOR EACH ROW
--- INSERT INTO address_archive VALUES (old.id, old.city, old.street, old.collection_id);
 
 --
 -- Dane user
@@ -220,18 +135,18 @@ VALUES ('87251290-7859-4dcf-b3f0-8b4c2aa2e55b', 'qwerty123456', '2022-06-28 15:0
 --
 -- Dane collection
 --
-INSERT INTO collection (uuid, title, description, start_time, end_time, donates, user_id)
+INSERT INTO collection (uuid, title, description, start_time, end_time, donates, status, user_id)
 VALUES ('87251290-7859-4dcf-b3f0-8b4c2aa2e55b', 'Zbiórka dla Bartka', 'Zbieramy ubrania dla chłopca',
-        '2022-06-28 15:15:00', null, 0, 4);
-INSERT INTO collection (uuid, title, description, start_time, end_time, donates, user_id)
+        '2022-06-28 15:15:00', null, 0, 'IN_PROGRESS', 4);
+INSERT INTO collection (uuid, title, description, start_time, end_time, donates, status, user_id)
 VALUES ('dc3d8821-a9d9-43d8-a5d8-695824bd0880', 'Zbiórka dla Oliwii', 'Zbieramy ubrania dziewczęce',
-        '2022-06-28 15:25:00', null, 0, 4);
-INSERT INTO collection (uuid, title, description, start_time, end_time, donates, user_id)
+        '2022-06-28 15:25:00', null, 0, 'IN_PROGRESS', 4);
+INSERT INTO collection (uuid, title, description, start_time, end_time, donates, status, user_id)
 VALUES ('4c1e22e9-85c2-4cae-add3-0e82e206e9ac', 'Dary dary dla Oliwii', 'zbieram dary', '2022-06-28 15:45:00',
-        null, 0, 3);
-INSERT INTO collection (uuid, title, description, start_time, end_time, donates, user_id)
+        null, 0, 'IN_PROGRESS', 3);
+INSERT INTO collection (uuid, title, description, start_time, end_time, donates, status, user_id)
 VALUES ('1603f612-fd7f-495d-9829-4b637d48c374', 'Pomoc dla Plamy', 'pomoc dla królika', '2022-06-28 15:55:00',
-        null, 0, 3);
+        null, 0, 'IN_PROGRESS', 3);
 
 --
 -- Dane comments

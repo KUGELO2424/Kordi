@@ -10,7 +10,7 @@ import pl.kucharski.Kordi.model.comment.CreateCommentDTO;
 import java.util.List;
 
 /**
- * @author Grzegorz Kucharski 229932@edu.p.lodz.pl
+ * @author Grzegorz Kucharski gelo2424@wp.pl
  */
 
 public interface CommentService {
