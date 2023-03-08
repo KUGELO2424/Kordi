@@ -31,10 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_ITEM_CURRENT_BIGGER_THAN_MAX;
-import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_ITEM_NOT_FOUND;
-import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_NOT_FOUND;
-import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND;
+import static pl.kucharski.Kordi.config.ErrorCodes.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -45,14 +42,16 @@ public class CollectionItemServiceImpl implements CollectionItemService {
     private final UserRepository userRepository;
     private final CollectionItemMapper itemMapper;
     private final SubmittedItemMapper submittedItemMapper;
+    private final CollectionHelper collectionHelper;
 
     public CollectionItemServiceImpl(CollectionRepository collectionRepository, SubmittedItemRepository submittedItemRepository, UserRepository userRepository, CollectionItemMapper itemMapper,
-                                     SubmittedItemMapper submittedItemMapper) {
+                                     SubmittedItemMapper submittedItemMapper, CollectionHelper collectionHelper) {
         this.collectionRepository = collectionRepository;
         this.submittedItemRepository = submittedItemRepository;
         this.userRepository = userRepository;
         this.itemMapper = itemMapper;
         this.submittedItemMapper = submittedItemMapper;
+        this.collectionHelper = collectionHelper;
     }
 
     /**
@@ -88,6 +87,8 @@ public class CollectionItemServiceImpl implements CollectionItemService {
 
         foundItem.setCurrentAmount(currentAmount);
         foundItem.setMaxAmount(maxAmount);
+
+        collectionHelper.updateStatus(collection);
 
         return itemMapper.mapToCollectionItemDTO(foundItem);
     }

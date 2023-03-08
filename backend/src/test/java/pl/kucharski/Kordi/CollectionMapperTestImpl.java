@@ -15,7 +15,6 @@ import pl.kucharski.Kordi.model.collection_item.CollectionItemMapper;
 import pl.kucharski.Kordi.model.user.User;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
@@ -56,6 +55,7 @@ public class CollectionMapperTestImpl  {
             collection1.description(collection.getDescription());
             collection1.startTime(collection.getStartTime());
             collection1.endTime(collection.getEndTime());
+            collection1.status(collection.getStatus());
             collection1.userId(collection.getUserId());
             collection1.addresses(this.addressDTOListToAddressList(collection.getAddresses()));
             collection1.items(this.collectionItemDTOListToCollectionItemList(collection.getItems()));
@@ -71,8 +71,7 @@ public class CollectionMapperTestImpl  {
             if (user == null) {
                 return null;
             } else {
-                String firstName = user.getFirstName();
-                return firstName == null ? null : firstName;
+                return user.getFirstName();
             }
         }
     }
@@ -85,8 +84,7 @@ public class CollectionMapperTestImpl  {
             if (user == null) {
                 return null;
             } else {
-                String lastName = user.getLastName();
-                return lastName == null ? null : lastName;
+                return user.getLastName();
             }
         }
     }
@@ -95,11 +93,9 @@ public class CollectionMapperTestImpl  {
         if (list == null) {
             return null;
         } else {
-            List<AddressDTO> list1 = new ArrayList(list.size());
-            Iterator var3 = list.iterator();
+            List<AddressDTO> list1 = new ArrayList<>(list.size());
 
-            while(var3.hasNext()) {
-                Address address = (Address)var3.next();
+            for (Address address : list) {
                 list1.add(this.addressMapper.mapToAddressDTO(address));
             }
 
@@ -111,11 +107,9 @@ public class CollectionMapperTestImpl  {
         if (list == null) {
             return null;
         } else {
-            List<CollectionItemDTO> list1 = new ArrayList(list.size());
-            Iterator var3 = list.iterator();
+            List<CollectionItemDTO> list1 = new ArrayList<>(list.size());
 
-            while(var3.hasNext()) {
-                CollectionItem collectionItem = (CollectionItem)var3.next();
+            for (CollectionItem collectionItem : list) {
                 list1.add(this.collectionItemMapper.mapToCollectionItemDTO(collectionItem));
             }
 
@@ -127,11 +121,9 @@ public class CollectionMapperTestImpl  {
         if (list == null) {
             return null;
         } else {
-            List<Address> list1 = new ArrayList(list.size());
-            Iterator var3 = list.iterator();
+            List<Address> list1 = new ArrayList<>(list.size());
 
-            while(var3.hasNext()) {
-                AddressDTO addressDTO = (AddressDTO)var3.next();
+            for (AddressDTO addressDTO : list) {
                 list1.add(this.addressMapper.mapToAddress(addressDTO));
             }
 
@@ -143,11 +135,9 @@ public class CollectionMapperTestImpl  {
         if (list == null) {
             return null;
         } else {
-            List<CollectionItem> list1 = new ArrayList(list.size());
-            Iterator var3 = list.iterator();
+            List<CollectionItem> list1 = new ArrayList<>(list.size());
 
-            while(var3.hasNext()) {
-                CollectionItemDTO collectionItemDTO = (CollectionItemDTO)var3.next();
+            for (CollectionItemDTO collectionItemDTO : list) {
                 list1.add(this.collectionItemMapper.mapToCollectionItem(collectionItemDTO));
             }
 

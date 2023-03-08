@@ -44,6 +44,9 @@ public class Collection extends BaseEntity {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
+    @Column(name = "completed_time")
+    private LocalDateTime completedTime;
+
     @Lob
     @Column(name = "image")
     private byte[] image;
@@ -81,7 +84,7 @@ public class Collection extends BaseEntity {
     private List<Comment> comments;
 
     public Collection(Long id, String title, String description, LocalDateTime startTime, LocalDateTime endTime, Long donates,
-                      User user, List<Address> addresses, List<CollectionItem> items,
+                      CollectionStatus status, User user, List<Address> addresses, List<CollectionItem> items,
                       List<SubmittedItem> submittedItems, List<Comment> comments) {
         super(id);
         this.title = title;
@@ -94,6 +97,7 @@ public class Collection extends BaseEntity {
         setSubmittedItems(submittedItems);
         setComments(comments);
         setDonates(donates);
+        setStatus(status);
     }
 
     public Collection() {
@@ -144,7 +148,15 @@ public class Collection extends BaseEntity {
         this.endTime = endTime;
     }
 
+    public void setCompletedTime(LocalDateTime completedTime) {
+        this.completedTime = completedTime;
+    }
+
     public void setDonates(Long donates) {
         this.donates = donates;
+    }
+
+    public void setStatus(CollectionStatus status) {
+        this.status = status;
     }
 }

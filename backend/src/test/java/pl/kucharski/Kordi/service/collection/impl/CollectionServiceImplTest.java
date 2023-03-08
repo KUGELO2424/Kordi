@@ -55,6 +55,7 @@ class CollectionServiceImplTest {
     private final AddressMapper addressMapper = Mappers.getMapper(AddressMapper.class);
     private final CollectionItemMapper itemMapper = Mappers.getMapper(CollectionItemMapper.class);
     private final CollectionMapper collectionMapper = new CollectionMapperImpl(addressMapper, itemMapper);
+    private final CollectionHelper collectionHelper = new CollectionHelper();
 
     private static Collection COLLECTION_WITH_ID;
     private static CollectionDTO COLLECTION_DTO_WITH_ID;
@@ -71,7 +72,7 @@ class CollectionServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new CollectionServiceImpl(collectionRepository, userRepository, collectionMapper);
+        underTest = new CollectionServiceImpl(collectionRepository, userRepository, collectionMapper, collectionHelper);
         COLLECTION_WITH_ID = createCollectionWithId();
         COLLECTION_DTO_WITH_ID = createCollectionDTOWithId();
         COLLECTION_DTO_WITHOUT_ID = createCollectionDTOWithoutId();

@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS collection (
     description VARCHAR(1000),
     start_time DATETIME,
     end_time DATETIME,
+    completed_time DATETIME,
     image LONGBLOB,
     donates BIGINT,
     status ENUM('IN_PROGRESS', 'COMPLETED', 'ARCHIVED') NOT NULL,

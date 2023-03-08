@@ -51,6 +51,7 @@ class CollectionItemServiceImplTest {
 
     private final CollectionItemMapper itemMapper = Mappers.getMapper(CollectionItemMapper.class);
     private final SubmittedItemMapper submittedItemMapper = new SubmittedItemMapperImpl();
+    private final CollectionHelper collectionHelper = new CollectionHelper();
     private static Collection COLLECTION_WITH_ID;
     private static CollectionItemDTO COLLECTION_ITEM_DTO;
     private static CollectionItemDTO COLLECTION_ITEM_V2_DTO;
@@ -70,7 +71,8 @@ class CollectionItemServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new CollectionItemServiceImpl(collectionRepository, submittedItemRepository, userRepository, itemMapper, submittedItemMapper);
+        underTest = new CollectionItemServiceImpl(collectionRepository, submittedItemRepository, userRepository,
+                itemMapper, submittedItemMapper, collectionHelper);
 
         COLLECTION_WITH_ID = createCollectionWithId();
         COLLECTION_ITEM_DTO = createItemDTOWithId();

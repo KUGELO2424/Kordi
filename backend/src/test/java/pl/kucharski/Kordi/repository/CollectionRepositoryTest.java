@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.CollectionMapperTestImpl;
+import pl.kucharski.Kordi.enums.CollectionStatus;
 import pl.kucharski.Kordi.enums.ItemCategory;
 import pl.kucharski.Kordi.enums.ItemType;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
@@ -241,6 +242,7 @@ class CollectionRepositoryTest {
     @Test
     void shouldSaveCollection() {
         // when
+        COLLECTION_DTO_TO_SAVE.setStatus(CollectionStatus.IN_PROGRESS);
         Collection savedCollection = underTest.save(collectionMapper.mapToCollection(COLLECTION_DTO_TO_SAVE));
 
         // then

@@ -25,9 +25,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_END_DATE_INVALID;
-import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_NOT_FOUND;
-import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND;
+import static pl.kucharski.Kordi.config.ErrorCodes.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -37,10 +35,13 @@ public class CollectionServiceImpl implements CollectionService {
     private final UserRepository userRepository;
     private final CollectionMapper collectionMapper;
 
-    public CollectionServiceImpl(CollectionRepository collectionRepository, UserRepository userRepository, CollectionMapper collectionMapper) {
+    private final CollectionHelper collectionHelper;
+
+    public CollectionServiceImpl(CollectionRepository collectionRepository, UserRepository userRepository, CollectionMapper collectionMapper, CollectionHelper collectionHelper) {
         this.collectionRepository = collectionRepository;
         this.userRepository = userRepository;
         this.collectionMapper = collectionMapper;
+        this.collectionHelper = collectionHelper;
     }
 
     /**
@@ -132,6 +133,7 @@ public class CollectionServiceImpl implements CollectionService {
         } else {
             collection.setEndTime(null);
         }
+        collection = collectionHelper.updateStatus(collection);
         return collectionMapper.mapToCollectionDTO(collection);
     }
 }

@@ -2,6 +2,7 @@ package pl.kucharski.Kordi;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import pl.kucharski.Kordi.enums.CollectionStatus;
 import pl.kucharski.Kordi.enums.ItemType;
 import pl.kucharski.Kordi.enums.VerificationType;
 import pl.kucharski.Kordi.model.address.Address;
@@ -56,8 +57,9 @@ public class CollectionData {
     }
 
     public static Collection createCollectionWithId() {
-        return new Collection(1L, "New Collection", "desc",
-                CURRENT_TIME, null, 0L, USER, crateListOfAddresses(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        return new Collection(1L, "New Collection", "desc", CURRENT_TIME, null, 0L,
+                CollectionStatus.IN_PROGRESS, USER, crateListOfAddresses(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>());
     }
 
     public static CollectionDTO createCollectionDTOWithId() {
@@ -69,6 +71,7 @@ public class CollectionData {
                 .userFirstname("Test")
                 .userLastname("test")
                 .donates(0L)
+                .status(CollectionStatus.IN_PROGRESS)
                 .addresses(List.of(ADDRESS_DTO))
                 .items(new ArrayList<>())
                 .build();
