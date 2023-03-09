@@ -3,11 +3,15 @@ package pl.kucharski.Kordi.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import pl.kucharski.Kordi.enums.CollectionStatus;
 import pl.kucharski.Kordi.enums.ItemCategory;
 import pl.kucharski.Kordi.model.collection.Collection;
 
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -20,6 +24,13 @@ public interface CollectionRepository extends JpaRepository<Collection, Long> {
     boolean existsById(Long collectionId);
 
     List<Collection> findByUserUsername(String username, Pageable pageable);
+
+    List<Collection> findAllByEndTimeBeforeAndStatus(LocalDateTime dateTime, CollectionStatus status);
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Collection c SET c.status = ?2 WHERE c.id = ?1")
+    void updateCollectionStatus(Long id, CollectionStatus status);
 
     @Query(value =
             "SELECT DISTINCT c FROM Collection c " +

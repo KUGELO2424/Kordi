@@ -15,11 +15,13 @@ spring:
     host: localhost
     port: 3025
     protocol: smtp
-#    password: secret
-#    username: username
 
 jwt:
   secret: testSecret
 
 allowed:
   origins: http://localhost:4200
+
+config:
+  collection-update:
+    cron: 0 0 * * * *

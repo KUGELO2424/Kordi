@@ -147,7 +147,7 @@ VALUES ('4c1e22e9-85c2-4cae-add3-0e82e206e9ac', 'Dary dary dla Oliwii', 'zbieram
         null, 0, 'IN_PROGRESS', 3);
 INSERT INTO collection (uuid, title, description, start_time, end_time, donates, status, user_id)
 VALUES ('1603f612-fd7f-495d-9829-4b637d48c374', 'Pomoc dla Plamy', 'pomoc dla królika', '2022-06-28 15:55:00',
-        null, 0, 'IN_PROGRESS', 3);
+        '2022-07-28 15:55:00', 0, 'IN_PROGRESS', 3);
 
 --
 -- Dane comments

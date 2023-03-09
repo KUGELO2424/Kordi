@@ -240,6 +240,16 @@ class CollectionRepositoryTest {
     }
 
     @Test
+    void shouldFindCollectionInProgressWithEndTimeInThePast() {
+        // given + when
+        List<Collection> collections =
+                underTest.findAllByEndTimeBeforeAndStatus(LocalDateTime.now(), CollectionStatus.IN_PROGRESS);
+
+        // then
+        Assertions.assertEquals(1, collections.size());
+    }
+
+    @Test
     void shouldSaveCollection() {
         // when
         COLLECTION_DTO_TO_SAVE.setStatus(CollectionStatus.IN_PROGRESS);
