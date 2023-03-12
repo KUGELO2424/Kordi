@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.KordiApplication;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -21,6 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static pl.kucharski.Kordi.CollectionData.ITEMS_DTO_TO_SUBMIT;
+import static pl.kucharski.Kordi.CollectionData.ITEMS_DTO_TO_SUBMIT_WITH_NOT_EXISTING_ITEM;
 import static pl.kucharski.Kordi.CollectionData.ITEMS_DTO_TO_SUBMIT_WITH_WRONG_VALUES;
 import static pl.kucharski.Kordi.CollectionData.ITEM_DTO_TO_ADD;
 import static pl.kucharski.Kordi.CollectionData.ITEM_TO_UPDATE;
@@ -44,6 +46,8 @@ class ItemControllerTest {
 
     @Autowired
     private MockMvc mvc;
+
+    private static final String USER_THAT_SUBMITTED_ITEM = "adam";
 
     @Test
     @WithMockUser(username = "ewa")
@@ -78,7 +82,6 @@ class ItemControllerTest {
 
     @Test
     @WithMockUser(username = "ewa")
-    @Transactional
     void shouldUpdateCollectionItem() throws Exception {
         mvc.perform(patch("/collections/" + EXISTING_COLLECTION_ID + "/items/" + EXISTING_ITEM_ID)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -125,7 +128,7 @@ class ItemControllerTest {
     @Test
     @WithMockUser(username = "ewa")
     @Transactional
-    void shouldReturnOkOnSubmitNewItem() throws Exception {
+    void shouldSubmitNewItem() throws Exception {
         mvc.perform(post("/collections/" + EXISTING_COLLECTION_ID + "/items/submit")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ITEMS_DTO_TO_SUBMIT)
@@ -137,7 +140,16 @@ class ItemControllerTest {
 
     @Test
     @WithMockUser(username = "ewa")
-    @Transactional
+    void shouldReturn404OnSubmitNewItemIfCollectionItemNotFound() throws Exception {
+        mvc.perform(post("/collections/" + EXISTING_COLLECTION_ID + "/items/submit")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ITEMS_DTO_TO_SUBMIT_WITH_NOT_EXISTING_ITEM)
+                )
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(username = "ewa")
     void shouldReturn400OnSubmitNewItemIfNewValuesNotValid() throws Exception {
         mvc.perform(post("/collections/" + EXISTING_COLLECTION_ID + "/items/submit")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -171,13 +183,41 @@ class ItemControllerTest {
 
     @Test
     @WithMockUser(username = "ewa")
-    @Transactional
+    void shouldReturnNSubmittedItems() throws Exception {
+        mvc.perform(get("/collections/" + EXISTING_COLLECTION_ID + "/submittedItems?numberOfSubmittedItems=1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()", is(1)));
+    }
+
+    @Test
+    @WithMockUser(username = "ewa")
     void shouldReturnAllSubmittedItemsForSpecificItem() throws Exception {
         mvc.perform(get("/collections/" + EXISTING_COLLECTION_ID + "/items/" + EXISTING_ITEM_ID_2 + "/submittedItems")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()", is(1)));
+    }
+
+    @Test
+    @WithMockUser(username = "ewa")
+    void shouldThrowCollectionNotFoundOnGetSubmittedItems() throws Exception {
+        mvc.perform(get("/collections/" + NOT_EXISTING_COLLECTION_ID + "/submittedItems")
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(username = "ewa")
+    void shouldReturnSubmittedItemsForUser() throws Exception {
+        mvc.perform(get("/collections/submittedItems?username=ewa")
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(0)));
     }
 
     @Test

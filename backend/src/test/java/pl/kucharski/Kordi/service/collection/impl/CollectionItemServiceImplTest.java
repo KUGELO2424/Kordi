@@ -9,16 +9,22 @@ import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import pl.kucharski.Kordi.exception.CollectionItemException;
 import pl.kucharski.Kordi.exception.CollectionItemNotFoundException;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
+import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.model.collection.Collection;
 import pl.kucharski.Kordi.model.collection_item.CollectionItemDTO;
 import pl.kucharski.Kordi.model.collection_item.CollectionItemMapper;
+import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItem;
 import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItemDTO;
 import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItemMapper;
 import pl.kucharski.Kordi.model.collection_submitted_item.SubmittedItemMapperImpl;
@@ -26,6 +32,7 @@ import pl.kucharski.Kordi.repository.CollectionRepository;
 import pl.kucharski.Kordi.repository.SubmittedItemRepository;
 import pl.kucharski.Kordi.repository.UserRepository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +42,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static pl.kucharski.Kordi.CollectionData.PAGING;
+import static pl.kucharski.Kordi.CollectionData.PAGING_WITH_WRONG_SORT;
 import static pl.kucharski.Kordi.CollectionData.USER;
 import static pl.kucharski.Kordi.CollectionData.USERNAME;
 import static pl.kucharski.Kordi.CollectionData.createCollectionWithId;
@@ -44,6 +53,7 @@ import static pl.kucharski.Kordi.CollectionData.createSubmittedItemDTO;
 import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_ITEM_CURRENT_BIGGER_THAN_MAX;
 import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_ITEM_NOT_FOUND;
 import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_NOT_FOUND;
+import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND;
 
 @ExtendWith(MockitoExtension.class)
 @Transactional
@@ -203,6 +213,19 @@ class CollectionItemServiceImplTest {
     }
 
     @Test
+    void shouldThrowUserNotFoundOnSubmitItem() {
+        // given
+        mockSecurityContextHolder();
+        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(null);
+
+        // when + then
+        UserNotFoundException exception =
+                assertThrows(UserNotFoundException.class,
+                        () -> underTest.submitItem(COLLECTION_WITH_ID.getId(), COLLECTION_ITEM_DTO.getId(), ITEM_TO_SUBMIT));
+        assertEquals(USER_NOT_FOUND, exception.getMessage());
+    }
+
+    @Test
     void shouldThrowCollectionNotFoundOnSubmitItem() {
         // given
         mockSecurityContextHolder();
@@ -244,6 +267,61 @@ class CollectionItemServiceImplTest {
 
         // then
         assertEquals(2, submittedItems.size());
+    }
+
+    @Test
+    void shouldGetSubmittedItemsForUser() {
+        // given
+        SubmittedItem submittedItem = submittedItemMapper.mapToSubmittedItem(ITEM_TO_SUBMIT);
+        given(submittedItemRepository.findByUserUsername(USERNAME, PAGING))
+                .willReturn(new PageImpl<>(List.of(submittedItem, submittedItem)));
+
+        // when
+        Page<SubmittedItemDTO> submittedItems = underTest.getSubmittedItemsForUser(USERNAME,PAGING);
+
+        // then
+        assertEquals(2, submittedItems.getContent().size());
+    }
+
+    @Test
+    void shouldReturnEmptyPageOnGetSubmittedItemsForUser() {
+        // given
+        given(submittedItemRepository.findByUserUsername(USERNAME, PAGING))
+                .willReturn(Page.empty());
+
+        // when
+        Page<SubmittedItemDTO> submittedItems = underTest.getSubmittedItemsForUser(USERNAME,PAGING);
+
+        // then
+        assertEquals(0, submittedItems.getContent().size());
+    }
+
+    @Test
+    void shouldThrowBadRequestOnGetSubmittedItemsForUserIfSortByWithWrongName() {
+        // given
+        given(submittedItemRepository
+                .findByUserUsername(USERNAME, PAGING_WITH_WRONG_SORT))
+                .willThrow(new InvalidDataAccessApiUsageException("wrong sortBy"));
+
+        // when + then
+        assertThrows(ResponseStatusException.class, () -> underTest.getSubmittedItemsForUser(USERNAME, PAGING_WITH_WRONG_SORT));
+    }
+
+    @ParameterizedTest
+    @CsvSource({"1", "2"})
+    void shouldGetLastSubmittedItems(int numberOfSubmittedItems) {
+        // given
+        COLLECTION_WITH_ID.addItem(itemMapper.mapToCollectionItem(COLLECTION_ITEM_DTO));
+        assertEquals(0, COLLECTION_WITH_ID.getSubmittedItems().size());
+        COLLECTION_WITH_ID.addSubmittedItem(submittedItemMapper.mapToSubmittedItem(ITEM_TO_SUBMIT));
+        COLLECTION_WITH_ID.addSubmittedItem(submittedItemMapper.mapToSubmittedItem(ITEM_TO_SUBMIT));
+        given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
+
+        // when
+        List<SubmittedItemDTO> submittedItems = underTest.getLastSubmittedItems(1L, numberOfSubmittedItems);
+
+        // then
+        assertEquals(numberOfSubmittedItems, submittedItems.size());
     }
 
     @Test

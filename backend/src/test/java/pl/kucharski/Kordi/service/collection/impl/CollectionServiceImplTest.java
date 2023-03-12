@@ -9,12 +9,14 @@ import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import pl.kucharski.Kordi.enums.ItemCategory;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.model.address.AddressMapper;
@@ -28,16 +30,19 @@ import pl.kucharski.Kordi.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static pl.kucharski.Kordi.CollectionData.PAGING;
+import static pl.kucharski.Kordi.CollectionData.PAGING_WITH_WRONG_SORT;
 import static pl.kucharski.Kordi.CollectionData.TOMORROW;
 import static pl.kucharski.Kordi.CollectionData.USER;
 import static pl.kucharski.Kordi.CollectionData.USERNAME;
@@ -191,6 +196,19 @@ class CollectionServiceImplTest {
     }
 
     @Test
+    void shouldThrowBadRequestOnGetCollectionsIfSortByWithWrongName() {
+        // given
+        given(collectionRepository
+                .findWithFiltering("", "", "", "", 0,
+                        Collections.emptyList(), PAGING_WITH_WRONG_SORT))
+                .willThrow(new InvalidDataAccessApiUsageException("wrong sortBy"));
+
+        // when + then
+        assertThrows(ResponseStatusException.class, () -> underTest.getCollectionsWithFiltering(
+                        "", "", "", "", Collections.emptyList(), PAGING_WITH_WRONG_SORT));
+    }
+
+    @Test
     void shouldReturnCollectionsByAddress() {
         // given
         given(collectionRepository
@@ -293,6 +311,18 @@ class CollectionServiceImplTest {
         // then
         assertEquals(LocalDateTime.now().minusDays(1).truncatedTo(ChronoUnit.MINUTES),
                 collectionDTO.getEndTime().truncatedTo(ChronoUnit.MINUTES));
+    }
+
+    @Test
+    void shouldUpdateCollectionWithEndTimeEqualsNull() {
+        // given
+        given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
+
+        // when
+        CollectionDTO collectionDTO = underTest.updateCollection(1L, "", "", null);
+
+        // then
+        assertNull(collectionDTO.getEndTime());
     }
 
     @Test

@@ -2,6 +2,7 @@ package pl.kucharski.Kordi;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import pl.kucharski.Kordi.config.PaginationConstants;
 import pl.kucharski.Kordi.enums.CollectionStatus;
 import pl.kucharski.Kordi.enums.ItemType;
 import pl.kucharski.Kordi.enums.VerificationType;
@@ -22,6 +23,7 @@ import java.util.List;
 public class CollectionData {
 
     public static final Pageable PAGING = PageRequest.of(0, 10);
+    public static final Pageable PAGING_WITH_WRONG_SORT = PaginationConstants.getPageable(0, 10, "wrong", "asc");
     public static final LocalDateTime CURRENT_TIME = LocalDateTime.now();
     public static final LocalDateTime TOMORROW = LocalDateTime.now().plusDays(1);
     public static final LocalDateTime YESTERDAY = LocalDateTime.now().minusDays(1);
@@ -268,6 +270,12 @@ public class CollectionData {
             "\"username\":\"test123\"," +
             "\"collectionId\":\"1\"," +
             "\"collectionItemId\":\"1\"}]";
+
+    public static final String ITEMS_DTO_TO_SUBMIT_WITH_NOT_EXISTING_ITEM = "[{" +
+            "\"amount\":\"1\", " +
+            "\"username\":\"test123\"," +
+            "\"collectionId\":\"1\"," +
+            "\"collectionItemId\":\"555\"}]";
 
     public static final String ADDRESS_TO_ADD = "{" +
             "\"city\":\"NewCity\", " +

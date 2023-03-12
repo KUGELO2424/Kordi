@@ -165,6 +165,20 @@ class CommentServiceImplTest {
         assertEquals(1, comments.getContent().size());
     }
 
+    @Test
+    void shouldReturnEmptyListOfComments() {
+        // given
+        given(commentRepository.getAllByCollectionId(1L, CollectionData.PAGING)).willReturn(null);
+        given(collectionRepository.existsById(1L)).willReturn(true);
+
+        // when
+        Page<CommentDTO> comments = underTest.getAllComments(1L, CollectionData.PAGING);
+
+        // then
+        assertNotNull(comments);
+        assertEquals(0, comments.getContent().size());
+    }
+
     private void mockSecurityContextHolder() {
         Authentication authentication = mock(Authentication.class);
         SecurityContext securityContext = mock(SecurityContext.class);

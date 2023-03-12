@@ -162,7 +162,6 @@ class UserControllerTest {
     @Test
     @WithMockUser
     public void shouldReturnUsers() throws Exception {
-
         mvc.perform(get("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
@@ -173,9 +172,27 @@ class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(username = LOGIN_USERNAME)
+    public void shouldReturnLoggedUser() throws Exception {
+        mvc.perform(get("/users/me")
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username", is("gelo2424")));
+    }
+
+    @Test
+    @WithMockUser
+    public void shouldReturn404IfUserNotFound() throws Exception {
+        mvc.perform(get("/users/me")
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     @WithMockUser
     public void shouldReturnUser() throws Exception {
-
         mvc.perform(get("/users/" + LOGIN_USERNAME)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -360,6 +377,25 @@ class UserControllerTest {
                         .param("password", "newPassword"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.access_token", is(notNullValue())));
+    }
+
+    @Test
+    public void shouldValidateUserToken() throws Exception {
+        String token = logInUser();
+        String tokenWithBearer = "Bearer " + token;
+        mvc.perform(post("/validate?username=" + LOGIN_USERNAME + "&token=" + tokenWithBearer)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is("Token valid")));
+    }
+
+    @Test
+    public void shouldReturnTokenNotValidValidateUserToken() throws Exception {
+        String token = "wrongToken";
+        mvc.perform(post("/validate?username=" + LOGIN_USERNAME + "&token=" + token)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$", is("Token not valid")));
     }
 
     private String logInUser() throws Exception {

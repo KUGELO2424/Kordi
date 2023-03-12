@@ -50,6 +50,7 @@ class CollectionControllerTest {
 
     public final static Long EXISTING_COLLECTION_ID = 1L;
     public final static Long EXISTING_COLLECTION_ID_2 = 2L;
+    public final static Long EXISTING_COLLECTION_ID_3 = 3L;
     public final static Long NOT_EXISTING_COLLECTION_ID = 555L;
     public final static Long EXISTING_ITEM_ID = 1L;
     public final static Long EXISTING_ITEM_ID_2 = 2L;
@@ -277,12 +278,37 @@ class CollectionControllerTest {
 
     @Test
     @WithMockUser(username = EXISTING_USERNAME)
-    void shouldNotAddNewAddressToCollectionIfUserIsNotAnOwner() throws Exception {
+    void shouldReturnBadRequestIfAddressExists() throws Exception {
         mvc.perform(post("/collections/" + EXISTING_COLLECTION_ID + "/addresses")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ADDRESS_TO_ADD)
                 )
                 .andExpect(status().isOk());
+        mvc.perform(post("/collections/" + EXISTING_COLLECTION_ID + "/addresses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ADDRESS_TO_ADD)
+                )
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser(username = EXISTING_USERNAME)
+    void shouldReturnCollectionNotFoundOnAddAddress() throws Exception {
+        mvc.perform(post("/collections/" + NOT_EXISTING_COLLECTION_ID + "/addresses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ADDRESS_TO_ADD)
+                )
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(username = EXISTING_USERNAME)
+    void shouldNotAddNewAddressToCollectionIfUserIsNotAnOwner() throws Exception {
+        mvc.perform(post("/collections/" + EXISTING_COLLECTION_ID_3 + "/addresses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ADDRESS_TO_ADD)
+                )
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -312,13 +338,23 @@ class CollectionControllerTest {
 
     @Test
     @WithMockUser(username = EXISTING_USERNAME)
-    void shouldNotRemoveAddressFromCollectionIfUserIsNotAnOwner() throws Exception {
-
-        mvc.perform(delete("/collections/" + EXISTING_COLLECTION_ID + "/addresses")
+    void shouldReturnCollectionNotFoundOnDeleteAddress() throws Exception {
+        mvc.perform(delete("/collections/" + NOT_EXISTING_COLLECTION_ID + "/addresses")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ADDRESS_TO_ADD)
                 )
-                .andExpect(status().isOk());
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(username = EXISTING_USERNAME)
+    void shouldNotRemoveAddressFromCollectionIfUserIsNotAnOwner() throws Exception {
+
+        mvc.perform(delete("/collections/" + EXISTING_COLLECTION_ID_3 + "/addresses")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ADDRESS_TO_ADD)
+                )
+                .andExpect(status().isForbidden());
 
     }
 }
