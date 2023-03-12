@@ -5,6 +5,12 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,6 +38,7 @@ import pl.kucharski.Kordi.service.verification.EmailTokenService;
 
 import javax.validation.Valid;
 import java.util.Collections;
+import java.util.List;
 
 import static pl.kucharski.Kordi.config.ErrorCodes.USER_NOT_FOUND_WITH_GIVEN_TOKEN;
 
@@ -57,25 +64,23 @@ public class UserController {
         this.tokenAlgorithm = tokenAlgorithm;
     }
 
-    /**
-     * Get all users created in system.
-     *
-     * @return list of users or empty list if no users
-     */
+    @Operation(summary = "Get all users")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "list of users"),
+    })
     @GetMapping("/users")
-    public ResponseEntity<?> getUsers() {
+    public ResponseEntity<List<UserDTO>> getUsers() {
         log.info("Request to get all users");
         return ResponseEntity.ok(userService.getUsers());
     }
 
-    /**
-     * Get user by username
-     *
-     * @param username username of user
-     * @return list of users or empty list if no users
-     */
+    @Operation(summary = "Get user by username")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "user"),
+            @ApiResponse(responseCode = "404", description = "username not found", content = @Content),
+    })
     @GetMapping("/users/{username}")
-    public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
+    public ResponseEntity<UserDTO> getUserByUsername(@Parameter(description = "username of user") @PathVariable String username) {
         try {
             log.info("Request to get user by username {}", username);
             UserDTO user = userService.getUserByUsername(username);
@@ -87,13 +92,13 @@ public class UserController {
         }
     }
 
-    /**
-     * Get logged user
-     *
-     * @return currently logged user
-     */
+    @Operation(summary = "Get logged user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "currently logged user"),
+            @ApiResponse(responseCode = "404", description = "username from token not found", content = @Content),
+    })
     @GetMapping("/users/me")
-    public ResponseEntity<?> getLoggedUser() {
+    public ResponseEntity<UserDTO> getLoggedUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         try {
             log.info("Request to get logged user");
@@ -106,17 +111,16 @@ public class UserController {
         }
     }
 
-    /**
-     * Register new user in system, you can choose between EMAIL or PHONE verification.
-     * After successful registration, token is sent to user email or phone, which is needed
-     * to verify account by {@link UserController#verifyUser(String, String)}.
-     *
-     * @param user DTO of user to register
-     * @return VerificationStatus - if token was sent correctly,<br>
-     *         status 400 with message if UserRegisterException occurred
-     */
+    @Operation(summary = "Register new user", description = "Register new user in system, you can choose between EMAIL or PHONE verification. " +
+            "After successful registration, token is sent to user email or phone, which is needed " +
+            "to verify account")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "verification status",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = VerificationStatus.class)) }),
+            @ApiResponse(responseCode = "400", description = "cannot register user", content = @Content),
+    })
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> saveUser(@RequestBody @Valid UserRegistrationDTO user) {
+    public ResponseEntity<?> saveUser(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "user to register") @RequestBody @Valid UserRegistrationDTO user) {
         VerificationStatus result;
         try {
             log.info("Request to save user {}", user);
@@ -127,18 +131,16 @@ public class UserController {
         return ResponseEntity.ok(Collections.singletonMap("status", result));
     }
 
-    /**
-     * Send verification token again if user account was already created.
-     * Then token is sent to user email or phone, which is needed to verify account
-     * by {@link UserController#verifyUser(String, String)}.
-     *
-     * @param username username of user to send verification token
-     * @return VerificationStatus - if token was sent correctly,<br>
-     *         status 404 with message if UserNotFoundException occurred
-     *         status 400 with message if some error occurred
-     */
+    @Operation(summary = "Send verification token", description = "Send verification token again if user account was already created. " +
+            "Then token is sent to user email or phone, which is needed to verify account")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "verification status",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = VerificationStatus.class)) }),
+            @ApiResponse(responseCode = "400", description = "cannot send token again", content = @Content),
+            @ApiResponse(responseCode = "404", description = "username not found", content = @Content),
+    })
     @PostMapping(value = "/sendToken", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> sendVerificationTokenAgain(@RequestParam("username") String username) {
+    public ResponseEntity<?> sendVerificationTokenAgain(@Parameter(description = "username of user to send verification token") @RequestParam("username") String username) {
         VerificationStatus result;
         try {
             log.info("Request to send verification token for user {}", username);
@@ -153,19 +155,18 @@ public class UserController {
         return ResponseEntity.ok(Collections.singletonMap("status", result));
     }
 
-    /**
-     * Verify existing user by a token. This endpoint is used in both type of verification EMAIL and PHONE.
-     * If you want to verify token that was sent by PHONE verification, you need to specify additional
-     * parameter which is user phone number
-     *
-     * @param token token sent during registration
-     * @param phone user phone number if you want to verify token sent to your phone
-     * @return VerificationStatus APPROVED if user verified,<br>
-     *         400 with message if some problem occurred
-     */
+    @Operation(summary = "Verify user", description = "Verify existing user by a token. This endpoint is used in both " +
+            "type of verification EMAIL and PHONE. If you want to verify token that was sent by PHONE verification, " +
+            "you need to specify additional parameter which is user phone number")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "verification status",
+                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = VerificationStatus.class)) }),
+            @ApiResponse(responseCode = "400", description = "cannot send token again", content = @Content),
+            @ApiResponse(responseCode = "404", description = "user not found", content = @Content),
+    })
     @GetMapping("/verify")
-    public ResponseEntity<?> verifyUser(@RequestParam("token") String token,
-                                        @RequestParam(value = "phone", required = false) String phone) {
+    public ResponseEntity<?> verifyUser(@Parameter(description = "token sent during registration") @RequestParam("token") String token,
+                                        @Parameter(description = "user phone number if you want to verify token sent to your phone") @RequestParam(value = "phone", required = false) String phone) {
         try {
             log.info("Request to verify user with token {} and phone number {}", token, phone);
             VerificationStatus result;
@@ -182,16 +183,14 @@ public class UserController {
         }
     }
 
-    /**
-     * Check if token with given username is valid
-     *
-     * @param username username of logged user
-     * @param token JWT token of logged user
-     * @return 200 if token is valid<br>
-     *         400 if token not valid or param not given
-     */
+    @Operation(summary = "Validate jwt token", description = "Check if token with given username is valid")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "token is valid"),
+            @ApiResponse(responseCode = "400", description = "token not valid or param not given", content = @Content),
+    })
     @PostMapping("/validate")
-    public ResponseEntity<?> validate(@RequestParam(value = "username") String username, @RequestParam("token") String token) {
+    public ResponseEntity<?> validate(@Parameter(description = "username of logged user") @RequestParam(value = "username") String username,
+                                      @Parameter(description = "JWT token of logged user") @RequestParam("token") String token) {
         String tokenWithoutBearer = token.substring(7);
         boolean validationResult = validateToken(username, tokenWithoutBearer);
         if (validationResult) {
@@ -200,19 +199,16 @@ public class UserController {
         return ResponseEntity.badRequest().body("Token not valid");
     }
 
-    /**
-     * Update user password
-     *
-     * @param newPassword new password to set
-     * @param oldPassword old password of user to check if correct
-     * @return message if password changed<br>
-     *         400 if new password invalid
-     *         400 if old password does not match password
-     */
+    @Operation(summary = "Update user password")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "password changed"),
+            @ApiResponse(responseCode = "400", description = "new password invalid", content = @Content),
+            @ApiResponse(responseCode = "400", description = "old password does not match password", content = @Content),
+    })
     @PutMapping("/users/updatePassword")
     @CrossOrigin("${allowed.origins}")
-    public ResponseEntity<?> updatedUserPassword(@RequestParam("password") String newPassword,
-                                                 @RequestParam("oldPassword") String oldPassword) {
+    public ResponseEntity<?> updatedUserPassword(@Parameter(description = "new password to set") @RequestParam("password") String newPassword,
+                                                 @Parameter(description = "old password of user") @RequestParam("oldPassword") String oldPassword) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         try {
             log.info("Request to update password for user {}", username);
