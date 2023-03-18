@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0.27
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+    environment:
+      MYSQL_USER: kordi
+      MYSQL_PASSWORD: kordi
+      MYSQL_DATABASE: kordi
+      MYSQL_ROOT_PASSWORD: kordi
+    volumes:
+      - db:/var/lib/
+volumes:
+  db:

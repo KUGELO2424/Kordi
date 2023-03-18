@@ -3,12 +3,16 @@ spring:
     import: optional:classpath:configuration.properties
   datasource:
     url: jdbc:mysql://${DB_HOSTNAME}:${DB_PORT}/${DB_NAME}
-    username: ${KORDI_USER}
-    password: ${KORDI_PASS}
+    username: ${DB_USER}
+    password: ${DB_PASS}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
   mail:
     host: ${MAIL_HOST}
     port: ${MAIL_PORT}
