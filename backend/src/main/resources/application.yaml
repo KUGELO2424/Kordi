@@ -12,7 +12,7 @@ spring:
     defer-datasource-initialization: true
   sql:
     init:
-      mode: always
+      mode: embedded
   mail:
     host: ${MAIL_HOST}
     port: ${MAIL_PORT}
