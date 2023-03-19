@@ -22,7 +22,7 @@ docker-compose -f mysql.yml up -d
 ```
 
 **Step 2:**
-The `ddl-auto` property is set to `update` by default. After launching the kordi application, the database schema will be prepared and the initial data will be added by importing the test data from `data.sql` file. If you want to create the database schema yourself, you can use the db_schema.sql file for this purpose.
+The `ddl-auto` property is set to `update` by default. After launching the kordi application, the database schema will be prepared. To import the initial data, change the `sql.init.mode` property to `always` to import data from the `data.sql` file. After importing the data, return to the previous value to prevent the data from being loaded twice. If you want to create the database schema yourself, you can use the db_schema.sql file for this purpose.
 
 **Step 3:**
 Before running project, export `DB_HOSTNAME`, `DB_PORT`, `DB_NAME`, `KORDI_USER` and `KORDI_PASS` as your enviromental variables or add them to configuration.properties file locally with proper values.
@@ -47,7 +47,7 @@ TWILIO_AUTH_TOKEN=test
 TWILIO_SERVICE_ID=test
 ```
 
-**Step 4:**
+**Step 5:**
 Project use mailing for verifing user by email address. To use email verification add enviromental variables to configuration.properties file locally with proper values.
 Example values in configuration.properties that could be used for mail server
 
@@ -58,7 +58,7 @@ MAIL_USER=test
 MAIL_PASSWORD=test
 ```
 
-**Step 5:**
+**Step 6:**
 After setting all the properties, run the following command to launch the application:
 
 ```
