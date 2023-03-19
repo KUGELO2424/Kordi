@@ -97,7 +97,7 @@ After setting all the properties, run the following command to launch the applic
 
 ### Phone verification
 
-![verify](https://user-images.githubusercontent.com/55559640/213879484-900f8f8f-020f-4f1a-8139-f0d6484581f3.PNG)
+![verify](https://user-images.githubusercontent.com/55559640/226198698-b4f6bfe1-e106-4f4c-b4b7-a6934519368f.PNG)
 
 ### Add new collection (info)
 
@@ -142,3 +142,12 @@ After setting all the properties, run the following command to launch the applic
 ### Collection donate overview
 
 ![overview](https://user-images.githubusercontent.com/55559640/213863162-160bf717-fb57-4ce7-90e5-ecb9726a5b7f.PNG)
+
+### Profile (user collections)
+![profile1](https://user-images.githubusercontent.com/55559640/226198729-5627af8a-f2eb-4211-9071-18deeef0a404.PNG)
+
+### Profile (user donates)
+![profile2](https://user-images.githubusercontent.com/55559640/226198732-006bcabc-ad4c-4a3b-ae84-2f5bffbce70b.PNG)
+
+### Collection (donated items)
+![donates](https://user-images.githubusercontent.com/55559640/226198734-9c245b17-8fbb-479a-addf-2b146b9281e0.PNG)
