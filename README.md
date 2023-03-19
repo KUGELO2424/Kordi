@@ -58,6 +58,13 @@ MAIL_USER=test
 MAIL_PASSWORD=test
 ```
 
+**Step 5:**
+After setting all the properties, run the following command to launch the application:
+
+```
+./mvnw spring-boot:run
+```
+
 ## Technologies
 
 - Java 11
