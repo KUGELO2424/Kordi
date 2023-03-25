@@ -20,13 +20,13 @@ import static pl.kucharski.Kordi.config.ErrorCodes.PHONE_VERIFICATION_ERROR;
 @Service
 public class PhoneVerificationService implements VerificationService{
 
-    @Value("${TWILIO_ACCOUNT_SID}")
+    @Value("${config.twilio.account-sid}")
     private String ACCOUNT_SID;
 
-    @Value("${TWILIO_AUTH_TOKEN}")
+    @Value("${config.twilio.auth-token}")
     private String AUTH_TOKEN;
 
-    @Value("${TWILIO_SERVICE_ID}")
+    @Value("${config.twilio.service-id}")
     private String SERVICE_ID;
 
     /**

@@ -1,4 +1,4 @@
-configuration.properties
+src/main/resources/*-dev.yaml
 
 HELP.md
 target/

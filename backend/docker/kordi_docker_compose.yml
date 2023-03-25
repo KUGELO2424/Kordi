@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  kordi-db-compose:
+    container_name: kordi-db-compose
+    image: mysql:8.0.27
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+    environment:
+      MYSQL_USER: kordi
+      MYSQL_PASSWORD: kordi
+      MYSQL_DATABASE: kordi
+      MYSQL_ROOT_PASSWORD: kordi
+    volumes:
+      - db:/var/lib/
+  kordi-server-compose:
+    restart: on-failure
+    depends_on:
+      - kordi-db-compose
+    container_name: kordi-server-compose
+#    build:
+#      context: docker-message-server
+#      dockerfile: Dockerfile
+    image: kordi:latest
+    ports:
+      - 8081:8080
+    environment:
+      - DB_HOSTNAME=kordi-db-compose
+      - DB_PORT=3306
+      - DB_NAME=kordi
+      - DB_USER=kordi
+      - DB_PASS=kordi
+      - MAIL_HOST=localhost
+      - MAIL_PORT=1025
+      - MAIL_USER=kordi
+      - MAIL_PASSWORD=kordi
+      - TWILIO_ACCOUNT_SID=xxx
+      - TWILIO_AUTH_TOKEN=xxx
+      - TWILIO_SERVICE_ID=xxx
+volumes:
+  db:

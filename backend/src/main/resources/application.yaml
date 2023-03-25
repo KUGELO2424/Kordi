@@ -34,3 +34,7 @@ allowed:
 config:
   collection-update:
     cron: 0 0 * * * *
+  twilio:
+    account-sid: ${TWILIO_ACCOUNT_SID}
+    auth-token: ${TWILIO_AUTH_TOKEN}
+    service-id: ${TWILIO_SERVICE_ID}
