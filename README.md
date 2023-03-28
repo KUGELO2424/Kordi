@@ -12,7 +12,14 @@ Other logged users can donate things to collections.<br />
 Web app has a responsive user interface built with Angular, Bootstrap, PrimeNG and use REST API implemented in Spring project<br />
 The application is intended to improve the efficiency and effectiveness of assistance efforts in crisis situations, and to better match the needs of those affected with available resources.
 
-## How to Use
+## How to Use (backend in docker-compose)
+To run Kordi backend app in docker with mysql, use docker-compose file located in `backend/docker/kordi_docker_compose.yml`. Environmental variables are located in docker-compose file.
+
+```
+docker-compose -f .\docker\kordi_docker_compose.yml up -d
+```
+
+## How to Use (backend dev environment)
 
 **Step 1:**
 To run Kordi you need to have an instance of mySql server. You can use the `mysql.yml` file for this and fire up mysql as a docker container using the following command:
@@ -25,8 +32,8 @@ docker-compose -f mysql.yml up -d
 The `ddl-auto` property is set to `update` by default. After launching the kordi application, the database schema will be prepared. To import the initial data, change the `sql.init.mode` property to `always` to import data from the `data.sql` file. After importing the data, return to the previous value to prevent the data from being loaded twice. If you want to create the database schema yourself, you can use the db_schema.sql file for this purpose.
 
 **Step 3:**
-Before running project, export `DB_HOSTNAME`, `DB_PORT`, `DB_NAME`, `KORDI_USER` and `KORDI_PASS` as your enviromental variables or add them to configuration.properties file locally with proper values.
-Example values in configuration.properties that could be used for connecting with local MySQL instance.
+Before running project, export `DB_HOSTNAME`, `DB_PORT`, `DB_NAME`, `KORDI_USER` and `KORDI_PASS` as your enviromental variables or create `application-dev.yml` file locally with proper properties.
+Example values in .env.example that could be used for connecting with local MySQL instance.
 
 ```
 DB_HOSTNAME=localhost
@@ -38,8 +45,8 @@ KORDI_PASS=kordi
 
 **Step 4:**
 Project use external platform Twilio for verifing user by phone number. To use phone verification, plese create account <a href="https://www.twilio.com/docs">here</a>.
-Then export `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_SERVICE_ID` as your enviromental variables or add them to configuration.properties file locally with proper values.
-Example values in configuration.properties that could be used for connecting with TWILIO platform.
+Then export `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_SERVICE_ID` as your enviromental variables or create `application-dev.yml` file locally with proper properties.
+Example values in .env.example that could be used for connecting with TWILIO platform.
 
 ```
 TWILIO_ACCOUNT_SID=test
@@ -48,8 +55,8 @@ TWILIO_SERVICE_ID=test
 ```
 
 **Step 5:**
-Project use mailing for verifing user by email address. To use email verification add enviromental variables to configuration.properties file locally with proper values.
-Example values in configuration.properties that could be used for mail server
+Project use mailing for verifing user by email address. To use email verification export enviromental variables  or create `application-dev.yml` file locally with proper properties.
+Example values in .env.example that could be used for mail server
 
 ```
 MAIL_HOST=localhost
@@ -65,14 +72,24 @@ After setting all the properties, run the following command to launch the applic
 ./mvnw spring-boot:run
 ```
 
+## How to Use (frontend)
+To start angular app, run following commands in frontend directory
+
+```
+npm i
+```
+```
+ng serve
+```
+
 ## Technologies
 
-- Java 11
-- Spring 5.3.20 (Security, Data, Boot)
+- Java 17
+- Spring boot 2.7.7
 - Maven 3.8.1
 - Junit 5
 - Lombok 1.18.24
-- SPringdoc 1.6.11
+- Springdoc 1.6.11
 - MapStruct 1.5.2
 - Twilio 8.31.1
 - MySQL
