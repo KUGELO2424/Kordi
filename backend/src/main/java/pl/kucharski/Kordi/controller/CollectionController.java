@@ -150,8 +150,6 @@ public class CollectionController {
     }
 
     /**
-     *
-     *
      * @param collectionToUpdate new values for collection. If some value is empty, then old value stay
      * @return updated collection<br>
      * status 404 if collection not found<br>
@@ -192,8 +190,8 @@ public class CollectionController {
     })
     @PostMapping("/collections/{collectionId}/addresses")
     ResponseEntity<Map<String, String>> addAddressToCollection(@Parameter(description = "id of collection") @PathVariable long collectionId,
-                                             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "address to add")
-                                             @RequestBody AddressDTO address) {
+                                                               @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "address to add")
+                                                               @RequestBody AddressDTO address) {
         try {
             log.info("Request to add new address: {} to collection with id {}", address, collectionId);
             addressService.addCollectionAddress(collectionId, address);
@@ -219,7 +217,7 @@ public class CollectionController {
     @DeleteMapping("/collections/{collectionId}/addresses")
     ResponseEntity<Map<String, String>> removeAddressFromCollection(@Parameter(description = "id of collection") @PathVariable long collectionId,
                                                                     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "address to delete")
-                                                  @RequestBody AddressDTO address) {
+                                                                    @RequestBody AddressDTO address) {
         try {
             log.info("Request to remove address: {} from collection with id {}", address, collectionId);
             addressService.removeCollectionAddress(collectionId, address);
