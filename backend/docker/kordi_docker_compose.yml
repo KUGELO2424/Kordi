@@ -18,9 +18,7 @@ services:
     depends_on:
       - kordi-db-compose
     container_name: kordi-server-compose
-#    build:
-#      context: docker-message-server
-#      dockerfile: Dockerfile
+    build: ../
     image: kordi:latest
     ports:
       - 8081:8080

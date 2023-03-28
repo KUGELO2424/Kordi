@@ -1,6 +1,4 @@
 spring:
-  config:
-    import: optional:classpath:configuration.properties
   datasource:
     url: jdbc:h2:mem:db;NON_KEYWORDS=user
     driver-class-name: org.h2.Driver
@@ -26,3 +24,7 @@ allowed:
 config:
   collection-update:
     cron: 0 0 * * * *
+  twilio:
+    account-sid: xxx
+    auth-token: xxx
+    service-id: xxx
