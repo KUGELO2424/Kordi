@@ -1,6 +1,12 @@
 package pl.kucharski.Kordi.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,6 +37,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Collection controller responsible for basic collection management
@@ -49,21 +56,17 @@ public class CollectionController {
         this.addressService = addressService;
     }
 
-    /**
-     * Get all collections of user
-     * @param username of user
-     * @param pageNo number of page, default value is 0
-     * @param pageSize size of page, default value is 10
-     *
-     * @return list of collections of given user
-     */
+    @Operation(summary = "Get all collections of user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "list of user collections"),
+    })
     @GetMapping("/users/{username}/collections")
-    ResponseEntity<?> getAllUserCollections(
-            @PathVariable("username") String username,
-            @RequestParam(value = "pageNo",
+    ResponseEntity<List<CollectionDTO>> getAllUserCollections(
+            @Parameter(description = "username of user") @PathVariable("username") String username,
+            @Parameter(description = "page number") @RequestParam(value = "pageNo",
                     defaultValue = PaginationConstants.DEFAULT_PAGE_NUMBER,
                     required = false) int pageNo,
-            @RequestParam(value = "pageSize",
+            @Parameter(description = "page size") @RequestParam(value = "pageSize",
                     defaultValue = PaginationConstants.DEFAULT_PAGE_SIZE,
                     required = false) int pageSize) {
         log.info("Request to get all collections for user {}", username);
@@ -71,15 +74,13 @@ public class CollectionController {
                 .getCollectionsByUser(username, PageRequest.of(pageNo, pageSize, Sort.by("startTime").descending())));
     }
 
-    /**
-     * Get collection by id
-     * @param collectionId id of collection
-     *
-     * @return collection if found<br>
-     * status 404 - if collection not found
-     */
+    @Operation(summary = "Get collection by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "collection"),
+            @ApiResponse(responseCode = "404", description = "collection not found", content = @Content),
+    })
     @GetMapping("/collections/{collectionId}")
-    ResponseEntity<?> getCollectionById(@PathVariable("collectionId") Long collectionId) {
+    ResponseEntity<CollectionDTO> getCollectionById(@Parameter(description = "id of collection") @PathVariable("collectionId") Long collectionId) {
         try {
             log.info("Request to get collection by id, collectionId: {}", collectionId);
             CollectionDTO collection = collectionService.getCollectionById(collectionId);
@@ -93,36 +94,31 @@ public class CollectionController {
         }
     }
 
-    /**
-     * Get collections with filtering. Default value for params is empty string, then all collections match.
-     * @param title of collection
-     * @param city of address in collection
-     * @param street of address in collection
-     * @param itemName of item in collection
-     * @param pageNo number of page, default value is 0
-     * @param pageSize size of page, default value is 10
-     *
-     * @return list of found collections
-     */
+    @Operation(summary = "Get collections with filtering",
+            description = "Get collections with filtering. Default value for params is empty string, then all collections match")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "page of collection"),
+    })
     @GetMapping("/collections")
-    ResponseEntity<?> searchCollections(
+    ResponseEntity<Page<CollectionDTO>> searchCollections(
+            @Parameter(description = "title of collection")
             @RequestParam(value = "title", defaultValue = "", required = false) String title,
+            @Parameter(description = "city from collection")
             @RequestParam(value = "city", defaultValue = "", required = false) String city,
+            @Parameter(description = "street from collection")
             @RequestParam(value = "street", defaultValue = "", required = false) String street,
+            @Parameter(description = "name of item from collection")
             @RequestParam(value = "itemName", defaultValue = "", required = false) String itemName,
+            @Parameter(description = "list of categories")
             @RequestParam(value = "categories", defaultValue = "", required = false) List<ItemCategory> categories,
-            @RequestParam(value = "pageNo",
-                defaultValue = PaginationConstants.DEFAULT_PAGE_NUMBER,
-                required = false) int pageNo,
-            @RequestParam(value = "pageSize",
-                defaultValue = PaginationConstants.DEFAULT_PAGE_SIZE,
-                required = false) int pageSize,
-            @RequestParam(value = "sortBy",
-                    defaultValue = PaginationConstants.DEFAULT_SORT_BY,
-                    required = false) String sortBy,
-            @RequestParam(value = "sortDirection",
-                    defaultValue = PaginationConstants.DEFAULT_SORT_DIRECTION,
-                    required = false) String sortDirection) {
+            @Parameter(description = "page number")
+            @RequestParam(value = "pageNo", defaultValue = PaginationConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+            @Parameter(description = "page size")
+            @RequestParam(value = "pageSize", defaultValue = PaginationConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @Parameter(description = "sort by this field")
+            @RequestParam(value = "sortBy", defaultValue = PaginationConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @Parameter(description = "sort direction")
+            @RequestParam(value = "sortDirection", defaultValue = PaginationConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDirection) {
         log.info("Request to get collections with search params, title:{}, city:{}, street:{}, itemName:{}, categories:{}",
                 title, city, street, itemName, categories);
         Pageable pageable = PaginationConstants.getPageable(pageNo, pageSize, sortBy, sortDirection);
@@ -130,17 +126,16 @@ public class CollectionController {
                 .ok(collectionService.getCollectionsWithFiltering(title, city, street, itemName, categories, pageable));
     }
 
-    /**
-     * Save new collection
-     * @param collection to add
-     *
-     * @return created collection with ids<br>
-     * status 404 if user not found<br>
-     * status 400 if itemType or itemCategory is wrong<br>
-     * status 400 if title is empty
-     */
+    @Operation(summary = "Save new collection")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "saved collection"),
+            @ApiResponse(responseCode = "404", description = "user not found", content = @Content),
+            @ApiResponse(responseCode = "400", description = "itemType or itemCategory is wrong", content = @Content),
+            @ApiResponse(responseCode = "400", description = "title is empty", content = @Content),
+    })
     @PostMapping("/collections")
-    ResponseEntity<?> saveCollection(
+    ResponseEntity<CollectionDTO> saveCollection(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "collection to save")
             @RequestBody @Valid CollectionDTO collection) {
         try {
             log.info("Request to save collection: {}", collection.getTitle());
@@ -155,16 +150,23 @@ public class CollectionController {
     }
 
     /**
-     * Update existing collection
-     * @param collectionToUpdate new values for collection. If some value is empty, then old value stay
      *
+     *
+     * @param collectionToUpdate new values for collection. If some value is empty, then old value stay
      * @return updated collection<br>
      * status 404 if collection not found<br>
      * status 403 if logged user is not an owner of collection
      */
+    @Operation(summary = "Update existing collection")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "updated collection"),
+            @ApiResponse(responseCode = "404", description = "collection not found", content = @Content),
+            @ApiResponse(responseCode = "403", description = "user not an owner of collection", content = @Content),
+    })
     @PatchMapping("/collections")
     @CrossOrigin("http://localhost:4200")
-    ResponseEntity<?> updateCollection(
+    ResponseEntity<CollectionDTO> updateCollection(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "collection to update. If some value is empty, then no value update")
             @RequestBody CollectionUpdateDTO collectionToUpdate) {
         try {
             log.info("Request to update collection: {}", collectionToUpdate);
@@ -182,17 +184,16 @@ public class CollectionController {
         }
     }
 
-    /**
-     * Add new address to collection
-     * @param collectionId id of collection where you want to add new address
-     * @param address new address to add
-     *
-     * @return message if address added<br>
-     * status 404 if collection not found<br>
-     * status 403 if logged user is not an owner of collection<br>
-     */
+    @Operation(summary = "add new address to collection")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "address added"),
+            @ApiResponse(responseCode = "404", description = "collection not found", content = @Content),
+            @ApiResponse(responseCode = "403", description = "user not an owner of collection", content = @Content),
+    })
     @PostMapping("/collections/{collectionId}/addresses")
-    ResponseEntity<?> addAddressToCollection(@PathVariable long collectionId, @RequestBody AddressDTO address) {
+    ResponseEntity<Map<String, String>> addAddressToCollection(@Parameter(description = "id of collection") @PathVariable long collectionId,
+                                             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "address to add")
+                                             @RequestBody AddressDTO address) {
         try {
             log.info("Request to add new address: {} to collection with id {}", address, collectionId);
             addressService.addCollectionAddress(collectionId, address);
@@ -209,17 +210,16 @@ public class CollectionController {
         }
     }
 
-    /**
-     * Add new address to collection
-     * @param collectionId id of collection where you want to add new address
-     * @param address new address to add
-     *
-     * @return message if address added<br>
-     * status 404 if collection not found<br>
-     * status 403 if logged user is not an owner of collection<br>
-     */
+    @Operation(summary = "remove address from collection")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "address removed"),
+            @ApiResponse(responseCode = "404", description = "collection not found", content = @Content),
+            @ApiResponse(responseCode = "403", description = "user not an owner of collection", content = @Content),
+    })
     @DeleteMapping("/collections/{collectionId}/addresses")
-    ResponseEntity<?> removeAddressFromCollection(@PathVariable long collectionId, @RequestBody AddressDTO address) {
+    ResponseEntity<Map<String, String>> removeAddressFromCollection(@Parameter(description = "id of collection") @PathVariable long collectionId,
+                                                                    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "address to delete")
+                                                  @RequestBody AddressDTO address) {
         try {
             log.info("Request to remove address: {} from collection with id {}", address, collectionId);
             addressService.removeCollectionAddress(collectionId, address);
