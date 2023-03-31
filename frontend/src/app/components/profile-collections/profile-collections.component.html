@@ -28,10 +28,10 @@
         {{ collection.endTime | date : "dd/MM/yyyy" }}
       </td>
       <td *ngIf="!collection.endTime" class="cell">-</td>
-      <td *ngIf="isActive(collection)" class="open cell">
+      <td *ngIf="collection.status == status.IN_PROGRESS" class="open cell">
         {{ "profile.open" | translate }}
       </td>
-      <td *ngIf="!isActive(collection)" class="closed cell">
+      <td *ngIf="collection.status == status.COMPLETED" class="closed cell">
         {{ "profile.closed" | translate }}
       </td>
       <td class="cell">{{ getProgress(collection) }}%</td>

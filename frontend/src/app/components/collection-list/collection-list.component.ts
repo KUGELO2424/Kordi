@@ -4,7 +4,7 @@ import { UntypedFormBuilder } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Collection } from 'app/common/collection';
+import { Collection, CollectionStatus } from 'app/common/collection';
 import { CollectionListStateService } from 'app/services/collection-list-state.service';
 import { CollectionService } from 'app/services/collection.service';
 import { StateService } from 'app/services/state.service';
@@ -15,6 +15,8 @@ import { StateService } from 'app/services/state.service';
   styleUrls: ['./collection-list.component.css']
 })
 export class CollectionListComponent implements OnInit {
+
+  status = CollectionStatus;
 
   collections: Collection[] = [];
 

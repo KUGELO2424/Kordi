@@ -89,8 +89,7 @@
                 class="card-text"
                 *ngIf="
                   collection?.endTime !== null &&
-                  getDaysToEnd(collection) >= 0 &&
-                  collectionProgress != 100
+                  collection.status == status.IN_PROGRESS
                 "
                 [innerHTML]="
                   'collections.end_time'
@@ -100,9 +99,8 @@
               <p
                 class="card-text"
                 *ngIf="
-                  (collection?.endTime !== null &&
-                    getDaysToEnd(collection) < 0) ||
-                  collectionProgress == 100
+                  collection?.endTime !== null &&
+                  collection.status == status.COMPLETED
                 "
               >
                 {{ "collection.ended" | translate }}
@@ -110,8 +108,8 @@
               <p
                 class="card-text"
                 *ngIf="
-                  (collection.endTime === null && collectionProgress != 100) ||
-                  (getDaysToEnd(collection) < 0 && collectionProgress != 100)
+                  collection.endTime === null &&
+                  collection.status == status.IN_PROGRESS
                 "
               >
                 {{ "collections.in_progress" | translate }}

@@ -14,4 +14,11 @@ export class Collection {
     items: Item[];
     image: string;
     progress: number;
+    status: CollectionStatus;
+}
+
+export enum CollectionStatus {
+    IN_PROGRESS = "IN_PROGRESS",
+    COMPLETED = "COMPLETED",
+    ARCHIVED = "ARCHIVED"
 }

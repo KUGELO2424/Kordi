@@ -3,7 +3,7 @@ import { MatExpansionPanel } from '@angular/material/expansion';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Collection } from 'app/common/collection';
+import { Collection, CollectionStatus } from 'app/common/collection';
 import { SubmittedItem } from 'app/common/submittedItem';
 import { AuthService } from 'app/services/auth.service';
 import { CollectionService } from 'app/services/collection.service';
@@ -17,6 +17,7 @@ import { Location, ViewportScroller } from '@angular/common'
 })
 export class CollectionInfoComponent implements OnInit {
   @ViewChild('itemPanel') itemPanel: MatExpansionPanel
+  status = CollectionStatus;
   collection: Collection | undefined;
   submittedItems: SubmittedItem[] = [];
   numOfpeople: number = 0;

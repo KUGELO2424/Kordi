@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Collection } from 'app/common/collection';
+import { Collection, CollectionStatus } from 'app/common/collection';
 import { CollectionService } from 'app/services/collection.service';
 
 @Component({
@@ -11,7 +11,8 @@ import { CollectionService } from 'app/services/collection.service';
 export class ProfileCollectionsComponent implements OnInit {
 
   collections: Collection[] = [];
-
+  status = CollectionStatus;
+  
   constructor(private collectionService: CollectionService, private router: Router) { }
 
 

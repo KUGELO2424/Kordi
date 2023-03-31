@@ -29,7 +29,7 @@ jwt:
   secret: HRlELXqpSB
 
 allowed:
-  origins: http://localhost:4200
+  origins: '*'
 
 config:
   collection-update:
