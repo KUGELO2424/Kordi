@@ -27,6 +27,8 @@ public interface CollectionRepository extends JpaRepository<Collection, Long> {
 
     List<Collection> findAllByEndTimeBeforeAndStatus(LocalDateTime dateTime, CollectionStatus status);
 
+    List<Collection> findAllByCompletedTimeBeforeAndStatus(LocalDateTime dateTime, CollectionStatus status);
+
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Collection c SET c.status = ?2 WHERE c.id = ?1")

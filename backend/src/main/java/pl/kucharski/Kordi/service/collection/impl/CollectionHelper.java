@@ -13,7 +13,13 @@ import java.util.Optional;
 @Service
 public class CollectionHelper {
 
-    Collection updateStatus(Collection collection) {
+    /***
+     * This method update collection status.<br>
+     * If IN_PROGRESS and endTime before now or items collected -> COMPLETED<br>
+     * If COMPLETED and (items not collected and endTime is null) or (items collected and endTime in future) -> IN_PROGRESS<br>
+     * If COMPLETED and completedTime one month before now -> ARCHIVED<br>
+     */
+    public Collection updateStatus(Collection collection) {
         LocalDateTime endTime = collection.getEndTime();
         if (collection.getStatus().equals(CollectionStatus.IN_PROGRESS)) {
             if (endTime != null && endTime.isBefore(LocalDateTime.now()) || areItemsCollected(collection)) {
@@ -27,6 +33,9 @@ public class CollectionHelper {
                 collection.setStatus(CollectionStatus.IN_PROGRESS);
                 collection.setCompletedTime(null);
                 log.info("Collection " + collection.getId() + " status changed to IN_PROGRESS");
+            } else if (collection.getCompletedTime() != null && collection.getCompletedTime().isBefore(LocalDateTime.now().minusMonths(1))) {
+                collection.setStatus(CollectionStatus.ARCHIVED);
+                log.info("Collection " + collection.getId() + " status changed to ARCHIVED");
             }
         }
         return collection;

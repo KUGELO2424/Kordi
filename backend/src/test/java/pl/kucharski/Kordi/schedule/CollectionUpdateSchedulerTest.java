@@ -8,6 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.kucharski.Kordi.enums.CollectionStatus;
 import pl.kucharski.Kordi.model.collection.Collection;
 import pl.kucharski.Kordi.repository.CollectionRepository;
+import pl.kucharski.Kordi.service.collection.impl.CollectionHelper;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -25,12 +26,13 @@ class CollectionUpdateSchedulerTest {
 
     @Mock
     private CollectionRepository collectionRepository;
-
+    @Mock
+    private CollectionHelper collectionHelper;
     @InjectMocks
     private CollectionUpdateScheduler underTest;
 
     @Test
-    void shouldUpdateCollections() {
+    void shouldUpdateCollectionsToCompleted() {
         // given
         Collection collection = createCollectionWithId();
         collection.setEndTime(LocalDateTime.now().minusDays(5));
@@ -39,23 +41,54 @@ class CollectionUpdateSchedulerTest {
                 .thenReturn(List.of(collection));
 
         // when
-        underTest.updateCollectionStatuses();
+        underTest.updateCollectionStatusesToCompleted();
 
         // then
-        verify(collectionRepository).updateCollectionStatus(collection.getId(), CollectionStatus.COMPLETED);
+        verify(collectionHelper).updateStatus(collection);
     }
 
     @Test
-    void shouldNotUpdateAnyCollections() {
+    void shouldNotUpdateAnyCollectionsToCompleted() {
         // given
         when(collectionRepository.findAllByEndTimeBeforeAndStatus(any(), eq(CollectionStatus.IN_PROGRESS)))
                 .thenReturn(Collections.emptyList());
 
         // when
-        underTest.updateCollectionStatuses();
+        underTest.updateCollectionStatusesToCompleted();
 
         // then
-        verify(collectionRepository, never()).updateCollectionStatus(any(), any());
+        verify(collectionHelper, never()).updateStatus(any());
     }
 
+    @Test
+    void shouldUpdateCollectionsToArchived() {
+        // given
+        Collection collection = createCollectionWithId();
+        collection.setCompletedTime(LocalDateTime.now().minusMonths(1).minusDays(1));
+        collection.setStatus(CollectionStatus.COMPLETED);
+        when(collectionRepository.findAllByCompletedTimeBeforeAndStatus(any(), eq(CollectionStatus.COMPLETED)))
+                .thenReturn(List.of(collection));
+
+        // when
+        underTest.updateCollectionStatusesToArchived();
+
+        // then
+        verify(collectionHelper).updateStatus(collection);
+    }
+
+    @Test
+    void shouldNotUpdateAnyCollectionsToArchived() {
+        // given
+        Collection collection = createCollectionWithId();
+        collection.setCompletedTime(LocalDateTime.now().minusDays(1));
+        collection.setStatus(CollectionStatus.COMPLETED);
+        when(collectionRepository.findAllByCompletedTimeBeforeAndStatus(any(), eq(CollectionStatus.COMPLETED)))
+                .thenReturn(Collections.emptyList());
+
+        // when
+        underTest.updateCollectionStatusesToArchived();
+
+        // then
+        verify(collectionHelper, never()).updateStatus(any());
+    }
 }

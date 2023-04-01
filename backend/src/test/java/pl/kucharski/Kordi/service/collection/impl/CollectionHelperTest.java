@@ -81,4 +81,17 @@ class CollectionHelperTest {
         assertEquals(CollectionStatus.IN_PROGRESS, updatedCollection.getStatus());
     }
 
+    @Test
+    void shouldChangeStatusToArchivedIfCompletedTimeBeforeOneMoth() {
+        // given
+        COLLECTION_WITH_ID.setCompletedTime(LocalDateTime.now().minusMonths(1).minusDays(1));
+        COLLECTION_WITH_ID.setStatus(CollectionStatus.COMPLETED);
+
+        // when
+        Collection updatedCollection = underTest.updateStatus(COLLECTION_WITH_ID);
+
+        // then
+        assertEquals(CollectionStatus.ARCHIVED, updatedCollection.getStatus());
+    }
+
 }

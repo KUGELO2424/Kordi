@@ -3,9 +3,11 @@ package pl.kucharski.Kordi.schedule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.enums.CollectionStatus;
 import pl.kucharski.Kordi.model.collection.Collection;
 import pl.kucharski.Kordi.repository.CollectionRepository;
+import pl.kucharski.Kordi.service.collection.impl.CollectionHelper;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,22 +21,32 @@ import java.util.List;
 public class CollectionUpdateScheduler {
 
     private final CollectionRepository collectionRepository;
+    private final CollectionHelper collectionHelper;
 
 
-    public CollectionUpdateScheduler(CollectionRepository collectionRepository) {
+    public CollectionUpdateScheduler(CollectionRepository collectionRepository, CollectionHelper collectionHelper) {
         this.collectionRepository = collectionRepository;
+        this.collectionHelper = collectionHelper;
     }
 
     /***
-     * Update collections status to COMPLETED if endTime in the past.
+     * Find collection with endTime in the past and update status.
      */
+    @Transactional
     @Scheduled(cron = "${config.collection-update.cron}")
-    public void updateCollectionStatuses() {
+    public void updateCollectionStatusesToCompleted() {
         List<Collection> collections =  collectionRepository.findAllByEndTimeBeforeAndStatus(LocalDateTime.now(), CollectionStatus.IN_PROGRESS);
-        collections.forEach(collection -> {
-            log.info("Updating collection " + collection.getId() + " status to COMPLETED");
-            collectionRepository.updateCollectionStatus(collection.getId(), CollectionStatus.COMPLETED);
-        });
+        collections.forEach(collectionHelper::updateStatus);
+    }
+
+    /***
+     * Find collection with completedTime one month before and update status.
+     */
+    @Transactional
+    @Scheduled(cron = "${config.collection-update.cron}")
+    public void updateCollectionStatusesToArchived() {
+        List<Collection> collections =  collectionRepository.findAllByCompletedTimeBeforeAndStatus(LocalDateTime.now().minusMonths(1), CollectionStatus.COMPLETED);
+        collections.forEach(collectionHelper::updateStatus);
     }
 
 }
