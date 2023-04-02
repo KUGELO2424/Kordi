@@ -22,11 +22,13 @@ docker-compose -f .\docker\kordi_docker_compose.yml up -d
 ## How to Use (backend dev environment)
 
 **Step 1:**
-To run Kordi you need to have an instance of mySql server. You can use the `mysql.yml` file for this and fire up mysql as a docker container using the following command:
+To run Kordi you need to have an instance of mySql server. You can use the `tools.yml` file for this and fire up mysql as a docker container using the following command:
 
 ```
-docker-compose -f mysql.yml up -d
+docker-compose -f tools.yml up -d
 ```
+
+`tools.yml` also includes a mail server, which is used in the user registration process.
 
 **Step 2:**
 The `ddl-auto` property is set to `update` by default. After launching the kordi application, the database schema will be prepared. To import the initial data, change the `sql.init.mode` property to `always` to import data from the `data.sql` file. After importing the data, return to the previous value to prevent the data from being loaded twice. If you want to create the database schema yourself, you can use the db_schema.sql file for this purpose.
@@ -55,7 +57,7 @@ TWILIO_SERVICE_ID=test
 ```
 
 **Step 5:**
-Project use mailing for verifing user by email address. To use email verification export enviromental variables  or create `application-dev.yml` file locally with proper properties.
+Project use mailing for verifing user by email address. To use email verification export enviromental variables or create `application-dev.yml` file locally with proper properties.
 Example values in .env.example that could be used for mail server
 
 ```
