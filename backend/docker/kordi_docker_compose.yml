@@ -13,6 +13,11 @@ services:
       MYSQL_ROOT_PASSWORD: kordi
     volumes:
       - db:/var/lib/
+  kordi-maildev-compose:
+    image: maildev/maildev
+    ports:
+      - 1080:1080
+      - 1025:1025
   kordi-server-compose:
     restart: on-failure
     depends_on:
@@ -28,7 +33,7 @@ services:
       - DB_NAME=kordi
       - DB_USER=kordi
       - DB_PASS=kordi
-      - MAIL_HOST=localhost
+      - MAIL_HOST=kordi-maildev-compose
       - MAIL_PORT=1025
       - MAIL_USER=kordi
       - MAIL_PASSWORD=kordi

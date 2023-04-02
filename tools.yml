@@ -12,5 +12,10 @@ services:
       MYSQL_ROOT_PASSWORD: kordi
     volumes:
       - db:/var/lib/
+  maildev:
+    image: maildev/maildev
+    ports:
+      - 1080:1080
+      - 1025:1025
 volumes:
   db:
