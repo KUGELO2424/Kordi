@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import pl.kucharski.Kordi.config.PaginationConstants;
+import pl.kucharski.Kordi.enums.CollectionStatus;
 import pl.kucharski.Kordi.enums.ItemCategory;
 import pl.kucharski.Kordi.exception.AddressAlreadyExistsInCollectionException;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
@@ -111,6 +112,8 @@ public class CollectionController {
             @RequestParam(value = "itemName", defaultValue = "", required = false) String itemName,
             @Parameter(description = "list of categories")
             @RequestParam(value = "categories", defaultValue = "", required = false) List<ItemCategory> categories,
+            @Parameter(description = "collection status")
+            @RequestParam(value = "status", defaultValue = "IN_PROGRESS", required = false) CollectionStatus status,
             @Parameter(description = "page number")
             @RequestParam(value = "pageNo", defaultValue = PaginationConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @Parameter(description = "page size")
@@ -119,11 +122,11 @@ public class CollectionController {
             @RequestParam(value = "sortBy", defaultValue = PaginationConstants.DEFAULT_SORT_BY, required = false) String sortBy,
             @Parameter(description = "sort direction")
             @RequestParam(value = "sortDirection", defaultValue = PaginationConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDirection) {
-        log.info("Request to get collections with search params, title:{}, city:{}, street:{}, itemName:{}, categories:{}",
-                title, city, street, itemName, categories);
+        log.info("Request to get collections with search params, title:{}, city:{}, street:{}, itemName:{}, status:{}, categories:{}",
+                title, city, street, itemName, status, categories);
         Pageable pageable = PaginationConstants.getPageable(pageNo, pageSize, sortBy, sortDirection);
         return ResponseEntity
-                .ok(collectionService.getCollectionsWithFiltering(title, city, street, itemName, categories, pageable));
+                .ok(collectionService.getCollectionsWithFiltering(title, city, street, itemName, status, categories, pageable));
     }
 
     @Operation(summary = "Save new collection")

@@ -2,6 +2,7 @@ package pl.kucharski.Kordi.service.collection;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import pl.kucharski.Kordi.enums.CollectionStatus;
 import pl.kucharski.Kordi.enums.ItemCategory;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.model.collection.CollectionDTO;
@@ -40,12 +41,13 @@ public interface CollectionService {
      * @param city city of collection that you are looking for
      * @param street street of collection that you are looking for
      * @param itemName name of item that you are looking for
+     * @param status status of collection
      * @param categories list of search categories
      * @param pageable pagination information
      * @return Page of found collections. If no collections found, return empty list
      */
-    Page<CollectionDTO> getCollectionsWithFiltering(String title, String city, String street,
-                                                    String itemName, List<ItemCategory> categories, Pageable pageable);
+    Page<CollectionDTO> getCollectionsWithFiltering(String title, String city, String street, String itemName, CollectionStatus status,
+                                                    List<ItemCategory> categories, Pageable pageable);
 
     /**
      * Save new collection

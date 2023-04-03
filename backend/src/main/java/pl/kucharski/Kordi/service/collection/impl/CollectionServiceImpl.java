@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import pl.kucharski.Kordi.aop.IsCollectionOwner;
+import pl.kucharski.Kordi.enums.CollectionStatus;
 import pl.kucharski.Kordi.enums.ItemCategory;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
@@ -68,15 +69,15 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     /**
-     * @see CollectionService#getCollectionsWithFiltering(String, String, String, String, List, Pageable)
+     * @see CollectionService#getCollectionsWithFiltering(String, String, String, String, CollectionStatus, List, Pageable)
      */
     @Override
     public Page<CollectionDTO> getCollectionsWithFiltering(String title, String city, String street, String itemName,
-                                                           List<ItemCategory> categories, Pageable pageable) {
+                                                           CollectionStatus status, List<ItemCategory> categories, Pageable pageable) {
 
         Page<Collection> collectionsPage;
         try {
-            collectionsPage = collectionRepository.findWithFiltering(title, city, street, itemName, categories.size(),
+            collectionsPage = collectionRepository.findWithFiltering(title, city, street, itemName, status, categories.size(),
                     categories, pageable);
         } catch (InvalidDataAccessApiUsageException ex) {
             throw new ResponseStatusException(

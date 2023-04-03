@@ -102,7 +102,7 @@ class CollectionRepositoryTest {
 
         // when
         Page<Collection> collections =
-                underTest.findWithFiltering(title, "", "", "", 0, List.of(), paging);
+                underTest.findWithFiltering(title, "", "", "", CollectionStatus.IN_PROGRESS, 0, List.of(), paging);
 
         // then
         Assertions.assertEquals(2, collections.getContent().size());
@@ -117,7 +117,7 @@ class CollectionRepositoryTest {
 
         // when
         Page<Collection> collections =
-                underTest.findWithFiltering(title, city, street, "", 0, List.of(), paging);
+                underTest.findWithFiltering(title, city, street, "", CollectionStatus.IN_PROGRESS, 0, List.of(), paging);
 
         // then
         Assertions.assertEquals(1, collections.getContent().size());
@@ -133,7 +133,7 @@ class CollectionRepositoryTest {
 
         // when
         Page<Collection> collections =
-                underTest.findWithFiltering(title, city, street, "", 0, List.of(), paging);
+                underTest.findWithFiltering(title, city, street, "", CollectionStatus.IN_PROGRESS, 0, List.of(), paging);
 
         // then
         Assertions.assertEquals(1, collections.getContent().size());
@@ -149,7 +149,7 @@ class CollectionRepositoryTest {
 
         // when
         Page<Collection> collections =
-                underTest.findWithFiltering(title, city, street, itemName, 0, List.of(), paging);
+                underTest.findWithFiltering(title, city, street, itemName, CollectionStatus.IN_PROGRESS, 0, List.of(), paging);
 
         // then
         Assertions.assertEquals(1, collections.getContent().size());
@@ -166,7 +166,7 @@ class CollectionRepositoryTest {
 
         // when
         Page<Collection> collections =
-                underTest.findWithFiltering(title, city, street, itemName, 0, List.of(), paging);
+                underTest.findWithFiltering(title, city, street, itemName, CollectionStatus.IN_PROGRESS, 0, List.of(), paging);
 
         // then
         Assertions.assertEquals(1, collections.getContent().size());
@@ -183,7 +183,7 @@ class CollectionRepositoryTest {
 
         // when
         Page<Collection> collections =
-                underTest.findWithFiltering(title, city, street, itemName, categories.size(), categories, paging);
+                underTest.findWithFiltering(title, city, street, itemName, CollectionStatus.IN_PROGRESS, categories.size(), categories, paging);
 
         // then
         Assertions.assertEquals(2, collections.getContent().size());
@@ -199,7 +199,7 @@ class CollectionRepositoryTest {
 
         // when
         Page<Collection> collections =
-                underTest.findWithFiltering(title, city, street, itemName, categories.size(), categories, paging);
+                underTest.findWithFiltering(title, city, street, itemName, CollectionStatus.IN_PROGRESS, categories.size(), categories, paging);
 
         // then
         Assertions.assertEquals(1, collections.getContent().size());
@@ -212,7 +212,7 @@ class CollectionRepositoryTest {
 
         // when
         Page<Collection> collections =
-                underTest.findWithFiltering(title, "", "", "", 0, List.of(), paging_with_title_sort);
+                underTest.findWithFiltering(title, "", "", "", CollectionStatus.IN_PROGRESS, 0, List.of(), paging_with_title_sort);
 
         // then
         Assertions.assertEquals(4, collections.getContent().size());
@@ -229,7 +229,7 @@ class CollectionRepositoryTest {
 
         // when
         Page<Collection> collections =
-                underTest.findWithFiltering(title, "", "", "", 0, List.of(), paging_with_start_time_sort);
+                underTest.findWithFiltering(title, "", "", "", CollectionStatus.IN_PROGRESS, 0, List.of(), paging_with_start_time_sort);
 
         // then
         Assertions.assertEquals(4, collections.getContent().size());

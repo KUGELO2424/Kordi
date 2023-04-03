@@ -42,7 +42,8 @@ public interface CollectionRepository extends JpaRepository<Collection, Long> {
                     "AND (a.city LIKE CONCAT('%',?2,'%') OR ?2 LIKE '') " +
                     "AND (a.street LIKE CONCAT('%',?3,'%') OR ?3 LIKE '') " +
                     "AND (i.name LIKE CONCAT('%', ?4, '%') OR ?4 LIKE '')" +
-                    "AND (?5 < 1 OR ((i.category IN ?6)))")
-    Page<Collection> findWithFiltering(String title, String city, String street, String itemName,
+                    "AND (c.status LIKE ?5)" +
+                    "AND (?6 < 1 OR ((i.category IN ?7)))")
+    Page<Collection> findWithFiltering(String title, String city, String street, String itemName, CollectionStatus status,
                                        int listSize, List<ItemCategory> categories, Pageable pageable);
 }
