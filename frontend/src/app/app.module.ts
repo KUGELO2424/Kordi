@@ -88,6 +88,8 @@ import { SidebarModule } from 'primeng/sidebar';
 import { BadgeModule } from 'primeng/badge';
 import { KnobModule } from 'primeng/knob';
 import { CarouselModule } from 'primeng/carousel';
+import { CollectionClosedComponent } from './components/collection/collection-closed/collection-closed.component';
+import { CollectionNotFoundComponent } from './components/collection/collection-not-found/collection-not-found.component';
 
 const routes: Routes = [
   {path: 'home', component: HomePageComponent},
@@ -146,7 +148,9 @@ const routes: Routes = [
     CollectionPanelLocationsComponent,
     CollectionPanelCommentsComponent,
     CollectionPanelSubmittedItemsComponent,
-    VerificationEmailComponent
+    VerificationEmailComponent,
+    CollectionClosedComponent,
+    CollectionNotFoundComponent,
   ],
   imports: [
     RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled',}),

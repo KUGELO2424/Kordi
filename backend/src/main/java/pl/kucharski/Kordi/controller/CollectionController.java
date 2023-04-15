@@ -70,7 +70,7 @@ public class CollectionController {
             @Parameter(description = "page size") @RequestParam(value = "pageSize",
                     defaultValue = PaginationConstants.DEFAULT_PAGE_SIZE,
                     required = false) int pageSize) {
-        log.info("Request to get all collections for user {}", username);
+        log.info("Request to get all collections of user {}", username);
         return ResponseEntity.ok(collectionService
                 .getCollectionsByUser(username, PageRequest.of(pageNo, pageSize, Sort.by("startTime").descending())));
     }

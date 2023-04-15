@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Collection } from 'app/common/collection';
+import { Collection, CollectionStatus } from 'app/common/collection';
 import { SubmittedItem } from 'app/common/submittedItem';
 import { CollectionService } from 'app/services/collection.service';
 import { Location } from '@angular/common'
@@ -16,7 +16,7 @@ import { PanelStateService } from 'app/services/panel-state.service';
   styleUrls: ['./collection-panel-info.component.css']
 })
 export class CollectionPanelInfoComponent implements OnInit {
-
+  status = CollectionStatus;
   collection: Collection | undefined;
   submittedItems: SubmittedItem[] = [];
   collectionProgress: number = 0;

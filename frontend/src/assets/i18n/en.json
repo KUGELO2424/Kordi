@@ -118,7 +118,8 @@
         "item_filtr_collected": "Collected",
         "item_filtr_not_collected": "Not collected",
         "end_time": "Collection period has ended, no more items can be donated",
-        "ended": "The collection is over"
+        "ended": "The collection is over",
+        "archived": "The collection has been closed"
     },
     "home": {
         "welcome": "Welcome in",
@@ -252,7 +253,8 @@
         "collection_panel": "Collection panel",
         "status": "Status",
         "open": "Open",
-        "closed": "Closed",
+        "closed": "Finished",
+        "archived": "Closed",
         "progress": "Progress",
         "item_title": "Item",
         "quantity": "Quantity",

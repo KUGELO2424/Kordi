@@ -1,0 +1,24 @@
+<div class="container-fluid align-middle d-flex flex-column bd-highlight mb-3">
+  <div class="p-2 bd-highlight">
+    <button
+      pButton
+      type="button"
+      class="p-button-text mb-1 my-button"
+      (click)="back()"
+    >
+      {{ "collection.back_button" | translate }}
+    </button>
+  </div>
+  <div class="p-2 bd-highlight d-flex justify-content-center">
+    <img
+      src="assets/img/no_content.svg"
+      class="img-fluid mb-4 w-50"
+      alt="No collections"
+    />
+  </div>
+  <div class="p-2 bd-highlight">
+    <p class="fs-4 text-center">
+      {{ this.collectionNotFoundMessage | translate }}
+    </p>
+  </div>
+</div>

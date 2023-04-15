@@ -31,23 +31,31 @@
       <td *ngIf="collection.status == status.IN_PROGRESS" class="open cell">
         {{ "profile.open" | translate }}
       </td>
-      <td *ngIf="collection.status == status.COMPLETED" class="closed cell">
+      <td *ngIf="collection.status == status.COMPLETED" class="finished cell">
         {{ "profile.closed" | translate }}
       </td>
+      <td *ngIf="collection.status == status.ARCHIVED" class="closed cell">
+        {{ "profile.archived" | translate }}
+      </td>
       <td class="cell">{{ getProgress(collection) }}%</td>
-      <td class="cell">
+      <td class="cell" *ngIf="collection.status != status.ARCHIVED">
         <button
-          class="btn my-btn-primary btn-sm me-2"
-          style="padding-left: 2rem; padding-right: 2rem"
+          pButton
+          type="button"
+          class="p-button-text mb-1 my-button p-button-sm"
           (click)="editCollection(collection.id)"
         >
           {{ "profile.collection_panel" | translate }}
         </button>
       </td>
-      <td class="cell">
+      <td
+        class="cell text-center"
+        [colSpan]="collection.status != status.ARCHIVED ? 1 : 2"
+      >
         <button
-          class="btn my-btn-primary btn-sm me-2"
-          style="padding-left: 2rem; padding-right: 2rem"
+          pButton
+          type="button"
+          class="p-button-text mb-1 my-button p-button-sm"
           routerLink="/collections/{{ collection.id }}/panel/submitted"
         >
           {{ "profile.submitted_items" | translate }}

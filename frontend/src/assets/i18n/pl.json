@@ -118,7 +118,8 @@
         "item_filtr_collected": "Zebrane",
         "item_filtr_not_collected": "Niezebrane",
         "end_time": "Czas zbiórki dobiegł końca, nie można podarować więcej przedmiotów",
-        "ended": "Zbiórka zakończona"
+        "ended": "Zbiórka zakończona",
+        "archived": "Zbiórka została zamknięta"
     },
     "home": {
         "welcome": "Witaj w",
@@ -253,6 +254,7 @@
         "status": "Status",
         "open": "Otwarta",
         "closed": "Zakończona",
+        "archived": "Zamknięta",
         "progress": "Postęp",
         "item_title": "Przedmiot",
         "quantity": "Ilość",
