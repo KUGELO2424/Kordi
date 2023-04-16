@@ -82,7 +82,7 @@ export class CollectionPanelLocationsComponent implements OnInit {
   }
 
   deleteLocation(location: Location) {
-    this.collectionService.deleteLocation(location, this.collectionId.toString()).subscribe({
+    this.collectionService.deleteLocation(this.collectionId.toString(), location.id).subscribe({
       next: (data) => {
         this.reloadComponent(this.translate.instant('panel.location_deleted'));
       },

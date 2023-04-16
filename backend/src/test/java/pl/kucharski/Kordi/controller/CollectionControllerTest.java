@@ -51,7 +51,10 @@ class CollectionControllerTest {
     public final static Long EXISTING_COLLECTION_ID = 1L;
     public final static Long EXISTING_COLLECTION_ID_2 = 2L;
     public final static Long EXISTING_COLLECTION_ID_3 = 3L;
+    public final static Long EXISTING_COLLECTION_ID_4 = 4L;
     public final static Long NOT_EXISTING_COLLECTION_ID = 555L;
+    public final static Long EXISTING_ADDRESS_ID = 5L;
+    public final static Long NOT_EXISTING_ADDRESS_ID = 55L;
     public final static Long EXISTING_ITEM_ID = 1L;
     public final static Long EXISTING_ITEM_ID_2 = 2L;
     public final static Long NOT_EXISTING_ITEM_ID = 555L;
@@ -225,7 +228,7 @@ class CollectionControllerTest {
     @Test
     @WithMockUser(username = USERNAME_OF_COLLECTION_4)
     void shouldUpdateExistingCollectionIfUserIsOwnerOfCollection() throws Exception {
-        mvc.perform(patch("/collections")
+        mvc.perform(patch("/collections/" + EXISTING_COLLECTION_ID_4)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(COLLECTION_TO_UPDATE)
                 )
@@ -238,7 +241,7 @@ class CollectionControllerTest {
     @Test
     @WithMockUser(username = USERNAME_FROM_DB)
     void shouldNotUpdateIfUserIsNotOwnerOfCollection() throws Exception {
-        mvc.perform(patch("/collections")
+        mvc.perform(patch("/collections/" + EXISTING_COLLECTION_ID_4)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(COLLECTION_TO_UPDATE)
                 )
@@ -249,7 +252,7 @@ class CollectionControllerTest {
     @Test
     @WithMockUser
     void shouldThrowNotFoundOnUpdateIfCollectionNotFound() throws Exception {
-        mvc.perform(patch("/collections")
+        mvc.perform(patch("/collections/" + NOT_EXISTING_COLLECTION_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(NOT_EXISTING_COLLECTION_TO_UPDATE)
                 )
@@ -324,9 +327,8 @@ class CollectionControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.addresses", hasSize(2)));
-        mvc.perform(delete("/collections/" + EXISTING_COLLECTION_ID_2 + "/addresses")
+        mvc.perform(delete("/collections/" + EXISTING_COLLECTION_ID_2 + "/addresses/" + EXISTING_ADDRESS_ID)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(ADDRESS_TO_ADD)
                 )
                 .andExpect(status().isOk());
         mvc.perform(get("/collections/" + EXISTING_COLLECTION_ID_2)
@@ -339,7 +341,7 @@ class CollectionControllerTest {
     @Test
     @WithMockUser(username = EXISTING_USERNAME)
     void shouldReturnCollectionNotFoundOnDeleteAddress() throws Exception {
-        mvc.perform(delete("/collections/" + NOT_EXISTING_COLLECTION_ID + "/addresses")
+        mvc.perform(delete("/collections/" + NOT_EXISTING_COLLECTION_ID + "/addresses/" + EXISTING_ADDRESS_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ADDRESS_TO_ADD)
                 )
@@ -350,11 +352,23 @@ class CollectionControllerTest {
     @WithMockUser(username = EXISTING_USERNAME)
     void shouldNotRemoveAddressFromCollectionIfUserIsNotAnOwner() throws Exception {
 
-        mvc.perform(delete("/collections/" + EXISTING_COLLECTION_ID_3 + "/addresses")
+        mvc.perform(delete("/collections/" + EXISTING_COLLECTION_ID_3 + "/addresses/" + EXISTING_ADDRESS_ID)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ADDRESS_TO_ADD)
                 )
                 .andExpect(status().isForbidden());
+
+    }
+
+    @Test
+    @WithMockUser(username = EXISTING_USERNAME)
+    void shouldReturnAddressNotFoundOnDeleteAddress() throws Exception {
+
+        mvc.perform(delete("/collections/" + EXISTING_COLLECTION_ID_2 + "/addresses/" + NOT_EXISTING_ADDRESS_ID)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ADDRESS_TO_ADD)
+                )
+                .andExpect(status().isNotFound());
 
     }
 }

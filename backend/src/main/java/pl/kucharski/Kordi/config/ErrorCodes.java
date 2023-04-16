@@ -18,6 +18,7 @@ public class ErrorCodes {
     public static final String PASSWORD_TOO_SHORT = "password.too.short";
 
     public static final String ADDRESS_EXISTS = "address.exists";
+    public static final String ADDRESS_NOT_FOUND = "address.notfound";
     public static final String COMMENT_NOT_FOUND = "comment.notfound";
 
     public static final String EMAIL_FAILED_CONNECTION = "email.send.failed.connection";

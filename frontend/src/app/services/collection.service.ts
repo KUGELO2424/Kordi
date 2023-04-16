@@ -37,8 +37,8 @@ export class CollectionService {
     return this.httpClient.post<any>(`${this.addUrl}/${collectionId}/addresses`, location)
   }
 
-  deleteLocation(location: LocationToAdd, collectionId: string) {
-    return this.httpClient.delete<any>(`${this.addUrl}/${collectionId}/addresses`, {body: location})
+  deleteLocation(collectionId: string, addressId: string) {
+    return this.httpClient.delete<any>(`${this.addUrl}/${collectionId}/addresses/${addressId}`);
   }
 
   searchCollection(title: string, city: string, street: string, itemName: string, categories: string, pageNumber: number, 
@@ -83,8 +83,8 @@ export class CollectionService {
     return this.httpClient.delete<any>(`${this.getUrl}/${collectionId}/comments/${commentId}`);
   }
 
-  updateCollection(collectionToUpdate: UpdateCollection) {
-    return this.httpClient.patch<Collection>(`${this.addUrl}`, collectionToUpdate);
+  updateCollection(id: string, collectionToUpdate: UpdateCollection) {
+    return this.httpClient.patch<Collection>(`${this.addUrl}/${id}`, collectionToUpdate);
   }
 
   updateCollectionItem(item: ItemUpdate, collectionId: string, itemId: string) {

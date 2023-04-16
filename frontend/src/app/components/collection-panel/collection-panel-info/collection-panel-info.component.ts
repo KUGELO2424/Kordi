@@ -87,11 +87,10 @@ export class CollectionPanelInfoComponent implements OnInit {
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
           let collectionUpdate = new UpdateCollection();
-          collectionUpdate.id = this.collection!.id
           collectionUpdate.title = this.form.value.title;
           collectionUpdate.description = this.form.value.description;
           collectionUpdate.endTime = this.form.value.endDate;
-          this.collectionService.updateCollection(collectionUpdate).subscribe({
+          this.collectionService.updateCollection(this.collection!.id.toString(), collectionUpdate).subscribe({
             next: (data) => {
               console.log(data);
               this.reloadComponent(this.translate.instant('panel.collection_updated'));

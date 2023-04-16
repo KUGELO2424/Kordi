@@ -33,12 +33,14 @@ public class CollectionData {
     public static final String NEW_TITLE = "NewTitle";
     public static final String NEW_DESC = "NewDescription";
 
-    public static final Address ADDRESS = new Address("Warszawa", "Wielka");
+    public static final Address ADDRESS = new Address(1L, "Warszawa", "Wielka");
     public static final AddressDTO ADDRESS_DTO = AddressDTO.builder()
+            .id(1L)
             .city("Warszawa")
             .street("Wielka")
             .build();
     public static final AddressDTO ADDRESS_DTO_V2 = AddressDTO.builder()
+            .id(2L)
             .city("Krakow")
             .street("Maly")
             .build();
@@ -220,13 +222,11 @@ public class CollectionData {
             "}";
 
     public static final String COLLECTION_TO_UPDATE = "{" +
-            "\"id\":\"4\", " +
             "\"title\":\"" + NEW_TITLE + "\", " +
             "\"description\":\"" + NEW_DESC + "\"," +
             "\"endTime\":\"" + NEW_END_TIME + "\"}";
 
     public static final String NOT_EXISTING_COLLECTION_TO_UPDATE = "{" +
-            "\"id\":\"55\", " +
             "\"title\":\"" + NEW_TITLE + "\", " +
             "\"description\":\"" + NEW_DESC + "\"," +
             "\"endTime\":\"" + NEW_END_TIME + "\"}";

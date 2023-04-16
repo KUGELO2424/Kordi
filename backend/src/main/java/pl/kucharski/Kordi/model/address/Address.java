@@ -24,4 +24,9 @@ public class Address extends BaseEntity {
     private String city;
     private String street;
 
+    public Address(Long id, String city, String street) {
+        super(id);
+        this.city = city;
+        this.street = street;
+    }
 }

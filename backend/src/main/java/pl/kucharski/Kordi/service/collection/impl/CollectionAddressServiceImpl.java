@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.aop.IsCollectionOwner;
 import pl.kucharski.Kordi.exception.AddressAlreadyExistsInCollectionException;
+import pl.kucharski.Kordi.exception.AddressNotFoundException;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.model.address.Address;
 import pl.kucharski.Kordi.model.address.AddressDTO;
@@ -13,6 +14,7 @@ import pl.kucharski.Kordi.repository.CollectionRepository;
 import pl.kucharski.Kordi.service.collection.CollectionAddressService;
 
 import static pl.kucharski.Kordi.config.ErrorCodes.ADDRESS_EXISTS;
+import static pl.kucharski.Kordi.config.ErrorCodes.ADDRESS_NOT_FOUND;
 import static pl.kucharski.Kordi.config.ErrorCodes.COLLECTION_NOT_FOUND;
 
 @Service
@@ -47,20 +49,19 @@ public class CollectionAddressServiceImpl implements CollectionAddressService {
     }
 
     /**
-     * @see CollectionAddressService#removeCollectionAddress(Long, AddressDTO)
+     * @see CollectionAddressService#removeCollectionAddress(Long, Long)
      */
     @Override
     @Transactional
     @IsCollectionOwner
-    public void removeCollectionAddress(Long collectionId, AddressDTO addressDTO) {
-        Address addressToRemove = addressMapper.mapToAddress(addressDTO);
+    public void removeCollectionAddress(Long collectionId, Long addressId) {
         Collection collection = collectionRepository.findById(collectionId)
                 .orElseThrow(() -> new CollectionNotFoundException(COLLECTION_NOT_FOUND));
-        collection.getAddresses().stream()
-                .filter(address -> address.getCity().equals(addressToRemove.getCity())
-                        && address.getStreet().equals(addressToRemove.getStreet()))
+        Address foundAddress = collection.getAddresses().stream()
+                .filter(address -> address.getId().equals(addressId))
                 .findFirst()
-                .ifPresent(address -> collection.getAddresses().remove(address));
+                .orElseThrow(() -> new AddressNotFoundException(ADDRESS_NOT_FOUND));
+        collection.getAddresses().remove(foundAddress);
     }
 
 }

@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.transaction.annotation.Transactional;
 import pl.kucharski.Kordi.exception.AddressAlreadyExistsInCollectionException;
+import pl.kucharski.Kordi.exception.AddressNotFoundException;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.model.address.AddressMapper;
 import pl.kucharski.Kordi.model.collection.Collection;
@@ -75,7 +76,7 @@ class CollectionAddressServiceImplTest {
         given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
 
         // when
-        underTest.removeCollectionAddress(1L, ADDRESS_DTO);
+        underTest.removeCollectionAddress(1L, 1L);
         Collection foundCollection = collectionRepository.findById(1L).orElse(null);
 
         // then
@@ -98,7 +99,16 @@ class CollectionAddressServiceImplTest {
         given(collectionRepository.findById(5L)).willReturn(Optional.empty());
 
         // when + then
-        assertThrows(CollectionNotFoundException.class, () -> underTest.removeCollectionAddress(5L, ADDRESS_DTO));
+        assertThrows(CollectionNotFoundException.class, () -> underTest.removeCollectionAddress(5L, 1L));
+    }
+
+    @Test
+    void shouldThrowAddressNotFoundOnRemoveCollectionAddress() {
+        // given
+        given(collectionRepository.findById(1L)).willReturn(Optional.of(COLLECTION_WITH_ID));
+
+        // when + then
+        assertThrows(AddressNotFoundException.class, () -> underTest.removeCollectionAddress(1L, 5L));
     }
 
 }

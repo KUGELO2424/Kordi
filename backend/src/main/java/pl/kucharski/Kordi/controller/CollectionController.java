@@ -26,6 +26,7 @@ import pl.kucharski.Kordi.config.PaginationConstants;
 import pl.kucharski.Kordi.enums.CollectionStatus;
 import pl.kucharski.Kordi.enums.ItemCategory;
 import pl.kucharski.Kordi.exception.AddressAlreadyExistsInCollectionException;
+import pl.kucharski.Kordi.exception.AddressNotFoundException;
 import pl.kucharski.Kordi.exception.CollectionNotFoundException;
 import pl.kucharski.Kordi.exception.UserNotFoundException;
 import pl.kucharski.Kordi.model.address.AddressDTO;
@@ -164,21 +165,21 @@ public class CollectionController {
             @ApiResponse(responseCode = "404", description = "collection not found", content = @Content),
             @ApiResponse(responseCode = "403", description = "user not an owner of collection", content = @Content),
     })
-    @PatchMapping("/collections")
+    @PatchMapping("/collections/{collectionId}")
     @CrossOrigin("http://localhost:4200")
-    ResponseEntity<CollectionDTO> updateCollection(
+    ResponseEntity<CollectionDTO> updateCollection(@Parameter(description = "id of collection to update") @PathVariable long collectionId,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "collection to update. If some value is empty, then no value update")
             @RequestBody CollectionUpdateDTO collectionToUpdate) {
         try {
-            log.info("Request to update collection: {}", collectionToUpdate);
+            log.info("Request to update collection {} with fields: {}", collectionId, collectionToUpdate);
             CollectionDTO updatedCollection = collectionService.updateCollection(
-                    collectionToUpdate.getId(),
+                    collectionId,
                     collectionToUpdate.getTitle(),
                     collectionToUpdate.getDescription(),
                     collectionToUpdate.getEndTime());
             return ResponseEntity.ok(updatedCollection);
         } catch (CollectionNotFoundException ex) {
-            log.warn("Collection with id {} not found", collectionToUpdate.getId());
+            log.warn("Collection with id {} not found", collectionId);
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     ex.getMessage());
@@ -217,15 +218,14 @@ public class CollectionController {
             @ApiResponse(responseCode = "404", description = "collection not found", content = @Content),
             @ApiResponse(responseCode = "403", description = "user not an owner of collection", content = @Content),
     })
-    @DeleteMapping("/collections/{collectionId}/addresses")
+    @DeleteMapping("/collections/{collectionId}/addresses/{addressId}")
     ResponseEntity<Map<String, String>> removeAddressFromCollection(@Parameter(description = "id of collection") @PathVariable long collectionId,
-                                                                    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "address to delete")
-                                                                    @RequestBody AddressDTO address) {
+                                                                    @Parameter(description = "id of address") @PathVariable long addressId) {
         try {
-            log.info("Request to remove address: {} from collection with id {}", address, collectionId);
-            addressService.removeCollectionAddress(collectionId, address);
+            log.info("Request to remove address: {} from collection with id {}", addressId, collectionId);
+            addressService.removeCollectionAddress(collectionId, addressId);
             return ResponseEntity.ok(Collections.singletonMap("status", "Address removed from collection with id " + collectionId));
-        } catch (CollectionNotFoundException ex) {
+        } catch (CollectionNotFoundException | AddressNotFoundException ex) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     ex.getMessage());
