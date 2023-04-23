@@ -13,6 +13,7 @@ import { Location } from '@angular/common'
 })
 export class LoginComponent implements OnInit {
 
+  hide = true;
   errorMessage: Message[] = [];
   successMessage: Message[] = [];
 

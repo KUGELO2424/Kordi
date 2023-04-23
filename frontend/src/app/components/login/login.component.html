@@ -25,7 +25,14 @@
                 <mat-icon matPrefix>lock_outline</mat-icon>
                 <mat-form-field class="full-width" appearance="outline">
                   <mat-label>{{ "login.password" | translate }}</mat-label>
-                  <input type="password" matInput formControlName="password" />
+                  <input
+                    matInput
+                    [type]="hide ? 'password' : 'text'"
+                    formControlName="password"
+                  />
+                  <mat-icon matSuffix (click)="hide = !hide">{{
+                    hide ? "visibility_off" : "visibility"
+                  }}</mat-icon>
                 </mat-form-field>
 
                 <!-- Buttons -->
