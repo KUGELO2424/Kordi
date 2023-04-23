@@ -90,6 +90,7 @@ import { KnobModule } from 'primeng/knob';
 import { CarouselModule } from 'primeng/carousel';
 import { CollectionClosedComponent } from './components/collection/collection-closed/collection-closed.component';
 import { CollectionNotFoundComponent } from './components/collection/collection-not-found/collection-not-found.component';
+import { CollectionPanelNoSubmittedItemsComponent } from './components/collection-panel/collection-panel-no-submitted-items/collection-panel-no-submitted-items.component';
 
 const routes: Routes = [
   {path: 'home', component: HomePageComponent},
@@ -151,6 +152,7 @@ const routes: Routes = [
     VerificationEmailComponent,
     CollectionClosedComponent,
     CollectionNotFoundComponent,
+    CollectionPanelNoSubmittedItemsComponent,
   ],
   imports: [
     RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled',}),

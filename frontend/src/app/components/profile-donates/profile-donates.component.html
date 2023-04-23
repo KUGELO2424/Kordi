@@ -29,8 +29,9 @@
       <td>{{ item.submitTime | date : "dd/MM/yyyy" }}</td>
       <td>
         <button
-          class="btn my-btn-primary btn-sm mt-2 me-2"
-          style="padding-left: 2rem; padding-right: 2rem"
+          pButton
+          type="button"
+          class="p-button-text mb-1 my-button p-button-sm"
           (click)="openCollection(item.collectionId)"
         >
           {{ "panel.open_collection" | translate }}
@@ -38,8 +39,9 @@
       </td>
       <td>
         <button
-          class="btn my-btn-primary btn-sm mt-2 me-2"
-          style="padding-left: 2rem; padding-right: 2rem"
+          pButton
+          type="button"
+          class="p-button-text mb-1 my-button p-button-sm"
           (click)="showLocations(item)"
         >
           {{ "panel.open_locations" | translate }}

@@ -104,6 +104,13 @@ export class CollectionPanelSubmittedItemsComponent implements OnInit {
     })
   }
 
+  getMessage() {
+    if (this.choosenItemId == '-1') {
+      return "panel.not_submitted_items";
+    }
+    return "panel.not_submitted_item";
+  }
+
   back() {
     this.location.back();
   }

@@ -250,7 +250,7 @@
         "title": "Title",
         "date": "Creation date",
         "end_date": "End date",
-        "collection_panel": "Collection panel",
+        "collection_panel": "Edit",
         "status": "Status",
         "open": "Open",
         "closed": "Finished",
@@ -259,7 +259,7 @@
         "item_title": "Item",
         "quantity": "Quantity",
         "item_submit_date": "Submit date",
-        "submitted_items": "See donates",
+        "submitted_items": "Donates",
         "no_collections": "You don't have any collections yet",
         "no_donates": "You haven't donated any items yet"
     },
@@ -298,13 +298,21 @@
         "location_added": "Location has been added",
         "location_deleted": "Location has been deleted",
         "no_comments": "The collection has no comments",
-        "open_collection": "Go to the collection page",
+        "open_collection": "See collection",
         "comment_deleted": "The comment has been deleted",
-        "open_locations":" Show locations",
-        "show_user": "Dane użytkownika",
+        "open_locations":" Locations",
+        "show_user": "Contact information",
         "firstname": "Firstname:",
         "lastname": "Lastname:",
         "email": "Email:",
-        "phone": "Phone:"
+        "phone": "Phone:",
+        "not_submitted_item": "No one has donated this item yet",
+        "not_submitted_items": "No one has donated an item yet",
+        "show_all": "Show all",
+        "submitted_items_heading": "Select an item to view its donates",
+        "item_name": "Item",
+        "user_name": "User",
+        "donated_quantity": "Donated quantity",
+        "date": "Date"
     }
 }

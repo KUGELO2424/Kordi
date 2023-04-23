@@ -250,7 +250,7 @@
         "title": "Tytuł",
         "date": "Data utworzenia",
         "end_date": "Data zakończenia",
-        "collection_panel": "Panel zbiórki",
+        "collection_panel": "Edytuj",
         "status": "Status",
         "open": "Otwarta",
         "closed": "Zakończona",
@@ -259,7 +259,7 @@
         "item_title": "Przedmiot",
         "quantity": "Ilość",
         "item_submit_date": "Data podarowania",
-        "submitted_items": "Zobacz dary",
+        "submitted_items": "Dary",
         "no_collections": "Nie posiadasz jeszcze żadnych zbiórek",
         "no_donates": "Nie podarowałeś jeszcze żadnych przedmiotów"
     },
@@ -298,13 +298,21 @@
         "location_added": "Lokalizacja została dodana",
         "location_deleted": "Lokalizacja została usunięta",
         "no_comments": "Zbiórka nie posiada żadnych komentarzy",
-        "open_collection": "Otwórz stronę zbiórki",
+        "open_collection": "Zobacz zbiórkę",
         "comment_deleted": "Komenatrz został usunięty",
-        "open_locations":" Pokaż lokalizacje",
-        "show_user": "Dane użytkownika",
+        "open_locations":" Lokalizacje",
+        "show_user": "Dane kontaktowe",
         "firstname": "Imię:",
         "lastname": "Nazwisko:",
         "email": "Email:",
-        "phone": "Telefon:"
+        "phone": "Telefon:",
+        "not_submitted_item": "Nikt nie podarował jeszcze tego przedmiotu",
+        "not_submitted_items": "Nikt nie podarował jeszcze żadnego przedmiotu",
+        "show_all": "Pokaż wszystkie",
+        "submitted_items_heading": "Wybierz przedmiot by wyświetlić jego dary",
+        "item_name": "Przedmiot",
+        "user_name": "Użytkownik",
+        "donated_quantity": "Przekazana ilość",
+        "date": "Data"
     }
 }
