@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center mt-5">
-  <div class="card col-lg-10 col-md-10 col-sm-12 col-12">
+  <mat-card class="my-card">
     <p-toolbar styleClass="mb-2 gap-2">
       <ng-template pTemplate="left">
         <button
@@ -39,7 +39,7 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-item>
-        <tr>
+        <tr ngClass="table-white">
           <td>{{ item.name }}</td>
           <td>{{ item.category | translate }}</td>
           <td>{{ item.type | translate }}</td>
@@ -63,7 +63,7 @@
         </div>
       </ng-template>
     </p-table>
-  </div>
+  </mat-card>
 
   <p-dialog
     [(visible)]="itemDialog"

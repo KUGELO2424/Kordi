@@ -13,3 +13,9 @@
 .p-fileupload .p-fileupload-buttonbar {
     background-color: transparent;
 }
+
+.my-card {
+
+    max-width: 700px;
+    margin: auto;
+}

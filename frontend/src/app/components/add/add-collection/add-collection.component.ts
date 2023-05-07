@@ -58,50 +58,36 @@ export class AddCollectionComponent implements OnInit {
   addCollection() {
     this.routedComponent.saveState()
     this.state = this.stateService.state$.getValue() || {}
-    if (!("info" in this.state)) {
-      this.errorMessage = [
-        {severity:'error', detail: this.translate.instant('add-collection.info.error')}
-      ]
-    } else if (this.state.info.title === "" || this.state.info.title.length < 3 || this.state.info.title.length > 30) {
-      this.errorMessage = [
-        {severity:'error', detail: this.translate.instant('add-collection.title.error')}
-      ]
-    } else if (this.state.info.description === "" || this.state.info.description.length < 3 || this.state.info.description.length > 500) {
-      this.errorMessage = [
-        {severity:'error', detail: this.translate.instant('add-collection.desc.error')}
-      ]
-    } else if (!("locations" in this.state) || this.state.locations.length === 0) {
-      this.errorMessage = [
-        {severity:'error', detail: this.translate.instant('add-collection.locations.error')}
-      ]
-    } else if (!("items" in this.state) || this.state.items.length === 0) {
-      this.errorMessage = [
-        {severity:'error', detail: this.translate.instant('add-collection.items.error')}
-      ]
-    } else {
-      this.confirmationService.confirm({
-        message: this.translate.instant('add-collection.create.text'),
-        acceptLabel: this.translate.instant('add-collection.yes'),
-        rejectLabel: this.translate.instant('add-collection.no'),
-        accept: async () => {
-          const collection = await this.prepareCollection();
-          this.collectionService.addCollection(collection).subscribe({
-            next: response => {
-              const collectionId = response.id;
-              this.stateService.state$.next("");
-              let navigationExtras = {state: {data: this.translate.instant('add-collection.added')}};
-              this.router.navigateByUrl("collections/" + collectionId, navigationExtras);
-            },
-            error: error => {
-              this.messageService.add({
-                key: 'tc', severity:'error', 
-                summary: this.translate.instant('add-collection.error'), 
-                detail: this.translate.instant('add-collection.error.msg')});
-            }
-          })
-        }
-      });
+    let errorMessage = this.getErrorMessage(this.state);
+    
+    if (errorMessage) {
+      this.messageService.add({severity:'error', detail: errorMessage});
+      return;
     }
+    
+    this.confirmationService.confirm({
+      message: this.translate.instant('add-collection.create.text'),
+      acceptLabel: this.translate.instant('add-collection.yes'),
+      rejectLabel: this.translate.instant('add-collection.no'),
+      accept: async () => {
+        const collection = await this.prepareCollection();
+        this.collectionService.addCollection(collection).subscribe({
+          next: response => {
+            const collectionId = response.id;
+            this.stateService.state$.next("");
+            let navigationExtras = {state: {data: this.translate.instant('add-collection.added')}};
+            this.router.navigateByUrl("collections/" + collectionId, navigationExtras);
+          },
+          error: () => {
+            this.messageService.add({
+              key: 'tc', severity:'error', 
+              summary: this.translate.instant('add-collection.error'), 
+              detail: this.translate.instant('add-collection.error.msg')});
+          }
+        })
+      }
+    });
+    
   }
 
   prepareCollection() {
@@ -205,6 +191,39 @@ export class AddCollectionComponent implements OnInit {
       this.isRightDisabled = true;
     }
   }
+
+  getErrorMessage(state: any) {
+    let errorMessage = "";
+    if (!("info" in state)) {
+      errorMessage = this.translate.instant('add-collection.info.error');
+    } else if (!this.isTitleCorrect(state.info.title)) {
+      errorMessage = this.translate.instant('add-collection.title.error');
+    } else if (!this.isDescriptionCorrect(state.info.description)) {
+      errorMessage = this.translate.instant('add-collection.desc.error');
+    } else if (!this.areLocationsCorrect(state)) {
+      errorMessage = this.translate.instant('add-collection.locations.error');
+    } else if (!this.areItemsCorrect(state)) {
+      errorMessage = this.translate.instant('add-collection.items.error');
+    } 
+    return errorMessage;
+  }
+
+  private isTitleCorrect(title: string) {
+    return title !== "" && title.length >= 3 && title.length <= 30;
+  }
+  
+  private isDescriptionCorrect(description: string) {
+    return description !== "" && description.length >= 3 && description.length <= 500
+  }
+
+  private areLocationsCorrect(state: any) {
+    return ("locations" in state) && state.locations.length !== 0;
+  }
+
+  private areItemsCorrect(state: any) {
+    return ("items" in state) && state.items.length !== 0;
+  }
+  
 }
 
 
