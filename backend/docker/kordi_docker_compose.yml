@@ -40,5 +40,6 @@ services:
       - TWILIO_ACCOUNT_SID=xxx
       - TWILIO_AUTH_TOKEN=xxx
       - TWILIO_SERVICE_ID=xxx
+      - ALLOWED_ORIGINS=http://localhost:4200,http://localhost:4300
 volumes:
   db:

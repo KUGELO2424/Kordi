@@ -166,7 +166,7 @@ public class CollectionController {
             @ApiResponse(responseCode = "403", description = "user not an owner of collection", content = @Content),
     })
     @PatchMapping("/collections/{collectionId}")
-    @CrossOrigin("http://localhost:4200")
+    @CrossOrigin("${allowed.origins}")
     ResponseEntity<CollectionDTO> updateCollection(@Parameter(description = "id of collection to update") @PathVariable long collectionId,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "collection to update. If some value is empty, then no value update")
             @RequestBody CollectionUpdateDTO collectionToUpdate) {
