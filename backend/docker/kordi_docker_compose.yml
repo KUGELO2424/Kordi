@@ -37,9 +37,9 @@ services:
       - MAIL_PORT=1025
       - MAIL_USER=kordi
       - MAIL_PASSWORD=kordi
-      - TWILIO_ACCOUNT_SID=xxx
-      - TWILIO_AUTH_TOKEN=xxx
-      - TWILIO_SERVICE_ID=xxx
-      - ALLOWED_ORIGINS=http://localhost:4200,http://localhost:4300
+      - TWILIO_ACCOUNT_SID=ACe1d9210f8211196fecc03714b98f03f5
+      - TWILIO_AUTH_TOKEN=3bf234e18841281e4a405d262148f4d0
+      - TWILIO_SERVICE_ID=VAbdabcad8f9aec6de1ce73fed0f4dec2b
+      - ALLOWED_ORIGINS=http://localhost:4200
 volumes:
   db:
