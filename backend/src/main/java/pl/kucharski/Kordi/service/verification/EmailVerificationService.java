@@ -1,5 +1,6 @@
 package pl.kucharski.Kordi.service.verification;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -50,7 +51,7 @@ public class EmailVerificationService implements VerificationService{
     @Override
     @Async
     public VerificationStatus send(User user) {
-        String token = UUID.randomUUID().toString();
+        String token = RandomStringUtils.random(6, false, true);
         EmailToken emailToken = new EmailToken(
                 token,
                 LocalDateTime.now(),
@@ -63,7 +64,7 @@ public class EmailVerificationService implements VerificationService{
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-            helper.setText(buildEmail(user.getFirstName(), link), true);
+            helper.setText(buildEmail(user.getFirstName(), link, token, false), true);
             helper.setTo(user.getEmail());
             helper.setSubject("Zweryfikuj swój email");
             helper.setFrom("help@kordi.com");
@@ -95,7 +96,7 @@ public class EmailVerificationService implements VerificationService{
         return VerificationStatus.VERIFIED;
     }
 
-    private String buildEmail(String name, String link) {
+    private String buildEmail(String name, String link, String token, boolean sendActivationLink) {
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
                 "\n" +
                 "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
@@ -151,7 +152,7 @@ public class EmailVerificationService implements VerificationService{
                 "      <td width=\"10\" valign=\"middle\"><br></td>\n" +
                 "      <td style=\"font-family:Helvetica,Arial,sans-serif;font-size:19px;line-height:1.315789474;max-width:560px\">\n" +
                 "        \n" +
-                "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Hej " + name + ",</p><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> Dziękujemy za rejestracje w aplikacji Kordi. Kliknij w poniższy link aby aktywować konto: </p><blockquote style=\"Margin:0 0 20px 0;border-left:10px solid #b1b4b6;padding:15px 0 0.1px 15px;font-size:19px;line-height:25px\"><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> <a href=\"" + link + "\">Aktywuj konto</a> </p></blockquote>\n Link wygaśnie w przeciągu 15 minut. <p>Do zobaczenia!</p>" +
+                getMainContent(name, link, token, sendActivationLink) +
                 "        \n" +
                 "      </td>\n" +
                 "      <td width=\"10\" valign=\"middle\"><br></td>\n" +
@@ -162,5 +163,12 @@ public class EmailVerificationService implements VerificationService{
                 "  </tbody></table><div class=\"yj6qo\"></div><div class=\"adL\">\n" +
                 "\n" +
                 "</div></div>";
+    }
+
+    private String getMainContent(String name, String link, String token, boolean sendActivationLink) {
+        if (sendActivationLink) {
+            return "<p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Hej " + name + ",</p><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> Dziękujemy za rejestracje w aplikacji Kordi. Kliknij w poniższy link aby aktywować konto: </p><blockquote style=\"Margin:0 0 20px 0;border-left:10px solid #b1b4b6;padding:15px 0 0.1px 15px;font-size:19px;line-height:25px\"><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> <a href=\"" + link + "\">Aktywuj konto</a> </p></blockquote>\n Link wygaśnie w przeciągu 15 minut. <p>Do zobaczenia!</p>";
+        }
+        return "<p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Hej " + name + ",</p><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> Dziękujemy za rejestracje w aplikacji Kordi. Użyj poniższego kodu by zweryfikować konto: </p><blockquote style=\"Margin:0 0 20px 0;border-left:10px solid #b1b4b6;padding:15px 0 0.1px 15px;font-size:19px;line-height:25px\"><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> " + token + " </p></blockquote>\n Podany kod jest ważny 15 minut. <p>Do zobaczenia!</p>";
     }
 }
